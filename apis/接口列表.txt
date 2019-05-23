@@ -1,0 +1,271 @@
+接口列表地址  ，需要的参数 ，返回的参数，每个接口必须要加入token值
+
+1.注册 reg
+http://ng.zrcase.com/api/reg/?telephone=13618613798&password=gzg624181&code=713861&nickname=Echo&bcode&token=wFu1lIfZcfhWf3IX
+
+发送参数：telephone,code,password,nickname,bcode
+返回参数：
+<1>注册成功
+{"State":1,"Descriptor":"会员注册成功！","Version":"2019-02-17 00:33:29","Data":[{"telephone":"13618613798","nickname":"Echo","ucode":"12345"}]}
+<2>注册失败
+{"State":0,"Descriptor":"会员注册成功！","Version":"2019-02-17 00:05:15","Data":[]}
+<2>验证码错误
+{"State":2,"Descriptor":"验证码错误！","Version":"2019-02-17 00:43:14","Data":[]}
+<4>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 00:05:15","Data":[]}
+
+2.发送验证码 sendcode
+http://ng.zrcase.com/api/sendcode/?telephone=13618613798&token=wFu1lIfZcfhWf3IX
+
+发送参数：telephone
+返回参数： 4种返回状态
+<1>发送成功
+{"State":1,"Descriptor":"验证码发送成功！","Version":"2019-02-16 22:48:24","Data":{"telephone":"13618613798","code":538629}}
+<2>发送失败
+{"State":0,"Descriptor":"验证码发送失败！","Version":"2019-02-16 22:48:24","Data":[""]}
+<3>手机号已经注册
+{"State":3,"Descriptor":"该手机号已经注册！","Version":"2019-02-16 22:55:02","Data":[""]}
+<4>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-16 23:17:44","Data":[]}
+
+3.会员登陆login
+http://ng.zrcase.com/api/login/?telephone=13618613798&password=gzg88581&token=wFu1lIfZcfhWf3IX
+
+<1>登陆成功
+{"State":1,"Descriptor":"会员登陆成功！","Version":"2019-02-17 15:08:19","Data":[{"telephone":"13618613798","nickname":"Echo"}]}
+<2>登陆失败
+{"State":0,"Descriptor":"用户名或密码不正确！","Version":"2019-02-17 14:56:20","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+
+4.绑定qq  getqq
+http://ng.zrcase.com/api/getqq/?id=1&qq=704970189&token=wFu1lIfZcfhWf3IX
+
+<1>qq绑定成功
+{"State":1,"Descriptor":"qq绑定成功！","Version":"2019-02-17 15:08:19","Data":[{"telephone":"13618613798","nickname":"Echo"}]}
+<2>qq绑定失败
+{"State":0,"Descriptor":"qq绑定失败！","Version":"2019-02-17 14:56:20","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+
+5.提现姓名getname
+http://ng.zrcase.com/api/getname/?id=1&getname=桂志刚&token=wFu1lIfZcfhWf3IX
+
+<1>提现姓名绑定成功
+{"State":1,"Descriptor":"提现姓名绑定成功！","Version":"2019-02-17 15:08:19","Data":[{"telephone":"13618613798","getname":"桂志刚"}]}
+<2>提现姓名绑定失败
+{"State":0,"Descriptor":"提现姓名绑定失败！","Version":"2019-02-17 14:56:20","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+6.修改登陆密码editpassword
+http://ng.zrcase.com/api/editpassword/?id=1&password=123456789&newpassword=12345678&token=wFu1lIfZcfhWf3IX
+
+<1>密码修改成功
+{"State":1,"Descriptor":"密码修改成功！","Version":"2019-02-18 01:28:55"}
+<2>原始密码错误
+{"State":0,"Descriptor":"原始密码错误！","Version":"2019-02-18 01:18:03","Data":[]}
+<2>新密码不能与资金密码相同
+{"State":2,"Descriptor":"新密码不能与资金密码相同","Version":"2019-02-18 01:38:27","Data":[]}
+<4>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+7.修改资金密码editmoneypassword
+http://localhost/ng/api/eidtmoneypassword/?id=1&moneypassword=12345678&newmoneypassword=123456789&token=wFu1lIfZcfhWf3IX
+
+<1>密码修改成功
+{"State":1,"Descriptor":"密码修改成功！","Version":"2019-02-18 01:28:55"}
+<2>原始密码错误
+{"State":0,"Descriptor":"原始密码错误！","Version":"2019-02-18 01:18:03","Data":[]}
+<2>新密码不能与登陆密码相同
+{"State":2,"Descriptor":"新密码不能与资金密码相同","Version":"2019-02-18 01:38:27","Data":[]}
+<4>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+
+8.关于平台简介about
+http://ng.zrcase.com/api/about?token=wFu1lIfZcfhWf3IX
+
+<1>查询成功
+{"State":1,"Descriptor":"查询成功！","Version":"2019-02-19 17:31:52","Data":[{"id":"1","title":"关于南宫","content":"业界最优秀的彩票购买平台","addtime":"0"}]}
+<2>数据查询失败！
+{"State":0,"Descriptor":"数据查询失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+
+9.帮助与反馈feedback
+http://ng.zrcase.com/api/feedback/?mid=1&message=整个APP做的不错，继续加油&token=wFu1lIfZcfhWf3IX
+
+<1>留言成功
+{"State":1,"Descriptor":"留言成功！","Version":"2019-02-19 18:15:41","Data":[{"id":"1","mid":"1","message":"整个APP做的不错，继续加油","addtime":"1550571341","addip":"117.136.81.204"}]}
+<2>留言失败
+{"State":0,"Descriptor":"留言失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+10.代理制度agent
+http://ng.zrcase.com/api/agent?token=wFu1lIfZcfhWf3IX
+s<1>查询成功
+{"State":1,"Descriptor":"数据查询成功！","Version":"2019-02-19 17:31:52","Data":[{"id":"1","title":"关于南宫","content":"业界最优秀的彩票购买平台","addtime":"0"}]}
+<2>数据查询失败！
+{"State":0,"Descriptor":"数据查询失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+11.推广链接brandlink
+http://ng.zrcase.com/api/brandlink?id=1&token=wFu1lIfZcfhWf3IX
+
+<1>查询成功
+{"State":1,"Descriptor":"查询成功！","Version":"2019-02-19 21:52:39","Data":[{"ucode":"41893","images":"","qrcode":"","links":""}]}
+<2>数据查询失败！
+{"State":0,"Descriptor":"数据查询失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+11.修改昵称editnickname
+http://ng.zrcase.com/api/editnickname?id=1&nickname=桂志刚&token=wFu1lIfZcfhWf3IX
+
+<1>昵称修改成功
+{"State":1,"Descriptor":"昵称修改成功！","Version":"2019-02-21 15:44:06","Data":[{"telephone":"13618613798","nickname":"桂志刚1"}]}
+<2>昵称修改失败！
+{"State":0,"Descriptor":"昵称修改失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+12.修改用户头像图片editimages
+http://ng.zrcase.com/api/editimages?id=1&images=5&token=wFu1lIfZcfhWf3IX
+
+<1>头像修改成功
+{"State":1,"Descriptor":"头像修改成功！","Version":"2019-02-21 16:00:13","Data":[{"telephone":"13618613798","images":"5"}]}
+<2>头像修改失败！
+{"State":0,"Descriptor":"头像修改失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+13.获取客服getcustomer
+http://ng.zrcase.com/api/getcustomer?token=wFu1lIfZcfhWf3IX
+
+<1>客服qq获取成功
+{"State":1,"Descriptor":"QQ客服获取成功！","Version":"2019-02-21 16:23:42","Data":[{"qqcustomer":"3003812080","activecustomer":"3002744182","dailicustomer":"3003813487"}]}
+<2>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+14.添加提现账号 addaccount
+http://ng.zrcase.com/api/addaccount/?bankname=%E5%B7%A5%E5%95%86%E9%93%B6%E8%A1%8C&mid=1&type=cardpay&name=%E5%BC%A0%E4%B8%89&account=564865245@qq.com&token=wFu1lIfZcfhWf3IX&lastbankname=%E5%85%89%E8%B0%B7%E6%94%AF%E8%A1%8C
+
+<1>提现账号添加成功！
+{"State":1,"Descriptor":"提现账号添加成功！","Version":"2019-02-22 10:41:28","Data":[{"id":"3","name":"张三","account":"564865245@qq.com","type":"cardpay","bankname":"工商银行","lastbankname":"光谷支行","addtime":"1550803288","mid":"1"}]}
+<2>提现账号添加失败！
+{"State":0,"Descriptor":"提现账号添加失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+15.删除提现账号
+http://ng.zrcase.com/api/delaccount/?id=5&token=wFu1lIfZcfhWf3IX
+
+<1>.提现账号删除成功
+{"State":1,"Descriptor":"提现账号删除成功！","Version":"2019-02-22 13:42:00","Data":[{"id":"5","name":"张三","account":"564865245@qq.com","type":"alipay","bankname":"","lastbankname":"","addtime":"1550813939","mid":"1"}]}
+<2>.提现账号删除失败
+{"State":0,"Descriptor":"提现账号删除失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+16.查询用户的我的钱包里面的提现账号
+
+<1>.数据查询成功
+http://ng.zrcase.com/api/wallet/?id=1&token=wFu1lIfZcfhWf3IX
+{
+    "State": 1,
+    "Descriptor": "数据查询成功！",
+    "Version": "2019-02-25 15:12:36",
+    "Data": [
+        {
+            "name": "桂志刚",
+            "account": "704970189",
+            "type": "alipay",
+            "bankname": "",
+            "lastbankname": ""
+        },
+        {
+            "name": "桂志刚",
+            "account": "6224456576574567467467",
+            "type": "cardpay",
+            "bankname": "工商银行",
+            "lastbankname": "关山大道光谷支行"
+        },
+        {
+            "name": "张三",
+            "account": "564865245@qq.com",
+            "type": "cardpay",
+            "bankname": "工商银行",
+            "lastbankname": "光谷支行"
+        },
+        {
+            "name": "张三",
+            "account": "564865245@qq.com",
+            "type": "alipay",
+            "bankname": "",
+            "lastbankname": ""
+        }
+    ]
+}
+<2>.数据查询失败
+{"State":0,"Descriptor":"提现账号删除失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
+
+
+17.查询公告中心
+http://ng.zrcase.com/api/getgonggao/?token=wFu1lIfZcfhWf3IX
+
+<1>.数据查询成功
+{
+    "State": 1,
+    "Descriptor": "数据查询成功！",
+    "Version": "2019-02-25 16:55:16",
+    "Data": {
+        "newgonggao": [
+            {
+                "title": "春节红包发放通知",
+                "content": "This is a big issue ; we need more time to think about itUnix时间戳(Unix timestamp)转换工具 - 站长工具",
+                "issuetime": "1551080960"
+            },
+            {
+                "title": "比邻星b距离其母恒星约为0.05个天文单位",
+                "content": "在另一种推测中，比邻星b可能是一颗“非常紧密的行星”，其金属核占总质量的65%，其余则为硅酸盐组成的地幔。在这种情况下，比邻星的半径只有约5990公里，其物质组成类似水星。",
+                "issuetime": "0"
+            },
+            {
+                "title": "比邻星b距离其母恒星约为0.05个天文单位",
+                "content": "“这些结果第一次表明，ALMA可以探测到环绕比邻星的尘埃结构，”共同作者佩德罗·阿玛多（Pedro Amado）说，“未来的研究将使我们对比邻星行星系统有更加详细的了解。”",
+                "issuetime": "0"
+            }
+        ],
+        "xiaoxi": [
+            {
+                "title": "红包来袭",
+                "content": "您好，新上线的红包扫雷送红包了，发红包领红包，发的多领的多，活动给力。红包给力，单日最高可得2888彩金。速度来参与吧，NG国际有您更精彩！",
+                "issuetime": "1551079982"
+            },
+            {
+                "title": " 抓取诊断工具",
+                "content": "\r\n    1. 抓取诊断工具，可以让站长从百度蜘蛛的视角查看抓取内容，自助诊断百度蜘蛛看到的内容和预期是否一致。\r\n    2. 每个站点每周可使用200次，抓取结果只展现百度蜘蛛可见的前200KB内容。\r\n    3. 抓取诊断可能受到网络影响造成抓取失败，如遇到抓取失败情况，可重新检测，并自查网站是否可正常访问。\r\n",
+                "issuetime": "0"
+            }
+        ],
+        "bidu": [
+            {
+                "title": "比邻星行星系统",
+                "content": "“这些结果第一次表明，ALMA可以探测到环绕比邻星的尘埃结构，”共同作者佩德罗·阿玛多（Pedro Amado）说，“未来的研究将使我们对比邻星行星系统有更加详细的了解。”",
+                "issuetime": "0"
+            }
+        ]
+    }
+}
+<2>.数据查询失败
+{"State":0,"Descriptor":"数据查询失败！","Version":"2019-02-18 01:18:03","Data":[]}
+<3>token验证失败
+{"State":520,"Descriptor":"token验证失败！","Version":"2019-02-17 15:00:04","Data":[]}
