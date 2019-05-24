@@ -34,6 +34,7 @@ require_once("../../admin/sendmessage.php");
 $body = file_get_contents('php://input');
 $json = json_decode($body,true);
 header('Content-Type: application/json; charset=utf-8');
+//通过post格式传递过来
 
 $name=$json['name'];
 $sex=$json['sex'];
@@ -49,11 +50,28 @@ $images=$json['images'];
 $code=$json['code'];
 $formid=$json['formid'];
 
+//这个是自定义函数，将Base64图片转换为本地图片并保存
+$savepath= "../../uploads/image/";
 
+$card = base64_image_content($card,$savepath);
+$card=str_replace("../..",$cfg_weburl,$card);
+
+//将相册里面的图片进行处理
+$pic="";
+$arr=explode("|",$pics);
+for($i=1;$i<=count($arr);$i++){
+  $pics  = base64_image_contents($arr[$i],$savepath);
+  if($i==count($arr)){
+  $thispic = str_replace("../..",$cfg_weburl,$pics);
+  }else{
+  $thispic = str_replace("../..",$cfg_weburl,$pics)."|";
+  }
+  $pic .= $thispic;
+}
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-$r=$dosql->GetOne("SELECT * FROM `#@__guide` WHERE account='$account'");
+$r=$dosql->GetOne("SELECT * FROM `#@__guide` WHERE account='$account' and checkinfo <>2");
 if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   $State = 0;
   $Descriptor = '此电话号码已经被注册，请重新注册！';
@@ -73,7 +91,9 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   $getcity=get_city($regip);
   $ymdtime=date("Y-m-d");
   $password=md5(md5($password));
-  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pics',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid')";
+
+
+  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid')";
   $dosql->ExecNoneQuery($sql);
   $State = 1;
   $Descriptor = '导游信息注册成功！';

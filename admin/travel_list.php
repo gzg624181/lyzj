@@ -56,7 +56,7 @@ function fd(id){
   function checkinfo(key){
      var v= key;
 	// alert(v)
-	window.location.href='product.php?check='+v;
+	window.location.href='travel_list.php?check='+v;
 	}
 //标题搜索
    function GetSearchs(){
@@ -147,12 +147,12 @@ $check = isset($check) ? $check : '';
 			<td width="2%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);"></td>
 			<td width="7%" align="left">旅行社名称</td>
 			<td width="10%" align="center">开始时间</td>
-			<td width="15%" align="center">截止时间</td>
-			<td width="9%" align="center">行程标题</td>
-			<td width="9%" align="center">团队人数</td>
-			<td width="17%" align="center">客源地</td>
+			<td width="10%" align="center">截止时间</td>
+			<td width="18%" align="center">行程标题</td>
+			<td width="5%" align="center">团队人数</td>
+			<td width="14%" align="center">客源地</td>
 			<td width="13%" align="center">行程安排</td>
-			<td width="5%" align="center">备注</td>
+			<td width="8%" align="center">备注</td>
 			<td width="10%" align="center">发布时间</td>
 			<td width="3%" align="center">操作</td>
 		</tr>
@@ -169,45 +169,45 @@ $check = isset($check) ? $check : '';
 		  }elseif($check=="concel"){ //已取消
 		$dopage->GetPage("SELECT * FROM $tbname where state=3",10);
 		  }elseif($keyword!=""){
-		$dopage->GetPage("SELECT * FROM `pmw_game` where gametypes like '%$keyword%' OR gamename like '%$keyword%' ",10);
+		$dopage->GetPage("SELECT * FROM $tbname where gametypes like '%$keyword%' OR gamename like '%$keyword%' ",10);
 		  }else{
-		$dopage->GetPage("SELECT * FROM `pmw_game`",10);
+		$dopage->GetPage("SELECT * FROM $tbname",10);
 		  }
 		while($row = $dosql->GetArray())
 		{
 
 
-			switch($row['gameonline']){
+			switch($row['state']){
 
-				case 0:
-					$gameonline= "<i class='fa fa-times' aria-hidden='true'></i>";
+				case 0: //待预约
+					$state= "<i class='fa fa-close' aria-hidden='true'></i>";
 					break;
-				case 1:
-					$gameonline= "<i class='fa fa-check' aria-hidden='true'></i>";
+				case 1://待确认
+					$state= "<i class='fa fa-check' aria-hidden='true'></i>";
+					break;
+				case 2://已确认
+					$state= "<i class='fa fa-check-circle' aria-hidden='true'></i>";
+					break;
+				case 3://已取消
+					$state= "<i class='fa fa-check' aria-hidden='true'></i>";
 					break;
 				default:
-        $gameonline = '暂无分类';
+               $state = '暂无分类';
 
 				}
 		?>
 		<tr align="left" class="dataTr">
 			<td height="50" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
-			<td align="center"><?php echo $row['game']; ?></td>
-			<td align="center" class="num"><?php echo $row['gamename']; ?></td>
-			<td align="center"><?php echo $row['gametypes']; ?></td>
-			<td align="center" class="num" style="color:#529ee0"><?php echo $row['zsticheng']; ?></td>
-			<td align="center" class="num" style="color:#529ee0"><?php echo $row['ejticheng']; ?></td>
-			<td align="center"><a style="cursor:pointer;" onclick="checkcontent('<?php echo $row['id'];?>');">点击查看游戏赔率说明</a></td>
-			<td align="center"><?php echo $row['gamenumber']; ?></td>
-			<td align="center" id="sj_<?php echo $row['id'];?>"><?php
-			if($row['gameonline']==1){
-			echo "<font color='#339933'><B>"."<i class='fa fa-check' aria-hidden='true'></i>"."</b></font>";
-			}else{
-			echo "<font color='#FF0000'><B>"."<i class='fa fa-times' aria-hidden='true'></i>"."</b></font>";
-			}
-			?></td>
-			<td align="center"><span class="number"><?php echo date("Y-m-d H:i:s",$row['gametime']); ?></span></td>
-			<td align="center"><?php echo $checkinfo; ?></td>
+			<td align="center"><?php echo $row['aid']; ?></td>
+			<td align="center"><?php echo date("Y-m-d",$row['starttime']); ?></td>
+			<td align="center"><?php echo date("Y-m-d",$row['endtime']); ?></td>
+			<td align="center"><?php echo $row['title']; ?></td>
+			<td align="center"><?php echo $row['num']; ?></td>
+			<td align="center"><?php echo $row['origin'];?></td>
+			<td align="center">点击查看行程</td>
+			<td align="center"><?php echo $row['other'];?></td>
+			<td align="center"><span class="number"><?php echo date("Y-m-d H:i:s",$row['posttime']); ?></span></td>
+			<td align="center"><?php echo $state; ?></td>
 		</tr>
 		<?php
 		}
@@ -222,7 +222,7 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('product_save.php');" onclick="return ConfDelAll(0);">删除</a></span> </div>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a></span> </div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏
@@ -232,7 +232,7 @@ if($cfg_quicktool == 'Y')
 <div class="quickToolbar">
 	<div class="qiuckWarp">
 		<div class="quickArea">
-        <a href="product_add.php" class="dataBtn">新增游戏</a> <span class="pageSmall"><?php echo $dopage->GetList(); ?></span>
+        <span class="pageSmall"><?php echo $dopage->GetList(); ?></span>
         </div>
 		<div class="quickAreaBg"></div>
 	</div>

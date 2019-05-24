@@ -47,7 +47,29 @@ if(isset($token) && $token==$cfg_auth_key){
                       'Data' => $Data
                        );
           echo phpver($result);
-      }else{  //账号密码正确，则更新用户的formid
+          }else{
+            if($r['checkinfo']==2){   //审核失败
+              $State = 3;
+              $Descriptor = '账号审核未通过，请重新注册！';
+              $result = array (
+                          'State' => $State,
+                          'Descriptor' => $Descriptor,
+                          'Version' => $Version,
+                          'Data' => $Data
+                           );
+              echo phpver($result);
+            }elseif($r['checkinfo']==0){//待审核
+              $State = 4;
+              $Descriptor = '账号正在审核中，请等待！';
+              $result = array (
+                          'State' => $State,
+                          'Descriptor' => $Descriptor,
+                          'Version' => $Version,
+                          'Data' => $Data
+                           );
+              echo phpver($result);
+            }else{
+         //账号密码正确，且审核通过，则更新用户的formid
           $dosql->ExecNoneQuery("UPDATE `#@__agency` SET formid='$formid' WHERE account='$account' and password='$password'");
           $show=$dosql->GetOne("SELECT * FROM `pmw_agency` where account='$account' and password='$password'");
           $Data[]=$show;
@@ -61,6 +83,7 @@ if(isset($token) && $token==$cfg_auth_key){
                        );
           echo phpver($result);
           }
+      }
       }
     }elseif($type=="guide"){
       $r=$dosql->GetOne("SELECT id FROM `#@__guide` WHERE account='$account'");
@@ -87,7 +110,29 @@ if(isset($token) && $token==$cfg_auth_key){
                       'Data' => $Data
                        );
           echo phpver($result);
-      }else{  //账号密码正确，则更新用户的formid
+      }else{
+        if($r['checkinfo']==2){   //审核失败
+          $State = 3;
+          $Descriptor = '账号审核未通过，请重新注册！';
+          $result = array (
+                      'State' => $State,
+                      'Descriptor' => $Descriptor,
+                      'Version' => $Version,
+                      'Data' => $Data
+                       );
+          echo phpver($result);
+        }elseif($r['checkinfo']==0){//待审核
+          $State = 4;
+          $Descriptor = '账号正在审核中，请等待！';
+          $result = array (
+                      'State' => $State,
+                      'Descriptor' => $Descriptor,
+                      'Version' => $Version,
+                      'Data' => $Data
+                       );
+          echo phpver($result);
+        }else{
+        //账号密码正确，则更新用户的formid
           $dosql->ExecNoneQuery("UPDATE `#@__guide` SET formid='$formid' WHERE account='$account' and password='$password'");
           $show=$dosql->GetOne("SELECT * FROM `pmw_guide` where account='$account' and password='$password'");
           $Data[]=$show;
@@ -101,6 +146,7 @@ if(isset($token) && $token==$cfg_auth_key){
                        );
           echo phpver($result);
           }
+        }
       }
 }
 }else{

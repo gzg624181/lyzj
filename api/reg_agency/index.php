@@ -26,12 +26,35 @@
      * password        密码(varchar)
      * regtime         注册时间(int)
      */
-require_once("../../include/config.inc.php");
-require_once("../../admin/sendmessage.php");
+     require_once("../../include/config.inc.php");
+     require_once("../../admin/sendmessage.php");
+     $body = file_get_contents('php://input');
+     $json = json_decode($body,true);
+     header('Content-Type: application/json; charset=utf-8');
+     //通过post格式传递过来
+
+     $cardpic=$json['cardpic'];
+     $address=$json['address'];
+     $name=$json['name'];
+     $tel=$json['tel'];
+     $account=$json['account'];
+     $password=$json['password'];
+     $token=$json['token'];
+     $images=$json['images'];
+     $code=$json['code'];
+     $formid=$json['formid'];
+     $company=$json['company'];
+
+     //这个是自定义函数，将Base64图片转换为本地图片并保存
+     $savepath= "../../uploads/image/";
+
+     $cardpic = base64_image_content($cardpic,$savepath);
+     $cardpic = str_replace("../..",$cfg_weburl,$cardpic);
+
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-$r=$dosql->GetOne("SELECT * FROM `#@__agency` WHERE account='$account'");
+$r=$dosql->GetOne("SELECT * FROM `#@__agency` WHERE account='$account' and checkinfo <>2");
 if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   $State = 0;
   $Descriptor = '此电话号码已经被注册，请重新注册！';
@@ -51,7 +74,7 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   $getcity=get_city($regip);
   $ymdtime=date("Y-m-d");
   $password=md5(md5($password));
-  $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,formid) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid')";
+  $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,formid,company) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$company')";
   $dosql->ExecNoneQuery($sql);
   $State = 1;
   $Descriptor = '旅行社信息注册成功！';
