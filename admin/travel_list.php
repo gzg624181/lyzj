@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>游戏列表管理</title>
+<title>行程列表管理</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <link href="templates/style/menu1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/listajax.js"></script>
@@ -116,49 +116,58 @@ function checkcontent(id){
 
 <?php
 //初始化参数
-$action  = isset($action)  ? $action  : '';
+$action  = isset($action)  ? $action  : 'travel_save.php';
 $keyword = isset($keyword) ? $keyword : '';
 $check = isset($check) ? $check : '';
 
 ?>
-<div class="topToolbar"> <span class="title">游戏列表管理</span>
+<div class="topToolbar"> <span class="title">行程列表管理</span>
 <a href="javascript:location.reload();" class="reload">刷新</a>
-<!--<a onClick="return confirm('确认更新所有商品缓存？');"   style="width:100px; color:#e44410;font-weight: bold;" href="product_save.php?action=update_cache" class="reload">更新商品缓存</a>-->
+
 </div>
 <div class="toolbarTab">
 	<ul>
- <li class="<?php if($check==""){echo "on";}?>"><a href="product.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="alltrue"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('alltrue')">已上线</a></li> <li class="line">-</li>
- <li class="<?php if($check=="allnull_1"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('allnull_1')">维护中</a></li>
+ <li class="<?php if($check==""){echo "on";}?>"><a href="travel_list.php">全部</a></li> <li class="line">-</li>
+ <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约</a></li> 
+ <li class="line">-</li>
+ <li class="<?php if($check=="confirm"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('confirm')">待确认</a></li>
+ <li class="line">-</li>
+ <li class="<?php if($check=="complete"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('complete')">已完成</a></li>
+ <li class="line">-</li>
+ <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消</a></li>
 	</ul>
 	<div id="search" class="search"> <span class="s">
-<input name="keyword" id="keyword" type="text" class="number" placeholder="请输入游戏名进行搜索" title="请输入游戏名进行搜索" />
+<input name="keyword" id="keyword" type="text" class="number" placeholder="请输入旅行社名称或者导游名字进行搜索" title="请输入旅行社名称或者导游名字进行搜索" />
 		</span> <span class="b"><a href="javascript:;" onclick="GetSearchs();"></a></span></div>
 	<div class="cl"></div>
 </div>
-<form name="form" id="form" method="post" action="product_save.php">
+<form name="form" id="form" method="post" action="<?php echo $action;?>">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
 		<tr align="left" class="head">
-			<td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);"></td>
-			<td width="4%" align="center">图片</td>
-			<td width="7%" align="left">游戏简称</td>
-			<td width="10%" align="center">游戏名</td>
-			<td width="15%" align="center">游戏分类名称</td>
-			<td width="9%" align="center">直属下线提成比例</td>
-			<td width="9%" align="center">二级下线提成比例</td>
-			<td width="22%" align="center">游戏赔率说明</td>
-			<td width="5%" align="center">在线人数</td>
-			<td width="5%" align="center">是否在线</td>
-			<td width="10%" align="center">创建时间</td>
+			<td width="2%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);"></td>
+			<td width="7%" align="left">旅行社名称</td>
+			<td width="10%" align="center">开始时间</td>
+			<td width="15%" align="center">截止时间</td>
+			<td width="9%" align="center">行程标题</td>
+			<td width="9%" align="center">团队人数</td>
+			<td width="17%" align="center">客源地</td>
+			<td width="13%" align="center">行程安排</td>
+			<td width="5%" align="center">备注</td>
+			<td width="10%" align="center">发布时间</td>
 			<td width="3%" align="center">操作</td>
 		</tr>
 		<?php
 		$username=$_SESSION['admin'];
 		$adminlevel=$_SESSION['adminlevel'];
-		 if($check=="alltrue"){
-		$dopage->GetPage("SELECT * FROM `pmw_game` where gameonline=1",10);
-		  }elseif($check=="allnull_1"){
-		$dopage->GetPage("SELECT * FROM `pmw_game` where gameonline=0",10);
+		$tbname='pmw_travel';
+		 if($check=="appointment"){ //待预约
+		$dopage->GetPage("SELECT * FROM $tbname where state=0",10);
+		  }elseif($check=="confirm"){ //待确认
+		$dopage->GetPage("SELECT * FROM $tbname where state=1",10);
+		  }elseif($check=="complete"){ //已完成
+		$dopage->GetPage("SELECT * FROM $tbname where state=2",10);
+		  }elseif($check=="concel"){ //已取消
+		$dopage->GetPage("SELECT * FROM $tbname where state=3",10);
 		  }elseif($keyword!=""){
 		$dopage->GetPage("SELECT * FROM `pmw_game` where gametypes like '%$keyword%' OR gamename like '%$keyword%' ",10);
 		  }else{
@@ -183,12 +192,6 @@ $check = isset($check) ? $check : '';
 		?>
 		<tr align="left" class="dataTr">
 			<td height="50" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
-			<td align="center">
-   <div id="layer-photos-demo_<?php echo $row['id'];?>" class="layer-photos-demo">
-   <input type="hidden" id="id" value="<?php echo $row['id'];?>" />
-     <img  width="70px" height="70px" layer-src="<?php echo $row['gamepic']; ?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $row['gamepic']; ?>" alt="<?php echo $row['gamename']; ?>" />
-       </div>
-            </td>
 			<td align="center"><?php echo $row['game']; ?></td>
 			<td align="center" class="num"><?php echo $row['gamename']; ?></td>
 			<td align="center"><?php echo $row['gametypes']; ?></td>
@@ -204,12 +207,7 @@ $check = isset($check) ? $check : '';
 			}
 			?></td>
 			<td align="center"><span class="number"><?php echo date("Y-m-d H:i:s",$row['gametime']); ?></span></td>
-			<td align="center">
- <div id="jsddm"><a title="删除" href="product_save.php?action=del3&id=<?php echo $row['id'];?>" onclick="return ConfDel(0);"><i class="fa fa-trash" aria-hidden="true"></i></a></div>
-            <div id="jsddm"><a title="编辑" href="product_update.php?id=<?php echo $row['id'];?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></div>
-            <div id="jsddm"><a href="javascript:fn('<?php echo $row['id']; ?>')" title="点击进行上线操作"><i class="fa fa-caret-square-o-up" aria-hidden="true"></i></a></div>
-            <div id="jsddm"><a href="javascript:fd('<?php echo $row['id']; ?>')" title="点击进行下线操作"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></i></a></div>
-            </td>
+			<td align="center"><?php echo $checkinfo; ?></td>
 		</tr>
 		<?php
 		}
@@ -224,7 +222,7 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('product_save.php');" onclick="return ConfDelAll(0);">删除</a></span> <a href="product_add.php" class="dataBtn">新增游戏</a> </div>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('product_save.php');" onclick="return ConfDelAll(0);">删除</a></span> </div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

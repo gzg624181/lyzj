@@ -54,21 +54,30 @@ applytime      申请时间(datetime)
 sendtime       审核时间(datetime)
 
 
-4.首页轮换图片 pmw_banner
+4.旅行社发布旅游行程 pmw_travel
 
 id
-title           图片标题
-pic             图片链接
-content         图片简介
-pictime         添加图片时间
+title           行程标题
+starttime       开始时间
+endtime         结束时间
+num             团队人数
+origin          客源地
+content         添加行程   用json字符串表示，中间用|隔开
+money           导游费用
+other           其他备注
+aid             旅行社id
+gid             导游id（默认为空，如果导游接了这单，则显示导游的id）
+state           发布状态（0，待预约，1:待确认 2:已确认（已完成），如果导游没有确认，
+                则系统默认在出发的前一天进行确认处理3:已取消，在已完成里面不能取消）
 
-5.账户明细    pmw_record
+5.旅行社给导游评价表    pmw_comment
 
 id
-money_list     金额
-types          类型  充值 recharge   提现 take_money    返水  back_money
-mid            会员id
-time_list      添加时间
+gid            导游id
+aid            旅行社id
+star           评价几星
+content        提出来的评价和建议
+addtime        评价时间
 
 6.接口列表  pmw_api
 

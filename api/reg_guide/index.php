@@ -31,6 +31,25 @@
      */
 require_once("../../include/config.inc.php");
 require_once("../../admin/sendmessage.php");
+$body = file_get_contents('php://input');
+$json = json_decode($body,true);
+header('Content-Type: application/json; charset=utf-8');
+
+$name=$json['name'];
+$sex=$json['sex'];
+$card=$json['card'];
+$cardnumber=$json['cardnumber'];
+$tel=$json['tel'];
+$account=$json['account'];
+$password=$json['password'];
+$content=$json['content'];
+$pics=$json['pics'];
+$token=$json['token'];
+$images=$json['images'];
+$code=$json['code'];
+$formid=$json['formid'];
+
+
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
