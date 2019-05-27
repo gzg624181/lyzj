@@ -39,7 +39,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $sql = "INSERT INTO `#@__travel` (title,starttime,endtime,num,origin,content,money,other,posttime,aid,jiesuanmoney) VALUES ('$title',$starttime,$endtime,$num,'$origin','$content',$money,'$other',$posttime,$aid,'$jiesuanmoney')";
   $dosql->ExecNoneQuery($sql);
   $State = 1;
-  $Descriptor = '旅行行程发布成功！';
+  $Descriptor = '旅行行程发布成功！!';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
