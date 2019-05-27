@@ -13,51 +13,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
 <script>
-function fn(id){
-      if(layer.confirm("您确定要上线这个游戏吗?")){
-        var ajax_url='product_save.php?action=getup&id='+id;
-  //alert(ajax_url);
-	$.ajax({
-    url:ajax_url,
-    type:'get',
-	  data: "data" ,
-	dataType:'html',
-    success:function(data){
-   document.getElementById("sj_"+id).innerHTML = data;
-   window.location.reload()
-    } ,
-	error:function(){
-       alert('error');
-    }
-	});
-      }
-}
-function fd(id){
-      if(layer.confirm("您确定要下线这个游戏吗?")){
-     var ajax_url='product_save.php?action=getdown&id='+id;
 
-  // alert(ajax_url);
-	$.ajax({
-    url:ajax_url,
-    type:'get',
-	data: "data" ,
-	dataType:'html',
-    success:function(data){
-     document.getElementById("sj_"+id).innerHTML = data;
-	 window.location.reload()
-    } ,
-	error:function(){
-       alert('error');
-    }
-	});
-      }
-}
-//审核，未审，功能
-  function checkinfo(key){
-     var v= key;
-	// alert(v)
-	window.location.href='travel_list.php?check='+v;
-	}
 //标题搜索
    function GetSearchs(){
 	 var keyword= document.getElementById("keyword").value;
@@ -67,48 +23,24 @@ function fd(id){
 		$("#keyword").focus();
 		return false;
 	}
-  window.location.href='product.php?keyword='+keyword;
+  window.location.href='travel_list.php?keyword='+keyword;
 }
-function message(Id){
- //  alert(Id);
-   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
-   layer.photos({
-    photos: '#layer-photos-demo_'+Id,
-	//area:['500px','300px'],  //图片的宽度和高度
-    shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
-	closeBtn:1,
-	offset:'40px',  //离上方的距离
-	shadeClose:true
+//审核，未审，功能
+  function checkinfo(key){
+     var v= key;
+	// alert(v)
+	window.location.href='travel_list.php?check='+v;
+	}
+
+function checkguide(gid){
+  layer.open({
+  type: 2,
+  title: '查看导游个人信息：',
+  maxmin: true,
+  shadeClose: true, //点击遮罩关闭	层
+  area : ['750px' , '645px'],
+  content: 'check_guide.php?id='+gid,
   });
-});
-}
-function checkcontent(id){
-	 var ajax_url='game_save.php?action=checkcontent&id='+id;
-  // alert(ajax_url);
-	$.ajax({
-    url:ajax_url,
-    type:'get',
-	data: "data" ,
-	dataType:'html',
-    success:function(data){
-        layer.open({
-        type: 1
-        ,title: false //不显示标题栏
-        ,closeBtn: false
-        ,area: '800px;'
-        ,shade: 0.8
-        ,id: 'LAY_layuipros' //设定一个id，防止重复弹出
-        ,btn: ['点击关闭']
-        ,btnAlign: 'c'
-        ,moveType: 1 //拖拽模式，0或者1
-        ,content: "<div style='widht:750px;padding:25px; height:400px;line-height: 22px;'>"+ data+"</div>"
-        ,
-      });
-    } ,
-	error:function(){
-       alert('error');
-    }
-	});
 	}
 </script>
 </head>
@@ -121,20 +53,20 @@ $keyword = isset($keyword) ? $keyword : '';
 $check = isset($check) ? $check : '';
 
 ?>
-<div class="topToolbar"> <span class="title">行程列表管理</span>
+<div class="topToolbar"> <span class="title">发布行程列表管理</span>
 <a href="javascript:location.reload();" class="reload">刷新</a>
 
 </div>
 <div class="toolbarTab">
 	<ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="travel_list.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约</a></li> 
+ <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约&nbsp;&nbsp;<i class='fa  fa-circle-o-notch' aria-hidden='true'></i></a></li> 
  <li class="line">-</li>
- <li class="<?php if($check=="confirm"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('confirm')">待确认</a></li>
+ <li class="<?php if($check=="confirm"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('confirm')">待确认&nbsp;&nbsp;<i class='fa fa-unlock' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="complete"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('complete')">已完成</a></li>
+ <li class="<?php if($check=="complete"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('complete')">已完成&nbsp;&nbsp;<i class='fa fa-unlock-alt' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消</a></li>
+ <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消&nbsp;&nbsp;<i class='fa fa-chain-broken' aria-hidden='true'></i></a></li>
 	</ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" placeholder="请输入旅行社名称或者导游名字进行搜索" title="请输入旅行社名称或者导游名字进行搜索" />
@@ -144,17 +76,21 @@ $check = isset($check) ? $check : '';
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
 		<tr align="left" class="head">
-			<td width="2%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);"></td>
-			<td width="7%" align="left">旅行社名称</td>
-			<td width="10%" align="center">开始时间</td>
-			<td width="10%" align="center">截止时间</td>
-			<td width="18%" align="center">行程标题</td>
-			<td width="5%" align="center">团队人数</td>
-			<td width="14%" align="center">客源地</td>
-			<td width="13%" align="center">行程安排</td>
-			<td width="8%" align="center">备注</td>
+			<td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);"></td>
+			<td width="10%" align="left">旅行社名称</td>
+			<td width="6%" align="center">开始时间</td>
+			<td width="7%" align="center">截止时间</td>
+			<td width="4%" align="center">时长(天)</td>
+			<td width="6%" align="center">导游费用</td>
+			<td width="10%" align="center">行程标题</td>
+			<td width="4%" align="center">团队人数</td>
+			<td width="7%" align="center">客源地</td>
+			<td width="7%" align="center">行程安排</td>
+			<td width="11%" align="center">备注</td>
 			<td width="10%" align="center">发布时间</td>
-			<td width="3%" align="center">操作</td>
+			<td width="5%" align="center">导游接单</td>
+			<td width="5%" align="center">结算价格</td>
+			<td width="7%" align="center">操作</td>
 		</tr>
 		<?php
 		$username=$_SESSION['admin'];
@@ -180,34 +116,56 @@ $check = isset($check) ? $check : '';
 			switch($row['state']){
 
 				case 0: //待预约
-					$state= "<i class='fa fa-close' aria-hidden='true'></i>";
+					$state= "<i class='fa  fa-circle-o-notch' aria-hidden='true'></i>";
 					break;
 				case 1://待确认
-					$state= "<i class='fa fa-check' aria-hidden='true'></i>";
+					$state= "<i class='fa fa-unlock' aria-hidden='true'></i>";
 					break;
 				case 2://已确认
-					$state= "<i class='fa fa-check-circle' aria-hidden='true'></i>";
+					$state= "<i class='fa fa-unlock-alt' aria-hidden='true'></i>";
 					break;
 				case 3://已取消
-					$state= "<i class='fa fa-check' aria-hidden='true'></i>";
+					$state= "<i class='fa fa-chain-broken' aria-hidden='true'></i>";
 					break;
 				default:
                $state = '暂无分类';
 
 				}
+			$gid=$row['gid'];
+			 if($gid==""){
+				 $gname = " ";
+			 }else{
+			  $r=$dosql->GetOne("SELECT name FROM pmw_guide where id=$gid");
+				 $gname ="<a title='点击查看导游信息' href='javascript:void(0);' onclick=\"checkguide('$gid')\">
+				 {$r['name']}</a>";
+			 }	
+			$xingcheng=($row['endtime']-$row['starttime']) / (60 * 60 * 24) +1;
+				
 		?>
 		<tr align="left" class="dataTr">
 			<td height="50" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
-			<td align="center"><?php echo $row['aid']; ?></td>
+			<td align="center"><?php			
+			$aid= $row['aid']; 
+			$j=$dosql->GetOne("SELECT company FROM pmw_agency where id=$aid");
+			echo $j['company'];
+			 ?></td>
 			<td align="center"><?php echo date("Y-m-d",$row['starttime']); ?></td>
 			<td align="center"><?php echo date("Y-m-d",$row['endtime']); ?></td>
+			<td align="center" class="num"><?php echo $xingcheng;?></td>
+			<td align="center" class="num" style="color:#06F"><?php echo $row['money'];?></td>
 			<td align="center"><?php echo $row['title']; ?></td>
 			<td align="center"><?php echo $row['num']; ?></td>
 			<td align="center"><?php echo $row['origin'];?></td>
-			<td align="center">点击查看行程</td>
+			<td align="center">查看行程</td>
 			<td align="center"><?php echo $row['other'];?></td>
 			<td align="center"><span class="number"><?php echo date("Y-m-d H:i:s",$row['posttime']); ?></span></td>
-			<td align="center"><?php echo $state; ?></td>
+			<td align="center"><?php echo $gname; ?>
+            </td>
+			<td align="center" class="num" style="color:red"><?php echo $row['jiesuanmoney'];?></td>
+			<td align="center"><span><?php echo $state; ?></span> &nbsp;&nbsp;
+			<span><a title="编辑" href="travel_update.php?id=<?php echo $row['id']; ?>">
+			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
+			<span class="nb"><a title="删除发布的行程信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span></td>
 		</tr>
 		<?php
 		}
@@ -222,7 +180,7 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a></span> </div>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a></span> <a href="admanage_add.php" class="dataBtn">发布新的行程</a> </div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

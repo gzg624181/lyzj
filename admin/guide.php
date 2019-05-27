@@ -13,19 +13,7 @@ $username=$_SESSION['admin'];
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
-function message(Id){
-  // alert(Id);
-   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
-   layer.photos({
-   photos: '#layer-photos-demo_'+Id,
-	 area:['300px','270px'],  //图片的宽度和高度
-   shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
-   closeBtn:1,
-   offset:'40px',  //离上方的距离
-   shadeClose:false
-  });
-});
-}
+
 
 function checkguide(id,type){
 	 var ajax_url='guide_save.php?action=checkguide&id='+id+'&type='+type;

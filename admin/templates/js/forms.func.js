@@ -6,7 +6,19 @@ update: 2014-5-29 00:12:36
 person: Feng
 **************************
 */
-
+function message(Id){
+  // alert(Id);
+   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+   layer.photos({
+   photos: '#layer-photos-demo_'+Id,
+	 area:['300px','270px'],  //图片的宽度和高度
+   shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
+   closeBtn:1,
+   offset:'40px',  //离上方的距离
+   shadeClose:false
+  });
+});
+}
 
 $(function(){
 

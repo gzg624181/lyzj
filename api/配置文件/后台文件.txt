@@ -10,8 +10,14 @@
   旅行社详情 agency.php
             修改旅行社详情   agency_update.php
             删除旅行社详情
-            程序处理页面   agency_save.php
+            程序处理页面    agency_save.php
             审核旅行社      check.php
 
 
    获取发送微信小程序模板消息方法    sendmessage.php
+
+
+2.发布行程管理
+
+   行程列表管理   travel_list.php
+   查看接单的导游信息   check_guide.PHP
