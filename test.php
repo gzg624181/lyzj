@@ -22,7 +22,7 @@ for($i=0;$i<count($arr);$i++){
   $thispic = str_replace("./",$cfg_weburl.'/',$pics)."|";
   $pic .= $thispic;
 }
-echo $pic;
+// echo $pic;
 function base64_image_contents($base64_image_content,$path){
    //匹配出图片的格式
     if (preg_match('/^(data:\s*image\/(\w+);base64,)/',
@@ -43,8 +43,82 @@ function base64_image_contents($base64_image_content,$path){
  }
 
 
+ $data='[{"jinName":"12","starttime":"12","days":"12"},{"jinName":"1","starttime":"1","days":"1"}]';
+ //转换成数组
+$arr = json_decode($data,true);
+//输出
+// print_r($arr);
+
+$content=array(
+  "0" => array(
+          "jinName" =>  1,
+        "starttime" => 2,
+             "days" => 3
+           )
+);
+
+$fruits = array (
+  "fruits" => array("a" => "orange", "b" => "banana", "c" => "apple"),
+  "numbers" => array(1, 2, 3, 4, 5, 6),
+  "holes"  => array("first", 5 => "second", "third")
+);
 
 
+$content=array(
+  "0"=>array(
+          "jinName" =>  1,
+        "starttime" =>  2,
+             "days" => 3
+           ),
+  "1"=>array(
+          "jinName" =>  4,
+        "starttime" =>  5,
+             "days" =>  6
+           ),
+  "2"=>array(
+         "jinName" =>  7,
+       "starttime" => 8,
+            "days" => 8
+          ),
+  "3"=>array(
+         "jinName" =>  1,
+       "starttime" => 1,
+            "days" =>2
+          ),
+  "4"=>array(
+          "jinName" =>  2,
+        "starttime" => 3,
+             "days" => 4
+           ),
+  "5"=>array(
+          "jinName" =>  5,
+        "starttime" => 3,
+             "days" => 4
+          ),
+  "6"=>array(
+          "jinName" =>  4,
+        "starttime" => 5,
+             "days" =>5
+         ),
+   "7"=>array(
+         "jinName" =>  3,
+       "starttime" => 3,
+            "days" => 4
+    ),
+  "8"=>array(
+        "jinName" =>  5,
+      "starttime" => 3,
+           "days" => 2
+    ),
+  "9"=>array(
+          "jinName" =>  3,
+        "starttime" => 3,
+             "days" => 4
+            )
+);
+
+$json=phpver($content);
+print_r($json);
 
 
 

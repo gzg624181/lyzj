@@ -1,6 +1,8 @@
 旅游之家接口列表
 
-1.导游注册        reg_guide
-2.旅行社注册      reg_agency
-3.获取formid      get_formid
-4.账号登陆        login
+1.导游注册            reg_guide
+2.旅行社注册          reg_agency
+3.获取formid          get_formid
+4.账号登陆            login
+5.旅行社发布旅行消息   add_travel
+6.导游发布空闲时间     issue_guide

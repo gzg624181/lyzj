@@ -85,7 +85,6 @@ $check = isset($check) ? $check : '';
 			<td width="10%" align="center">行程标题</td>
 			<td width="4%" align="center">团队人数</td>
 			<td width="7%" align="center">客源地</td>
-			<td width="7%" align="center">行程安排</td>
 			<td width="11%" align="center">备注</td>
 			<td width="10%" align="center">发布时间</td>
 			<td width="5%" align="center">导游接单</td>
@@ -138,7 +137,7 @@ $check = isset($check) ? $check : '';
 				}
 			$gid=$row['gid'];
 			 if($gid==""){
-				 $gname = " ";
+				 $gname = "<i class='fa fa-minus-circle' aria-hidden='true'></i>";
 			 }else{
 			  $r=$dosql->GetOne("SELECT name FROM pmw_guide where id=$gid");
 				 $gname ="<a title='点击查看导游信息' href='javascript:void(0);' onclick=\"checkguide('$gid')\">
@@ -161,7 +160,6 @@ $check = isset($check) ? $check : '';
 			<td align="center"><?php echo $row['title']; ?></td>
 			<td align="center"><?php echo $row['num']; ?></td>
 			<td align="center"><?php echo $row['origin'];?></td>
-			<td align="center">查看行程</td>
 			<td align="center"><?php echo $row['other'];?></td>
 			<td align="center"><span class="number"><?php echo date("Y-m-d H:i:s",$row['posttime']); ?></span></td>
 			<td align="center"><?php echo $gname; ?>

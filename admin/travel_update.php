@@ -100,13 +100,41 @@ $endtime=date("Y-m-d",$row['endtime']);
 			<td><input type="text" name="origin" id="origin" class="input" required="required" value="<?php echo $row['origin']?>"/>
 				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span></td>
 		</tr>
+        <!--
         <tr id='addcontent'>
 			<td height="40" align="right">添加行程：</td>
 			<td><i onclick="addTable()" style="color:#6d6b6b; font-weight:bold;font-size: 28px; cursor:pointer" class="fa fa-plus-square"></i></td>
+		</tr>-->
+        <?php 
+		//获取数据库里面的行程安排
+		$content=array();
+		$content=json_decode($row['content'],true);
+		for($i=0;$i<count($content);$i++){
+		?> 
+        <tr>
+			<td height="40" align="right">行程安排<?php echo $i+1;?>：</td>
+			<td><input type="text" name="jinName<?php echo $i+1;?>" id="jinName<?php echo $i+1;?>" class="input" required="required"  value="<?php echo $content[$i]['jinName']?>"/>
+				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span></td>
 		</tr>
         <tr>
+			<td height="40" align="right">行程日期<?php echo $i+1;?>：</td>
+			<td><input onfocus="selecttime('<?php echo $i+1;?>')" type="text" name="starttime<?php echo $i+1;?>" id="starttime<?php echo $i+1;?>" class="input" required="required"  value="<?php echo date("Y-m-d",$content[$i]['starttime'])?>"/>
+				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span></td>
+		</tr>
+        <tr>
+			<td style="border-bottom: 1px dashed #817b7b;" height="40" align="right">行程时长<?php echo $i+1;?>：</td>
+			<td style="border-bottom: 1px dashed #817b7b;">
+            <select name="days<?php echo $i+1;?>" id="days<?php echo $i+1;?>" class="input" style="width:508px;">
+            <option <?php if($content[$i]['days']=="上午"){echo "selected = 'selected'"; } ?> value="上午">上午</option>
+            <option <?php if($content[$i]['days']=="下午"){echo "selected = 'selected'"; } ?> value="下午">下午</option>
+            <option <?php if($content[$i]['days']=="全天"){echo "selected = 'selected'"; } ?> value="全天">全天</option>
+            </select>
+				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
+                
+                </td>
+		</tr>
+        <?php }?>
         
-        </tr>
 		<tr>
 			<td height="40" align="right">导游费用：</td>
 			<td><input type="text" name="money" id="money" class="input" required="required"  value="<?php echo $row['money']?>"/>
@@ -137,6 +165,7 @@ $endtime=date("Y-m-d",$row['endtime']);
         <input type="hidden" name="id" id="id" value="<?php echo $id;?>" />
 		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
 		<input type="hidden" name="action" id="action" value="update" />
+  
   </div>
 </form>
 <script>
@@ -150,11 +179,16 @@ laydate.render({
 });
 
   
+/*    laydate.render({
+    elem: '#test19'
+    ,value: '1989-10-14'
+    ,isInitValue: true
+  });*/
 
 });
 
 function selecttime(num){
-
+   
   
   layui.use('laydate', function(){
   var laydate = layui.laydate;

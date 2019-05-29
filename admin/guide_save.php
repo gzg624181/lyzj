@@ -46,8 +46,14 @@ else if($action == 'checkguide')
 	$r=$dosql->GetOne("SELECT content FROM $tbname WHERE id=$id");
   $content = $r['content'];
   }elseif($type=="pics"){
-  $r=$dosql->GetOne("SELECT pics FROM $tbname WHERE id=$id");
-  $content = $r['pics'];
+  $r=$dosql->GetOne("SELECT pics,name FROM $tbname WHERE id=$id");
+  $contents = $r['pics'];
+  $content =  "<span style='font-size:14px;font-weight:bold;margin-bottom:10px;'>".$r['name']."--导游相册"."</span>";
+
+  $arr=explode("|",$contents);
+  for($i=0;$i<count($arr);$i++){
+  $content .= "<img src='".$arr[$i]."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
+  }
   }elseif($type=="card"){
   $r=$dosql->GetOne("SELECT card,name FROM $tbname WHERE id=$id");
   $contents = $r['card'];

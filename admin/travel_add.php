@@ -42,7 +42,7 @@
 		"</tr>";
 
 		tr += "<tr>"+
-			"<td  style=\"border-bottom: 1px dashed #817b7b;\" height=\"40\" align=\"right\">行程时长期"+num+"：</td>"+
+			"<td  style=\"border-bottom: 1px dashed #817b7b;\" height=\"40\" align=\"right\">行程时长"+num+"：</td>"+
 			"<td  style=\"border-bottom: 1px dashed #817b7b;\">"+
 			"<select name='days"+num+"'"+
 			"id='days"+num+"'"+

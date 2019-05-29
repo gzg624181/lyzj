@@ -79,7 +79,7 @@ star           评价几星
 content        提出来的评价和建议
 addtime        评价时间
 
-6.接口列表  pmw_api
+6.接口列表      pmw_api
 
 id
 filename       接口名称
@@ -88,19 +88,14 @@ explain        接口说明
 parameter      接口参数，用|隔开
 size           文件大小
 
-7.会员充值表   pmw_charge
+7.导游发布空闲时间  pmw_freetime
 
 id
-mid            充值会员id
-chargeuid      充值会员uid
-chargenumber   充值金额
-chargegive     充值赠送
-chargetime     充值时间
-charge_ymd     充值时间年月日
-chargetype     充值类型（0：后台 1：支付宝  2：微信   3：银联   4：云闪付）
-chargetelephone充值账号电话号码
-randnumber     随机数
-chargeorder    充值订单
+gid            导游id
+content        空闲时间内容，以json格式保存下来
+addtime        发布时间
+
+
 
 8.关于app  pmw_config
 
