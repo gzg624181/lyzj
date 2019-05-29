@@ -104,8 +104,13 @@ $check = isset($check) ? $check : '';
 		$dopage->GetPage("SELECT * FROM $tbname where state=2",10);
 		  }elseif($check=="concel"){ //已取消
 		$dopage->GetPage("SELECT * FROM $tbname where state=3",10);
-		  }elseif($keyword!=""){
-		$dopage->GetPage("SELECT * FROM $tbname where gametypes like '%$keyword%' OR gamename like '%$keyword%' ",10);
+		  }elseif($check=="agency"){ //旅行社发布的行程
+		$dopage->GetPage("SELECT * FROM $tbname where aid=$id",10);
+		  }elseif($check=="guide"){ //旅行社发布的行程
+		$dopage->GetPage("SELECT * FROM $tbname where gid=$id",10);
+		  }
+		  elseif($keyword!=""){
+		$dopage->GetPage("SELECT * FROM $tbname where company like '%$keyword%' OR name like '%$keyword%' ",10);
 		  }else{
 		$dopage->GetPage("SELECT * FROM $tbname",10);
 		  }
@@ -180,7 +185,7 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a></span> <a href="admanage_add.php" class="dataBtn">发布新的行程</a> </div>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a> - <a style="cursor:pointer;" onclick="return history.go(-1);">返回</a></span><a href="travel_add.php" class="dataBtn">发布新的行程</a> </div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

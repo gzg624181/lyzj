@@ -19,5 +19,6 @@
 
 2.发布行程管理
 
-   行程列表管理   travel_list.php
+   行程列表管理         travel_list.php
    查看接单的导游信息   check_guide.PHP
+   后台添加发布行程     travel_add.php

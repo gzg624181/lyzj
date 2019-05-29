@@ -141,18 +141,19 @@ $num=$dosql->GetTotalRow($one);
             <td width="3%" height="165" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="8%" align="center">用户账号</td>
+                <td width="7%" align="center">用户账号</td>
                 <td width="6%" align="center">头像</td>
-                <td width="6%" align="center">导游姓名</td>
-                <td width="3%" align="center">性别</td>
-                <td width="6%" align="center">导游证件</td>
-                <td width="16%" align="center">导游证号</td>
-                <td width="8%" align="center">导游电话</td>
-                <td width="7%" align="center">导游简介</td>
-                <td width="7%" align="center">导游相册</td>
-                <td width="8%" align="center">最后登陆城市</td>
-                <td width="13%" align="center">注册时间</td>
-                <td width="11%" align="center">操作</td>
+                <td width="7%" align="center">导游姓名</td>
+                <td width="4%" align="center">性别</td>
+                <td width="5%" align="center">导游证件</td>
+                <td width="10%" align="center">导游证号</td>
+                <td width="7%" align="center">导游电话</td>
+                <td width="6%" align="center">导游简介</td>
+                <td width="6%" align="center">导游相册</td>
+                <td width="11%" align="center">最后登陆城市</td>
+                <td width="11%" align="center">注册时间</td>
+                <td width="9%" align="center">已接行程</td>
+                <td width="10%" align="center">操作</td>
                 </tr>
               <?php
 		if($check=="today"){
@@ -207,6 +208,10 @@ $num=$dosql->GetTotalRow($one);
 			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
 				
 			}
+			$id=$row['id'];
+			$five=5;
+			$dosql->Execute("SELECT id from pmw_travel where gid=$id",$five);
+			$guide_num=$dosql->GetTotalRow($five);
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
@@ -221,6 +226,7 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','pics');">点击查看相册</a></td>
                 <td align="center"><?php echo $row['getcity']?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
+                <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=guide&id=<?php echo $row['id'];?>"><?php echo $guide_num;?></a></td>
                 <td align="center">  <span><?php echo $checkinfo; ?></span> &nbsp;
 			<span><a title="编辑" href="guide_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;

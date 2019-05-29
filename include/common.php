@@ -23,7 +23,7 @@ function base64_image_content($base64_image_content,$path){
     if(!file_exists($new_file)){ //检查是否有该文件夹，如果没有就创建，并给予最高权限
     mkdir($new_file, 0700);
     }
-    $new_file = $new_file.time().".{$type}"; //图片名以时间命名
+    $new_file = $new_file.time().rand(111,999).".{$type}"; //图片名以时间命名
     //保存为文件
     if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))){
     //返回这个图片的路径

@@ -59,12 +59,12 @@ $card=str_replace("../..",$cfg_weburl,$card);
 //将相册里面的图片进行处理
 $pic="";
 $arr=explode("|",$pics);
-for($i=1;$i<=count($arr);$i++){
-  $pics  = base64_image_contents($arr[$i],$savepath);
-  if($i==count($arr)){
-  $thispic = str_replace("../..",$cfg_weburl,$pics);
+for($i=0;$i<count($arr);$i++){
+  $pics  = base64_image_content($arr[$i],$savepath);
+  if($i==count($arr)-1){
+    $thispic = str_replace("../../",$cfg_weburl.'/',$pics);
   }else{
-  $thispic = str_replace("../..",$cfg_weburl,$pics)."|";
+    $thispic = str_replace("../../",$cfg_weburl.'/',$pics)."|";
   }
   $pic .= $thispic;
 }

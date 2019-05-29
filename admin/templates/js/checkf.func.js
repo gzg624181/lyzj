@@ -367,18 +367,13 @@ function cfm_adtype()
 
 
 //验证广告
-function cfm_admanager()
+function cfm_travel()
 {
-	if($("#title").val() == "")
+
+	if($("#company").val() == "-1")
 	{
-		alert("请填写广告标识！");
-		$("#title").focus();
-		return false;
-	}
-	if($("#classid").val() == "-1")
-	{
-		alert("请选择投放范围！");
-		$("#classid").focus();
+		alert("请选择旅行社名称！");
+		$("#company").focus();
 		return false;
 	}
 }

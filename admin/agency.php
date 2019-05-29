@@ -60,7 +60,7 @@ function SendCheck(id,type)
 {
 if(confirm("是否确认拒绝此旅行社注册审核？"))
  {
- 
+
 layer.open({
   type: 2,
   title: '审核未通过模板消息：',
@@ -133,11 +133,11 @@ $num=$dosql->GetTotalRow($one);
 <div class="toolbarTab" style="margin-bottom:5px;">
 <ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="agency.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过</a></li>
+ <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过&nbsp;&nbsp;<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过</a></li>
+ <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过&nbsp;&nbsp;<i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-dot-circle-o' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核</a></li>
+ <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核&nbsp;&nbsp;<i style='color:#509ee1; cursor:pointer;' title='待审核' class='fa fa-circle-o' aria-hidden='true'></i></a></li>
 </ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入账号或者旅行社名称" title="请输入账号或者旅行社名称" />
@@ -154,16 +154,17 @@ $num=$dosql->GetTotalRow($one);
             <td width="3%" height="165" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="6%" align="center">用户账号</td>
+                <td width="5%" align="center">用户账号</td>
                 <td width="6%" align="center">头像</td>
-                <td width="10%" align="center">联系人姓名</td>
-                <td width="4%" align="center">营业执照</td>
-                <td width="17%" align="center">旅行社名称</td>
-                <td width="14%" align="center">公司地址</td>
-                <td width="11%" align="center">联系电话</td>
+                <td width="9%" align="center">联系人姓名</td>
+                <td width="6%" align="center">营业执照</td>
+                <td width="12%" align="center">旅行社名称</td>
+                <td width="12%" align="center">公司地址</td>
+                <td width="10%" align="center">联系电话</td>
                 <td width="10%" align="center">最后登陆城市</td>
-                <td width="13%" align="center">注册时间</td>
-                <td width="8%" align="center">操作</td>
+                <td width="11%" align="center">注册时间</td>
+                <td width="9%" align="center">已发布行程</td>
+                <td width="9%" align="center">操作</td>
                 </tr>
               <?php
 		if($check=="today"){
@@ -183,8 +184,8 @@ $num=$dosql->GetTotalRow($one);
 		}else{
 		$dopage->GetPage("SELECT * FROM $tbname",15);
 		}
-		
-		
+
+
 
 		while($row = $dosql->GetArray())
 		{
@@ -194,24 +195,28 @@ $num=$dosql->GetTotalRow($one);
 		    }else{
             $images=$row['images'];
             }
-			
+
 			if($row['checkinfo']==0){
-				 
-				 $checkinfo = "<a href='agency_save.php?action=checkinfo&info=agency&id={$id}'><i onclick='return ConfCheck(0);' style='color:#509ee1; cursor:pointer;' title='审核通过' class='fa fa-circle-o' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;";
-				 
+
+				 $checkinfo = "<a href='agency_save.php?action=checkinfo&info=agency&id={$id}'><i onclick='return ConfCheck(0);' style='color:#509ee1; cursor:pointer;' title='待审核' class='fa fa-circle-o' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;";
+
 				 $checkinfo .="<a href='javascript:void(0);' onclick=\"SendCheck('$id','agency')\"><i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-circle-o' aria-hidden='true'></i></a>";
-				
+
 			}elseif($row['checkinfo']==1){
-				
-			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
+
+			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
 			}elseif($row['checkinfo']==2){
-				
-			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
+
+			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
 			}
-			
-			
+
+            $id=$row['id'];
+			$six=6;
+			$dosql->Execute("SELECT id from pmw_travel where aid=$id",$six);
+			$agency_num=$dosql->GetTotalRow($six);
+
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
@@ -224,6 +229,7 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><?php echo $row['tel']; ?></td>
                 <td align="center"><?php echo $row['getcity']?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
+                <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=agency&id=<?php echo $row['id'];?>"><?php echo $agency_num;?></a></td>
                 <td align="center">
                 <span><?php echo $checkinfo; ?></span> &nbsp;
 			<span><a title="编辑" href="agency_update.php?id=<?php echo $row['id']; ?>">

@@ -22,6 +22,9 @@ require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+  $m=$dosql->GetOne("SELECT id FROM `#@__agency` WHERE account='$account'");
+  $n=$dosql->GetOne("SELECT id FROM `#@__guide` WHERE account='$account'");
+  if(is_array($m) || is_array($n)){
     if($type=="agency"){
       $r=$dosql->GetOne("SELECT id FROM `#@__agency` WHERE account='$account'");
       if(!is_array($r)){  //如果传递过来的账号不存在，则不能更新他的formid
@@ -73,6 +76,7 @@ if(isset($token) && $token==$cfg_auth_key){
           $dosql->ExecNoneQuery("UPDATE `#@__agency` SET formid='$formid' WHERE account='$account' and password='$password'");
           $show=$dosql->GetOne("SELECT * FROM `pmw_agency` where account='$account' and password='$password'");
           $Data[]=$show;
+          $Data['type']='agency';
           $State = 2;
           $Descriptor = '账号登陆成功';
           $result = array (
@@ -136,6 +140,7 @@ if(isset($token) && $token==$cfg_auth_key){
           $dosql->ExecNoneQuery("UPDATE `#@__guide` SET formid='$formid' WHERE account='$account' and password='$password'");
           $show=$dosql->GetOne("SELECT * FROM `pmw_guide` where account='$account' and password='$password'");
           $Data[]=$show;
+          $Data['type']='guide';
           $State = 2;
           $Descriptor = '账号登陆成功';
           $result = array (
@@ -150,6 +155,18 @@ if(isset($token) && $token==$cfg_auth_key){
       }
 }
 }else{
+  $State = 5;
+  $Descriptor = '账号还未注册，请先注册！';
+  $result = array (
+              'State' => $State,
+              'Descriptor' => $Descriptor,
+              'Version' => $Version,
+              'Data' => $Data
+               );
+  echo phpver($result);
+}
+}
+else{
   $State = 520;
   $Descriptor = 'token验证失败！';
   $result = array (
