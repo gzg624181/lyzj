@@ -6,3 +6,4 @@
 4.账号登陆            login
 5.旅行社发布旅行消息   add_travel
 6.导游发布空闲时间     issue_guide
+7.旅行社已完成的形成   success_travel

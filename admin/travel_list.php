@@ -60,13 +60,13 @@ $check = isset($check) ? $check : '';
 <div class="toolbarTab">
 	<ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="travel_list.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约&nbsp;&nbsp;<i class='fa  fa-circle-o-notch' aria-hidden='true'></i></a></li> 
+ <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约&nbsp;&nbsp;<i class='fa  fa-circle-o-notch' aria-hidden='true' style="color:#30B534"></i></a></li> 
  <li class="line">-</li>
- <li class="<?php if($check=="confirm"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('confirm')">待确认&nbsp;&nbsp;<i class='fa fa-unlock' aria-hidden='true'></i></a></li>
+ <li class="<?php if($check=="confirm"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('confirm')">待确认&nbsp;&nbsp;<i class='fa fa-unlock' aria-hidden='true' style="color:#F90"></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="complete"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('complete')">已完成&nbsp;&nbsp;<i class='fa fa-unlock-alt' aria-hidden='true'></i></a></li>
+ <li class="<?php if($check=="complete"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('complete')">已完成&nbsp;&nbsp;<i class='fa fa-unlock-alt' aria-hidden='true' style="color:#509ee1"></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消&nbsp;&nbsp;<i class='fa fa-chain-broken' aria-hidden='true'></i></a></li>
+ <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消&nbsp;&nbsp;<i class='fa fa-chain-broken' aria-hidden='true' style="color:#F00"></i></a></li>
 	</ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" placeholder="请输入旅行社名称或者导游名字进行搜索" title="请输入旅行社名称或者导游名字进行搜索" />
@@ -120,16 +120,16 @@ $check = isset($check) ? $check : '';
 			switch($row['state']){
 
 				case 0: //待预约
-					$state= "<i class='fa  fa-circle-o-notch' aria-hidden='true'></i>";
+					$state= "<i class='fa  fa-circle-o-notch' aria-hidden='true' style='color:#30B534'></i>";
 					break;
 				case 1://待确认
-					$state= "<i class='fa fa-unlock' aria-hidden='true'></i>";
+					$state= "<i class='fa fa-unlock' aria-hidden='true' style='color:#F90'></i>";
 					break;
 				case 2://已确认
-					$state= "<i class='fa fa-unlock-alt' aria-hidden='true'></i>";
+					$state= "<i class='fa fa-unlock-alt' aria-hidden='true'  style='color:#509ee1'></i>";
 					break;
 				case 3://已取消
-					$state= "<i class='fa fa-chain-broken' aria-hidden='true'></i>";
+					$state= "<i class='fa fa-chain-broken' aria-hidden='true' style='color:#F00'></i>";
 					break;
 				default:
                $state = '暂无分类';

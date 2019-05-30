@@ -12,12 +12,13 @@ $code  = isset($code)  ? $code : '';
 <meta name="format-detection" content="telephone=no">
 <meta name="format-detection" content="email=no">
 <title>注册下载APP</title>
+<script src="templates/default/js/jquery.js"></script>
 <script src="templates/default/regjs/jquery.js"></script>
 <script src="templates/default/regjs/common.js"></script>
 <script src="templates/default/regjs/fastClick.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript">
-function checkphone() {
+function checkphone(){
   if($("#phone").val()==""){
     layer.alert("请输入手机号码！",{icon:0});
     return false;
@@ -136,29 +137,29 @@ function getcode(){
 	<ul class="list">
 		<li>
 			<span class="iconfont name" style="color: rgb(239, 239, 239);"></span>
-			<input class="searchkey" name="phone" type="tel" onblur="checkphone()" id="phone" placeholder="请输入手机号">
+			<input class="searchkey" name="phone" type="tel" onblur="checkphone()" id="phone" placeholder="请输入手机号" required />
 		</li>
 		<li>
 			<span class="iconfont name" style="color: rgb(239, 239, 239);"></span>
-			<input class="searchkey" name="sendcode" type="tel" id="sendcode" maxlength="6" placeholder="请输入短信验证码">
+			<input class="searchkey" name="sendcode" type="tel" id="sendcode" maxlength="6" placeholder="请输入短信验证码" required />
 			<a href="javascript:;" class="code" name="getcodetag" id="getcodetag" onClick="getcode();" data-token="" data-timeout="-1551942589">获取验证码</a>
 		</li>
 		<li>
 			<span class="iconfont name"></span>
-			<input class="searchkey" name="password" id="password" type="password" autocomplete="false" placeholder="请输入密码">
+			<input class="searchkey" name="password" id="password" type="password" autocomplete="false" placeholder="请输入密码" required>
 		</li>
 		<li>
 			<span class="iconfont name"></span>
-			<input class="searchkey" name="repassword" id="repassword" type="password" autocomplete="false" placeholder="请输入确认密码">
+			<input class="searchkey" name="repassword" id="repassword" type="password" autocomplete="false" placeholder="请输入确认密码" required>
 		</li>
 		<li>
 			<span class="iconfont name"></span>
-			<input class="searchkey" name="nickname" id="nickname" type="text" placeholder="请输入昵称">
+			<input class="searchkey" name="nickname" id="nickname" type="text" placeholder="请输入昵称" required>
 		</li>
-	</ul></div>
+	</ul>
 	<div class="reg-btn">
-		<input type="submit" id="reg" class="shit" value="注册并下载APP">
-    <input type="hidden" id="action" name="action" value="reg">
+		 <input type="submit" id="reg" class="shit" value="注册并下载APP">
+         <input type="hidden" id="action" name="action" value="reg">
 		<br><br><br>
 	</div>
   </form>
