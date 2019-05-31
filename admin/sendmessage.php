@@ -45,7 +45,7 @@ function getDataArray($openid,$type,$name,$tel,$state,$content,$applytime,$sendt
 }
 
 
-//curl请求函数，微信都是通过该函数请求
+//curl请求函数，微信都是通过该函数请求,后台采用https_requests方法
 function https_requests($url, $data = null)
 {
     $curl = curl_init();

@@ -60,6 +60,15 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
       $Data[]=$r;
+      switch($r['sex']){
+        case 1:
+        $sex="男";
+        break;
+        case 0:
+        $sex="女";
+        break;
+      }
+      $Data[0]['sex']=$sex;
       $State = 1;
       $Descriptor = '导游信息获取成功！';
       $result = array (

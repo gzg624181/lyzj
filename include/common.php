@@ -96,4 +96,153 @@ function get_city($ip){
 }
 
 
+
+
+
+//导游预约成功提醒,给导游发送模板消息
+function SendGuide($openid,$company,$name,$tel,$title,$time,$tishi,$cfg_guide_appointment,$page,$form_id)
+{
+    $data = array(
+        'touser' => $openid,                   //要发送给导游的openid
+   'template_id' => $cfg_guide_appointment,    //改成自己的模板id，在微信后台模板消息里查看
+          'page' => $page,                     //点击模板消息详情之后跳转连接
+		   'form_id' => $form_id,                   //form_id
+          'data' => array(
+            'keyword1' => array(
+                'value' => $company,            //旅行社公司名称
+                'color' => "#3d3d3d"
+            ),
+            'keyword2' => array(
+                'value' => $name,               //旅行社联系人姓名
+                'color' => "#3d3d3d"
+            ),
+            'keyword3' => array(
+                'value' => $tel,                //旅行社联系人电话
+                'color' => "#3d3d3d"
+            ),
+            'keyword4' => array(
+                'value' => $title,              //行程标题
+                'color' => "#3d3d3d"
+            ),
+			'keyword5' => array(
+                'value' => $time,               //行程起始时间
+                'color' => "#173177"
+            ),
+			'keyword6' => array(
+                'value' => $tishi,               //温馨提示
+                'color' => "#3d3d3d"
+            )
+        ),
+    );
+    return $data;
+}
+
+
+//旅行社（行程提醒）,给旅行社发送模板消息
+function SendAgency($openid,$title,$tel,$name,$time,$timestamp,$cfg_agency_remind,$page,$form_id)
+{
+    $data = array(
+        'touser' => $openid,                   //要发送给旅行社的openid
+   'template_id' => $cfg_agency_remind,    //改成自己的模板id，在微信后台模板消息里查看
+          'page' => $page,                     //点击模板消息详情之后跳转连接
+		   'form_id' => $form_id,                   //form_id
+          'data' => array(
+            'keyword1' => array(
+                'value' => $title,            //行程名称
+                'color' => "#3d3d3d"
+            ),
+            'keyword2' => array(
+                'value' => $tel,               //领队电话（导游电话）
+                'color' => "#3d3d3d"
+            ),
+            'keyword3' => array(
+                'value' => $name,                //领队姓名（导游姓名）
+                'color' => "#3d3d3d"
+            ),
+            'keyword4' => array(
+                'value' => $time,              //行程时间（行程的时间段）
+                'color' => "#3d3d3d"
+            ),
+			'keyword5' => array(
+                'value' => $timestamp,               //预约时间（当前时间）
+                'color' => "#173177"
+            )
+        ),
+    );
+    return $data;
+}
+
+
+# 旅行社取消发布的行程，给旅行社发布行程提醒
+
+function CancelAgency($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$page,$form_id){
+
+	$data = array(
+			'touser' => $openid,                   //要发送给旅行社的openid
+	'template_id' => $cfg_concel_agency,       //改成自己的模板id，在微信后台模板消息里查看
+				'page' => $page,                     //点击模板消息详情之后跳转连接
+		 'form_id' => $form_id,                   //form_id
+				'data' => array(
+					'keyword1' => array(
+							'value' => $title,             //出发行程
+							'color' => "#3d3d3d"
+					),
+					'keyword2' => array(
+							'value' => $time,               //行程时间
+							'color' => "#3d3d3d"
+					),
+					'keyword3' => array(
+							'value' => $reason,             //取消原因
+							'color' => "#3d3d3d"
+					),
+					'keyword4' => array(
+							'value' => $tishi,              //温馨提示
+							'color' => "#3d3d3d"
+					)
+			),
+	);
+	return $data;
+
+}
+
+# 旅行社取消发布的行程，给导游发送模板消息提醒
+
+function CancelGuide($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$page,$form_id){
+
+	$data = array(
+			'touser' => $openid,                   //要发送给旅行社的openid
+	'template_id' => $cfg_concel_agency,       //改成自己的模板id，在微信后台模板消息里查看
+				'page' => $page,                     //点击模板消息详情之后跳转连接
+		 'form_id' => $form_id,                   //form_id
+				'data' => array(
+					'keyword1' => array(
+							'value' => $title,             //出发行程
+							'color' => "#3d3d3d"
+					),
+					'keyword2' => array(
+							'value' => $time,               //行程时间
+							'color' => "#3d3d3d"
+					),
+					'keyword3' => array(
+							'value' => $nickname,             //昵称（旅行社联系人的姓名）
+							'color' => "#3d3d3d"
+					),
+					'keyword4' => array(
+							'value' => $tel,              //手机号码(旅行社联系人的电话号码)
+							'color' => "#3d3d3d"
+					),
+					'keyword5' => array(
+							'value' => $reason,              //取消原因
+							'color' => "#3d3d3d"
+					),
+					'keyword6' => array(
+							'value' => $tishi,              //温馨提示
+							'color' => "#3d3d3d"
+					)
+			),
+	);
+	return $data;
+
+}
+
 ?>

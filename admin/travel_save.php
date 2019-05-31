@@ -27,14 +27,14 @@ if($action == 'add')
 	$arr = explode(" -- ",$time);
 	$endtime = strtotime($arr[1]);
 	$starttimes = strtotime($arr[0]);
-	$day=($endtime-$starttimes) / (60 * 60 * 24) +1;  //行程的天数
-	$jiesuanmoney = $cfg_jiesuan * $day;
+	$days=($endtime-$starttimes) / (60 * 60 * 24) +1;  //行程的天数
+	$jiesuanmoney = $cfg_jiesuan * $days;
 
 
   $contents= add_travel($_POST);
 	$r=$dosql->GetOne("SELECT company from pmw_agency where id=$aid");
 	$company=$r['company'];
-	$sql = "INSERT INTO `#@__travel` (title,starttime,endtime,num,origin,content,money,other,posttime,aid,jiesuanmoney,company) VALUES ('$title',$starttimes,$endtime,$num,'$origin','$contents',$money,'$other',$posttime,$aid,'$jiesuanmoney','$company')";
+	$sql = "INSERT INTO `#@__travel` (title,starttime,endtime,num,origin,content,money,other,posttime,aid,jiesuanmoney,company,days) VALUES ('$title',$starttimes,$endtime,$num,'$origin','$contents',$money,'$other',$posttime,$aid,'$jiesuanmoney','$company',$days)";
 		if($dosql->ExecNoneQuery($sql))
 		{
 			header("location:$gourl");

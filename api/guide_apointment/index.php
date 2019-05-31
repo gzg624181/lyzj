@@ -1,0 +1,120 @@
+<?php
+    /**
+	   * 链接地址：guide_apointment  导游预约旅行社发布的行程
+	   *
+     * 下面直接来连接操作数据库进而得到json串
+     *
+     * 按json方式输出通信数据
+     *
+     * @param unknown $State 状态码
+     *
+     * @param string $Descriptor  提示信息
+     *
+	   * @param string $Version  操作时间
+     *
+     * @param array $Data 数据
+     *
+     * @return string
+     *
+     * @导游预约旅行社发布的行程   提供返回参数账号，同时双向发送模板消息提醒
+     * gid             导游id
+     * name            导游姓名
+     * id              发布的行程id
+     * aid             旅行社的id
+     * formid          导游formid
+     * formid          旅行社formid
+     */
+require_once("../../include/config.inc.php");
+require_once("../../admin/sendmessage.php");
+$Data = array();
+$Version=date("Y-m-d H:i:s");
+if(isset($token) && $token==$cfg_auth_key){
+
+  # 备注 ： 更改行程为待确认
+  #        双向发送模板消息
+
+  # 更改行程为待确认
+  $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=1,gid=$gid,name='$name' where id=$id");
+
+  #向导游发送模板消息
+  $g=$dosql->GetOne("SELECT * FROM pmw_guide where id=$gid");
+  $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
+  $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
+
+  $openid_agency=$a['openid'];    //旅行社联系人openid
+
+  $openid_guide=$g['openid'];    //导游openid
+
+  $company=$a['company'];   //旅行社公司名称
+
+  $names=$a['name'];        //旅行社联系人姓名
+
+  $tel=$a['tel'];          //旅行社联系人电话
+
+  $title=$x['title'];      //旅行社发布的行程标题
+
+  $time=date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']); //旅行社发布的行程时间
+
+  $tishi="亲爱的".$names."您好，您预约的行程已提交成功，请尽快与旅行社核实行程信息并查看详情确认此行程。";
+
+  $page="pages/about/enter/enter";
+
+  $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+  //模板消息请求URL
+  $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
+
+  $data_guide=SendGuide($openid_guide,$company,$names,$tel,$title,$time,$tishi,$cfg_guide_appointment,$page,$formid);
+
+  $json_data = json_encode($data_guide);//转化成json数组让微信可以接收
+  $res = https_request($url, urldecode($json_data));//请求开始
+  $res_guide = json_decode($res, true);
+  $errcode_guide=$res_guide['errcode'];
+
+
+  #向旅行社发送模板消息
+  $tel_guide=$g['tel'];
+  $timestamp=date("Y-m-d H:i:s");
+  $page_agency="pages/about/enter/enter";
+  $form_id_agency=$a['formid'];
+
+  $data_agency=SendAgency($openid_agency,$title,$tel_guide,$name,$time,$timestamp,$cfg_agency_remind,$page_agency,$form_id_agency);
+
+  $json_data_agency = json_encode($data_agency);//转化成json数组让微信可以接收
+  $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
+  $res_agency = json_decode($res_agency, true);
+  $errcode_agency=$res_agency['errcode'];
+
+  if($errcode_guide==0 && $errcode_agency==0){
+      $State = 1;
+      $Descriptor = '导游预约行程成功!，模板消息发送成功！';
+      $result = array (
+                  'State' => $State,
+                  'Descriptor' => $Descriptor,
+                  'Version' => $Version,
+                  'Data' => $Data
+                   );
+      echo phpver($result);
+    }else{
+      $State = 0;
+      $Descriptor = '导游预约行程成功,模板消息发送失败!';
+      $result = array (
+                  'State' => $State,
+                  'Descriptor' => $Descriptor,
+                  'Version' => $Version,
+                  'Data' => $Data
+                   );
+      echo phpver($result);
+    }
+}else{
+  $State = 520;
+  $Descriptor = 'token验证失败！';
+  $result = array (
+                  'State' => $State,
+                  'Descriptor' => $Descriptor,
+  				         'Version' => $Version,
+                   'Data' => $Data,
+                   );
+  echo phpver($result);
+}
+
+?>

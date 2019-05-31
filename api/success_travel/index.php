@@ -40,29 +40,41 @@ if(isset($token) && $token==$cfg_auth_key){
       $me='me';
       $one=1;
       $two=2;
-      #已取消
+      $three=3;
+      #已完成
       $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=2",$we);
       for($i=0;$i<$dosql->GetTotalRow($we);$i++){
         $row = $dosql->GetArray($we);
         $Data['complete'][$i]=$row;
+        $Data['complete'][$i]['posttime']=date("Y-m-d",$row['posttime']);
       }
       #待预约
       $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=0",$me);
       for($j=0;$j<$dosql->GetTotalRow($me);$j++){
         $show = $dosql->GetArray($me);
         $Data['appointment'][$j]=$show;
+        $Data['appointment'][$j]['posttime']=date("Y-m-d",$show['posttime']);
       }
       #待确认
       $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=1",$one);
       for($i=0;$i<$dosql->GetTotalRow($one);$i++){
         $row1 = $dosql->GetArray($one);
         $Data['confirm'][$i]=$row1;
+        $Data['confirm'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
       }
       #已取消
       $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=3",$two);
       for($j=0;$j<$dosql->GetTotalRow($two);$j++){
         $show1 = $dosql->GetArray($two);
         $Data['concel'][$j]=$show1;
+        $Data['concel'][$j]['posttime']=date("Y-m-d",$show1['posttime']);
+      }
+      #去评价
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=2 and comment_state=0",$three);
+      for($j=0;$j<$dosql->GetTotalRow($three);$j++){
+        $show2 = $dosql->GetArray($three);
+        $Data['comment'][$j]=$show2;
+        $Data['comment'][$j]['posttime']=date("Y-m-d",$show2['posttime']);
       }
       $State = 1;
       $Descriptor = '形成列表查询成功！';

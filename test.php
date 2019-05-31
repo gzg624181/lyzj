@@ -116,9 +116,13 @@ $content=array(
              "days" => 4
             )
 );
-
 $json=phpver($content);
-print_r($json);
+// print_r($json);
+
+$list= '["2019-06-17","2019-06-20","2019-06-21","2019-06-22"]';
+$ar=json_decode($list,true);
+print_r($ar);
+
 
 
 

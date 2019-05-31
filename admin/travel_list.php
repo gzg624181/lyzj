@@ -60,13 +60,15 @@ $check = isset($check) ? $check : '';
 <div class="toolbarTab">
 	<ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="travel_list.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约&nbsp;&nbsp;<i class='fa  fa-circle-o-notch' aria-hidden='true' style="color:#30B534"></i></a></li> 
+ <li class="<?php if($check=="appointment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('appointment')">待预约&nbsp;&nbsp;<i class='fa  fa-circle-o-notch' aria-hidden='true' style="color:#30B534"></i></a></li>
  <li class="line">-</li>
  <li class="<?php if($check=="confirm"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('confirm')">待确认&nbsp;&nbsp;<i class='fa fa-unlock' aria-hidden='true' style="color:#F90"></i></a></li>
  <li class="line">-</li>
  <li class="<?php if($check=="complete"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('complete')">已完成&nbsp;&nbsp;<i class='fa fa-unlock-alt' aria-hidden='true' style="color:#509ee1"></i></a></li>
  <li class="line">-</li>
  <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消&nbsp;&nbsp;<i class='fa fa-chain-broken' aria-hidden='true' style="color:#F00"></i></a></li>
+<li class="line">-</li>
+<li class="<?php if($check=="comment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('comment')">已评论&nbsp;&nbsp;<i class='fa fa-paper-plane-o' aria-hidden='true' style="color:#F1700E"></i></a></li>
 	</ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" placeholder="请输入旅行社名称或者导游名字进行搜索" title="请输入旅行社名称或者导游名字进行搜索" />
@@ -85,11 +87,12 @@ $check = isset($check) ? $check : '';
 			<td width="10%" align="center">行程标题</td>
 			<td width="4%" align="center">团队人数</td>
 			<td width="7%" align="center">客源地</td>
-			<td width="11%" align="center">备注</td>
+			<td width="14%" align="center">备注</td>
 			<td width="10%" align="center">发布时间</td>
-			<td width="5%" align="center">导游接单</td>
+			<td width="7%" align="center">导游接单</td>
 			<td width="5%" align="center">结算价格</td>
-			<td width="7%" align="center">操作</td>
+			<td width="3%" align="center">评论</td>
+			<td width="6%" align="center">操作</td>
 		</tr>
 		<?php
 		$username=$_SESSION['admin'];
@@ -107,7 +110,9 @@ $check = isset($check) ? $check : '';
 		$dopage->GetPage("SELECT * FROM $tbname where aid=$id",10);
 		  }elseif($check=="guide"){ //旅行社发布的行程
 		$dopage->GetPage("SELECT * FROM $tbname where gid=$id",10);
-		  }
+      }elseif($check=="comment"){
+    $dopage->GetPage("SELECT * FROM $tbname where state=2 and comment_state=1",10);
+      }
 		  elseif($keyword!=""){
 		$dopage->GetPage("SELECT * FROM $tbname where company like '%$keyword%' OR name like '%$keyword%' ",10);
 		  }else{
@@ -121,15 +126,19 @@ $check = isset($check) ? $check : '';
 
 				case 0: //待预约
 					$state= "<i class='fa  fa-circle-o-notch' aria-hidden='true' style='color:#30B534'></i>";
+          $color="#30B534";
 					break;
 				case 1://待确认
 					$state= "<i class='fa fa-unlock' aria-hidden='true' style='color:#F90'></i>";
+          $color="#F90";
 					break;
 				case 2://已确认
 					$state= "<i class='fa fa-unlock-alt' aria-hidden='true'  style='color:#509ee1'></i>";
+          $color="#509ee1";
 					break;
 				case 3://已取消
 					$state= "<i class='fa fa-chain-broken' aria-hidden='true' style='color:#F00'></i>";
+          $color="#F00";
 					break;
 				default:
                $state = '暂无分类';
@@ -142,14 +151,25 @@ $check = isset($check) ? $check : '';
 			  $r=$dosql->GetOne("SELECT name FROM pmw_guide where id=$gid");
 				 $gname ="<a title='点击查看导游信息' href='javascript:void(0);' onclick=\"checkguide('$gid')\">
 				 {$r['name']}</a>";
-			 }	
-			$xingcheng=($row['endtime']-$row['starttime']) / (60 * 60 * 24) +1;
+			 }
+			$xingcheng=$row['days'];
+            
+			switch($row['comment_state']){
 				
+				case 0:
+				$pinglun= "<i title='未评论'  class='fa fa-minus-circle' aria-hidden='true'></i>";
+				break;
+				
+				case 1:
+				$pinglun= "<i title='已评论' class='fa fa-paper-plane-o' aria-hidden='true'></i>";
+				break;
+				
+				}
 		?>
 		<tr align="left" class="dataTr">
 			<td height="50" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
-			<td align="center"><?php			
-			$aid= $row['aid']; 
+			<td align="center"><?php
+			$aid= $row['aid'];
 			$j=$dosql->GetOne("SELECT company FROM pmw_agency where id=$aid");
 			echo $j['company'];
 			 ?></td>
@@ -165,10 +185,13 @@ $check = isset($check) ? $check : '';
 			<td align="center"><?php echo $gname; ?>
             </td>
 			<td align="center" class="num" style="color:red"><?php echo $row['jiesuanmoney'];?></td>
+			<td align="center"><?php echo $pinglun;?></td>
+
 			<td align="center"><span><?php echo $state; ?></span> &nbsp;&nbsp;
 			<span><a title="编辑" href="travel_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
-			<span class="nb"><a title="删除发布的行程信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span></td>
+			<span class="nb"><a title="删除发布的行程信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+    </td>
 		</tr>
 		<?php
 		}

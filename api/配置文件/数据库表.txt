@@ -33,6 +33,7 @@ tel             联系电话(varchar)
 images          导游头像(varchar)默认第一次拉取微信头像
 account         账号(varchar)
 password        密码(varchar)
+picarr          合同图片(varchar)
 regtime         注册时间(int)
 ymdtime         注册年月日（date）
 regip           注册ip（varchar)
@@ -60,6 +61,7 @@ id
 title           行程标题
 starttime       开始时间
 endtime         结束时间
+days            行程时长
 num             团队人数
 origin          客源地
 content         添加行程   用json字符串表示，中间用|隔开
@@ -69,6 +71,7 @@ aid             旅行社id
 gid             导游id（默认为空，如果导游接了这单，则显示导游的id）
 state           发布状态（0，待预约，1:待确认 2:已确认（已完成），如果导游没有确认，
                 则系统默认在出发的前一天进行确认处理3:已取消，在已完成里面不能取消）
+comment_state   旅行社给导游的评价  0，默认未评价，1已经评价
 
 5.旅行社给导游评价表    pmw_comment
 
@@ -97,12 +100,18 @@ addtime        发布时间
 
 
 
-8.关于app  pmw_config
+8.系统发送模板消息表  pmw_message
 
 id
-title          配置标题
-content        配置内容
-addtime        添加时间
+type           会员类型 (agency  guide)
+messagetype    消息类型 (system 系统消息  template 模板消息)
+templatetype   模板消息分类(cancel  取消行程   appointment预约行程, reg 注册成功 如果不是模板消息的话则为空)
+content        消息内容
+title          消息标题
+mid            会员id(旅行社的id 或者导游的id)
+faxtime        发布时间
+state          状态(0,未读，1已读)
+
 
   备注：  id=1  关于APP介绍
          id=2   代理制度

@@ -5,13 +5,14 @@ $username=$_SESSION['admin'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>注册导游信息管理</title>
+<title>导游发布空闲时间</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <link href="templates/style/menu1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/forms.func.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+<link href="layui/css/layui.css" rel="stylesheet" type="text/css" />
 <script>
 function message(Id){
   // alert(Id);
@@ -26,55 +27,11 @@ function message(Id){
   });
 });
 }
-
-function checkguide(id,type){
-	 var ajax_url='guide_save.php?action=checkguide&id='+id+'&type='+type;
-  // alert(ajax_url);
-	$.ajax({
-    url:ajax_url,
-    type:'get',
-	data: "data" ,
-	dataType:'html',
-    success:function(data){
-        layer.open({
-        type: 1
-        ,title: false //不显示标题栏
-        ,closeBtn: false
-        ,area: '800px;'
-        ,shade: 0.8
-        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-        ,btn: ['点击关闭']
-        ,btnAlign: 'c'
-        ,moveType: 1 //拖拽模式，0或者1
-        ,content: "<div style='widht:750px;padding:25px; height:400px;line-height: 22px;text-align:center'>"+ data+"</div>"
-        ,
-      });
-    } ,
-	error:function(){
-       alert('error');
-    }
-	});
-	}
-function SendCheck(id,type)
-{
-if(confirm("是否确认拒绝导游注册审核？"))
- {
- 
-layer.open({
-  type: 2,
-  title: '审核未通过模板消息：',
-  maxmin: true,
-  shadeClose: true, //点击遮罩关闭	层
-  area : ['800px' , '545px'],
-  content: 'check.php?id='+id+'&type='+type,
-  });
-  }
-}
 //审核，未审，功能
   function checkinfo(key){
      var v= key;
 	// alert(v)
-	window.location.href='guide.php?check='+v;
+	window.location.href='free_time.php?check='+v;
 	}
 
 function GetSearchs(){
@@ -85,7 +42,7 @@ if($("#keyword").val() == "")
  $("#keyword").focus();
  return false;
 }
-window.location.href='guide.php?keyword='+keyword;
+window.location.href='free_time.php?keyword='+keyword;
 }
 function member_update(Id){
  var adminlevel=document.getElementById("adminlevel").value;
@@ -116,9 +73,9 @@ $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
 
 ?>
 </head>
-<body>
+<body style="padding:10px;">
 <?php
-$tbname="pmw_guide";
+$tbname="pmw_freetime";
 $action="guide_save.php";
 $one=1;
 $dosql->Execute("SELECT * FROM $tbname",$one);
@@ -126,10 +83,11 @@ $num=$dosql->GetTotalRow($one);
 ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
-<span class="title">导游合计：<span class="num" style="color:red;"><?php echo $num;?></span>
+<span class="title">导游空闲时间列表：<span class="num" style="color:red;"><?php echo $num;?></span>
 </span> <a href="javascript:location.reload();" class="reload">刷新</a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
+<!--
 <ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="guide.php">全部</a></li> <li class="line">-</li>
  <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过</a></li>
@@ -137,9 +95,9 @@ $num=$dosql->GetTotalRow($one);
  <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过</a></li>
  <li class="line">-</li>
  <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核</a></li>
-</ul>
+</ul>-->
 	<div id="search" class="search"> <span class="s">
-<input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入用户账号或者导游姓名" title="请输入用户账号或者导游姓名" />
+<input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入搜索日期" title="请输入搜索日期" />
 		</span> <span class="b"><a href="javascript:;" onclick="GetSearchs();"></a></span></div>
 	<div class="cl"></div>
 </div>
@@ -157,36 +115,15 @@ $num=$dosql->GetTotalRow($one);
                 <td width="6%" align="center">头像</td>
                 <td width="7%" align="center">导游姓名</td>
                 <td width="4%" align="center">性别</td>
-                <td width="5%" align="center">导游证件</td>
-                <td width="10%" align="center">导游证号</td>
-                <td width="7%" align="center">导游电话</td>
-                <td width="6%" align="center">导游简介</td>
-                <td width="6%" align="center">导游相册</td>
-                <td width="11%" align="center">最后登陆城市</td>
-                <td width="11%" align="center">注册时间</td>
-                <td width="9%" align="center">已接行程</td>
-                <td width="10%" align="center">操作</td>
+                <td width="60%" align="center">空闲时间</td>
+                <td width="11%" align="center">发布时间</td>
+                <td width="4%" align="center">操作</td>
                 </tr>
               <?php
-		if($check=="today"){
-		$time=date("Y-m-d"); //今天注册
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
-	    }elseif($check=="tomorrowzhuce"){ //昨天注册
-		$time=date("Y-m-d",strtotime("-1 day"));
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
-	    }elseif($check=="success"){ //已通过
-		$dopage->GetPage("select * from $tbname where checkinfo = 1",15);
-	    }elseif($check=="failed"){ //未通过
-		$dopage->GetPage("select * from $tbname where checkinfo = 2",15);
-	    }elseif($check=="reviewed"){ //待审核
-		$dopage->GetPage("select * from $tbname where checkinfo = 0",15);
-	    }elseif($check=="user"){ //搜索单个用户
-		$dopage->GetPage("select * from $tbname where id = $id",15);
-	    }
-		elseif($keyword!=""){ //关键字搜索
-	    $dopage->GetPage("SELECT * FROM $tbname where account like '%$keyword%' or name  like '%$keyword%' ",15);
+	     if($keyword!=""){ //关键字搜索
+	    $dopage->GetPage("SELECT a.*,b.account,b.images,b.name,b.sex FROM $tbname a inner join pmw_guide b on a.gid=b.id  where a.content like '%$keyword%'",15);
 		}else{
-		$dopage->GetPage("SELECT * FROM $tbname",15);
+		$dopage->GetPage("SELECT a.*,b.account,b.images,b.name,b.sex FROM $tbname a inner join pmw_guide b on a.gid=b.id",15);
 		}
 
 		while($row = $dosql->GetArray())
@@ -207,44 +144,25 @@ $num=$dosql->GetTotalRow($one);
 		    }else{
             $images=$row['images'];
             }
-					if($row['checkinfo']==0){
-				 
-				 $checkinfo = "<a href='agency_save.php?action=checkinfo&info=guide&id={$id}'><i onclick='return ConfCheck(0);' style='color:#509ee1; cursor:pointer;' title='审核通过' class='fa fa-circle-o' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;";
-				 
-				 $checkinfo .="<a href='javascript:void(0);' onclick=\"SendCheck('$id','guide')\"><i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-circle-o' aria-hidden='true'></i></a>";
+			
+			$freetime="";
+			$content=json_decode($row['content'],true);	
+			foreach($content as $val){
 				
-			}elseif($row['checkinfo']==1){
+				$freetime .=$val."&nbsp;&nbsp;&nbsp;&nbsp;";
 				
-			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
-			}elseif($row['checkinfo']==2){
-				
-			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
-			}
-			$id=$row['id'];
-			$five=5;
-			$dosql->Execute("SELECT id from pmw_travel where gid=$id",$five);
-			$guide_num=$dosql->GetTotalRow($five);
+				}	
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
                 <td align="center"><?php echo $row['account']; ?></td>
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
-                <td align="center"><?php echo $row['name']; ?></td>
+                <td align="center" class="num"><a href="guide.php?check=user&id=<?php echo $row['gid'];?>"><?php echo $row['name']; ?></a></td>
                 <td align="center"><?php echo $sex; ?></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','card');">点击查看</a></td>
-                <td align="center" class="num"><?php echo $row['cardnumber']; ?></td>
-                <td align="center"><?php echo $row['tel']; ?></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','content');">点击查看</a></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','pics');">点击查看相册</a></td>
-                <td align="center"><?php echo $row['getcity']?></td>
-                <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
-                <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=guide&id=<?php echo $row['id'];?>"><?php echo $guide_num;?></a></td>
-                <td align="center">  <span><?php echo $checkinfo; ?></span> &nbsp;
-			<span><a title="编辑" href="guide_update.php?id=<?php echo $row['id']; ?>">
-			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
-			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
+                <td align="center" class="num"><?php echo $freetime;?></td>
+                <td align="center"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
+                <td align="center"> 
+			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
                 <?php //}?>
               </tr>
               <?php
@@ -284,5 +202,17 @@ if($cfg_quicktool == 'Y')
 <?php
 }
 ?>
+<script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+ //日期范围选择
+laydate.render({
+  elem: '#keyword'
+});
+
+});
+
+</script>
 </body>
 </html>

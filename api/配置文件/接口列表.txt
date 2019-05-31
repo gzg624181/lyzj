@@ -7,3 +7,9 @@
 5.旅行社发布旅行消息   add_travel
 6.导游发布空闲时间     issue_guide
 7.旅行社已完成的形成   success_travel
+8.获取导游或者旅行社的详情  user
+9.旅行社给导游评论     add_comment
+10.获取旅行社发布的所有待预约的行程  apointment
+11.获取旅行社发布的单个行程的详情  travel_content
+12.导游预约行程        guide_apointment
+13.修改行程           update_travel

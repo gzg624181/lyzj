@@ -63,10 +63,19 @@ else if($action == 'checkguide')
 	echo $content;
 }
 
+else if($action=="del5"){
+//删除空闲时间
+$dosql->ExecNoneQuery("DELETE FROM pmw_freetime WHERE id=$id");
+$gourl="free_time.php";
+header("location:$gourl");
+exit();
+
+}
+
 //无条件返回
 else
 {
     header("location:$gourl");
-	exit();
+	  exit();
 }
 ?>
