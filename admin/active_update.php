@@ -31,7 +31,7 @@
 </script>
 </head>
 <body>
-<div class="formHeader">修改活动<a href="javascript:location.reload();" class="reload">刷新</a> </div>
+<div class="formHeader">修改活动<a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a> </div>
 <?php
 $row = $dosql->GetOne("SELECT * FROM `pmw_active` WHERE `id`=$id");
 ?>

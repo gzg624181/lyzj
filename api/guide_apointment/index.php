@@ -40,6 +40,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $g=$dosql->GetOne("SELECT * FROM pmw_guide where id=$gid");
   $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
   $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
+  $faxtime=time();
 
   $openid_agency=$a['openid'];    //旅行社联系人openid
 
@@ -60,6 +61,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $page="pages/about/enter/enter";
 
   $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+
   //模板消息请求URL
   $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
 
@@ -69,6 +71,27 @@ if(isset($token) && $token==$cfg_auth_key){
   $res = https_request($url, urldecode($json_data));//请求开始
   $res_guide = json_decode($res, true);
   $errcode_guide=$res_guide['errcode'];
+
+  //==================================================================================================
+      //将导游预约的行程保存到消息表里面去
+      $tbnames = 'pmw_message';
+      $type = 'guide';
+      $messagetype='template';
+      $templatetype='appointment';  //预约行程的模板消息类型
+      $tent = "恭喜你，你的行程预约成功：|";
+      $tent .= "旅行社名称：".$company."|";
+      $tent .= "旅行社联系人：".$names."|";
+      $tent .= "联系人电话：".$tel."|";
+      $tent .= "预约行程：".$title."|";
+      $tent .= "预约时间：".$time."|";
+      $tent .= "温馨提示：".$tishi;
+      $stitle="预约成功通知";
+      $biaoti="你预约的".$time.$title."行程已预约成功，请尽快与旅行社联系";
+
+      $banames = 'pmw_message';
+      $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
+      $dosql->ExecNoneQuery($sql);
+  //===========================================================================================
 
 
   #向旅行社发送模板消息
@@ -83,6 +106,27 @@ if(isset($token) && $token==$cfg_auth_key){
   $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
   $res_agency = json_decode($res_agency, true);
   $errcode_agency=$res_agency['errcode'];
+
+  //==================================================================================================
+      //行程被导游预约，将向旅行社发布的消息表里面去
+      $type = 'agency';
+      $messagetype='template';
+      $templatetype='appointment';  //预约行程的模板消息类型
+      $tent = "恭喜你，你发布的行程已被预约成功：|";
+      $tent .= "行程名称：".$title."|";
+      $tent .= "导游电话：".$tel_guide."|";
+      $tent .= "导游姓名：".$name."|";
+      $tent .= "行程时间：".$time."|";
+      $tent .= "预约时间：".$timestamp;
+      $stitle="预约成功通知";
+      $biaoti="你发布的".$time.$title."行程已被导游成功预约，请尽快与导游联系";
+
+      $banames = 'pmw_message';
+      $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $aid, $faxtime)";
+      $dosql->ExecNoneQuery($sql);
+  //===========================================================================================
+
+
 
   if($errcode_guide==0 && $errcode_agency==0){
       $State = 1;

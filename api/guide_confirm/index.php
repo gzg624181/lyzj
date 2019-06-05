@@ -28,7 +28,13 @@ if(isset($token) && $token==$cfg_auth_key){
   # 备注 ： 更改行程为确认
 
   # 更改行程为确认
-  $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=2 where id=$id");
+  $complete_y = date("Y");
+
+  $complete_ym = date("Y-m");
+
+  $complete_time = time();
+
+  $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=2, complete_y='$complete_y', complete_ym='$complete_ym', complete_time='$complete_time' where id=$id");
 
   $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
   $state=$x['state'];

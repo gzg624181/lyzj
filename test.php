@@ -121,10 +121,39 @@ $json=phpver($content);
 
 $list= '["2019-06-17","2019-06-20","2019-06-21","2019-06-22"]';
 $ar=json_decode($list,true);
-print_r($ar);
+//print_r($ar);
 
 
+function get_agency($id){
+
+ global $dosql;
+
+ $r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");
+
+ $return= $r;
+
+ return $return ;
+
+}
+
+// print_r(get_agency(24));
 
 
+//获取所有旅行社的发布行程的年份
+
+function get_years($id){
+
+global $dosql;
+
+$dosql->Execute("SELECT complete_y FROM pmw_travel where aid=$id and state=2 group by complete_y");
+while($show=$dosql->GetArray()){
+	$return[]=$show;
+}
+
+return $return;
+
+}
+
+print_r(get_years(20));
 
 ?>

@@ -19,7 +19,7 @@
 <script>
 function quan()
 {
-	
+
 	if($("#title").val() == "")
 	{
 		layer.alert("标题不能为空！",{icon:2});
@@ -59,7 +59,7 @@ $gamepic=$row['pic'];
 				KindEditor.ready(function(K) {
 					editor = K.create('textarea[name="content"]', {
 						allowFileManager : true,
-						width:'1200px',
+						width:'100%',
 						height:'400px',
 						extraFileUploadParams : {
 							sessionid :  '<?php echo session_id(); ?>'
@@ -71,7 +71,7 @@ $gamepic=$row['pic'];
         	<tr>
         	  <td height="40" align="right">更新时间：</td>
         	  <td colspan="2"> <input type="text" name="pictime" id="pictime" class="inputms" value="<?php echo GetDateTime(time()); ?>" readonly="readonly" />
-        	    <script type="text/javascript" src="plugin/calendar/calendar.js"></script> 
+        	    <script type="text/javascript" src="plugin/calendar/calendar.js"></script>
        	      <script type="text/javascript">
 				Calendar.setup({
 					inputField     :    "pictime",
@@ -81,13 +81,17 @@ $gamepic=$row['pic'];
 				});
 				</script></td>
        	  </tr>
-  </table>
-	<div class="formSubBtn" style="float:left; margin-left:95px;">
+          <tr>
+        	  <td height="40" align="right"></td>
+        	  <td colspan="2"> <div class="formSubBtn" style="float:left; margin-bottom:30px;">
          <input type="submit" class="submit" value="保存" />
 		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
 		<input type="hidden" name="action" id="action" value="update" />
         <input type="hidden" name="id" id="id" value="<?php echo $row['id'];?>" />
-  </div>
+  </div></td>
+       	  </tr>
+  </table>
+	
 </form>
 </body>
 </html>

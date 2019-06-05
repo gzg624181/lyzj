@@ -7,7 +7,7 @@ function phpver($result){
     }, json_encode($result));
 	   return $json;
 } else {
-    $json = json_encode($result, JSON_UNESCAPED_UNICODE);
+    $json = json_encode($result, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
     return $json;
 }
 }
@@ -207,7 +207,7 @@ function CancelAgency($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$pa
 
 # 旅行社取消发布的行程，给导游发送模板消息提醒
 
-function CancelGuide($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$page,$form_id){
+function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_cancel_guide,$page,$form_id){
 
 	$data = array(
 			'touser' => $openid,                   //要发送给旅行社的openid
@@ -245,4 +245,45 @@ function CancelGuide($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$pag
 
 }
 
+//匹配测试
+function check_str($str, $substr)
+{
+ $nums=substr_count($str,$substr);
+ if ($nums>=1)
+ {
+	return true;
+ }
+ else
+ {
+	return false;
+ }
+}
+
+//获取旅行社发布的所有已完成的行程的月份
+
+function get_months_success($id,$y){
+
+global $dosql;
+
+$dosql->Execute("SELECT complete_ym as time FROM pmw_travel where aid=$id and complete_y='$y' group by complete_ym");
+while($show=$dosql->GetArray()){
+	$return[]=$show;
+}
+
+return $return;
+
+}
+
+
+//获取旅行社已经发布成功的行程的状态
+function get_agency_state($id,$y,$m){
+
+global $dosql;
+
+$r = $dosql->GetOne("SELECT SUM(jiesuanmoney) AS money,SUM(num) as teamnumber,SUM(days) as days,Settlement  FROM pmw_travel  where aid=$id and state=2 and complete_y='$y' and complete_ym='$m'");
+
+$return =$r;
+
+return $return;
+}
 ?>

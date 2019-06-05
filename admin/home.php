@@ -6,6 +6,7 @@
 <title>后台首页</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 $(function(){
 	//控制便签
@@ -72,7 +73,7 @@ a:hover {
 </head>
 <body>
 <div class="homeHeader" style="margin-bottom:10px;">
-	<div class="header"  style="margin-bottom: -40px;"><span class="title"  style="margin-left: 8px;">首页</span><a href="javascript:location.reload();" class="reload">刷新</a></div>
+	<div class="header"  style="margin-bottom: -40px;"><span class="title"  style="margin-left: 8px;">首页</span><a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a></div>
 <div class="news">
 		<div class="title"></div >
 		<div style=" margin-top:-6px;margin-left: 36px;">欢迎&nbsp;<font color="red"><b><?php echo $_SESSION['admin'];?></b></font>&nbsp;进入<?php echo $cfg_webname?>!</div>

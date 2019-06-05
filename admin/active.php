@@ -122,7 +122,7 @@ $check = isset($check) ? $check : '';
 
 ?>
 <div class="topToolbar"> <span class="title">活动列表管理</span>
-<a href="javascript:location.reload();" class="reload">刷新</a>
+<a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a>
 </div>
 <div class="toolbarTab">
 	<ul>

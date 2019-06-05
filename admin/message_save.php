@@ -18,37 +18,23 @@ $gourl  = 'message.php';
 require_once(ADMIN_INC.'/action.class.php');
 
 
-//添加留言
-if($action == 'add')
+//查看消息内容
+if($action == 'checkmessage')
 {
-	if(!isset($htop)) $htop = '';
-	if(!isset($rtop)) $rtop = '';
-	$posttime = GetMkTime($posttime);
-	$ip = GetIP();
 
-	$sql = "INSERT INTO `$tbname` (siteid, nickname, contact, content, recont, orderid, posttime, htop, rtop, checkinfo, ip) VALUES ('$cfg_siteid', '$nickname', '$contact', '$content', '$recont', '$orderid', '$posttime', '$htop', '$rtop', '$checkinfo', '$ip')";
-	if($dosql->ExecNoneQuery($sql))
-	{
-		header("location:$gourl");
-		exit();
-	}
+  $r=$dosql->GetOne("SELECT content,stitle FROM $tbname WHERE id=$id");
+  $contents = $r['content'];
+  $content =  "<span style='font-size:14px;font-weight:bold;margin-bottom:10px;'>".$r['stitle']."</span><br><br><br>";
+
+  $arr=explode("|",$contents);
+  for($i=0;$i<count($arr);$i++){
+  $content .= $arr[$i]."<br><br>";
+  }
+
+	echo $content;
 }
 
 
-//修改留言
-else if($action == 'update')
-{
-	if(!isset($htop)) $htop = '';
-	if(!isset($rtop)) $rtop = '';
-	$posttime = GetMkTime($posttime);
-
-	$sql = "UPDATE `$tbname` SET siteid='$cfg_siteid', contact='$contact', content='$content', recont='$recont', orderid='$orderid', posttime='$posttime', htop='$htop', rtop='$rtop', checkinfo='$checkinfo' WHERE id=$id";
-	if($dosql->ExecNoneQuery($sql))
-	{
-		header("location:$gourl");
-		exit();
-	}
-}
 
 
 //无条件返回

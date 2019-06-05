@@ -54,7 +54,7 @@ $check = isset($check) ? $check : '';
 
 ?>
 <div class="topToolbar"> <span class="title">发布行程列表管理</span>
-<a href="javascript:location.reload();" class="reload">刷新</a>
+<a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a>
 
 </div>
 <div class="toolbarTab">
@@ -110,9 +110,13 @@ $check = isset($check) ? $check : '';
 		$dopage->GetPage("SELECT * FROM $tbname where aid=$id",10);
 		  }elseif($check=="guide"){ //旅行社发布的行程
 		$dopage->GetPage("SELECT * FROM $tbname where gid=$id",10);
-      }elseif($check=="comment"){
-    $dopage->GetPage("SELECT * FROM $tbname where state=2 and comment_state=1",10);
-      }
+		  }elseif($check=="comment"){
+		$dopage->GetPage("SELECT * FROM $tbname where state=2 and comment_state=1",10);
+		  }elseif($check=="month"){
+		$dopage->GetPage("SELECT * FROM $tbname where state=2 and aid=$id and complete_ym='$m'",10);
+		  }elseif($check=="search"){
+		$dopage->GetPage("SELECT * FROM $tbname where complete_ym='$m'",10);
+		  }
 		  elseif($keyword!=""){
 		$dopage->GetPage("SELECT * FROM $tbname where company like '%$keyword%' OR name like '%$keyword%' ",10);
 		  }else{
@@ -153,17 +157,17 @@ $check = isset($check) ? $check : '';
 				 {$r['name']}</a>";
 			 }
 			$xingcheng=$row['days'];
-            
+
 			switch($row['comment_state']){
-				
+
 				case 0:
 				$pinglun= "<i title='未评论'  class='fa fa-minus-circle' aria-hidden='true'></i>";
 				break;
-				
+
 				case 1:
 				$pinglun= "<i title='已评论' class='fa fa-paper-plane-o' aria-hidden='true'></i>";
 				break;
-				
+
 				}
 		?>
 		<tr align="left" class="dataTr">

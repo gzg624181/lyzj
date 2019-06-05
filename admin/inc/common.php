@@ -371,28 +371,205 @@ function https_request($url,$data = null){
 	}
 
 
+// 计算旅游社所有的成功的计算总额
+
+
+function sum($id){
+
+	global $dosql;
+
+	$r = $dosql->GetOne("SELECT SUM(jiesuanmoney) AS money  FROM pmw_travel  where aid=$id and state=2");
+
+	$sum=$r['money'];
+
+	return $sum;
+
+}
+
+//获取旅行社所有的信息
+
+function get_agency($id){
+
+ global $dosql;
+
+ $r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");
+
+ $return= $r;
+
+ return $return ;
+
+}
 
 
 
+//获取旅行社在同一年内发布 所有行程(所有的状态都算)
+
+//传过来的旅行社的id和年份
+
+function get_year($id,$y){
+
+global $dosql;
+
+$dosql->Execute("SELECT id FROM pmw_travel where aid=$id and fabu_y='$y'");
+
+$num = $dosql->GetTotalRow();
+
+return $num;
+
+}
+
+//获取旅行社发布的所有行程的年份
+
+function get_years($id){
+
+global $dosql;
+
+$dosql->Execute("SELECT fabu_y FROM pmw_travel where aid=$id group by fabu_y");
+while($show=$dosql->GetArray()){
+	$return[]=$show;
+}
+
+return $return;
+
+}
+
+//旅行社成功发布的行程
+
+function success_xingcheng($id,$y){
+
+			global $dosql;
+
+			$dosql->Execute("SELECT id FROM pmw_travel where aid=$id and state=2 and complete_y='$y'");
+
+			$num = $dosql->GetTotalRow();
+
+			return $num;
+
+}
+
+
+//计算旅行社一年之内的结算总额
+
+
+function sum_year($id,$y){
+
+	global $dosql;
+
+	$r = $dosql->GetOne("SELECT SUM(jiesuanmoney) AS money  FROM pmw_travel  where aid=$id and state=2 and complete_y='$y'");
+
+	$sum=$r['money'];
+
+	return $sum;
+
+}
 
 
 
+//获取旅行社发布的所有行程的月份
+
+function get_months($id,$y){
+
+global $dosql;
+
+$dosql->Execute("SELECT fabu_ym FROM pmw_travel where aid=$id and fabu_y='$y' group by fabu_ym");
+while($show=$dosql->GetArray()){
+	$return[]=$show;
+}
+
+return $return;
+
+}
 
 
+//计算旅行社一个月之内发布 的所有状态的行程
 
 
+function sum_month($id,$y,$m){
+
+	global $dosql;
+
+	$dosql->Execute("SELECT id FROM pmw_travel where aid=$id and fabu_y='$y' and fabu_ym='$m'");
+
+	$num = $dosql->GetTotalRow();
+
+	return $num;
+
+}
+
+//计算旅行社一个月之内 已经完结的行程
+
+function success_xingcheng_month($id,$y,$m){
+
+  global $dosql;
+
+	$dosql->Execute("SELECT id FROM pmw_travel where aid=$id and complete_y='$y' and complete_ym='$m'");
+
+	$num=$dosql->GetTotalRow();
+
+	return $num;
+
+}
 
 
+//计算旅行社一月之内的结算总额
 
 
+function sum_months($id,$y,$m){
+
+	global $dosql;
+
+	$r = $dosql->GetOne("SELECT SUM(jiesuanmoney) AS money  FROM pmw_travel  where aid=$id and state=2 and complete_y='$y' and complete_ym='$m'");
+
+	$sum=$r['money'];
+
+	return $sum;
+
+}
 
 
+//判断旅行社当月已经完成的行程是否已经结算
+
+function isjiesuan($id,$y,$m){
+
+	global $dosql;
+
+	$r = $dosql->GetOne("SELECT Settlement  FROM pmw_travel  where aid=$id and state=2 and complete_y='$y' and complete_ym='$m'");
+
+  if(is_array($r)){
+	$state=$r['Settlement'];
+  }else{
+	$state=NULL;
+  }
+	return $state;
+
+}
 
 
+//后台点击结算，统计结算当月的所有行程和金额
 
+  function jiesuan($id,$y,$m){
 
+  global $dosql;
 
+  $agency_array =get_agency($id);
 
+	$company =$agency_array['company'];
+
+	$r = $dosql->GetOne("SELECT SUM(jiesuanmoney) AS money,SUM(num) as teamnumber,SUM(days) as days  FROM pmw_travel  where aid=$id and state=2 and complete_y='$y' and complete_ym='$m'");
+
+	$teamnumber=$r['teamnumber'];  //带团总人数
+
+	$summoney = $r['money'];
+
+	$days = $r['days'];
+
+	$jiesuantime= time();
+
+	$sql = "INSERT INTO `#@__jiesuan` (aid,company,time,teamnumber,days,summoney,jiesuantime) VALUES ($id,'$company','$m', $teamnumber, $days, $summoney,$jiesuantime)";
+
+	$dosql->ExecNoneQuery($sql);
+
+	}
 
 
 

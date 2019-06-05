@@ -29,8 +29,8 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：取消行程的时候分为两种状态
-  # 1.待预约状态的时候，直接取消
-  # 2.待确认状态下的时候，发送双向模板消息
+  // 1.待预约状态的时候，直接取消
+  // 2.待确认状态下的时候，发送双向模板消息
   $r=$dsosql->GetOne("SELECT state FROM pmw_travel where id=$id");
   if($r['state']==0){
     $sql = "UPDATE `#@__travel` set state=3 WHERE id=$id";
@@ -56,12 +56,12 @@ if(isset($token) && $token==$cfg_auth_key){
     echo phpver($result);
   }
   }elseif($r['state']==1){
-
+    $faxtime=time();
     $sql = "UPDATE `#@__travel` set state=3 WHERE id=$id";
     $dosql->ExecNoneQuery($sql);
     //发送双向模板消息
 
-    # 给旅行社发布模板消息 （旅行社的formid通过参数获取）
+    // 给旅行社发布模板消息 （旅行社的formid通过参数获取）
 
     $g=$dosql->GetOne("SELECT * FROM pmw_guide where id=$gid");
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
@@ -70,6 +70,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $openid_agency=$a['openid'];    //旅行社联系人openid
 
     $openid_guide=$g['openid'];    //导游openid
+    $formi_d =$g['formid'];
 
 
     $title=$x['title'];           //旅行社发布的行程标题
@@ -93,10 +94,31 @@ if(isset($token) && $token==$cfg_auth_key){
     $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
     $res_agency = json_decode($res_agency, true);
     $errcode_agency=$res_agency['errcode'];
+//==================================================================================================
+    //将旅行社注撤销行程的模板消息保存起来
+    $type = 'agency';
+    $messagetype='template';
+    $templatetype='cancel';  //取消行程的模板消息类型
+    $tent = "行程已取消成功：|";
+    $tent .= "出发行程：".$title."|";
+    $tent .= "行程时间：".$time."|";
+    $tent .= "取消原因：".$reason."|";
+    $tent .= "温馨提示：".$tishi;
+    $stitle="行程取消通知";
+    $biaoti="你好，你发布的".$time."行程已取消";
 
-    #向导游发送取消行程的模板消息
+    $banames = 'pmw_message';
+    $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $aid, $faxtime)";
+    $dosql->ExecNoneQuery($sql);
+//===========================================================================================
 
-    $data_guide=CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_cancel_guide,$page,$form_id);
+    //向导游发送取消行程的模板消息
+    $nickname =$a['company'];   //旅行社的名称
+    $tel = $a['tel'];            //旅行社联系人电话号码
+    $tishi="您预约的此条行程已取消，可进入小程序再次预约行程，欢迎您再次使用。";
+    $page="pages/about/enter/enter";
+
+    $data_guide=CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid_guide,$cfg_cancel_guide,$page,$form_id);
 
     $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
@@ -107,7 +129,24 @@ if(isset($token) && $token==$cfg_auth_key){
     $res_guide = https_request($url, urldecode($json_data_agency));//请求开始
     $res_guide = json_decode($res_guide, true);
     $errcode_guide=$res_guide['errcode'];
+    //==================================================================================================
+        //将导游接收到的撤销行程的模板消息保存起来
+        $type = 'guide';
+        $messagetype='template';
+        $templatetype='cancel';  //取消行程的模板消息类型
+        $tent = "行程已被取消：|";
+        $tent .= "出发行程：".$title."|";
+        $tent .= "行程时间：".$time."|";
+        $tent .= "昵称：".$nickname."|";
+        $tent .= "取消原因：".$reason."|";
+        $tent .= "温馨提示：".$tishi;
+        $stitle="行程取消通知";
+        $biaoti="你好，你预约的".$time."行程已被取消";
 
+        $banames = 'pmw_message';
+        $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
+        $dosql->ExecNoneQuery($sql);
+    //===========================================================================================
     if($errcode_guide==0 && $errcode_agency==0){
     $State = 1;
     $Descriptor = '行程取消成功!';

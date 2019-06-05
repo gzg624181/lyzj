@@ -34,11 +34,14 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：添加行程的时候content 内容以json字符串的形式保存在数据库中去
 
   $posttime=time();  //添加时间
+  $fabu_y=date("Y");
+  $fabu_ym=date("Y-m");
   $days=($endtime-$starttime) / (60 * 60 * 24) +1;  //行程的天数
   $jiesuanmoney = $cfg_jiesuan * $days;
   $r=$dosql->GetOne("SELECT company from pmw_agency where id=$aid");
   $company=$r['company'];
-  $sql = "INSERT INTO `#@__travel` (title,starttime,endtime,num,origin,content,money,other,posttime,aid,jiesuanmoney,company,days) VALUES ('$title',$starttime,$endtime,$num,'$origin','$content',$money,'$other',$posttime,$aid,'$jiesuanmoney','$company',$days)";
+  $starttime_ymd=date("Y-m-d",$starttime);
+  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y','$fabu_ym',$aid,'$jiesuanmoney','$company',$days)";
   $dosql->ExecNoneQuery($sql);
   $State = 1;
   $Descriptor = '旅行行程发布成功！!';

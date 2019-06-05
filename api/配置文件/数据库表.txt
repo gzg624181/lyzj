@@ -113,29 +113,23 @@ faxtime        发布时间
 state          状态(0,未读，1已读)
 
 
-  备注：  id=1  关于APP介绍
-         id=2   代理制度
-
-9.游戏列表   pmw_game
+9.后台给旅行社当月的结算   pmw_jiesuan
 
 id
-gamename         游戏名称
-game             游戏英文简写
-gamepic          游戏图片
-gamenumber       游戏在线人数（暂定）
-gamedescription  游戏赔率说明
-remark           游戏备注
-gametypes        游戏分类
-gamewho          游戏用户名称
-gametime         游戏更新时间
-gameonline       游戏是否在线
-orderid          排序
+aid              旅行社id
+company          旅行社名称
+time             行程年月
+teamnumber       团队人数
+days             行程天数
+summoney         结款总金额
+jisuantime       计算时间
 
 
-10.公告中心   pmw_gonggao
+
+10.票务分类   pmw_ticketclass   票务分类
 
 id
-title            公告标题
+title            分类标题
 type             公告类型  （系统消息：xiaoxi   最新公告：newgonggao   会员必读：bidu）
 content          公告内容
 issuetime        发布时间
