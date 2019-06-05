@@ -20,16 +20,38 @@ require_once(ADMIN_INC.'/action.class.php');
 //修改导游信息
 if($action == 'update')
 {
+
+  if(!isset($picarr))        $picarr = '';
+//合同组图
+  if(is_array($picarr))
+  {
+    $picarrNum = count($picarr);
+    $picarrTmp = '';
+
+    for($i=0;$i< $picarrNum;$i++)
+    {
+      $picarrTmp[] = $cfg_weburl."/".$picarr[$i];
+    }
+
+    $picarr = json_encode($picarrTmp);
+  }
+
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
+
   if(!check_str($card,$cfg_weburl)){
     $card=$cfg_weburl."/".$card; //导游证件
   }
+
+  if(!check_str($images,$cfg_weburl)){
+    $images=$cfg_weburl."/".$images; //导游头像
+  }
+
   if($password==""){ //密码不修改
-    $sql = "UPDATE `$tbname` SET name='$name', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name', agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
   }else{
     $password=md5(md5($password));
-    $sql = "UPDATE `$tbname` SET name='$name', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', password='$password', content='$content',regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', password='$password', content='$content',regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
   }
 
 	if($dosql->ExecNoneQuery($sql))

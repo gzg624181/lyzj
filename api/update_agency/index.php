@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：update_guide  更改导游个人资料
+	   * 链接地址：update_agency  更改旅行社资料
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -17,11 +17,10 @@
      * @return string
      *
      * @旅行社发布旅游行程   提供返回参数账号，
-     * id              导游id
-     * images          导游头像
-     * pics            相册
-     * tel             电话号码
-     * content         导游简介
+     * id               旅行社id
+     * images           旅行社头像
+     * name             联系人姓名
+     * tel             联系电话
      */
 require_once("../../include/config.inc.php");
 
@@ -37,12 +36,8 @@ if(isset($_POST['images'])){
 $images = $_POST['images'];
 }
 
-if(isset($_POST['pics'])){
-$pics = $_POST['pics'];
-}
-
-if(isset($_POST['content'])){
-$content = $_POST['content'];
+if(isset($_POST['name'])){
+$name = $_POST['name'];
 }
 
 if(isset($_POST['tel'])){
@@ -58,22 +53,6 @@ if(isset($token) && $token==$cfg_auth_key){
   $images = base64_image_content($images,$savepath);
   $images=str_replace("../..",$cfg_weburl,$images);
   }
-  //将相册里面的图片进行处理
-
- if(isset($pics)){
-  $arr=array();
-  $pic ="";
-  $arr=explode("|",$pics);
-  for($i=0;$i<count($arr);$i++){
-    $pics  = base64_image_content($arr[$i],$savepath);
-    if($i==count($arr)-1){
-      $thispic = str_replace("../../",$cfg_weburl.'/',$pics);
-    }else{
-      $thispic = str_replace("../../",$cfg_weburl.'/',$pics)."|";
-    }
-    $pic .= $thispic;
-    }
-}
 
 // 将GET传过来的参数进行判断最后一个参数，如果是最后一个参数，则最后一个逗号去除掉、
 
@@ -83,7 +62,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $lastkey = $newarr[$nums];  //最后一个参数的键
 
-  $sql = "UPDATE `#@__guide` set ";
+  $sql = "UPDATE `#@__agency` set ";
 
 
   if(isset($tel)){
@@ -94,20 +73,12 @@ if(isset($token) && $token==$cfg_auth_key){
     }
   }
 
-  if(isset($content)){
-    if($lastkey == "content"){
-    $sql .= " content='$content' ";
+  if(isset($name)){
+    if($lastkey == "name"){
+    $sql .= " name='$name' ";
     }else{
-    $sql .= " content='$content',";
+    $sql .= " name='$name',";
     }
-  }
-
-  if(isset($pics)){
-      if($lastkey == "pics"){
-      $sql .= " pics='$pic' ";
-      }else{
-      $sql .= " pics='$pic',";
-      }
   }
 
   if(isset($images)){
@@ -120,11 +91,11 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $sql .= "WHERE id=$id";
   $dosql->ExecNoneQuery($sql);
-  $r=$dosql->GetOne("SELECT * FROM pmw_guide where id=$id");
+  $r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");
   if(is_array($r)){
   $Data[]=$r;
   $State = 1;
-  $Descriptor = '导游信息修改成功!';
+  $Descriptor = '旅行社信息修改成功!';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
@@ -134,7 +105,7 @@ if(isset($token) && $token==$cfg_auth_key){
   echo phpver($result);
 }else{
   $State = 0;
-  $Descriptor = '导游信息修改失败!';
+  $Descriptor = '旅行社信息修改失败!';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,

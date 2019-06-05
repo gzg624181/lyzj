@@ -73,6 +73,29 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td height="45" align="right">导游证号：</td>
 			<td><input type="text" name="cardnumber" id="cardnumber" class="input" value="<?php echo $row['cardnumber']; ?>" /></td>
 		</tr>
+        <tr>
+		  <td height="155" align="right">合同：</td>
+		  	<td colspan="11" valign="middle">
+           <fieldset class="picarr">
+					<legend>列表</legend>
+					<div>最多可以上传<strong>50</strong>张图片<span onclick="GetUploadify('uploadify2','组图上传','image','image',50,<?php echo $cfg_max_file_size; ?>,'picarr','picarr')">开始上传</span></div>
+					<ul id="picarr">
+						<?php
+
+					if($row['agreement'] != '')
+					{
+						$picarr = json_decode($row['agreement']);
+						foreach($picarr as $v)
+						{
+							$v = explode(',', $v);
+							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
+						}
+					}
+					?>
+					</ul>
+			
+				</fieldset>（长宽比例 2：1）</td>
+	  </tr>
 		<tr>
 			<td height="45" align="right">导游电话：</td>
 			<td><?php echo $row['tel']; ?></td>

@@ -23,16 +23,32 @@ require_once('sendmessage.php');
 //修改旅行社信息
 if($action == 'update')
 {
+
+  if(!isset($picarr))        $picarr = '';
+//合同组图
+	if(is_array($picarr))
+	{
+		$picarrNum = count($picarr);
+		$picarrTmp = '';
+
+		for($i=0;$i< $picarrNum;$i++)
+		{
+			$picarrTmp[] = $cfg_weburl."/".$picarr[$i];
+		}
+
+		$picarr = json_encode($picarrTmp);
+	}
+
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
   if(!check_str($cardpic,$cfg_weburl)){
     $cardpic=$cfg_weburl."/".$cardpic; //导游证件
   }
   if($password==""){ //密码不修改
-    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic', images='$images', regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
   }else{
     $password=md5(md5($password));
-    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic', images='$images', regtime=$regtime,ymdtime='$ymdtime',password='$password' WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',password='$password' WHERE id=$id";
   }
 
 	if($dosql->ExecNoneQuery($sql))
@@ -212,11 +228,11 @@ else if($action=="checkfailed"){
     if ($res['errcode'] == 0 && $res['errcode'] == "ok") {
 	   $gourls="check_content.php?id=".$mid."&state=success";
        header("location:$gourls");
-	   exit();
+	     exit();
     }else{
 		$gourls="check_content.php?id=".$mid."&state=failed";
         header("location:$gourls");
-	    exit();
+	      exit();
 	}
 
   }elseif($type=="guide"){

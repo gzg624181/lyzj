@@ -34,7 +34,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $addtime=time();  //添加时间
   $sql = "INSERT INTO `#@__comment` (gid,aid,star,content,addtime) VALUES ($gid,$aid,'$star','$content',$addtime)";
   $dosql->ExecNoneQuery($sql);
-   #更新旅游行程的状态为1，已经评论
+   #更新旅游行程的评价状态为1，已经评论
   $dosql->ExecNoneQuery("UPDATE `#@__travel` set comment_state=1 where id=$id");
   $State = 1;
   $Descriptor = '评论信息发布成功！!';

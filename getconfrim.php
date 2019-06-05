@@ -10,7 +10,9 @@ $complete_ym = date("Y-m");
 
 $starttime_ymd=date("Y-m-d");
 
-$sql="UPDATE pmw_travel SET state=2 where state=1 and starttime_ymd='$starttime_ymd'";
+$complete_time= time();
+
+$sql="UPDATE pmw_travel SET state=2,complete_y='$complete_y',complete_ym='$complete_ym',complete_time='$complete_time' where state=1 and starttime_ymd='$starttime_ymd'";
 
 $dosql->ExecNoneQuery($sql);
 

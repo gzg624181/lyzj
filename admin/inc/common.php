@@ -371,6 +371,20 @@ function https_request($url,$data = null){
 	}
 
 
+	//匹配测试
+	function check_str($str, $substr)
+	{
+	 $nums=substr_count($str,$substr);
+	 if ($nums>=1)
+	 {
+		return true;
+	 }
+	 else
+	 {
+		return false;
+	 }
+	}
+
 // 计算旅游社所有的成功的计算总额
 
 

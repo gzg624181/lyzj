@@ -15,6 +15,7 @@
 <script type="text/javascript" src="editor/kindeditor-min.js"></script>
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="templates/js/ajax.js"></script>
+<script type="text/javascript" src="templates/js/getarea.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
@@ -75,6 +76,29 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td height="45" align="right">公司地址：</td>
 			<td><input type="text" name="address" id="address" class="input" value="<?php echo $row['address']; ?>" /></td>
 		</tr>
+        <tr>
+		  <td height="155" align="right">合同：</td>
+		  	<td colspan="11" valign="middle">
+           <fieldset class="picarr">
+					<legend>列表</legend>
+					<div>最多可以上传<strong>50</strong>张图片<span onclick="GetUploadify('uploadify2','组图上传','image','image',50,<?php echo $cfg_max_file_size; ?>,'picarr','picarr')">开始上传</span></div>
+					<ul id="picarr">
+						<?php
+
+					if($row['agreement'] != '')
+					{
+						$picarr = json_decode($row['agreement']);
+						foreach($picarr as $v)
+						{
+							$v = explode(',', $v);
+							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
+						}
+					}
+					?>
+					</ul>
+			
+				</fieldset>（长宽比例 2：1）</td>
+	  </tr>
 		<tr>
 			<td height="45" align="right">联系人电话：</td>
 			<td><?php echo $row['tel']; ?></td>

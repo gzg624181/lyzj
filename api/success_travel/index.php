@@ -77,7 +77,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['comment'][$j]['posttime']=date("Y-m-d",$show2['posttime']);
       }
       $State = 1;
-      $Descriptor = '形成列表查询成功！';
+      $Descriptor = '行程列表查询成功！';
       $result = array (
                   'State' => $State,
                   'Descriptor' => $Descriptor,

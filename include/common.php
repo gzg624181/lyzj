@@ -286,4 +286,37 @@ $return =$r;
 
 return $return;
 }
+
+
+//获取导游已经带团成功的次数和带团人数
+
+
+function get_guide_num($id){
+
+ global $dosql;
+
+ $arr=array();
+
+ $dosql->Execute("SELECT  id FROM pmw_travel where state=2 and gid=$id");
+
+ $team_num = $dosql->GetTotalRow();
+
+ $r=$dosql->GetOne("SELECT SUM(num) as num FROM pmw_travel where state=2 and gid=$id");
+
+	if(is_array($r)){
+	 $people_num = $r['num'];
+  }else{
+	 $people_num = 0;
+	}
+
+ $arr =array(
+	       "team"=>$team_num,
+				 "people"=>intval($people_num)
+ );
+
+return $arr;
+
+}
+
+
 ?>
