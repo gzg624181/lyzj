@@ -134,12 +134,17 @@ type             公告类型  （系统消息：xiaoxi   最新公告：newgong
 content          公告内容
 issuetime        发布时间
 
-11.重要公告    pmw_important
+11.景区票务    pmw_ticket
 
 id
-content          公告内容
-fbr              发布人
-faxtime          发布时间
+names         景区名称
+label         景区标签
+remarks       备注
+level         景区等级
+picarr        景区图片
+specs         规格（票务名称，价格，时间）
+solds          已售数量起始值
+posttime
 
 12.短信验证码   pmw_yzm
 

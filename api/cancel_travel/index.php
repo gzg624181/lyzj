@@ -24,6 +24,7 @@
      * gid       导游id
      */
 require_once("../../include/config.inc.php");
+require_once("../../admin/sendmessage.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -31,17 +32,18 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：取消行程的时候分为两种状态
   // 1.待预约状态的时候，直接取消
   // 2.待确认状态下的时候，发送双向模板消息
-  $r=$dsosql->GetOne("SELECT state FROM pmw_travel where id=$id");
+  $r=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
   if($r['state']==0){
     $sql = "UPDATE `#@__travel` set state=3 WHERE id=$id";
     if($dosql->ExecNoneQuery($sql)){
+    $s=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
     $State = 1;
     $Descriptor = '行程取消成功!';
     $result = array (
                 'State' => $State,
                 'Descriptor' => $Descriptor,
                 'Version' => $Version,
-                'Data' => $Data
+                'Data' => $s
                  );
     echo phpver($result);
   }else{
@@ -70,7 +72,8 @@ if(isset($token) && $token==$cfg_auth_key){
     $openid_agency=$a['openid'];    //旅行社联系人openid
 
     $openid_guide=$g['openid'];    //导游openid
-    $formi_d =$g['formid'];
+
+    $form_id =$g['formid'];
 
 
     $title=$x['title'];           //旅行社发布的行程标题
@@ -93,7 +96,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $json_data_agency = json_encode($data_agency);//转化成json数组让微信可以接收
     $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
     $res_agency = json_decode($res_agency, true);
-    $errcode_agency=$res_agency['errcode'];
+  //  $errcode_agency=$res_agency['errcode'];
 //==================================================================================================
     //将旅行社注撤销行程的模板消息保存起来
     $type = 'agency';
@@ -107,7 +110,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $stitle="行程取消通知";
     $biaoti="你好，你发布的".$time."行程已取消";
 
-    $banames = 'pmw_message';
+    $tbnames = 'pmw_message';
     $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $aid, $faxtime)";
     $dosql->ExecNoneQuery($sql);
 //===========================================================================================
@@ -128,7 +131,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $json_data_guide = json_encode($data_guide);//转化成json数组让微信可以接收
     $res_guide = https_request($url, urldecode($json_data_agency));//请求开始
     $res_guide = json_decode($res_guide, true);
-    $errcode_guide=$res_guide['errcode'];
+  //  $errcode_guide=$res_guide['errcode'];
     //==================================================================================================
         //将导游接收到的撤销行程的模板消息保存起来
         $type = 'guide';
@@ -147,14 +150,17 @@ if(isset($token) && $token==$cfg_auth_key){
         $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
         $dosql->ExecNoneQuery($sql);
     //===========================================================================================
-    if($errcode_guide==0 && $errcode_agency==0){
+    $s=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
+
+    $states =$s['state'];
+    if($states==3){
     $State = 1;
     $Descriptor = '行程取消成功!';
     $result = array (
                 'State' => $State,
                 'Descriptor' => $Descriptor,
                 'Version' => $Version,
-                'Data' => $Data
+                'Data' => $s
                  );
     echo phpver($result);
   }else{

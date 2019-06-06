@@ -15,25 +15,43 @@
 <form name="form" id="form" method="post" action="banner_save.php">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
 		<tr align="left" class="head">
-			<td width="1%" height="36" align="center">&nbsp;</td>
-		  <td width="30%" align="center">文字介绍</td>
-		  <td width="31%" align="center">banner图片</td>
-		  <td width="35%" align="center">添加时间</td>
-		  <td width="3%" align="center">操作</td>
+			<td width="0%" height="36" align="center">&nbsp;</td>
+		  <td width="17%" align="center">图片标题</td>
+		  <td width="13%" align="center">图片类型</td>
+		  <td width="24%" align="center">banner图片</td>
+			<td width="16%" align="center">跳转链接</td>
+		  <td width="21%" align="center">添加时间</td>
+		  <td width="9%" align="center">操作</td>
 		</tr>
 		<?php
 		$dosql->Execute("SELECT * FROM `pmw_banner`");
 		while($row = $dosql->GetArray())
 		{
+		switch($row['type']){
+		case 'reg':
+		$type = "注册";	
+		break;
+		
+		case 'text':
+		$type="文本介绍";
+		break;
+		
+		case 'ticket':
+		$type="景区";
+		break;
+		
+		}
 		?>
 		<tr align="left" class="dataTr">
 			<td height="54" align="center">&nbsp;</td>
 			<td align="center"><?php echo $row['title'];?></td>
+			<td align="center"><?php echo $type;?></td>
 			<td align="center"><img style="width:200px; padding:5px;border-radius: 9px; " src="<?php echo $row['pic'];?>"></td>
+			<td align="center"><?php echo $row['linkurl'];?></td>
 			<td align="center"><?php echo date("Y-m-d H:i:s",$row['pictime']);?></td>
 			<td align="center">
       <div id="jsddm">
-			<a title="编辑"  href="banner_update.php?id=<?php echo $row['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></div>
+			<a title="编辑"  href="banner_update.php?id=<?php echo $row['id']; ?>&type=<?php echo $row['type'];?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></div>
     <div id="jsddm" style=" margin-top:3px;"><a title="删除" href="banner_save.php?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash" aria-hidden="true"></i></a></div>
             </td>
 		</tr>

@@ -10,7 +10,7 @@
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/forms.func.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
 <script>
 
@@ -69,6 +69,9 @@ $check = isset($check) ? $check : '';
  <li class="<?php if($check=="concel"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('concel')">已取消&nbsp;&nbsp;<i class='fa fa-chain-broken' aria-hidden='true' style="color:#F00"></i></a></li>
 <li class="line">-</li>
 <li class="<?php if($check=="comment"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('comment')">已评论&nbsp;&nbsp;<i class='fa fa-paper-plane-o' aria-hidden='true' style="color:#F1700E"></i></a></li>
+  <li class="line">-</li>
+  <li class="<?php if($check=="invalid"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('invalid')">已失效&nbsp;&nbsp;<i class='fa fa-stop-circle-o' aria-hidden='true' style="color:#ccc"></i></a></li>
+
 	</ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" placeholder="请输入旅行社名称或者导游名字进行搜索" title="请输入旅行社名称或者导游名字进行搜索" />
@@ -106,6 +109,8 @@ $check = isset($check) ? $check : '';
 		$dopage->GetPage("SELECT * FROM $tbname where state=2",10);
 		  }elseif($check=="concel"){ //已取消
 		$dopage->GetPage("SELECT * FROM $tbname where state=3",10);
+     }elseif($check=="invalid"){ //已取消
+		$dopage->GetPage("SELECT * FROM $tbname where state=4",10);
 		  }elseif($check=="agency"){ //旅行社发布的行程
 		$dopage->GetPage("SELECT * FROM $tbname where aid=$id",10);
 		  }elseif($check=="guide"){ //旅行社发布的行程
@@ -144,6 +149,10 @@ $check = isset($check) ? $check : '';
 					$state= "<i class='fa fa-chain-broken' aria-hidden='true' style='color:#F00'></i>";
           $color="#F00";
 					break;
+        case 4://已失效
+  					$state= "<i class='fa fa-stop-circle-o' aria-hidden='true' style='color:#ccc'></i>";
+            $color="#ccc";
+  					break;
 				default:
                $state = '暂无分类';
 

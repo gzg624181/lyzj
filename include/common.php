@@ -207,7 +207,7 @@ function CancelAgency($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$pa
 
 # 旅行社取消发布的行程，给导游发送模板消息提醒
 
-function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_cancel_guide,$page,$form_id){
+function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_concel_agency,$page,$form_id){
 
 	$data = array(
 			'touser' => $openid,                   //要发送给旅行社的openid

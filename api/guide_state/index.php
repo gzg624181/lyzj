@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：success_travel 获取旅行社已经完成的形成列表
+	   * 链接地址：guide_state   导游接到行程的状态
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -16,17 +16,18 @@
      *
      * @return string
      *
-     * @提供返回参数账号 id    旅行社的id 返回旅行社的导游形成  （0，待预约，2.已完成,1,待确认 3.已经取消）
+     * @提供返回参数账号 id    导游的id
+     *  （1，待确认，3，已取消  2，已完成   待出发 ：导游接到行程，还未有出发之前）
      */
 require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $r=$dosql->GetOne("SELECT id FROM `#@__travel` WHERE aid=$id");
+      $r=$dosql->GetOne("SELECT id FROM `#@__travel` WHERE gid=$id");
       if(!is_array($r)){  //如果传递过来的账号不存在，则没有这一列
         $State = 0;
-        $Descriptor = '暂无发布的形成列表，请先发布行程！';
+        $Descriptor = '暂无行程列表！';
         $result = array (
                     'State' => $State,
                     'Descriptor' => $Descriptor,
@@ -41,49 +42,46 @@ if(isset($token) && $token==$cfg_auth_key){
       $one=1;
       $two=2;
       $three=3;
-      #已完成
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=2",$we);
+      $four=4;
+      $five=5;
+      #待出发
+      $now=time();
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and (state=2 or state=1) and starttime <= $now",$we);
       for($i=0;$i<$dosql->GetTotalRow($we);$i++){
         $row = $dosql->GetArray($we);
-        $Data['complete'][$i]=$row;
-        $Data['complete'][$i]['posttime']=date("Y-m-d",$row['posttime']);
-      }
-      #待预约
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=0",$me);
-      for($j=0;$j<$dosql->GetTotalRow($me);$j++){
-        $show = $dosql->GetArray($me);
-        $Data['appointment'][$j]=$show;
-        $Data['appointment'][$j]['posttime']=date("Y-m-d",$show['posttime']);
+        $Data['daichufa'][$i]=$row;
+        $Data['daichufa'][$i]['posttime']=date("Y-m-d",$row['posttime']);
       }
       #待确认
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=1",$one);
-      for($i=0;$i<$dosql->GetTotalRow($one);$i++){
-        $row1 = $dosql->GetArray($one);
-        $Data['confirm'][$i]=$row1;
-        $Data['confirm'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=1",$me);
+      for($j=0;$j<$dosql->GetTotalRow($me);$j++){
+        $show = $dosql->GetArray($me);
+        $Data['daiqueren'][$j]=$show;
+        $Data['daiqueren'][$j]['posttime']=date("Y-m-d",$show['posttime']);
       }
       #已取消
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=3",$two);
-      for($j=0;$j<$dosql->GetTotalRow($two);$j++){
-        $show1 = $dosql->GetArray($two);
-        $Data['concel'][$j]=$show1;
-        $Data['concel'][$j]['posttime']=date("Y-m-d",$show1['posttime']);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=3",$one);
+      for($i=0;$i<$dosql->GetTotalRow($one);$i++){
+        $row1 = $dosql->GetArray($one);
+        $Data['yiquxiao'][$i]=$row1;
+        $Data['yiquxiao'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
       }
-      #已失效
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=4",$two);
-      for($j=0;$j<$dosql->GetTotalRow($two);$j++){
-        $show1 = $dosql->GetArray($two);
-        $Data['invalid'][$j]=$show1;
-        $Data['invalid'][$j]['posttime']=date("Y-m-d",$show1['posttime']);
+      #已完成
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=2",$five);
+      for($j=0;$j<$dosql->GetTotalRow($five);$j++){
+        $show1 = $dosql->GetArray($five);
+        $Data['yiwancheng'][$j]=$show1;
+        $Data['yiwancheng'][$j]['posttime']=date("Y-m-d",$show1['posttime']);
       }
 
-      #去评价
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=2 and comment_state=0",$three);
-      for($j=0;$j<$dosql->GetTotalRow($three);$j++){
-        $show2 = $dosql->GetArray($three);
-        $Data['comment'][$j]=$show2;
-        $Data['comment'][$j]['posttime']=date("Y-m-d",$show2['posttime']);
+      #全部行程
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id",$two);
+      for($j=0;$j<$dosql->GetTotalRow($two);$j++){
+        $show2 = $dosql->GetArray($two);
+        $Data['all'][$j]=$show2;
+        $Data['all'][$j]['posttime']=date("Y-m-d",$show2['posttime']);
       }
+
       $State = 1;
       $Descriptor = '行程列表查询成功！';
       $result = array (
