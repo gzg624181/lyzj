@@ -55,15 +55,39 @@ if(isset($token) && $token==$cfg_auth_key){
 
    }
 
-
-
+    //searchlist  搜索历史
+    //list        搜索内容
+    //recommand   推荐
 
     if($num>0){
 
-    while($row=$dosql->GetArray()){
-      $Data[]=$row;
+    //如果搜索的有数据的时候，则将搜索记录保存到数据库中去
+    if(isset($type) && isset($id)){
+    $two=2;
+    $posttime=time();
+    $r=$dosql->GetOne("SELECT keyword FROM pmw_searchlist where keyword='$keyword'");
+    if(!is_array($r)){
+    $sql="INSERT INTO  `#@__searchlist` (keyword,mid,type,posttime) values ('$keyword',$id,'$type',$posttime)";
+     $dosql->ExecNoneQuery($sql);
     }
-    
+
+     $dosql->Execute("SELECT * FROM `#@__searchlist` where type='$type' and mid=$id order by id limit  5",$two);
+     while($show=$dosql->GetArray($two)){
+      $Data['searchlist'][]=$show;
+     }
+   }
+
+    while($row=$dosql->GetArray()){
+      $Data['list'][]=$row;
+    }
+
+
+      //默认推荐四条数据
+      $four=4;
+      $dosql->Execute("SELECT * from pmw_travel where state=0 order by rand() limit 4",$four);
+      while($sow=$dosql->GetArray($four)){
+        $Data['recommand'][]=$sow;
+      }
       $State = 1;
       $Descriptor = '搜索数据查询成功！';
       $result = array (
@@ -74,11 +98,22 @@ if(isset($token) && $token==$cfg_auth_key){
                    );
       echo phpver($result);
     }else{
+      $six=6;
+      $dosql->Execute("SELECT * FROM pmw_travel where state=0 order by rand() limit 4",$six);
+      while($row=$dosql->GetArray($six)){
+      $Data['recommand'][]=$row;
 
-      $dosql->Execute("SELECT * FROM pmw_travel where state=0 order by rand() limit 4");
-      while($row=$dosql->GetArray()){
-        $Data[]=$row;
+      if(isset($type) && isset($id)){
+       $five=5;
+       $dosql->Execute("SELECT * FROM `#@__searchlist` where type='$type' and mid=$id oder by id limit 5",$five);
+       while($go=$dosql->GetArray($five)){
+        $Data['searchlist'][]=$go;
+       }
+     }
+
+
       }
+
       $State = 0;
       $Descriptor = '搜索数据为空，推荐数据获取成功！';
       $result = array (

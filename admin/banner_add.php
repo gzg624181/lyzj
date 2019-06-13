@@ -92,10 +92,10 @@
 		  <td colspan="2">
 				<select name="linkurl" id="linkurl" class="input" style="width:508px;">
 		               <?php
-		      $dosql->Execute("SELECT * FROM pmw_agency order by id asc");
+		      $dosql->Execute("SELECT * FROM pmw_ticket order by id asc");
 		      while($row=$dosql->GetArray()){
 		      ?>
-		    <option value="<?php echo $row['id'];?>"><?php echo $row['company'];?></option>
+		    <option value="<?php echo $row['id'];?>"><?php echo $row['names'];?></option>
 		    <?php }?>
 		    </select>
 			</td>

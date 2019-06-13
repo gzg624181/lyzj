@@ -59,7 +59,9 @@ function https_request($url,$data = null){
   function add_travel($getarray){
     //判断传了几条行程
 		$num=(count($getarray) - 9) / 3;
-		if($num == 1){
+	if($num==0){
+		$content=array();
+	}elseif($num == 1){
 			$content=array(
 				"0"=>array(
 					"jinName" =>  $getarray['jinName1'],

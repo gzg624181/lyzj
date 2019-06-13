@@ -142,32 +142,29 @@ label         景区标签
 remarks       备注
 level         景区等级
 picarr        景区图片
-specs         规格（票务名称，价格，时间）
-solds          已售数量起始值
+////specs     规格（票务名称，价格，时间）(tid)
+solds         已售数量起始值
+content       景区介绍
+xuzhi         购票须知
 posttime
 
-12.短信验证码   pmw_yzm
+12.票务规格   pmw_specs
 
 id
-phone          发送短信号码
-code           发送验证码
-start_time      验证码开始时间
-num            发送次数
-date           发布日期
+names            景区名称
+tid              景区id
+tickettype       票务类型
+normalmoney      正常价格
+resetmoney       双休价格
 
-13.会员提现记录  pmw_pickmoney
+13.搜索历史记录  pmw_searchlist
 
 id
-mid               会员id
-pick_uid          提现会员uid
-pick_number       提现金额
-pick_time         提现时间
-pick_posttime     提现确认发放时间
-pick_typesid      提现到银行卡或者支付宝账号类型id
-pick_telephone    提现会员手机
-randnumber        随机数
-pick_order        提现订单号码
-pick_statues      提现状态（0，未发放提现金额   1，发放了提现金额）
+keyword          搜索关键字
+mid              搜索会员id
+type             会员类型 agency  guide
+posttime         提现时间
+
 
 
 14.会员下线转账记录  pmw_transfer

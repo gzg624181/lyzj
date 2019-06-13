@@ -63,7 +63,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['confirm'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
       }
       #已取消
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=3",$two);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=3  or state =5",$two);
       for($j=0;$j<$dosql->GetTotalRow($two);$j++){
         $show1 = $dosql->GetArray($two);
         $Data['concel'][$j]=$show1;
@@ -84,6 +84,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['comment'][$j]=$show2;
         $Data['comment'][$j]['posttime']=date("Y-m-d",$show2['posttime']);
       }
+
       $State = 1;
       $Descriptor = '行程列表查询成功！';
       $result = array (

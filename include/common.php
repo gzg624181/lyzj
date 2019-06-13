@@ -143,7 +143,7 @@ function SendAgency($openid,$title,$tel,$name,$time,$timestamp,$cfg_agency_remin
 {
     $data = array(
         'touser' => $openid,                   //要发送给旅行社的openid
-   'template_id' => $cfg_agency_remind,    //改成自己的模板id，在微信后台模板消息里查看
+   'template_id' => $cfg_agency_remind,        //改成自己的模板id，在微信后台模板消息里查看
           'page' => $page,                     //点击模板消息详情之后跳转连接
 		   'form_id' => $form_id,                   //form_id
           'data' => array(
@@ -175,11 +175,11 @@ function SendAgency($openid,$title,$tel,$name,$time,$timestamp,$cfg_agency_remin
 
 # 旅行社取消发布的行程，给旅行社发布行程提醒
 
-function CancelAgency($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$page,$form_id){
+function CancelAgency($title,$time,$reason,$tishi,$openid,$cfg_cancel_guide,$page,$form_id){
 
 	$data = array(
 			'touser' => $openid,                   //要发送给旅行社的openid
-	'template_id' => $cfg_concel_agency,       //改成自己的模板id，在微信后台模板消息里查看
+	'template_id' => $cfg_cancel_guide,       //改成自己的模板id，在微信后台模板消息里查看
 				'page' => $page,                     //点击模板消息详情之后跳转连接
 		 'form_id' => $form_id,                   //form_id
 				'data' => array(
@@ -207,11 +207,11 @@ function CancelAgency($title,$time,$reason,$tishi,$openid,$cfg_concel_agency,$pa
 
 # 旅行社取消发布的行程，给导游发送模板消息提醒
 
-function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_concel_agency,$page,$form_id){
+function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_cancel_guide,$page,$form_id){
 
 	$data = array(
 			'touser' => $openid,                   //要发送给旅行社的openid
-	'template_id' => $cfg_concel_agency,       //改成自己的模板id，在微信后台模板消息里查看
+	'template_id' => $cfg_cancel_guide,       //改成自己的模板id，在微信后台模板消息里查看
 				'page' => $page,                     //点击模板消息详情之后跳转连接
 		 'form_id' => $form_id,                   //form_id
 				'data' => array(
@@ -318,5 +318,35 @@ return $arr;
 
 }
 
+
+//获取旅行社已经发布成功的次数和带团人数
+
+
+function get_agency_num($id){
+
+ global $dosql;
+
+ $arr=array();
+
+ $dosql->Execute("SELECT  id FROM pmw_travel where state=2 and aid=$id");
+
+ $team_num = $dosql->GetTotalRow();
+
+ $r=$dosql->GetOne("SELECT SUM(num) as num FROM pmw_travel where state=2 and aid=$id");
+
+	if(is_array($r)){
+	 $people_num = $r['num'];
+  }else{
+	 $people_num = 0;
+	}
+
+ $arr =array(
+	       "team"=>$team_num,
+				 "people"=>intval($people_num)
+ );
+
+return $arr;
+
+}
 
 ?>

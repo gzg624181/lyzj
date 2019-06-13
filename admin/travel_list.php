@@ -108,7 +108,7 @@ $check = isset($check) ? $check : '';
 		  }elseif($check=="complete"){ //已完成
 		$dopage->GetPage("SELECT * FROM $tbname where state=2",10);
 		  }elseif($check=="concel"){ //已取消
-		$dopage->GetPage("SELECT * FROM $tbname where state=3",10);
+		$dopage->GetPage("SELECT * FROM $tbname where state=3 or state=5",10);
      }elseif($check=="invalid"){ //已取消
 		$dopage->GetPage("SELECT * FROM $tbname where state=4",10);
 		  }elseif($check=="agency"){ //旅行社发布的行程
@@ -153,6 +153,10 @@ $check = isset($check) ? $check : '';
   					$state= "<i class='fa fa-stop-circle-o' aria-hidden='true' style='color:#ccc'></i>";
             $color="#ccc";
   					break;
+        case 5://已取消
+    					$state= "<i class='fa fa-chain-broken' aria-hidden='true' style='color:#F00'></i>";
+              $color="#F00";
+    					break;
 				default:
                $state = '暂无分类';
 

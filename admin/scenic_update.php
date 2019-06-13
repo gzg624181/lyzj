@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>添加景区</title>
+<title>修改景区</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/getuploadify.js"></script>
@@ -21,14 +21,15 @@
 //初始化参数
 $action  = isset($action)  ? $action  : 'ticket_save.php';
 $tbname='pmw_ticket';
+$r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 ?>
-<div class="formHeader"> <span class="title" style="margin-left: 13px;">添加景区</span> <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a> </div>
+<div class="formHeader"> <span class="title" style="margin-left: 13px;">修改景区</span> <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a> </div>
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
 	<table id="table1"  width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable" >
          <tr>
 			<td width="25%" height="40" align="right">景区名称：</td>
 			<td width="75%">
-      <input type="text" class="input" id="names" name="names" required="required">
+      <input type="text" class="input" id="names" name="names" value="<?php echo $r['names'];?>" required="required">
       <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
       </td>
 		</tr>
@@ -52,7 +53,7 @@ $tbname='pmw_ticket';
       $dosql->Execute("SELECT * FROM pmw_ticketclass order by id asc");
       while($row=$dosql->GetArray()){
       ?>
-    <option value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
+    <option  value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
     <?php }?>
     </select>
     </td>
@@ -108,7 +109,7 @@ $tbname='pmw_ticket';
 				</script>
         </td>
         </tr>
-        
+
          <tr>
         <td height="40" align="right">景区介绍：</td>
         <td><textarea name="content" id="content" class="kindeditor"></textarea>
@@ -127,7 +128,7 @@ $tbname='pmw_ticket';
 				</script></textarea>
         </td>
         </tr>
-        
+
         <tr>
         <td width="25%" height="40" align="right">最低价格：</td>
         <td width="75%">
