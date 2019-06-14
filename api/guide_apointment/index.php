@@ -209,7 +209,7 @@ if(isset($token) && $token==$cfg_auth_key){
     }
   }else{
     $State = 3;
-    $Descriptor = '本次行程与已预约的行程相冲突，请重新预约新的行程!';
+    $Descriptor = '您已有此时间段内行程，请合理安排出行时间!';
     $result = array (
                 'State' => $State,
                 'Descriptor' => $Descriptor,

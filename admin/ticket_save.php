@@ -161,11 +161,11 @@ else if($action == 'getpic')
   $picarr = $r['picarr'];
   $content =  "<span style='font-size:14px;font-weight:bold;margin-bottom:10px;'>".$r['names']."--景区相册"."</span>";
 
-  $arr =json_decode($picarr);
-  //$arr .=print_r($arr);
-    for($i=0;$i<count($arr);$i++){
-    $content .= "<img src='".$arr[$i]."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
-    }
+    // $arr =json_decode($picarr);
+    // $arr .=print_r($arr);
+    // for($i=0;$i<count($arr);$i++){
+    // $content .= "<img src='".$arr[$i]."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
+    // }
 
 
   return  $content;

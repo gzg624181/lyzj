@@ -157,13 +157,24 @@ tickettype       票务类型
 normalmoney      正常价格
 resetmoney       双休价格
 
-13.搜索历史记录  pmw_searchlist
+13.购买票务订单  pmw_order
 
 id
-keyword          搜索关键字
-mid              搜索会员id
-type             会员类型 agency  guide
-posttime         提现时间
+tid               票务id
+jingquname        景区名称
+type              下票单位（目前可能是导游或者旅行社）
+did               下单人id
+contactname       联系人姓名
+contacttel        联系人电话
+usetime           使用日期（varchar）
+price             单张票的价格
+typename          票务类型（成人票，儿童票，优惠票）
+nums              票务数量
+totalamount       支付总金额
+paytype           支付类型（线下支付，微信支付）
+orderid           支付订单号
+states            后台票务处理状态（默认未处理0，已处理1）
+posttime          添加时间
 
 
 

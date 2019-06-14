@@ -87,6 +87,7 @@ function ConfDel(i)
 	tips[1] = "系统会自动删除类别下所有子类别以及信息，确定删除吗？";
 	tips[2] = "系统会自动删除类别下所有子类别，确定删除吗？";
 	tips[3] = "确定要提现吗？";
+	tips[4] = "确定要更改订票状态吗？";
 
 	if(confirm(tips[i])) return true;
 	else return false;

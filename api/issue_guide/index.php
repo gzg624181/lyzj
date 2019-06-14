@@ -28,10 +28,19 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：添加空闲时间 content 内容以json字符串的形式保存在数据库中去
+  //  判断表里面是否有这个导游的空闲时间列表
 
-  $addtime=time();  //添加时间
-  $sql = "INSERT INTO `#@__freetime` (gid,content,addtime) VALUES ($id,'$time',$addtime)";
-  $dosql->ExecNoneQuery($sql);
+  $r=$dosql->GetOne("SELECT id from pmw_freetime where gid=$gid");
+
+  if(!is_array($r)){
+    $addtime=time();  //更新时间
+    $sql = "INSERT INTO `#@__freetime` (gid,content,addtime) VALUES ($id,'$time',$addtime)";
+    $dosql->ExecNoneQuery($sql);
+  }else{
+    $addtime=time();  //更新时间
+    $sql = "UPDATE  `#@__freetime` SET content='$content',addtime=$addtime where gid=$gid";
+    $dosql->ExecNoneQuery($sql);
+  }
   # 更新导游的formid
   $dosql->ExecNoneQuery("UPDATE `#@__guide` set formid='$formid' where id=$id");
   $State = 1;
