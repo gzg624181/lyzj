@@ -159,16 +159,17 @@ else if($action == 'getpic')
   $tbname="pmw_ticket";
   $r=$dosql->GetOne("SELECT picarr,names FROM $tbname WHERE id=$id");
   $picarr = $r['picarr'];
-  $content =  "<span style='font-size:14px;font-weight:bold;margin-bottom:10px;'>".$r['names']."--景区相册"."</span>";
+  $name = $r['names'];
+  $content =  "<span class='num' style='font-size:14px;font-weight:bold;margin-bottom:10px;'>".$name."--景区相册"."</span>";
 
-    // $arr =json_decode($picarr);
-    // $arr .=print_r($arr);
-    // for($i=0;$i<count($arr);$i++){
-    // $content .= "<img src='".$arr[$i]."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
-    // }
+    $arr =json_decode($picarr);
+  //  $arr .=print_r($arr);
+    for($i=0;$i<count($arr);$i++){
+    $img = $cfg_weburl."/".rtrim($arr[$i],",");
+    $content .= "<img src='".$img."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
+    }
 
-
-  return  $content;
+  echo  $content;
   }
 
   //修改上线下线的操作
@@ -209,6 +210,32 @@ else if($action=="del100"){
   $gourl= "specs_add.php?id=".$tid;
   header("location:$gourl");
   exit();
+
+}else if($action=="update_ticket"){
+
+  if(is_array($picarr))
+  {
+    $picarrNum = count($picarr);
+    $picarrTmp = '';
+
+    for($i=0;$i<$picarrNum;$i++)
+    {
+      $picarrTmp[] = $picarr[$i].','.$picarr_txt[$i];
+    }
+
+    $picarr = json_encode($picarrTmp);
+  }
+
+  if(is_array($flag))
+	{
+		$flag = implode(',',$flag);
+	}
+
+  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content',xuzhi='$xuzhi',solds=$solds WHERE id=$id");
+  $gourl= "scenic.php";
+  header("location:$gourl");
+  exit();
+
 }
 //无条件返回
 else

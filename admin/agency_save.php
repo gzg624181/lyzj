@@ -116,7 +116,7 @@ else if($action == 'checkagency')
      //发送模板消息
      $openid=$r['openid'];
      $form_id=$r['formid'];  //微信小程序提交表单的formid
-     $page="pages/index/index";
+     $page="pages/about/login/login";
 
     // 并且发送通过的模板消息
     $ACCESS_TOKEN = get_access_token($appid,$appsecret);//ACCESS_TOKEN
@@ -175,7 +175,7 @@ else if($action == 'checkagency')
     //发送模板消息
     $openid=$r['openid'];
     $form_id=$r['formid'];  //微信小程序提交表单的formid
-    $page="pages/index/index";
+    $page="pages/about/login/login";
 
    // 并且发送通过的模板消息
    $ACCESS_TOKEN = get_access_token($appid,$appsecret);//ACCESS_TOKEN
@@ -211,7 +211,7 @@ else if($action=="checkfailed"){
     //发送模板消息
     $openid=$r['openid'];
     $form_id=$r['formid'];  //微信小程序提交表单的formid
-    $page="pages/index/index";
+    $page="pages/register/register";
   	if($type=="agency"){
   		$typename="旅行社";
   	}else{
@@ -253,7 +253,7 @@ else if($action=="checkfailed"){
   //发送模板消息
   $openid=$r['openid'];
   $form_id=$r['formid'];  //微信小程序提交表单的formid
-  $page="pages/index/index";
+  $page="pages/register/register";
   if($type=="agency"){
     $typename="旅行社";
   }else{

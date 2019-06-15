@@ -28,6 +28,7 @@
      * content      简介(text)
      * pics         导游相册 (选填)(text)
      * regtime      注册时间 (选填)(int)
+     * openid       前端发送formid
      */
 require_once("../../include/config.inc.php");
 require_once("../../admin/sendmessage.php");
@@ -47,8 +48,9 @@ $content=$json['content'];
 $pics=$json['pics'];
 $token=$json['token'];
 $images=$json['images'];
-$code=$json['code'];
+//$code=$json['code'];
 $formid=$json['formid'];
+$openid =$json['openid'];
 
 //这个是自定义函数，将Base64图片转换为本地图片并保存
 $savepath= "../../uploads/image/";
@@ -85,7 +87,7 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
 }else{
   $appid=$cfg_appid;
   $appsecret=$cfg_appsecret;
-  $openid=get_openid($code,$appid,$appsecret);
+  //$openid=Openid($code,$appid,$appsecret);
   $regtime=time();
   $regip=GetIP();
   $getcity=get_city($regip);

@@ -5,7 +5,7 @@ $username=$_SESSION['admin'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>景区管理</title>
+<title>授权用户会员管理</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <link href="templates/style/menu1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
@@ -13,57 +13,35 @@ $username=$_SESSION['admin'];
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
-
-
-function Specs(id)
-{
-layer.open({
-  type: 2,
-  title: '',
-  maxmin: true,
-  shadeClose: true, //点击遮罩关闭	层
-  area : ['480px' , '420px'],
-  content: 'specs_add.php?id='+id,
+function message(Id){
+  // alert(Id);
+   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+   layer.photos({
+   photos: '#layer-photos-demo_'+Id,
+	 area:['300px','270px'],  //图片的宽度和高度
+   shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
+   closeBtn:1,
+   offset:'40px',  //离上方的距离
+   shadeClose:false
   });
+});
 }
 
-function ChangeState(id,checkinfo){
-
-   var url = "ticket_save.php?action=changestate&id="+id+"&checkinfo="+checkinfo;
-
-	 window.location.href= url;
-
-}
-
-function getpic(id){
-	 var ajax_url='ticket_save.php?action=getpic&id='+id;
-   //alert(ajax_url);
-	$.ajax({
-    url:ajax_url,
-    type:'get',
-	data: "data" ,
-	dataType:'html',
-    success:function(data){
-        layer.open({
-        type: 1
-        ,title: false //不显示标题栏
-        ,closeBtn: false
-        ,area: '800px;'
-        ,shade: 0.8
-        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-        ,btn: ['点击关闭']
-        ,btnAlign: 'c'
-        ,moveType: 1 //拖拽模式，0或者1
-        ,content: "<div style='widht:750px;padding:25px; height:400px;line-height: 22px;text-align:center'>"+ data+"</div>"
-        ,
-      });
-    } ,
-	error:function(){
-       alert('error');
-    }
-	});
+function member_update(Id){
+ var adminlevel=document.getElementById("adminlevel").value;
+  if(adminlevel==1){
+	  window.location("member_update.php?id="+Id);
+    }else{
+	  alert("亲，您还没有操作本模块的权限，请联系超级管理员！");
+		}
 	}
 
+function del_member(){
+ var adminlevel=document.getElementById("adminlevel").value;
+  if(adminlevel!=1){
+	  alert("亲，您还没有操作本模块的权限，请联系超级管理员！");
+  }
+	}
 </script>
 
 
@@ -79,16 +57,14 @@ $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
 </head>
 <body style="padding:10px;">
 <?php
-$tbname="pmw_ticket";
-$action="ticket_save.php";
+$tbname="pmw_members";
 $one=1;
 $dosql->Execute("SELECT * FROM $tbname",$one);
 $num=$dosql->GetTotalRow($one);
 ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
-
 <div class="topToolbar">
-  <span class="title">景区列表管理：<span class="num" style="color:red;"><?php echo $num;?></span>
+<span class="title">授权会员列表：<span class="num" style="color:red;"><?php echo $num;?></span>
 </span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
@@ -102,14 +78,10 @@ $num=$dosql->GetTotalRow($one);
             <td width="3%" height="165" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="14%" align="center">景区名称</td>
-                <td width="10%" align="center">景区分类</td>
-                <td width="24%" align="center">景区标签</td>
-                <td width="8%" align="center">景区等级</td>
-                <td width="8%" align="center">景区图片</td>
-                <td width="11%" align="center">已售数量起始值</td>
-                <td width="13%" align="center">发布时间</td>
-								<td width="11%" aligin="center">操作</td>
+                <td width="19%" align="center">用户昵称</td>
+                <td width="6%" align="center">头像</td>
+                <td width="59%" align="center">性别</td>
+                <td width="15%" align="center">发布时间</td>
                 </tr>
               <?php
 
@@ -118,49 +90,30 @@ $num=$dosql->GetTotalRow($one);
 		while($row = $dosql->GetArray())
 		{
 			$id=$row['id'];
-
-	  if($row['checkinfo']==1){
-
-			 $checkinfo ="<a href='javascript:void(0);' onclick=\"ChangeState('$id','1')\"><i style='color:#509ee1;cursor:pointer;'  title='已上线，点击进行下线操作' class='fa fa-arrow-up' aria-hidden='true'></i></a>";
-
-		 }elseif($row['checkinfo']==0){
-
-			 $checkinfo ="<a href='javascript:void(0);' onclick=\"ChangeState('$id','0')\"><i style='color:red;cursor:pointer;'  title='已下线，点击进行上线操作' class='fa fa-arrow-down' aria-hidden='true'></i></a>";
+			switch($row['sex'])
+			{
+				case 1:
+					$sex = "<i title='男' style='font-size:16px;color: blue; font-weight:bold;' class='fa fa-venus' aria-hidden='true'></i>";
+					break;
+				case 0:
+					$sex = "<i title='女' style='font-size:16px;color: red;font-weight:bold;' class='fa fa-mercury' aria-hidden='true'></i>";
+					break;
 
 			}
+			if($row['images']==""){
+			$images="../templates/default/images/noimage.jpg";
+		    }else{
+            $images=$row['images'];
+            }
 
-		  switch($row['types']){
-			  
-			  case "1":
-			  $title = "景点/园区/门票";
-			  break;
-			 
-			  case "2":
-			  $title = "跟团旅/行程";
-			  break;
-			  
-			  case "3":
-			  $title = "酒店/门票";
-			  break;
-			  }
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
-                <td align="center"><?php echo $row['names'];?></td>
-                <td align="center"><?php echo $title;?></td>
-                <td align="center" class="num"><?php echo $row['label']; ?></td>
-                <td align="center" class="num"><?php echo $row['level']; ?>星</td>
-                <td align="center" class="num"><a style="cursor:pointer" onclick="getpic('<?php echo $id;?>');">点击查看</a></td>
-                <td align="center" class="num"><?php echo $row['solds'];?></td>
-                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['posttime']);?>
+                <td align="center"><?php echo $row['nickname']; ?></td>
+                <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['nickname']; ?>" /></div></td>
+                <td align="center" class="num"><?php echo $sex; ?></td>
+                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['addtime']);?>
                  </td>
-								 <td align="center">
-      <a title="点击添加票务规格" style="cursor:pointer" onclick="Specs('<?php echo $id;?>');">
-        <i class="fa fa-plus-square-o" aria-hidden="true"></i></a>&nbsp;
-      <span><?php echo $checkinfo; ?></span> &nbsp;
- 			<span><a title="编辑" href="scenic_update.php?id=<?php echo $row['id']; ?>">
- 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
- 			<span class="nb"><a title="删除景区" href="<?php echo $action;?>?action=del6&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
                 <?php //}?>
               </tr>
               <?php

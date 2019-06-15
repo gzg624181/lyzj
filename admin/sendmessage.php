@@ -79,6 +79,7 @@ function get_openid($code,$appid,$appsecret){
   $openid = $arr['openid'];
   return $openid;
 }
+
 function logs($file,$data){
   file_put_contents($file,print_r($data,true));
 }

@@ -23,7 +23,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT distinct starttime_ymd as time FROM pmw_travel where state=0");
+      $dosql->Execute("SELECT distinct starttime_ymd as time FROM pmw_travel where state=0 order by starttime asc");
       $num =$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

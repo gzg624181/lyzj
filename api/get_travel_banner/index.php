@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_banner  获取banner图片
+	   * 链接地址：get_travel_banner  获取行程Banner图片
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -23,7 +23,8 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT * from pmw_banner");
+    //
+      $dosql->Execute("SELECT * from pmw_banner where typename='travel'");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

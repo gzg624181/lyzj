@@ -15,7 +15,21 @@
 <script type="text/javascript" src="editor/kindeditor-min.js"></script>
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
-
+<script>
+function message(Id){
+  // alert(Id);
+   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+   layer.photos({
+   photos: '#layer-photos-demo_'+Id,
+	// area:['800px','270px'],  //图片的宽度和高度
+   shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
+   closeBtn:1,
+   offset:'40px',  //离上方的距离
+   shadeClose:false
+  });
+});
+}
+</script>
 </head>
 <body>
 <div class="formHeader"> <span class="title">修改banner图片</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
@@ -24,25 +38,39 @@ $row = $dosql->GetOne("SELECT * FROM `pmw_banner` WHERE id=$id");
 ?>
 <form name="form" id="form" method="post" action="banner_save.php" onsubmit="return quan();">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
+
+	<tr>
+		<td height="40" align="right">栏目分类：</td>
+		<td colspan="2">
+			<select class="input" name="typename" id="typename" style="width:508px;">
+           <option <?php if($row['typename']=="index"){ echo "selected='selected'";}?> value="index">首页Banner图片</option>
+           <option <?php if($row['typename']=="travel"){ echo "selected='selected'";}?> value="travel">行程Banner图片</option>
+           <option <?php if($row['typename']=="piao"){ echo "selected='selected'";}?> value="piao">票务Banner图片</option>
+           <option <?php if($row['typename']=="guide"){ echo "selected='selected'";}?> value="guide">导游Banner图片</option>
+         </select></td>
+	</tr>
+
 		<tr>
-		  <td height="40" align="right">标题：</td>
+		  <td height="40" align="right">图片标题：</td>
 		  <td colspan="2"><input type="text" name="title" id="title" class="input" value="<?php echo $row['title'];?>"/></td>
     </tr>
 		<tr>
 			<td height="40" align="right">跳转链接：</td>
-			<td colspan="2"><input type="text" name="linkurl" id="linkurl" class="input"  value="<?php echo $row['linkurl'];?>"/></td>
+			<td colspan="2"><input type="text" name="linkurl" id="linkurl" class="input" <?php if($row['linkurl']==""){ echo "readonly";}  ?> value="<?php echo $row['linkurl'];?>"/>
+			</td>
 		</tr>
 
 		<tr>
 			<td width="9%" height="75" align="right">banner图片：</td>
-			<td width="8%" align="center"><img  width="100" height="50" style="cursor:pointer; padding:5px;border-radius:3px;" layer-src="<?php echo $row['pic']; ?>"  src="<?php echo $row['pic']; ?>" alt="<?php echo $row['title']; ?>" /></td>
+			<td width="8%" align="center"><img  width="100" height="50" style="cursor:pointer; padding:5px;border-radius:3px;" layer-src="<?php echo $row['pic']; ?>" onclick="message('<?php echo $row['id']; ?>');"
+			src="<?php echo $row['pic']; ?>" alt="<?php echo $row['title']; ?>" /></td>
 			<td width="83%"></div>
    <input style="margin-top:5px;" type="text" name="pic" id="pic" class="input" value="<?php echo $row['pic']; ?>" />
 	 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span></td>
 		</tr>
         	<tr>
         	  <td height="40" align="right">简介：</td>
-        	  <td colspan="2"> <textarea name="content" id="content" class="kindeditor"><?php echo $row['content'];?></textarea>
+        	  <td colspan="2"> <textarea <?php if($row['content']==""){ echo "readonly";}  ?>  name="content" id="content" class="kindeditor"><?php echo $row['content'];?></textarea>
        	      <script>
 				var editor;
 				KindEditor.ready(function(K) {

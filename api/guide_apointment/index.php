@@ -116,7 +116,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $tishi="亲爱的".$name_guide."您好，您预约的行程已提交成功，请尽快与旅行社核实行程信息并查看详情确认此行程。";
 
-  $page="pages/about/enter/enter";
+  $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid;
 
   $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
@@ -155,7 +155,7 @@ if(isset($token) && $token==$cfg_auth_key){
   #向旅行社发送模板消息
   $tel_guide=$g['tel'];
   $timestamp=date("Y-m-d H:i:s");
-  $page_agency="pages/about/enter/enter";
+  $page_agency="pages/about/confirm/confirm?id=".$id."&gid=".$gid;
   $form_id_agency=$a['formid'];
 
   $data_agency=SendAgency($openid_agency,$title,$tel_guide,$name_guide,$time,$timestamp,$cfg_agency_remind,$page_agency,$form_id_agency);

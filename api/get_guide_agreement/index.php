@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_days  获取所有待预约的行程的行程天数
+	   * 链接地址：get_contract  获取导游的合同图片
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -16,39 +16,36 @@
      *
      * @return string
      *
-     * @提供返回参数账号 导游id
+     * @提供返回参数账号
      */
 require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT distinct days FROM pmw_travel where state=0 ORDER BY days asc");
-      $num =$dosql->GetTotalRow();
-      if($num==0){
+      $r=$dosql->GetOne("SELECT agreement FROM `#@__guide` WHERE id=$id");
+      if(!is_array($r)){
         $State = 0;
-        $Descriptor = '数据查询为空！';
+        $Descriptor = '暂无数据！';
         $result = array (
                     'State' => $State,
                     'Descriptor' => $Descriptor,
                     'Version' => $Version,
-                    'Data' =>$Data
+                    'Data' => $Data
                      );
         echo phpver($result);
       }else{
-      while($row=$dosql->GetArray()){
-        $Data[]=$row;
-      }
       $State = 1;
-      $Descriptor = '数据获取成功！';
+      $Descriptor = '合同图片获取成功！';
       $result = array (
                   'State' => $State,
                   'Descriptor' => $Descriptor,
                   'Version' => $Version,
-                  'Data' => $Data
+                  'Data' => $r
                    );
       echo phpver($result);
-    }
+      }
+
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

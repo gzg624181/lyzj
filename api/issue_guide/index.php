@@ -17,7 +17,7 @@
      * @return string
      *
      * @导游发布空闲日期   提供返回参数账号，
-     * gid             导游id
+     * id             导游id
      * time            空闲时间json数据
      * formid          更新导游的formid
      * addtime         添加时间
@@ -30,7 +30,7 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：添加空闲时间 content 内容以json字符串的形式保存在数据库中去
   //  判断表里面是否有这个导游的空闲时间列表
 
-  $r=$dosql->GetOne("SELECT id from pmw_freetime where gid=$gid");
+  $r=$dosql->GetOne("SELECT id from pmw_freetime where gid=$id");
 
   if(!is_array($r)){
     $addtime=time();  //更新时间
@@ -38,7 +38,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $dosql->ExecNoneQuery($sql);
   }else{
     $addtime=time();  //更新时间
-    $sql = "UPDATE  `#@__freetime` SET content='$content',addtime=$addtime where gid=$gid";
+    $sql = "UPDATE  `#@__freetime` SET content='$time',addtime=$addtime where gid=$id";
     $dosql->ExecNoneQuery($sql);
   }
   # 更新导游的formid

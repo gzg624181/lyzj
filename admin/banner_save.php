@@ -28,16 +28,18 @@ if($action == 'add')
 
 	if($type=="reg"){
 		//注册的banner、图片
-		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime) VALUES ('$title','$pic', '$type','$pictime')";
+		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
 
 	}elseif($type=="text"){
 
-		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime) VALUES ('$title','$pic', '$type','$content','$pictime')";
+		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime,typename) VALUES ('$title','$pic', '$type','$content','$pictime','$typename')";
 
 	}elseif($type=="ticket"){
 
-	$sql = "INSERT INTO `$tbname` (title, pic,type, linkurl, pictime) VALUES ('$title','$pic', '$type','$linkurl','$pictime')";
+	$sql = "INSERT INTO `$tbname` (title, pic,type, linkurl, pictime,typename) VALUES ('$title','$pic', '$type','$linkurl','$pictime','$typename')";
 
+}elseif($type=="no"){
+    	$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
   }
 	if($dosql->ExecNoneQuery($sql))
 	{
@@ -60,7 +62,7 @@ else if($action == 'update')
     $pic=$cfg_weburl."/".$pic; //banner图片
   }
 
-	$sql = "UPDATE `$tbname` SET title='$title',content='$content',pictime=$pictime, pic='$pic',linkurl='$linkurl' WHERE id=$id";
+	$sql = "UPDATE `$tbname` SET title='$title',content='$content',pictime=$pictime, pic='$pic',linkurl='$linkurl',typename='$typename' WHERE id=$id";
 	if($dosql->ExecNoneQuery($sql))
 	{
 		header("location:$gourl");

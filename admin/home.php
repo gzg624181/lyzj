@@ -113,7 +113,7 @@ a:hover {
     <td style="text-align: center">&nbsp;</td>
     <td class="ziti" style="text-align: center"><a style="color:white;" href="member.php?check=today"><?php
 					$time=date("Y-m-d");
-					$dosql->Execute("select * from pmw_members where ymdtime like '%$time%'");
+					$dosql->Execute("SELECT * from pmw_guide where ymdtime like '%$time%'");
 					$num=$dosql->GetTotalRow();
 					echo $num;
 					?></a></td>
@@ -141,7 +141,7 @@ a:hover {
     <td style="text-align: center">&nbsp;</td>
     <td style="text-align: center"><span class="tor">昨日：<a style="color:white;" href="member.php?check=tomorrowzhuce"><?php
 					$time=date("Y-m-d",strtotime("-1 day"));
-					$dosql->Execute("select * from pmw_members where ymdtime like '%$time%'");
+					$dosql->Execute("SELECT * from pmw_guide where ymdtime like '%$time%'");
 					$num=$dosql->GetTotalRow();
 					echo $num;
 					?></a></span></td>

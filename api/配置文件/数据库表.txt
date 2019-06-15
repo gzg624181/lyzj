@@ -178,14 +178,14 @@ posttime          添加时间
 
 
 
-14.会员下线转账记录  pmw_transfer
+14.会员关注小程序表  pmw_members
 
 id
-mid                会员id
-transfer_money     转账金额
-transfer_uid       转账会员uid
-transfer_bid       转账到下线会员的uid
-transfer_time      转账时间
+nickname        用户昵称
+images          用户头像
+sex             用户性别
+addtime         添加时间
+openid          用户关注的唯一openid
 
 
 15.开奖号码    pmw_kjnumber

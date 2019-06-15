@@ -25,6 +25,7 @@
      * account         账号(varchar)
      * password        密码(varchar)
      * regtime         注册时间(int)
+     * openid
      */
      require_once("../../include/config.inc.php");
      require_once("../../admin/sendmessage.php");
@@ -41,9 +42,10 @@
      $password=$json['password'];
      $token=$json['token'];
      $images=$json['images'];
-     $code=$json['code'];
+    // $code=$json['code'];
      $formid=$json['formid'];
      $company=$json['company'];
+     $openid = $json['openid'];
 
      //这个是自定义函数，将Base64图片转换为本地图片并保存
      $savepath= "../../uploads/image/";
@@ -68,7 +70,7 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
 }else{
   $appid=$cfg_appid;
   $appsecret=$cfg_appsecret;
-  $openid=get_openid($code,$appid,$appsecret);
+  //$openid=get_openid($code,$appid,$appsecret);
   $regtime=time();
   $regip=GetIP();
   $getcity=get_city($regip);

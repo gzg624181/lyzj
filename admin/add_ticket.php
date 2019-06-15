@@ -75,7 +75,8 @@ $tbname='pmw_ticket';
       <td width="25%" height="40" align="right">景区标签：</td>
       <td width="75%">
       <input type="text" class="input" id="label" name="label" required="required">
-      <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
+      <span class="maroon">*</span><span class="maroon">多个标签中间用#隔开
+			</span>
       </td>
       </tr>
 
@@ -108,7 +109,7 @@ $tbname='pmw_ticket';
 				</script>
         </td>
         </tr>
-        
+
          <tr>
         <td height="40" align="right">景区介绍：</td>
         <td><textarea name="content" id="content" class="kindeditor"></textarea>
@@ -127,7 +128,7 @@ $tbname='pmw_ticket';
 				</script></textarea>
         </td>
         </tr>
-        
+
         <tr>
         <td width="25%" height="40" align="right">最低价格：</td>
         <td width="75%">

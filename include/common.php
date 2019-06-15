@@ -349,4 +349,18 @@ return $arr;
 
 }
 
+//获取关注的微信小程序的openid
+
+//获取微信小程序openid
+function Openid($code,$appid,$appsecret){
+  $url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.$appid.'&secret='.$appsecret.'&js_code=' . $code . '&grant_type=authorization_code';
+  $info = file_get_contents($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
+  $json = json_decode($info);//对json数据解码
+  $arr = get_object_vars($json);
+  $openid = $arr['openid'];
+  return $openid;
+}
+
+
+
 ?>

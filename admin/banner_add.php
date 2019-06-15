@@ -24,8 +24,11 @@
 
    var objvalue =options.val();
 
+   if(objvalue== -1){
+		 layer.alert("请选择Banner图片分类",{icon:0});
+	 }else{
 	 var ajax_url = "banner_save.php?action=TypeChange&type=" + objvalue;
-
+   }
 	 //alert(url);
 
 	$.ajax({
@@ -59,13 +62,28 @@
 
 </head>
 <body>
-<div class="formHeader"> <span class="title">添加首页banner图片</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
+<div class="formHeader"> <span class="title">添加Banner轮播图片</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
 <form name="form" id="form" method="post" action="banner_save.php">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
+
+	<tr>
+		<td height="40" align="right">栏目分类：</td>
+		<td colspan="2">
+ <select class="input" name="typename" id="typename" style="width:508px;">
+		 <option value="index">首页Banner图片</option>
+		 <option value="travel">行程Banner图片</option>
+		 <option value="piao">票务Banner图片</option>
+		 <option value="guide">导游Banner图片</option>
+ </select>
+	<span class="maroon">*</span><span class="maroon" style="font-weight:bold;">请选择Banner图片栏目</span>
+		</td>
+	</tr>
+
 		<tr>
 		  <td height="40" align="right">图片标题：</td>
 		  <td colspan="2"><input type="text" name="title" id="title" class="input" required/></td>
     </tr>
+
 		<tr>
 			<td height="40" align="right">图片分类：</td>
 			<td colspan="2">
@@ -74,6 +92,7 @@
 			 <option value="ticket">景区</option>
 			 <option value="reg">注册</option>
 			 <option value="text">文本介绍</option>
+			 <option value="no">无跳转链接</option>
    </select>
 			</td>
 		</tr>
