@@ -46,6 +46,7 @@
      $formid=$json['formid'];
      $company=$json['company'];
      $openid = $json['openid'];
+     $formid = $json['formid'];
 
      //这个是自定义函数，将Base64图片转换为本地图片并保存
      $savepath= "../../uploads/image/";
@@ -77,9 +78,10 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   $ymdtime=date("Y-m-d");
   $password=md5(md5($password));
   $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,formid,company) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$company')";
-  $dosql->ExecNoneQuery($sql);
+  add_formid($openid,$formid);
+  if($dosql->ExecNoneQuery($sql)){
   $State = 1;
-  $Descriptor = '旅行社信息注册成功！';
+  $Descriptor = '旅行社注册信息已提交成功！';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
@@ -87,6 +89,17 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
               'Data' => $Data
                );
   echo phpver($result);
+}else{
+  $State = 2;
+  $Descriptor = '旅行社注册信息提交失败！';
+  $result = array (
+              'State' => $State,
+              'Descriptor' => $Descriptor,
+              'Version' => $Version,
+              'Data' => $Data
+               );
+  echo phpver($result);
+}
 }
 }else{
   $State = 520;

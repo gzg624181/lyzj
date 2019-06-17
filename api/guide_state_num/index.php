@@ -46,7 +46,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $five=5;
       #待出发
       $now=time();
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and (state=2 or state=1) and starttime <= $now",$we);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and (state=2 or state=1) and starttime > $now",$we);
       $daichufa=$dosql->GetTotalRow($we);
 
       #待确认

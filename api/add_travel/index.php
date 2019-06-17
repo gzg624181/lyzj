@@ -25,6 +25,8 @@
      * content         添加行程
      * money           导游费用
      * other           其他备注
+     * openid          用户的formid
+     * formid          最新的openid
      */
 require_once("../../include/config.inc.php");
 $Data = array();
@@ -43,6 +45,10 @@ if(isset($token) && $token==$cfg_auth_key){
   $starttime_ymd=date("Y-m-d",$starttime);
   $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y','$fabu_ym',$aid,'$jiesuanmoney','$company',$days)";
   $dosql->ExecNoneQuery($sql);
+
+  //将用户的formid添加进去
+   add_formid($openid,$formid);
+
   $State = 1;
   $Descriptor = '旅行行程发布成功！!';
   $result = array (

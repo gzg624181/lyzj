@@ -19,6 +19,7 @@
      * @旅行社发布旅游行程   提供返回参数账号，
      * id        此条行程的id
      * formid    旅行社的formid
+     * openid    旅行社的openid
      * reason     旅行社取消的原因
      * aid        旅行社id
      * gid       导游id
@@ -70,11 +71,15 @@ if(isset($token) && $token==$cfg_auth_key){
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
 
-    $openid_agency=$a['openid'];    //旅行社联系人openid
+    //将用户的formid添加进去
+    add_formid($openid,$formid);
 
-    $openid_guide=$g['openid'];    //导游openid
+    $openid_agency=$openid;            //旅行社联系人openid
+    $formid= get_new_formid($openid);  //旅行社formid
 
-    $form_id =$g['formid'];
+
+    $openid_guide=$g['openid'];               //导游openid
+    $form_id =get_new_formid($openid_guide);  //导游formid
 
 
     $title=$x['title'];           //旅行社发布的行程标题
@@ -103,6 +108,8 @@ if(isset($token) && $token==$cfg_auth_key){
     $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
     $res_agency = json_decode($res_agency, true);
   //  $errcode_agency=$res_agency['errcode'];
+  //删除已经用过的formid
+     del_formid($formid,$openid_agency);
 //==================================================================================================
     //将旅行社注撤销行程的模板消息保存起来
     $type = 'agency';
@@ -138,6 +145,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $res_guide = https_request($url, urldecode($json_data_guide));//请求开始
     $res_guide = json_decode($res_guide, true);
   //  $errcode_guide=$res_guide['errcode'];
+     del_formid($form_id,$openid_guide);
     //==================================================================================================
         //将导游接收到的撤销行程的模板消息保存起来
         $type = 'guide';

@@ -139,7 +139,7 @@ function SendGuide($openid,$company,$name,$tel,$title,$time,$tishi,$cfg_guide_ap
 
 
 //旅行社（行程提醒）,给旅行社发送模板消息
-function SendAgency($openid,$title,$tel,$name,$time,$timestamp,$cfg_agency_remind,$page,$form_id)
+function SendAgency($openid,$title,$tel,$name,$time,$timestamp,$cfg_agency_remind,$page,$form_id,$cfg_appid,$cfg_appsecret)
 {
     $data = array(
         'touser' => $openid,                   //要发送给旅行社的openid
@@ -169,7 +169,17 @@ function SendAgency($openid,$title,$tel,$name,$time,$timestamp,$cfg_agency_remin
             )
         ),
     );
-    return $data;
+
+    $ACCESS_TOKEN = token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+
+   	//模板消息请求URL
+   	$url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
+
+    $json_data_agency = json_encode($data);//转化成json数组让微信可以接收
+    $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
+    $res_agency = json_decode($res_agency, true);
+    $errcode_agency=$res_agency['errcode'];
+    return $errcode_agency;
 }
 
 
@@ -361,124 +371,6 @@ function Openid($code,$appid,$appsecret){
   return $openid;
 }
 
-
-//用户购票成功之后，发送购票成功的模板消息
-
- function paysuccess($openid,$cfg_paysuccess,$page,$form_id,$jingquname,$typename,$nums,$totalamount,$posttime,$tishi,$cfg_appid,$cfg_appsecret)
-{
-	// code...
-	$data = array(
-			'touser' => $openid,                     //要发送给购票用户的openid
-	'template_id' => $cfg_paysuccess,            //改成自己的模板id，在微信后台模板消息里查看
-				'page' => $page,                      //点击模板消息详情之后跳转连接
-		 'form_id' => $form_id,                   //购票用户的formid
-				'data' => array(
-					'keyword1' => array(
-							'value' => $jingquname,          //景区名称
-							'color' => "#3d3d3d"
-					),
-					'keyword2' => array(
-							'value' => $typename,            //票务类型
-							'color' => "#3d3d3d"
-					),
-					'keyword3' => array(
-							'value' => $nums,               //购买张数
-							'color' => "#3d3d3d"
-					),
-					'keyword4' => array(
-							'value' => $totalamount,        //购票总金额
-							'color' => "#3d3d3d"
-					),
-					'keyword5' => array(
-							'value' => $posttime,        //购买时间
-							'color' => "#3d3d3d"
-					),
-					'keyword6' => array(
-							'value' => $tishi,        //温馨提示
-							'color' => "#3d3d3d"
-					)
-			),
-	);
-
-	$ACCESS_TOKEN = token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
-
-	//模板消息请求URL
-	$url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
-
-	$data = json_encode($data);//转化成json数组让微信可以接收
-	$data = https_request($url, urldecode($data));//请求开始
-	$data = json_decode($data, true);
-	// $errcode=$data['errcode'];  //判断模板消息发送是否成功
-	// return $errcode;
-}
-
-
-//用户购票成功之后，向购票管理员发送模板消息
-
- function ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytype,$posttime,$cfg_appid,$cfg_appsecret)
-{
-	// code...
-	$data = array(
-			'touser' => $openid,                     //要发送给购票管理员的openid
-	'template_id' => $cfg_ticketsuccess,         //改成自己的模板id，在微信后台模板消息里查看
-				'page' => $page,                      //点击模板消息详情之后跳转连接
-		 'form_id' => $form_id,                   //购票用户的formid
-				'data' => array(
-					'keyword1' => array(
-							'value' => $jingquname,          //景区名称
-							'color' => "#3d3d3d"
-					),
-					'keyword2' => array(
-							'value' => $typename,            //票务类型
-							'color' => "#3d3d3d"
-					),
-					'keyword3' => array(
-							'value' => $usetime,               //出发日期
-							'color' => "#3d3d3d"
-					),
-					'keyword4' => array(
-							'value' => $nums,                 //订票数量
-							'color' => "#3d3d3d"
-					),
-					'keyword5' => array(
-							'value' => $type,               //订单类型（用户的类型）
-							'color' => "#3d3d3d"
-					),
-					'keyword6' => array(
-							'value' => $totalamount,          //订单总金额
-							'color' => "#3d3d3d"
-					),
-					'keyword7' => array(
-							'value' => $contactname,          //联系人姓名
-							'color' => "#3d3d3d"
-					),
-					'keyword8' => array(
-							'value' => $contacttel,          //联系人手机
-							'color' => "#3d3d3d"
-					),
-					'keyword9' => array(
-							'value' => $paytype,              //支付方式
-							'color' => "#3d3d3d"
-					),
-					'keyword10' => array(
-							'value' => $posttime,             //支付时间
-							'color' => "#3d3d3d"
-					)
-			),
-	);
-
-	$ACCESS_TOKEN = token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
-
-	//模板消息请求URL
-	$url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
-
-	$data = json_encode($data);//转化成json数组让微信可以接收
-	$data = https_request($url, urldecode($data));//请求开始
-	$data = json_decode($data, true);
-	// $errcode=$data['errcode'];  //判断模板消息发送是否成功
-	// return $errcode;
-}
-
 //获取微信小程序 access_token
 function token($appid,$appsecret){
   $arr = file_get_contents("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$appsecret);  //去除对象里面的斜杠
@@ -488,100 +380,4 @@ function token($appid,$appsecret){
   return $access_token;
 }
 
-//获取导游或者旅行社的信息
-function get_information($id,$type)
-{
-	// code...
-	global $dosql;
-	$data=array();
-	if($type=="agency"){
-		$r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");
-		if(is_array($r)){
-			$data=$r;
-		}
-	}elseif($type=="guide"){
-		$r=$dosql->GetOne("SELECT * FROM pmw_guide where id=$id");
-		if(is_array($r)){
-			$data=$r;
-		}
-	}
-  return $data;
-}
-
-//获取当前购票成功的id
- function get_orderid($did,$posttime)
-{
-	// code...
-  global $dosql;
-
-	$r=$dosql->GetOne("SELECT id FROM pmw_order where did=$did and posttime=$posttime");
-
-	$id=$r['id'];
-
-	return $id;
-}
-
-//获取购票管理员的openid和formid
-
- function get_openid_formid()
-{
-	// code...
-  global $dosql;
-	$r=$dosql->GetOne("SELECT openid,formid FROM pmw_agency where id=2");
-	return $r;
-}
-
-//保存用户的formid，同时将过期的formid删除掉
-
-function add_formid($openid,$formid)
-{
-	// code...  将所有的用户的最新的formid保存到数据库中来
-
-  global $dosql;
-
-  $guoqi_time = strtotime("+7 days");  //设置7天过期时间
-
-	$dosql->ExecNoneQuery("INSERT INTO `#@__formid` (formid,openid,guoqi_time) VALUES ('$formid','$openid',$guoqi_time)");
-
-}
-
-//当用户使用formid的时候，找出最新的fromid提供给用户
- # 1.判断当前用户的所有的fromid是否已经过期
- # 2.将最后一条没有过期的formid拿出来
-
- function get_new_formid($openid)
- {
- 	// code...
-  global $dosql;
-
-	$formid="";
-
-	$now=time();  //当前的时间戳
-
-  $dosql->ExecNoneQuery("DELETE FROM `#@__formid` where guoqi_time <= $now and openid='$openid'");
-
-  $k=$dosql->GetOne("SELECT MIN(id) as id	FROM `#@__formid` where openid='$openid'");
-	$ids=$k['id'];
-	$r=$dosql->GetOne("SELECT formid FROM `#@__formid` where id=$ids");
-
-  if(is_array($r)){
-
-	$formid=$r['formid'];
-
-  }
-
-	return $formid;
- }
-
- //用户使用完毕formid之后，删除已经已经使用过的formid
-
-  function del_formid($formid,$openid)
- {
- 	// code... 删除使用完毕的formid
-
-	global $dosql;
-
-	$dosql->ExecNoneQuery("DELETE FROM `#@__formid` where formid='$formid' and openid='$openid'");
-
- }
 ?>

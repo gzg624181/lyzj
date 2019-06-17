@@ -5,7 +5,7 @@ $username=$_SESSION['admin'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>授权用户会员管理</title>
+<title>售票管理员</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <link href="templates/style/menu1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
@@ -26,14 +26,7 @@ function message(Id){
   });
 });
 }
-//设置授权用户为购票管理员，且只有一个售票管理员
-function sets(id,name) {
-  layer.confirm("确定要设置<span style='color:#38b41e;font-weight:bold'>"+name+"</span>成购票管理员吗?", function () {
-  window.location.href="admin_save.php?action=sets&id="+id;
-  }
-)
 
-}
 function member_update(Id){
  var adminlevel=document.getElementById("adminlevel").value;
   if(adminlevel==1){
@@ -66,12 +59,12 @@ $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
 <?php
 $tbname="pmw_members";
 $one=1;
-$dosql->Execute("SELECT * FROM $tbname",$one);
+$dosql->Execute("SELECT * FROM $tbname where sets=1",$one);
 $num=$dosql->GetTotalRow($one);
 ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
-<span class="title">授权会员列表：<span class="num" style="color:red;"><?php echo $num;?></span>
+<span class="title">售票管理员<span class="num" style="color:red;"><?php echo $num;?></span>
 </span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
@@ -88,12 +81,12 @@ $num=$dosql->GetTotalRow($one);
                 <td width="16%" align="center">用户昵称</td>
                 <td width="10%" align="center">头像</td>
                 <td width="47%" align="center">性别</td>
-                <td width="15%" align="center">授权时间</td>
-                <td width="11%" align="center">设置购票管理员</td>
+                <td width="15%" align="center">发布时间</td>
+                <td width="11%" align="center">购票管理员</td>
                 </tr>
               <?php
 
-		$dopage->GetPage("SELECT * from $tbname",15);
+		$dopage->GetPage("SELECT * from $tbname where sets=1",15);
 
 		while($row = $dosql->GetArray())
 		{

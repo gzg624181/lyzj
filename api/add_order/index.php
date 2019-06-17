@@ -46,9 +46,61 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $timestampuse= strtotime($usetime);
 
-  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse)";
+  //将用户的formid添加进去
+  add_formid($openid,$formid);
 
+  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse)";
   $dosql->ExecNoneQuery($sql);
+
+  //下单成功之后发送双向消息
+  #给购票的用户发送模板消息
+
+  // $information= get_information($did,$type);
+  // $openid=$information['openid'];
+  $form_id=get_new_formid($openid);
+  $id=get_orderid($did,$posttime);
+  $page="pages/booking/bookingDetail/bookingDetail?id=".$id;
+  $posttime=date("Y-m-d H:i:s"); //购票时间
+  $tishi="亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情";
+
+  paysuccess($openid,$cfg_paysuccess,$page,$form_id,$jingquname,$typename,$nums,$totalamount,$posttime,$tishi,$cfg_appid,$cfg_appsecret);
+
+  //删除已经用过的formid
+  del_formid($form_id,$openid);
+
+  #向下票人发送购票成功订单的模板消息
+  $page="pages/index/index";
+  switch($type){
+
+    case "agency":
+    $type="旅行社";
+    break;
+
+    case "guide":
+    $type="导游";
+    break;
+  }
+
+  switch($paytype){
+
+    case "wxpay":
+    $paytype="微信支付";
+    break;
+
+    case "outline":
+    $paytype="线下支付";
+    break;
+
+  }
+  $array_admin=get_openid_formid();
+  $openid=$array_admin['openid'];
+  $form_id=get_new_formid($openid);
+
+  ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytype,$posttime,$cfg_appid,$cfg_appsecret);
+
+  //删除已经用过的formid
+  del_formid($form_id,$openid);
+
   $State = 1;
   $Descriptor = '订单下注成功！!';
   $result = array (

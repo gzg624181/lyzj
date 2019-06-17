@@ -96,9 +96,10 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
 
 
   $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid')";
-  $dosql->ExecNoneQuery($sql);
+  add_formid($openid,$formid);
+if($dosql->ExecNoneQuery($sql)){
   $State = 1;
-  $Descriptor = '导游信息注册成功！';
+  $Descriptor = '导游注册信息已提交成功！';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
@@ -106,6 +107,18 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
               'Data' => $Data
                );
   echo phpver($result);
+}else{
+  $State = 2;
+  $Descriptor = '导游注册信息已提交失败！';
+  $result = array (
+              'State' => $State,
+              'Descriptor' => $Descriptor,
+              'Version' => $Version,
+              'Data' => $Data
+               );
+  echo phpver($result);
+}
+
 }
 }else{
   $State = 520;

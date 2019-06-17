@@ -17,9 +17,10 @@
      * @return string
      *
      * @导游发布空闲日期   提供返回参数账号，
-     * id             导游id
+     * id               导游id
      * time            空闲时间json数据
      * formid          更新导游的formid
+     * openid           发布空闲时间
      * addtime         添加时间
      */
 require_once("../../include/config.inc.php");
@@ -43,6 +44,9 @@ if(isset($token) && $token==$cfg_auth_key){
   }
   # 更新导游的formid
   $dosql->ExecNoneQuery("UPDATE `#@__guide` set formid='$formid' where id=$id");
+
+  //将用户的formid添加进去
+  add_formid($openid,$formid);
   $State = 1;
   $Descriptor = '导游空闲时间发布成功!';
   $result = array (

@@ -210,4 +210,66 @@ if($state==0){
 
   echo $num;
 }
+
+$t=strtotime('+7 day');
+
+echo $t;
+echo "<hr>";
+echo date("Y-m-d H:i:s",$t);
+
+// echo get_new_formid("oz7S15BU6YPAdg8d3aDTwovdFjl0");
+
+$id=13;
+
+$k=$dosql->GetOne("SELECT state,starttime,endtime from pmw_travel where id=$id");
+$state=$k['state'];
+//判断当前的行程的起始时间
+$starttime = $k['starttime'];  //本次行程的开始时间
+echo date("Y-m-d",$starttime);
+
+$endtime = $k['endtime'];     //本次行程的截至时间
+echo date("Y-m-d",$endtime);
+
+$one=1;
+
+$num =0;
+
+$gid=1;
+$dosql->Execute("SELECT * FROM pmw_travel where (state=1 or state=2) and gid=$gid",$one);
+
+while($sow=$dosql->GetArray($one)){
+
+ $f=$sow['starttime'];
+
+ $e=$sow['endtime'];
+
+ if($starttime < $e && $e < $endtime){
+
+    $num=1;
+
+    break;
+
+ }elseif($f< $endtime && $endtime< $e){
+
+   $num=2;
+
+   break;
+
+ }elseif($starttime <= $f && $e <= $endtime){
+
+   $num=3;
+
+   break;
+
+ }elseif($f< $starttime && $endtime< $e){
+
+   $num=4;
+
+   break;
+ }
+
+}
+
+echo $num;
+
 ?>

@@ -74,6 +74,8 @@ if(isset($token) && $token==$cfg_auth_key){
             }else{
          //账号密码正确，且审核通过，则更新用户的formid
           $dosql->ExecNoneQuery("UPDATE `#@__agency` SET formid='$formid' WHERE account='$account' and password='$password'");
+          //将用户的formid添加进去
+          add_formid($openid,$formid);
           $show=$dosql->GetOne("SELECT * FROM `pmw_agency` where account='$account' and password='$password'");
           $Data[]=$show;
           $Data['type']='agency';
@@ -138,6 +140,8 @@ if(isset($token) && $token==$cfg_auth_key){
         }else{
         //账号密码正确，则更新用户的formid
           $dosql->ExecNoneQuery("UPDATE `#@__guide` SET formid='$formid' WHERE account='$account' and password='$password'");
+          //将用户的formid添加进去
+           add_formid($openid,$formid);
           $show=$dosql->GetOne("SELECT * FROM `pmw_guide` where account='$account' and password='$password'");
           $Data[]=$show;
           $Data['type']='guide';

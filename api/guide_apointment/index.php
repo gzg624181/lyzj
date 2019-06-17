@@ -21,8 +21,8 @@
      * name            导游姓名
      * id              发布的行程id
      * aid             旅行社的id
-     * formid          导游formid
-     * formid          旅行社formid
+     * formid          导游的formid
+     * openid          导游的openid
      */
 require_once("../../include/config.inc.php");
 require_once("../../admin/sendmessage.php");
@@ -49,7 +49,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $one=1;
 
     $num =0;
-    $dosql->Execute("SELECT * FROM pmw_travel where state=1 or state=2 and gid=$gid",$one);
+    $dosql->Execute("SELECT * FROM pmw_travel where (state=1 or state=2) and gid=$gid",$one);
 
     while($sow=$dosql->GetArray($one)){
 
@@ -92,12 +92,11 @@ if(isset($token) && $token==$cfg_auth_key){
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
     $faxtime=time();
 
+    //将用户的formid添加进去
+  add_formid($openid,$formid);
 
-
-
-  $openid_agency=$a['openid'];    //旅行社联系人openid
-
-  $openid_guide=$g['openid'];    //导游openid
+  $formid=get_new_formid($openid);   //导游的formid
+  $openid_guide=$openid;           //导游openid
 
   $company=$a['company'];   //旅行社公司名称
 
@@ -130,6 +129,8 @@ if(isset($token) && $token==$cfg_auth_key){
   $res_guide = json_decode($res, true);
   $errcode_guide=$res_guide['errcode'];
 
+  //删除已经用过的formid
+  del_formid($formid,$openid_guide);
   //==================================================================================================
       //将导游预约的行程保存到消息表里面去
       $tbnames = 'pmw_message';
@@ -156,7 +157,9 @@ if(isset($token) && $token==$cfg_auth_key){
   $tel_guide=$g['tel'];
   $timestamp=date("Y-m-d H:i:s");
   $page_agency="pages/about/confirm/confirm?id=".$id."&gid=".$gid;
-  $form_id_agency=$a['formid'];
+  $openid_agency=$a['openid'];     //旅行社联系人openid
+  $form_id_agency=get_new_formid($openid_agency) ;
+
 
   $data_agency=SendAgency($openid_agency,$title,$tel_guide,$name_guide,$time,$timestamp,$cfg_agency_remind,$page_agency,$form_id_agency);
 
@@ -165,6 +168,8 @@ if(isset($token) && $token==$cfg_auth_key){
   $res_agency = json_decode($res_agency, true);
   $errcode_agency=$res_agency['errcode'];
 
+  //删除已经用过的formid
+  del_formid($form_id_agency,$openid_agency);
   //==================================================================================================
       //行程被导游预约，将向旅行社发布的消息表里面去
       $type = 'agency';
