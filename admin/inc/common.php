@@ -588,5 +588,114 @@ function isjiesuan($id,$y,$m){
 	}
 
 
+  //计算经典购票的总的张数
+
+	function get_nums($id)
+	{
+		// code...
+		global $dosql;
+
+		$r=$dosql->GetOne("SELECT SUM(nums) as nums,SUM(totalamount) as totalamount FROM pmw_order where tid=$id");
+    $num=$r['nums'];
+    if($num==	NULL){
+		$nums= 0;
+		$totalamount=0;
+		}else{
+		$nums= $num;
+		$totalamount=sprintf("%.2f",$r['totalamount']);
+		}
+		$get_array=array(
+			"nums" => $nums,
+			"total"=> $totalamount
+		);
+		return $get_array;
+	}
+
+
+	//当用户使用formid的时候，找出最新的fromid提供给用户
+	 # 1.判断当前用户的所有的fromid是否已经过期
+	 # 2.将最后一条没有过期的formid拿出来
+
+	 function getformid($openid)
+	 {
+	 	// code...
+	  global $dosql;
+
+		$formid="";
+
+		$now=time();  //当前的时间戳
+
+	  $dosql->ExecNoneQuery("DELETE FROM `#@__formid` where guoqi_time <= $now and openid='$openid'");
+
+	  $k=$dosql->GetOne("SELECT MIN(id) as id	FROM `#@__formid` where openid='$openid'");
+		$ids=$k['id'];
+		$r=$dosql->GetOne("SELECT formid FROM `#@__formid` where id=$ids");
+
+	  if(is_array($r)){
+
+		$formid=$r['formid'];
+
+	  }
+
+		return $formid;
+	 }
+
+	 //获取微信小程序 access_token
+	 function token($appid,$appsecret){
+	   $arr = file_get_contents("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$appsecret);  //去除对象里面的斜杠
+	   $result = json_decode($arr, true); //接受一个 JSON 格式的字符串并且把它转换为 PHP 变量
+	   //logs('log.txt',$result);
+	   $access_token = $result['access_token'];
+	   return $access_token;
+	 }
+
+
+	 //用户购票成功之后，向购票管理员发送模板消息
+
+	  function send_template_message($openid,$cfg_system_template_message,$page,$formid,$contact_name,$contact_tel,$content,$cfg_appid,$cfg_appsecret)
+	 {
+	 	// code...
+	 	$data = array(
+	 			'touser' => $openid,                              //要发送给发送模板消息的用户（导游或者旅行社）
+	 	'template_id' => $cfg_system_template_message,         //改成自己的模板id，在微信后台模板消息里查看
+	 				'page' => $page,                                 //点击模板消息详情之后跳转连接
+	 		 'form_id' => $formid,                               //用户的formid
+	 				'data' => array(
+	 					'keyword1' => array(
+	 							'value' => $contact_name,           //系统联系人
+	 							'color' => "#3d3d3d"
+	 					),
+	 					'keyword2' => array(
+	 							'value' => $contact_tel,            //联系人电话
+	 							'color' => "#3d3d3d"
+	 					),
+	 					'keyword3' => array(
+	 							'value' => $content,                //温馨提示
+	 							'color' => "#3d3d3d"
+	 					)
+	 			),
+	 	);
+
+	 	$ACCESS_TOKEN = token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+
+	 	//模板消息请求URL
+	 	$url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
+
+	 	$data = json_encode($data);//转化成json数组让微信可以接收
+	 	$data = https_request($url, urldecode($data));//请求开始
+	 	$data = json_decode($data, true);
+	 	// $errcode=$data['errcode'];  //判断模板消息发送是否成功
+	 	// return $errcode;
+	 }
+
+	 function del_formid($formid,$openid)
+  {
+  	// code... 删除使用完毕的formid
+
+ 	global $dosql;
+
+ 	$dosql->ExecNoneQuery("DELETE FROM `#@__formid` where formid='$formid' and openid='$openid'");
+
+  }
 
 ?>

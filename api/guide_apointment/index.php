@@ -115,7 +115,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $tishi="亲爱的".$name_guide."您好，您预约的行程已提交成功，请尽快与旅行社核实行程信息并查看详情确认此行程。";
 
-  $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid;
+  $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem";
 
   $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 

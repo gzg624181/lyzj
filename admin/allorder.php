@@ -118,11 +118,13 @@ $keyword = isset($keyword) ? $keyword : '';
    $dopage->GetPage("SELECT * FROM $tbname where paytype='wxpay'",10);
  }elseif($check=="outline"){ //线下支付
    $dopage->GetPage("SELECT * FROM $tbname where paytype='outline'",10);
-    }elseif($check=="Adult"){ //成人票
+ }elseif($check=="Adult"){ //成人票
    $dopage->GetPage("SELECT * FROM $tbname where typename='成人票'",10);
  }elseif($check=="Children"){ //儿童票
    $dopage->GetPage("SELECT * FROM $tbname where typename='优惠票'",10);
-     }elseif($keyword!=""){
+ }elseif($check=="numsid"){
+   $dopage->GetPage("SELECT * FROM $tbname where tid=$id",10);
+ }elseif($keyword!=""){
    $dopage->GetPage("SELECT * FROM $tbname where jingquname like '%$keyword%' OR contactname like '%$keyword%' OR contacttel like '%$keyword%'  OR usetime like '%$keyword%' ",10);
      }else{
 		 $dopage->GetPage("SELECT * from pmw_order",10);

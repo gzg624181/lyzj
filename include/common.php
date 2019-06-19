@@ -527,7 +527,7 @@ function get_information($id,$type)
 {
 	// code...
   global $dosql;
-	$r=$dosql->GetOne("SELECT openid,formid FROM pmw_agency where id=2");
+	$r=$dosql->GetOne("SELECT openid FROM pmw_members where sets=1");
 	return $r;
 }
 
