@@ -128,7 +128,7 @@ $num=$dosql->GetTotalRow($one);
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
 <span class="title">旅行社合计：<span class="num" style="color:red;"><?php echo $num;?></span>
-</span> <a href="javascript:location.reload();" class="reload">刷新</a>
+</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
 <ul>
@@ -170,16 +170,16 @@ $num=$dosql->GetTotalRow($one);
               <?php
 		if($check=="today"){
 		$time=date("Y-m-d"); //今天注册
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
+		$dopage->GetPage("SELECT * from $tbname where ymdtime = '%$time%'",15);
 	    }elseif($check=="tomorrowzhuce"){ //昨天注册
 		$time=date("Y-m-d",strtotime("-1 day"));
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
+		$dopage->GetPage("SELECT * from $tbname where ymdtime = '%$time%'",15);
 	    }elseif($check=="success"){ //已通过
-		$dopage->GetPage("select * from $tbname where checkinfo = 1",15);
+		$dopage->GetPage("SELECT * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
-		$dopage->GetPage("select * from $tbname where checkinfo = 2",15);
+		$dopage->GetPage("SELECT a.* from $tbname a inner join pmw_unshenhe b on a.account=b.account where b.type = 'agency'",15);
 	    }elseif($check=="reviewed"){ //待审核
-		$dopage->GetPage("select * from $tbname where checkinfo = 0",15);
+		$dopage->GetPage("SELECT * from $tbname where checkinfo = 0",15);
 	    }elseif($keyword!=""){ //关键字搜索
 	    $dopage->GetPage("SELECT * FROM $tbname where account like '%$keyword%' or name  like '%$keyword%' ",15);
 		}else{

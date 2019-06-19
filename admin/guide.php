@@ -59,7 +59,7 @@ function SendCheck(id,type)
 {
 if(confirm("是否确认拒绝导游注册审核？"))
  {
- 
+
 layer.open({
   type: 2,
   title: '审核未通过模板消息：',
@@ -127,16 +127,16 @@ $num=$dosql->GetTotalRow($one);
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
 <span class="title">导游合计：<span class="num" style="color:red;"><?php echo $num;?></span>
-</span> <a href="javascript:location.reload();" class="reload">刷新</a>
+</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
 <ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="guide.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过</a></li>
+ <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过&nbsp;&nbsp;<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过</a></li>
+ <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过&nbsp;&nbsp;<i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-dot-circle-o' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核</a></li>
+ <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核&nbsp;&nbsp;<i style='color:#509ee1; cursor:pointer;' title='待审核' class='fa fa-circle-o' aria-hidden='true'></i></a></a></li>
 </ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入用户账号或者导游姓名" title="请输入用户账号或者导游姓名" />
@@ -178,7 +178,7 @@ $num=$dosql->GetTotalRow($one);
 	    }elseif($check=="success"){ //已通过
 		$dopage->GetPage("select * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
-		$dopage->GetPage("select * from $tbname where checkinfo = 2",15);
+		$dopage->GetPage("SELECT a.* from $tbname a inner join pmw_unshenhe b on a.account=b.account where b.type = 'guide'",15);
 	    }elseif($check=="reviewed"){ //待审核
 		$dopage->GetPage("select * from $tbname where checkinfo = 0",15);
 	    }elseif($check=="user"){ //搜索单个用户
@@ -209,19 +209,19 @@ $num=$dosql->GetTotalRow($one);
             $images=$row['images'];
             }
 					if($row['checkinfo']==0){
-				 
+
 				 $checkinfo = "<a href='agency_save.php?action=checkinfo&info=guide&id={$id}'><i onclick='return ConfCheck(0);' style='color:#509ee1; cursor:pointer;' title='审核通过' class='fa fa-circle-o' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;";
-				 
+
 				 $checkinfo .="<a href='javascript:void(0);' onclick=\"SendCheck('$id','guide')\"><i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-circle-o' aria-hidden='true'></i></a>";
-				
+
 			}elseif($row['checkinfo']==1){
-				
-			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
+
+			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
 			}elseif($row['checkinfo']==2){
-				
-			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
+
+			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
 			}
 			$id=$row['id'];
 			$five=5;

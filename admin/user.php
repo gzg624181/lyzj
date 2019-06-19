@@ -86,9 +86,9 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center">发布时间</td>
                 </tr>
               <?php
-	  
+
 		$dopage->GetPage("SELECT * from $tbname",15);
-		
+
 		while($row = $dosql->GetArray())
 		{
 			$id=$row['id'];
@@ -98,7 +98,7 @@ $num=$dosql->GetTotalRow($one);
 					$sex = "<i title='男' style='font-size:16px;color: #3339;' class='fa fa-venus' aria-hidden='true'></i>";
 					break;
 				case 0:
-					$sex = "<i title='女' style='font-size:16px;color: #3339;' class='fa fa-mercury' aria-hidden='true'></i>";
+					$sex = "<i title='女' style='font-size:16px;color: red;' class='fa fa-mercury' aria-hidden='true'></i>";
 					break;
 
 			}
@@ -107,14 +107,14 @@ $num=$dosql->GetTotalRow($one);
 		    }else{
             $images=$row['images'];
             }
-			
+
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
                 <td align="center"><?php echo $row['nickname']; ?></td>
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['nickname']; ?>" /></div></td>
                 <td align="center" class="num"><?php echo $sex; ?></td>
-                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['addtime']);?> 
+                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['addtime']);?>
                  </td>
                 <?php //}?>
               </tr>

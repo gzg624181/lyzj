@@ -591,4 +591,25 @@ function add_formid($openid,$formid)
 	$dosql->ExecNoneQuery("DELETE FROM `#@__formid` where formid='$formid' and openid='$openid'");
 
  }
+
+ //
+ //生成小程序二维码
+function save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster) {
+		$post_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=$access_token";
+		$width = '430';
+		$scene=$id."&".$time."&".$poster;
+		$post_data='{"page":"'.$xiaochengxu_path.'","width":'.$width.',"scene":"'.$scene.'"}';
+		$opts = array('http' =>
+				array(
+						'method'  => 'POST',
+						'header'  => 'Content-type: application/json',
+						'content' => $post_data
+				)
+		);
+		$context = stream_context_create($opts);
+		$result = file_get_contents($post_url, false, $context);
+		$file_path = $save_path;
+		$bytes = file_put_contents($file_path, $result);
+		return $url;
+}
 ?>

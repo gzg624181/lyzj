@@ -152,7 +152,9 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
                 <td align="center" class="num"><a href="guide.php?check=user&id=<?php echo $row['gid'];?>"><?php echo $row['name']; ?></a></td>
                 <td align="center"><?php echo $sex; ?></td>
-                <td align="center" class="num"><?php echo $freetime;?></td>
+                <td align="center" class="num">
+                
+                  <?php echo $freetime;?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
                 <td align="center">
 			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
@@ -202,6 +204,13 @@ layui.use('laydate', function(){
  //日期范围选择
 laydate.render({
   elem: '#keyword'
+});
+
+//初始赋值
+laydate.render({
+  elem: '#test19'
+  ,value: '1989-10-14',
+  ,isInitValue: true
 });
 
 });
