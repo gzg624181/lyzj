@@ -558,11 +558,18 @@ function add_formid($openid,$formid)
 
 	$now=time();  //当前的时间戳
 
-  $dosql->ExecNoneQuery("DELETE FROM `#@__formid` where guoqi_time <= $now and openid='$openid'");
+	//删除formid表里面 openid是空的数据 ，同时删除 formid为本机测试产生的数据 the formId is a mock one
+	 $dosql->ExecNoneQuery("DELETE FROM `#@__formid` where openid ='' or formid='the formId is a mock one'");
 
-  $k=$dosql->GetOne("SELECT MIN(id) as id	FROM `#@__formid` where openid='$openid'");
+	//删除七天的过期的formid
+	$dosql->ExecNoneQuery("DELETE FROM `#@__formid` where guoqi_time <= $now and openid='$openid'");
+
+	$k=$dosql->GetOne("SELECT MIN(id) as id	FROM `#@__formid` where openid='$openid'");
+
 	$ids=$k['id'];
+
 	$r=$dosql->GetOne("SELECT formid FROM `#@__formid` where id=$ids");
+
 
   if(is_array($r)){
 

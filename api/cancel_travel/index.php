@@ -95,7 +95,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     $tishi="您发布的此条行程已取消，可进入小程序再次发布行程，欢迎您再次使用。";
 
-    $page="pages/about/confirm/confirm?id=".$id."&gid=".$gid;
+    $page="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
 
     $data_agency=CancelAgency($title,$time,$reason,$tishi,$openid_agency,$cfg_concel_agency,$page,$formid);
 
@@ -132,7 +132,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $nickname =$a['company'];    //旅行社的名称
     $tel = $a['tel'];            //旅行社联系人电话号码
     $tishi="您预约的此条行程已取消，可进入小程序再次预约行程，欢迎您再次使用。";
-    $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid;
+    $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem";
 
     $data_guide=CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid_guide,$cfg_cancel_guide,$page,$form_id);
 

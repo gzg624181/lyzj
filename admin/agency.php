@@ -154,17 +154,18 @@ $num=$dosql->GetTotalRow($one);
             <td width="3%" height="165" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="5%" align="center">用户账号</td>
+                <td width="7%" align="center">用户账号</td>
                 <td width="6%" align="center">头像</td>
-                <td width="9%" align="center">联系人姓名</td>
-                <td width="6%" align="center">营业执照</td>
-                <td width="12%" align="center">旅行社名称</td>
-                <td width="12%" align="center">公司地址</td>
-                <td width="10%" align="center">联系电话</td>
-                <td width="10%" align="center">最后登陆城市</td>
-                <td width="11%" align="center">注册时间</td>
-                <td width="9%" align="center">已发布行程</td>
-                <td width="9%" align="center">操作</td>
+                <td width="6%" align="center">联系人姓名</td>
+                <td width="5%" align="center">营业执照</td>
+                <td width="11%" align="center">旅行社名称</td>
+                <td width="15%" align="center">公司地址</td>
+                <td width="8%" align="center">联系电话</td>
+                <td width="9%" align="center">最后登陆城市</td>
+                <td width="10%" align="center">注册时间</td>
+                <td width="6%" align="center">已发布行程</td>
+                <td width="6%" align="center">已购票</td>
+                <td width="10%" align="center">操作</td>
                 </tr>
               <?php
 		if($check=="today"){
@@ -230,6 +231,7 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><?php echo $row['getcity']?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=agency&id=<?php echo $row['id'];?>"><?php echo $agency_num;?></a></td>
+                <td align="center" class="num"><a title="点击查看详情"  style="color:#4a34ea;font-weight:bold;" href="allorder.php?id=<?php echo $row['id'];?>&type=agency&check=agencys"><?php echo get_ticket_sum($row['id'],'agency');?></a></td>
                 <td align="center">
                 <span><?php echo $checkinfo; ?></span> &nbsp;
 			<span><a title="编辑" href="agency_update.php?id=<?php echo $row['id']; ?>">

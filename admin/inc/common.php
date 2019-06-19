@@ -416,6 +416,19 @@ function get_agency($id){
 
 }
 
+//获取导游所有的信息
+
+function get_guide($id){
+
+ global $dosql;
+
+ $r=$dosql->GetOne("SELECT * FROM pmw_guide where id=$id");
+
+ $return= $r;
+
+ return $return ;
+
+}
 
 
 //获取旅行社在同一年内发布 所有行程(所有的状态都算)
@@ -625,10 +638,16 @@ function isjiesuan($id,$y,$m){
 
 		$now=time();  //当前的时间戳
 
+    //删除formid表里面 openid是空的数据 ，同时删除 formid为本机测试产生的数据 the formId is a mock one
+		 $dosql->ExecNoneQuery("DELETE FROM `#@__formid` where openid ='' or formid='the formId is a mock one'");
+
+		//删除七天的过期的formid
 	  $dosql->ExecNoneQuery("DELETE FROM `#@__formid` where guoqi_time <= $now and openid='$openid'");
 
 	  $k=$dosql->GetOne("SELECT MIN(id) as id	FROM `#@__formid` where openid='$openid'");
+
 		$ids=$k['id'];
+
 		$r=$dosql->GetOne("SELECT formid FROM `#@__formid` where id=$ids");
 
 	  if(is_array($r)){
@@ -698,4 +717,16 @@ function isjiesuan($id,$y,$m){
 
   }
 
+  //获取旅行社的已经购票的总额
+	function get_ticket_sum($id,$type)
+	{
+		// code...
+		global $dosql;
+		$r=$dosql->GetOne("SELECT SUM(nums) as nums from pmw_order where type='$type' and did=$id");
+		$nums=$r['nums'];
+		if($nums==null){
+			$nums=0;
+		}
+		return $nums;
+	}
 ?>

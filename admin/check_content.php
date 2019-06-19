@@ -40,7 +40,6 @@ $adminlevel=$_SESSION['adminlevel'];
 ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <?php
-$mid=empty($mid)? 36:$mid;
 $r=$dosql->GetOne("SELECT * FROM pmw_agency_message WHERE id=$mid");
 ?>
 <?php if($state=="success"){?>
@@ -71,7 +70,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_agency_message WHERE id=$mid");
 		  <td height="40" align="right">申请时间：</td>
 		  <td><?php echo $r['applytime'];?></td>
     </tr>
-		
+
 		<tr>
 		  <td height="40" align="right">审核时间：</td>
 		  <td><?php echo $r['sendtime'];?></td>
@@ -80,7 +79,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_agency_message WHERE id=$mid");
 		  <td height="40" colspan="2" align="center" class="num" style="color:#0095ff; font-weight:bold;">注册信息已设置为通过，当前的模板消息发送成功！</td>
     </tr>
 </table>
-	
+
 <?php }elseif($state=="failed"){?>
 <div class="topToolbar"> <span class="title" style="text-align:center;">模板消息发送失败</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
 
@@ -109,12 +108,12 @@ $r=$dosql->GetOne("SELECT * FROM pmw_agency_message WHERE id=$mid");
 		  <td height="40" align="right">申请时间：</td>
 		  <td><?php echo $r['applytime'];?></td>
     </tr>
-		
+
 		<tr>
 		  <td height="40" align="right">审核时间：</td>
 		  <td><?php echo $r['sendtime'];?></td>
     </tr>
-      
+
     <tr>
 		  <td height="40" colspan="2" align="center" class="num" style="color:red; font-weight:bold;">注册信息已设置为未通过，当前的模板消息发送失败！</td>
     </tr>

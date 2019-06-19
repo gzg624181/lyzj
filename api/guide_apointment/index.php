@@ -156,7 +156,7 @@ if(isset($token) && $token==$cfg_auth_key){
   #向旅行社发送模板消息
   $tel_guide=$g['tel'];
   $timestamp=date("Y-m-d H:i:s");
-  $page_agency="pages/about/confirm/confirm?id=".$id."&gid=".$gid;
+  $page_agency="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
   $openid_agency=$a['openid'];     //旅行社联系人openid
   $form_id_agency=get_new_formid($openid_agency) ;
 

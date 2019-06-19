@@ -124,6 +124,10 @@ $keyword = isset($keyword) ? $keyword : '';
    $dopage->GetPage("SELECT * FROM $tbname where typename='优惠票'",10);
  }elseif($check=="numsid"){
    $dopage->GetPage("SELECT * FROM $tbname where tid=$id",10);
+ }elseif($check=="agencys"){
+   $dopage->GetPage("SELECT * FROM $tbname where did=$id and type='$type'",10);
+ }elseif($check=="guides"){
+   $dopage->GetPage("SELECT * FROM $tbname where did=$id and type='$type'",10);
  }elseif($keyword!=""){
    $dopage->GetPage("SELECT * FROM $tbname where jingquname like '%$keyword%' OR contactname like '%$keyword%' OR contacttel like '%$keyword%'  OR usetime like '%$keyword%' ",10);
      }else{

@@ -59,7 +59,7 @@ if(isset($token) && $token==$cfg_auth_key){
   // $openid=$information['openid'];
   $form_id=get_new_formid($openid);
   $id=get_orderid($did,$posttime);
-  $page="pages/booking/bookingDetail/bookingDetail?id=".$id;
+  $page="pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem";
   $posttime=date("Y-m-d H:i:s"); //购票时间
   $tishi="亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情";
 
@@ -69,7 +69,7 @@ if(isset($token) && $token==$cfg_auth_key){
   del_formid($form_id,$openid);
 
   #向下票人发送购票成功订单的模板消息
-  $page="pages/index/index";
+  $page="pages/index/index?tem=tem";
   switch($type){
 
     case "agency":

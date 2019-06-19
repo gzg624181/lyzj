@@ -115,14 +115,16 @@ else if($action == 'checkagency')
      $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
      //发送模板消息
      $openid=$r['openid'];
-     $form_id=$r['formid'];  //微信小程序提交表单的formid
-     $page="pages/about/login/login";
+     $form_id=getformid($openid);  //微信小程序提交表单的formid
+     $page="pages/about/login/login?tem=tem";
 
     // 并且发送通过的模板消息
     $ACCESS_TOKEN = get_access_token($appid,$appsecret);//ACCESS_TOKEN
     //模板消息请求URL
     $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
     $data=getDataArray($openid,$tp,$name,$tel,$state,$content,$applytime,$sendtime,$cfg_regsuccess,$page,$form_id);
+    //删除已经使用过的formid
+    del_formid($form_id,$openid);
     $json_data = json_encode($data);//转化成json数组让微信可以接收
     $res = https_requests($url, urldecode($json_data));//请求开始
     $res = json_decode($res, true);
@@ -174,8 +176,8 @@ else if($action == 'checkagency')
     $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
     //发送模板消息
     $openid=$r['openid'];
-    $form_id=$r['formid'];  //微信小程序提交表单的formid
-    $page="pages/about/login/login";
+    $form_id=getformid($openid);  //微信小程序提交表单的formid
+    $page="pages/about/login/login?tem=tem";
 
    // 并且发送通过的模板消息
    $ACCESS_TOKEN = get_access_token($appid,$appsecret);//ACCESS_TOKEN
@@ -185,6 +187,8 @@ else if($action == 'checkagency')
    $json_data = json_encode($data);//转化成json数组让微信可以接收
    $res = https_requests($url, urldecode($json_data));//请求开始
    $res = json_decode($res, true);
+   //删除已经使用过的formid
+   del_formid($form_id,$openid);
    if ($res['errcode'] == 0 && $res['errcode'] == "ok") {
      ShowMsg("恭喜，审核通过！",'-1');
      exit();
@@ -195,10 +199,11 @@ else if($action == 'checkagency')
 else if($action=="checkfailed"){
   if($type=="agency"){
     //更改旅行社的审核状态
-    $dosql->ExecNoneQuery("UPDATE $tbname SET checkinfo=2 WHERE id=$id");
+    $randnumber=rand(111111111,999999999);
+
     //将用户的发送消息保存起来
     $tbnames='pmw_agency_message';
-    $sql = "INSERT INTO `$tbnames` (tp, name, tel, state, content, applytime, sendtime) VALUES ('$tp', '$name', '$tel', '$state', '$content', '$applytime', '$sendtime')";
+    $sql = "INSERT INTO `$tbnames` (tp, name, tel, state, content, applytime, sendtime,randnumber) VALUES ('$tp', '$name', '$tel', '$state', '$content', '$applytime', '$sendtime',$randnumber)";
     $dosql->ExecNoneQuery($sql);
 
     //向注册的旅行社的注册用户发送注册审核未成功的消息
@@ -207,11 +212,11 @@ else if($action=="checkfailed"){
     //模板消息请求URL
     $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
 
-    $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
+    $r=$dosql->GetOne("SELECT openid FROM $tbname where id=$id");
     //发送模板消息
     $openid=$r['openid'];
-    $form_id=$r['formid'];  //微信小程序提交表单的formid
-    $page="pages/register/register";
+    $form_id=getformid($openid);  //获取最新的openid
+    $page="pages/register/register?tem=tem";
   	if($type=="agency"){
   		$typename="旅行社";
   	}else{
@@ -221,26 +226,37 @@ else if($action=="checkfailed"){
 	  $json_data = json_encode($data);//转化成json数组让微信可以接收
     $res = https_requests($url, urldecode($json_data));//请求开始
 	  $res = json_decode($res, true);
+    //删除已经使用过的formid
+    del_formid($form_id,$openid);
     //获取发送的微信模板消息的id
-  	$s=$dosql->GetOne("SELECT id FROM pmw_agency_message  WHERE tel='$tel' and applytime='$applytime' and sendtime='$sendtime'");
+  	$s=$dosql->GetOne("SELECT id FROM pmw_agency_message  WHERE randnumber=$randnumber");
   	$mid=$s['id'];
 
+    $agency_array=get_agency($id);
+
+    $account= $agency_array['account'];
+    //将旅行社审核未通过的用户单独放到另外一个表里面
+    $dosql->ExecNoneQuery("INSERT INTO pmw_unshenhe (type,account) VALUES ('$type','$account')");
+
+    $dosql->ExecNoneQuery("DELETE FROM  $tbname WHERE id=$id");
+
     if ($res['errcode'] == 0 && $res['errcode'] == "ok") {
-	   $gourls="check_content.php?id=".$mid."&state=success";
+	   $gourls="check_content.php?mid=".$mid."&state=success";
        header("location:$gourls");
 	     exit();
     }else{
-		$gourls="check_content.php?id=".$mid."&state=failed";
+		$gourls="check_content.php?mid=".$mid."&state=failed";
         header("location:$gourls");
 	      exit();
 	}
 
   }elseif($type=="guide"){
   $tbname="pmw_guide";
-  $dosql->ExecNoneQuery("UPDATE $tbname SET checkinfo=2 WHERE id=$id");
+  // $dosql->ExecNoneQuery("UPDATE $tbname SET checkinfo=2 WHERE id=$id");
   //将用户的发送消息保存起来
+  $randnumber=rand(111111111,999999999);
   $tbnames='pmw_agency_message';
-  $sql = "INSERT INTO `$tbnames` (tp, name, tel, state, content, applytime, sendtime) VALUES ('$tp', '$name', '$tel', '$state', '$content', '$applytime', '$sendtime')";
+  $sql = "INSERT INTO `$tbnames` (tp, name, tel, state, content, applytime, sendtime,randnumber) VALUES ('$tp', '$name', '$tel', '$state', '$content', '$applytime', '$sendtime',$randnumber)";
   $dosql->ExecNoneQuery($sql);
 
   //向注册的旅行社的注册用户发送注册审核未成功的消息
@@ -252,8 +268,8 @@ else if($action=="checkfailed"){
   $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
   //发送模板消息
   $openid=$r['openid'];
-  $form_id=$r['formid'];  //微信小程序提交表单的formid
-  $page="pages/register/register";
+  $form_id=getformid($openid);  //微信小程序提交表单的formid
+  $page="pages/register/register?tem=tem";
   if($type=="agency"){
     $typename="旅行社";
   }else{
@@ -263,16 +279,26 @@ else if($action=="checkfailed"){
   $json_data = json_encode($data);//转化成json数组让微信可以接收
   $res = https_requests($url, urldecode($json_data));//请求开始
   $res = json_decode($res, true);
+  //删除已经使用过的formid
+  del_formid($form_id,$openid);
   //获取发送的微信模板消息的id
-  $s=$dosql->GetOne("SELECT id FROM $tbnames  WHERE tel='$tel' and applytime='$applytime' and sendtime='$sendtime'");
+  $s=$dosql->GetOne("SELECT id FROM pmw_agency_message  WHERE tel='$tel' and applytime='$applytime' and sendtime='$sendtime'");
   $mid=$s['id'];
 
+  $guide_array=get_guide($id);
+
+  $account= $guide_array['account'];
+  //将旅行社审核未通过的用户单独放到另外一个表里面
+  $dosql->ExecNoneQuery("INSERT INTO pmw_unshenhe (type,account) VALUES ('$type','$account')");
+
+  $dosql->ExecNoneQuery("DELETE FROM  $tbname WHERE id=$id");
+
   if ($res['errcode'] == 0 && $res['errcode'] == "ok") {
-    $gourls="check_content.php?id=".$mid."&state=success";
+     $gourls="check_content.php?mid=".$mid."&state=success";
      header("location:$gourls");
      exit();
   }else{
-      $gourls="check_content.php?id=".$mid."&state=failed";
+      $gourls="check_content.php?mid=".$mid."&state=failed";
       header("location:$gourls");
       exit();
 }
