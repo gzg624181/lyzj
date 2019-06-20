@@ -352,12 +352,18 @@ return $arr;
 //获取关注的微信小程序的openid
 
 //获取微信小程序openid
-function Openid($code,$appid,$appsecret){
+function openid($code,$appid,$appsecret){
   $url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.$appid.'&secret='.$appsecret.'&js_code=' . $code . '&grant_type=authorization_code';
   $info = file_get_contents($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
   $json = json_decode($info);//对json数据解码
   $arr = get_object_vars($json);
+
+	if(isset($arr['openid'])){
   $openid = $arr['openid'];
+	}else{
+		$openid ="";
+	}
+
   return $openid;
 }
 
@@ -592,24 +598,145 @@ function add_formid($openid,$formid)
 
  }
 
- //
- //生成小程序二维码
+
 function save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster) {
-		$post_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=$access_token";
-		$width = '430';
-		$scene=$id."&".$time."&".$poster;
-		$post_data='{"page":"'.$xiaochengxu_path.'","width":'.$width.',"scene":"'.$scene.'"}';
-		$opts = array('http' =>
-				array(
-						'method'  => 'POST',
-						'header'  => 'Content-type: application/json',
-						'content' => $post_data
-				)
-		);
-		$context = stream_context_create($opts);
-		$result = file_get_contents($post_url, false, $context);
-		$file_path = $save_path;
-		$bytes = file_put_contents($file_path, $result);
-		return $url;
+    $post_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=$access_token";
+    $width = '200';
+	//前面是推荐码，商户端是1，客户端是0
+  	$scene=$id."&".$time."&".$poster;
+    $post_data='{"page":"'.$xiaochengxu_path.'","width":'.$width.',"scene":"'.$scene.'"}';
+    $opts = array('http' =>
+        array(
+            'method'  => 'POST',
+            'header'  => 'Content-type: application/json',
+            'content' => $post_data
+        )
+    );
+    $context = stream_context_create($opts);
+    $result = file_get_contents($post_url, false, $context);
+    $file_path = $save_path;
+    $bytes = file_put_contents($file_path, $result);
+    return $url;
+}
+
+/**
+ *图片加水印
+ *@param $srcImg 原图
+ *@param $waterImg 水印图片
+ *@param $savepath 保存路径
+ *@param $savename 保存名字
+ *@param $position 水印位置
+ *1：左上  2：右上 3:居中 4：左下 5：右下
+ *@param $opacity 透明度
+ *0:全透明 100：完全不透明
+ *@return  成功 -- 加水印后的新图片地址
+ *         失败 -- -1：源文件不存在，-2：水印不存在，-3源文件图片对象建立失败，-4：水印文件图像对象建立失败，-5：加水印后的新图片保存失败
+ * 获取源文件路径、宽高等信息，得出保存后文件保存路径、水印放置位置->建立源文件和水印图片对象->合并图片对象（imagecopymerge）->销毁图片对象
+ */
+
+
+function img_create_from_ext($imgfile){
+    $info = getimagesize($imgfile);
+    $im = null;
+    switch ($info[2]) {
+        case 1:
+            $im = imagecreatefromgif($imgfile);
+            break;
+        case 2:
+            $im = imagecreatefromjpeg($imgfile);
+            break;
+        case 3:
+            $im = imagecreatefrompng($imgfile);
+            break;
+    }
+    return $im;
+}
+
+
+
+function img_water_mark($srcImg, $waterImg, $savepath=null, $savename=null, $position=5, $opacity=50){
+    $temp = pathinfo($srcImg);
+    $name = $temp['basename'];
+    $path = $temp['dirname'];
+    $exte = $temp['extension'];
+    $savename = $savename ? $savename : $name;
+    $savepath = $savepath ? $savepath : $path;
+    $savefile = $savepath.'/'.$savename;
+
+    $srcinfo = @getimagesize($srcImg);
+    if(!$srcinfo){
+        return -1;
+    }
+    $waterinfo = @getimagesize($waterImg);
+    if(!$waterinfo){
+        return -2;
+    }
+    $srcImgObj = img_create_from_ext($srcImg);
+    if(!$srcImgObj){
+        return -3;
+    }
+    $waterImgObj = img_create_from_ext($waterImg);
+    if(!$waterImgObj){
+        return -4;
+    }
+    switch ($position) {
+        case 1:
+            $x=$y=0;
+            break;
+        case 2:
+            $x=$srcinfo[0] - $waterinfo[0];
+            $y=0;
+            break;
+        case 3:
+            $x=($srcinfo[0] - $waterinfo[0])/2;
+            $y=($srcinfo[1] - $waterinfo[1])/2;
+            break;
+        case 4:
+            $x=0;
+            $y=$srcinfo[1] - $waterinfo[1];
+            break;
+        case 5:
+            $x=$srcinfo[0] /2;
+            $y=$srcinfo[1] - $waterinfo[1]*1.5;
+            break;
+    }
+    // 合并图片+水印
+    imagecopymerge($srcImgObj, $waterImgObj, $x, $y, 0, 0, $waterinfo[0], $waterinfo[1], $opacity);
+
+    switch ($srcinfo[2]) {
+        case 1:
+            imagegif($srcImgObj, $savefile);
+            break;
+        case 2:
+            imagejpeg($srcImgObj, $savefile);
+            break;
+        case 3:
+            imagepng($srcImgObj, $savefile);
+            break;
+        default: return -5;
+    }
+    imagedestroy($srcImgObj);
+    imagedestroy($waterImgObj);
+    return $savefile;
+}
+
+
+/*
+ *$sourePic:原图路径
+ * $smallFileName:小图名称
+ * $width:小图宽
+ * $heigh:小图高
+ * 转载注明 www.chhua.com*/
+function pngthumb($sourePic,$smallFileName,$width,$heigh){
+    $image=imagecreatefrompng($sourePic);//PNG
+            imagesavealpha($image,true);//这里很重要 意思是不要丢了$sourePic图像的透明色;
+            $BigWidth=imagesx($image);//大图宽度
+            $BigHeigh=imagesy($image);//大图高度
+            $thumb = imagecreatetruecolor($width,$heigh);
+            imagealphablending($thumb,false);//这里很重要,意思是不合并颜色,直接用$img图像颜色替换,包括透明色;
+            imagesavealpha($thumb,true);//这里很重要,意思是不要丢了$thumb图像的透明色;
+            if(imagecopyresampled($thumb,$image,0,0,0,0,$width,$heigh,$BigWidth,$BigHeigh)){
+            imagepng($thumb,$smallFileName);}
+            return $smallFileName;//返回小图路径 转载注明 www.chhua.com
 }
 ?>

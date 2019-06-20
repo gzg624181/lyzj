@@ -32,14 +32,23 @@ if(isset($token) && $token==$cfg_auth_key){
 	$url="uploads/erweima/".$erweima_name.".png";
 	$save_path="../../".$url;         //生成成功之后的二维码地址
 	$access_token=token($cfg_music_appid,$cfg_music_appsecret);
+//  $access_token=token($cfg_music_appid,$cfg_music_appsecret);
 	$erweima= save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster);
+
+  $srcImg=$cfg_weburl."/templates/default/images/img.jpg";
+  $waterImg= $cfg_weburl."/".$erweima;
+
+  $savename="new_".$erweima_name.".png";
+  $savepath="../../uploads/erweima";
+  $newimg=img_water_mark($srcImg, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
+
   $State = 1;
   $Descriptor = '小程序码生成成功!';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
               'Version' => $Version,
-              'Data' => $erweima
+              'Data' => $newimg
                );
   echo phpver($result);
 
@@ -50,7 +59,7 @@ if(isset($token) && $token==$cfg_auth_key){
                   'State' => $State,
                   'Descriptor' => $Descriptor,
   				         'Version' => $Version,
-                   'Data' => $Data,
+                   'Data' => $newimg,
                    );
   echo phpver($result);
 }

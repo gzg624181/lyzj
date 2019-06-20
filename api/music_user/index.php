@@ -20,6 +20,7 @@
      * nickname        会员昵称
      * images          用户头像
      * sex             性别
+     * code            用户关注的code
      */
 require_once("../../include/config.inc.php");
 $Data = array();
@@ -27,21 +28,10 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：添加行程的时候content 内容以json字符串的形式保存在数据库中去
+  $openid = openid($code,$cfg_music_appid,$cfg_music_appsecret);
 
-  $addtime=time();  //添加时间
-  $sql = "INSERT INTO `#@__member`(nickname,images,sex,addtime) VALUES ('$nickname','$images',$sex,$addtime)";
-  if($dosql->ExecNoneQuery($sql)){
+  if($openid==""){
     $State = 1;
-    $Descriptor = '用户信息保存成功!';
-    $result = array (
-                'State' => $State,
-                'Descriptor' => $Descriptor,
-                'Version' => $Version,
-                'Data' => $Data
-                 );
-    echo phpver($result);
-  }else{
-    $State = 0;
     $Descriptor = '用户信息保存失败!';
     $result = array (
                 'State' => $State,
@@ -50,8 +40,24 @@ if(isset($token) && $token==$cfg_auth_key){
                 'Data' => $Data
                  );
     echo phpver($result);
+  }else{
+  $r=$dosql->GetOne("SELECT openid from pmw_member where openid='$openid'");
+  if(!is_array($r)){
+  $addtime=time();  //添加时间
+  $sql = "INSERT INTO `#@__member`(nickname,images,sex,addtime,openid) VALUES ('$nickname','$images',$sex,$addtime,'$openid')";
+  $dosql->ExecNoneQuery($sql);
   }
-
+  $k=$dosql->GetOne("SELECT openid from pmw_member where openid='$openid'");
+    $State = 1;
+    $Descriptor = '用户信息保存成功!';
+    $result = array (
+                'State' => $State,
+                'Descriptor' => $Descriptor,
+                'Version' => $Version,
+                'Data' => $k
+                 );
+    echo phpver($result);
+  }
 
 }else{
   $State = 520;

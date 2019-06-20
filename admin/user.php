@@ -67,7 +67,7 @@ $num=$dosql->GetTotalRow($one);
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
 <span class="title">音频小程序会员列表：<span class="num" style="color:red;"><?php echo $num;?></span>
-</span> <a href="javascript:location.reload();" class="reload">刷新</a>
+</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
@@ -82,8 +82,9 @@ $num=$dosql->GetTotalRow($one);
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
                 <td width="13%" align="center">用户昵称</td>
                 <td width="6%" align="center">头像</td>
-                <td width="65%" align="center">性别</td>
-                <td align="center">发布时间</td>
+                <td width="60%" align="center">性别</td>
+                <td width="17%" align="center">发布时间</td>
+                <td width="3%" align="center">操作</td>
                 </tr>
               <?php
 
@@ -114,8 +115,10 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><?php echo $row['nickname']; ?></td>
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['nickname']; ?>" /></div></td>
                 <td align="center" class="num"><?php echo $sex; ?></td>
-                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['addtime']);?>
-                 </td>
+                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
+                <td align="center" class="num">  
+			
+    <div id="jsddm" style=" margin-top:3px;"><a title="删除" href="music_save.php?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash" aria-hidden="true"></i></a></div></td>
                 <?php //}?>
               </tr>
               <?php
@@ -137,7 +140,7 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a></span></div>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('music_save.php');" onclick="return ConfDelAll(0);">删除</a></span></div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

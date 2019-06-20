@@ -10,8 +10,8 @@ person: Feng
 
 
 //初始化参数
-$tbname = '#@__music';
-$gourl  = 'music.php';
+$tbname = '#@__member';
+$gourl  = 'user.php';
 
 
 //引入操作类
@@ -30,30 +30,23 @@ if($action == 'add')
   $urls="/uploads/erweima/".$erweima_name.".png";
   $save_path=$cfg_weburl.$urls;         //生成成功之后的二维码地址
   $url=$cfg_weburl."/".$url;
-	$sql = "INSERT INTO `$tbname` (title, url, num, codeurl, addtime, orderid) VALUES ('$title', '$url', $num, '$save_path', '$addtime', $orderid)";
+	$sql = "INSERT INTO `#@__music` (title, url, num, codeurl, addtime, orderid, sharename) VALUES ('$title', '$url', $num, '$save_path', '$addtime', $orderid, '$sharename')";
 	if($dosql->ExecNoneQuery($sql))
 	{
+		$gourl="music.php";
 		header("location:$gourl");
 		exit();
 	}
 }
-
-
-//修改留言
-else if($action == 'update')
+else if($action == 'playmp3')
 {
-	if(!isset($htop)) $htop = '';
-	if(!isset($rtop)) $rtop = '';
-	$posttime = GetMkTime($posttime);
 
-	$sql = "UPDATE `$tbname` SET siteid='$cfg_siteid', contact='$contact', content='$content', recont='$recont', orderid='$orderid', posttime='$posttime', htop='$htop', rtop='$rtop', checkinfo='$checkinfo' WHERE id=$id";
-	if($dosql->ExecNoneQuery($sql))
-	{
-		header("location:$gourl");
-		exit();
-	}
+	$r=$dosql->GetOne("SELECT url,title FROM pmw_music WHERE id=$id");
+  $url= $r['url'];
+  $content =  "<span style='font-size:18px;font-weight:bold;margin-bottom:10px;'>".$r['title']."播放测试"."</span>";
+	$content .="<video controls='' autoplay='' name='media'><source src=".$url." type='audio/mpeg'></video>";
+	echo $content;
 }
-
 
 //无条件返回
 else

@@ -155,7 +155,7 @@ require_once(dirname(__FILE__).'/include/config.inc.php');
 // }
 //
 // print_r(get_years(20));
-
+/*
 $gid=1;
 $id=14;
 $k=$dosql->GetOne("SELECT state,starttime,endtime from pmw_travel where id=$id");
@@ -271,5 +271,43 @@ while($sow=$dosql->GetArray($one)){
 }
 
 echo $num;
+*/
+//
+// function pngMerge($o_pic,$out_pic){
+//  $begin_r = 98;
+//  $begin_g = 98;
+//  $begin_b = 98;
+//  list($src_w, $src_h) = getimagesize($o_pic);// 获取原图像信息
+//  $src_im = imagecreatefromjpeg($o_pic);
+//  //imagecopymerge($target_im, $src_im, 0, 0, 0, 0, $src_w, $src_h, 100);
+//  //imagecopyresampled($target_im, $src_im, 0, 0, 0, 0, $src_w, $src_h, $src_w, $src_h);
+//  $i = 0;
+//  $src_white = imagecolorallocate($src_im, 255, 255, 255);
+//  for ($x = 0; $x < $src_w; $x++) {
+//    for ($y = 0; $y < $src_h; $y++) {
+//     $rgb = imagecolorat($src_im, $x, $y);
+//     $r = ($rgb >> 16) & 0xFF;
+//     $g = ($rgb >> 8) & 0xFF;
+//     $b = $rgb & 0xFF;
+//     if($r==255 && $g==255 && $b == 255){
+//       $i ++;
+//       continue;
+//     }
+//     if (!($r <= $begin_r && $g <= $begin_g && $b <= $begin_b)) {
+//       imagefill($src_im, $x, $y, $src_white);//替换成白色
+//     }
+//    }
+//  }
+//  $target_im = imagecreatetruecolor($src_w, $src_h);//新图
+//  $tag_white = imagecolorallocate($target_im, 255, 255, 255);
+//  imagefill($target_im, 0, 0, $tag_white);
+//  imagecolortransparent($target_im, $tag_white);
+//  imagecopymerge($target_im, $src_im, 0, 0, 0, 0, $src_w, $src_h, 100);
+// }
+// $o_pic = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561008806808&di=6a74347ba057df6269559851323985a4&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F62%2F31%2F84D58PIC7Vy_1024.png';
+// $name = pngMerge($o_pic,'aaaa.png');
+// print_r($name);
 
+
+echo token($cfg_music_appid,$cfg_music_appsecret);
 ?>

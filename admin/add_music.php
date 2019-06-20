@@ -28,11 +28,18 @@ $tbname='pmw_music';
              <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
              </td>
 		</tr>
+		<tr>
+ <td width="25%" height="40" align="right">分享标题：</td>
+ <td width="75%">
+				<input type="text" class="input" id="sharename" name="sharename" required="required">
+				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
+				</td>
+</tr>
                 <tr>
 			<td height="40" align="right">文件地址：</td>
 			<td>
               <input style="margin-top:5px;" type="text" name="url" id="url" class="input"  required="required"/>
-				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'url')">上 传</span> 
+				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'url')">上 传</span>
              </td>
 		</tr>
 		<tr>
