@@ -34,11 +34,17 @@ if(isset($token) && $token==$cfg_auth_key){
 	$access_token=token($cfg_music_appid,$cfg_music_appsecret);
 
 	$erweima= save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster);
-  $img = imagecreatefromjpeg($save_path);
-  imagepng($img, "aaaaa.png");
 
-  $srcImg=$cfg_weburl."/templates/default/images/img.jpg";
-  $waterImg= $cfg_weburl."/".$erweima;
+  $img = imagecreatefromjpeg($save_path);
+  $new_qrcode="../../uploads/erweima/new_code_".$erweima_name.".png";
+  imagepng($img, $new_qrcode);
+
+  $qrcode="../../uploads/erweima/code_".$erweima_name.".png";
+  pngMerge($new_qrcode,$qrcode);
+  unlink($new_qrcode);
+
+  $srcImg="../../templates/default/images/img.jpg";
+  $waterImg=$cfg_weburl."/uploads/erweima/code_".$erweima_name.".png";
 
   $savename="new_".$erweima_name.".png";
   $savepath="../../uploads/erweima";

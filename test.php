@@ -309,5 +309,100 @@ echo $num;
 // print_r($name);
 
 
-echo token($cfg_music_appid,$cfg_music_appsecret);
+//背景图片路径
+// $srcurl = $cfg_weburl.'/templates/default/images/img.jpg';
+// //目标图片路径
+// $desurl = $cfg_weburl.'/uploads/erweima/20190620070110.png';
+// //创建源图的实例
+// $src = imagecreatefromstring(file_get_contents($srcurl));
+// //创建点的实例
+// $des = imagecreatefrompng($desurl);
+// //获取点图片的宽高
+// list($point_w, $point_h) = getimagesize($desurl);
+// //重点：png透明用这个函数
+// imagecopy($src, $des, 970, 1010, 0, 0, $point_w, $point_h);
+// imagecopy($src, $des, 930, 1310, 0, 0, $point_w, $point_h);
+// header('Content-Type: image/jpeg');
+// imagejpeg($src);
+// imagedestroy($src);
+// imagedestroy($des);
+
+// if(extension_loaded('gd')){
+// 	echo "可以使用gd<br>";
+// 	foreach(gd_info() as $k=>$v){
+// 		echo "$k:$v<br>";
+// 	}
+// }else{
+// 	echo "不能使用";
+// }
+
+
+// $url = $cfg_weburl.'/uploads/erweima/20190620070110.png';
+// $im = imagecreatefromstring(file_get_contents($url));
+//
+// $w = imagesx($im);
+// $h = imagesy($im);
+// $c = imagecolorallocate($im, 255, 0, 0);
+// imagearc($im, $w/2, $h/2, $w, $h, 0, 360, $c);
+// imagefilltoborder($im, 0, 0, $c, $c);
+// imagefilltoborder($im, $w, 0, $c, $c);
+// imagefilltoborder($im, 0, $h, $c, $c);
+// imagefilltoborder($im, $w, $h, $c, $c);
+//
+// imagecolortransparent($im, $c); //!!!!
+//
+// $dm = imagecreatefromstring(file_get_contents($cfg_weburl.'/templates/default/images/img.jpg'));
+// imagecopymerge($dm, $im, 160, 50, 0, 0, $w, $h, 100);
+//
+// header("Content-type: image/png");
+// imagepng($dm);
+
+// 图片一 url地址或者相对地址
+ $path_1 = $cfg_weburl.'/templates/default/images/img.jpg';
+ // 图片二  url地址或者相对地址
+ $path_2 = $cfg_weburl.'/uploads/erweima/20190620070110.png';
+
+
+ $img = imagecreatefromjpeg($path_2);
+ imagepng($img, "./uploads/erweima/aaaaa.png");
+
+ function pngMerge($o_pic,$out_pic){
+ $begin_r = 255;
+ $begin_g = 250;
+ $begin_b = 250;
+ list($src_w, $src_h) = getimagesize($o_pic);// 获取原图像信息 宽高
+ $src_im = imagecreatefrompng($o_pic); //读取png图片
+ print_r($src_im);
+ imagesavealpha($src_im,true);//这里很重要 意思是不要丢了$src_im图像的透明色
+ $src_white = imagecolorallocatealpha($src_im, 255, 255, 255,127); // 创建一副白色透明的画布
+ for ($x = 0; $x < $src_w; $x++) {
+  for ($y = 0; $y < $src_h; $y++) {
+    $rgb = imagecolorat($src_im, $x, $y);
+    $r = ($rgb >> 16) & 0xFF;
+    $g = ($rgb >> 8) & 0xFF;
+    $b = $rgb & 0xFF;
+    if($r==255 && $g==255 && $b == 255){
+    imagefill($src_im,$x, $y, $src_white); //填充某个点的颜色
+    imagecolortransparent($src_im, $src_white); //将原图颜色替换为透明色
+    }
+    if (!($r <= $begin_r && $g <= $begin_g && $b <= $begin_b)) {
+     imagefill($src_im, $x, $y, $src_white);//替换成白色
+     imagecolortransparent($src_im, $src_white); //将原图颜色替换为透明色
+    }
+  }
+ }
+ $target_im = imagecreatetruecolor($src_w, $src_h);//新图
+ imagealphablending($target_im,false);//这里很重要,意思是不合并颜色,直接用$target_im图像颜色替换,包括透明色;
+ imagesavealpha($target_im,true);//这里很重要,意思是不要丢了$target_im图像的透明色;
+ $tag_white = imagecolorallocatealpha($target_im, 255, 255, 255,127);//把生成新图的白色改为透明色 存为tag_white
+ imagefill($target_im, 0, 0, $tag_white);//在目标新图填充空白色
+ imagecolortransparent($target_im, $tag_white);//替换成透明色
+ imagecopymerge($target_im, $src_im, 0, 0, 0, 0, $src_w, $src_h, 100);//合并原图和新生成的透明图
+ imagepng($target_im,$out_pic);
+ return $out_pic;
+}
+
+$o_pic ="./uploads/erweima/aaaaa.png";
+$name = pngMerge($o_pic,'./uploads/erweima/gzg1.png');
+unlink($o_pic);
 ?>

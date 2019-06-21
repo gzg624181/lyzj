@@ -51,7 +51,7 @@ function DelThisLoginBg(str)
 </script>
 </head>
 <body>
-<div class="topToolbar"> <span class="title">网站信息配置</span> <a href="javascript:location.reload();" class="reload">刷新</a></div>
+<div class="topToolbar"> <span class="title">网站信息配置</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a></div>
 <div class="toolbarTab">
 	<ul id="tabs">
 		<?php
@@ -59,7 +59,7 @@ function DelThisLoginBg(str)
 		{
 			echo '<li id="tabs_title'.$config_tab_id.'" onclick="tabs(\'tabs\',this);" class="';
 			if($config_tab_id == 0) echo 'on';
-			echo '"><a href="javascript:;">'.$config_tab_text.'</a></li><li class="line">-</li>';	
+			echo '"><a href="javascript:;">'.$config_tab_text.'</a></li><li class="line">-</li>';
 		}
 		?>
 		<li id="tabs_title<?php echo $config_tab_num; ?>" onclick="tabs('tabs',this);"><a href="javascript:;">水印设置</a></li>
@@ -75,11 +75,11 @@ function DelThisLoginBg(str)
 	foreach($config_tab_arr as $config_tab_id=>$config_tab_text)
 	{
 	?>
-	<div class="<?php if($config_tab_id != 0) echo 'undis'; ?>" id="tabs_content<?php echo $config_tab_id; ?>"> 
+	<div class="<?php if($config_tab_id != 0) echo 'undis'; ?>" id="tabs_content<?php echo $config_tab_id; ?>">
 		<!--使用DIV兼容chrome firefox等浏览器-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable" >
 			<?php
-			
+
 			if($config_tab_id == 0)
 				$sql = "SELECT * FROM `#@__webconfig` WHERE `siteid`='$cfg_siteid' AND `vargroup`=$config_tab_id ORDER BY `orderid` ASC";
 			else
@@ -93,13 +93,13 @@ function DelThisLoginBg(str)
 			<tr <?php if($i == $dosql->GetTotalRow()) echo 'class="nb"'; ?>>
 				<td width="25%" height="40" align="right"><?php echo $row['varinfo']; ?>：</td>
 				<td width="40%"><?php
-				
+
 				//统计代码转义
 				if($row['varname'] == 'cfg_countcode')
 				{
 					$row['varvalue'] = stripslashes($row['varvalue']);
 				}
-				
+
 				switch($row['vartype'])
 				{
 					case 'string':
@@ -163,7 +163,7 @@ function DelThisLoginBg(str)
 	}
 	?>
 </form>
-<!--/cfg_var end--> 
+<!--/cfg_var end-->
 <!--setwatermark-->
 <?php
 require_once($watermark_inc);
@@ -276,7 +276,7 @@ require_once($watermark_inc);
 		</table>
 	</div>
 </form>
-<!--/setwatermark end--> 
+<!--/setwatermark end-->
 <!--setui-->
 <?php
 require_once($manageui_inc);
@@ -365,7 +365,7 @@ require_once($manageui_inc);
 		</table>
 	</div>
 </form>
-<!--/setui end--> 
+<!--/setui end-->
 <!--addvarname-->
 <form name="form_addvarname" method="post" action="">
 	<div class="undis" id="tabs_content<?php echo $config_tab_num+2; ?>">
