@@ -177,7 +177,7 @@ $num=$dosql->GetTotalRow($one);
 	    }elseif($check=="success"){ //已通过
 		$dopage->GetPage("SELECT * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
-		$dopage->GetPage("SELECT a.* from $tbname a inner join pmw_unshenhe b on a.account=b.account where b.type = 'agency'",15);
+		$dopage->GetPage("SELECT * from pmw_un_agency",15);
 	    }elseif($check=="reviewed"){ //待审核
 		$dopage->GetPage("SELECT * from $tbname where checkinfo = 0",15);
 	    }elseif($keyword!=""){ //关键字搜索
@@ -234,9 +234,23 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center" class="num"><a title="点击查看详情"  style="color:#4a34ea;font-weight:bold;" href="allorder.php?id=<?php echo $row['id'];?>&type=agency&check=agencys"><?php echo get_ticket_sum($row['id'],'agency');?></a></td>
                 <td align="center">
                 <span><?php echo $checkinfo; ?></span> &nbsp;
+      <?php if($row['checkinfo']!=2){?>
 			<span><a title="编辑" href="agency_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
-			<span class="nb"><a title="删除旅行社信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span></td>
+      <?php }?>
+      <?php
+        $adminlevel=$_SESSION['adminlevel'];
+        if($adminlevel==1){?>
+       
+      <?php if($row['checkinfo']==2){?>
+			<span class="nb"><a title="删除未通过旅行社信息" href="<?php echo $action;?>?action=del99&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+    <?php }else{?>
+      <span class="nb"><a title="删除旅行社信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+    <?php }?>
+    <?php }else{?>
+      <i style="color: #d9d5d5;" class="fa fa-trash-o" aria-hidden="true"></i>
+    <?  } ?>
+    </td>
                 <?php //}?>
               </tr>
               <?php

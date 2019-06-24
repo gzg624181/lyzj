@@ -1,4 +1,4 @@
-<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');IsModelPriv('message');
+<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');
 
 /*
 **************************
@@ -47,7 +47,18 @@ else if($action == 'playmp3')
 	$content .="<video controls='' autoplay='' name='media'><source src=".$url." type='audio/mpeg'></video>";
 	echo $content;
 }
+else if($action=="share_update"){
+	if(!check_str($pic,$cfg_weburl)){
+    $pic=$cfg_weburl."/".$pic; //导游证件
+  }
+	if(!check_str($tubiaopic,$cfg_weburl)){
+		$tubiaopic=$cfg_weburl."/".$tubiaopic; //导游证件
+	}
+	$dosql->ExecNoneQuery("UPDATE pmw_share SET tubiaopic='$tubiaopic',imagesurl='$pic' where id=2");
+	$gourl="share_config.php";
 
+	header("LOCATION:$gourl");
+}
 //无条件返回
 else
 {

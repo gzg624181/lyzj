@@ -1,5 +1,4 @@
-<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');IsModelPriv('admin');
-
+<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');
 /*
 **************************
 (C)2010-2015 phpMyWind.com
@@ -154,9 +153,17 @@ else if($action=='sets'){
 	$gourl="members.php";
 
 	header("LOCATION:$gourl");
-	
-}
 
+}
+else if($action=='share_update'){
+	if(!check_str($pic,$cfg_weburl)){
+    $pic=$cfg_weburl."/".$pic; //导游证件
+  }
+	$dosql->ExecNoneQuery("UPDATE pmw_share SET title='$title',imagesurl='$pic' where id=1");
+	$gourl="share.php";
+
+	header("LOCATION:$gourl");
+}
 
 //无条件返回
 else

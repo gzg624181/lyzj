@@ -101,6 +101,7 @@ $check = isset($check) ? $check : '';
 		$username=$_SESSION['admin'];
 		$adminlevel=$_SESSION['adminlevel'];
 		$tbname='pmw_travel';
+
 		 if($check=="appointment"){ //待预约
 		$dopage->GetPage("SELECT * FROM $tbname where state=0",10);
 		  }elseif($check=="confirm"){ //待确认
@@ -188,7 +189,9 @@ $check = isset($check) ? $check : '';
 			<td align="center"><?php
 			$aid= $row['aid'];
 			$j=$dosql->GetOne("SELECT company FROM pmw_agency where id=$aid");
+      if(is_array($j)){
 			echo $j['company'];
+      }
 			 ?></td>
 			<td align="center"><?php echo date("Y-m-d",$row['starttime']); ?></td>
 			<td align="center"><?php echo date("Y-m-d",$row['endtime']); ?></td>

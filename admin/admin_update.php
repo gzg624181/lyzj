@@ -54,7 +54,7 @@ $row = $dosql->GetOne("SELECT * FROM `#@__admin` WHERE `id`=$id");
 					else
 						$selected = '';
 
-					echo "<option value=\"$k\" $selected>$v</option>";									
+					echo "<option value=\"$k\" $selected>$v</option>";
 				}
 				?>
 				</select></td>
@@ -70,9 +70,15 @@ $row = $dosql->GetOne("SELECT * FROM `#@__admin` WHERE `id`=$id");
 		</tr>
 		<tr>
 			<td height="40" align="right">管理组：</td>
-			<td><select name="levelname" id="levelname">
+			<td>
+				<select name="levelname" id="levelname">
 				<?php
+				$adminlevel=$_SESSION['adminlevel'];
+				if($adminlevel==1){
 				$dosql->Execute("SELECT * FROM `#@__admingroup` WHERE `checkinfo`='true' ORDER BY `id` ASC");
+				}else{
+				$dosql->Execute("SELECT * FROM `#@__admingroup` WHERE `checkinfo`='true' and id=$adminlevel ORDER BY `id` ASC");	
+				}
 				while($row2 = $dosql->GetArray())
 				{
 
@@ -81,19 +87,13 @@ $row = $dosql->GetOne("SELECT * FROM `#@__admin` WHERE `id`=$id");
 					else
 						$selected = '';
 
+				echo '<option value="'.$row2['id'].'" '.$selected.'>'.$row2['groupname'].'</option>';
 
-					if($cfg_adminlevel == 1)
-					{
-						echo '<option value="'.$row2['id'].'" '.$selected.'>'.$row2['groupname'].'</option>';
-					}
-					else
-					{
-						if($row2['id'] != 1)
-							echo '<option value="'.$row2['id'].'" '.$selected.'>'.$row2['groupname'].'</option>';
-					}
 				}
 				?>
-				</select></td>
+				</select>
+
+			</td>
 		</tr>
 		<tr>
 			<td height="40" align="right">审　核：</td>

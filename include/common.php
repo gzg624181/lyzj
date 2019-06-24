@@ -684,8 +684,8 @@ function img_water_mark($srcImg, $waterImg, $savepath=null, $savename=null, $pos
             $x=$y=0;
             break;
         case 2:
-            $x=$srcinfo[0] - $waterinfo[0];
-            $y=0;
+            $x=$srcinfo[0] /2.8;
+            $y=$waterinfo[1]/1.5;
             break;
         case 3:
             $x=($srcinfo[0] - $waterinfo[0])/2;

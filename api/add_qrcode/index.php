@@ -26,23 +26,36 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
+  $k=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
+  $srcImg=$k['imagesurl'];  //分享的背景图片
+  $tubiaopic=$k['tubiaopic'];
+
   //1.第一步 先生成小程序二维码
   $xiaochengxu_path="pages/play/index";  //默认扫码之后进入的页面
 	$erweima_name=date("Ymdhis");
 	$url="uploads/erweima/".$erweima_name.".png";
 	$save_path="../../".$url;         //生成成功之后的二维码地址
 	$access_token=token($cfg_music_appid,$cfg_music_appsecret);
+  $erweima= save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster);
 
-	$erweima= save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster);
   $img = imagecreatefromjpeg($save_path);
-  imagepng($img, "aaaaa.png");
+  $new_qrcode="../../uploads/erweima/new_code_".$erweima_name.".png";
+  imagepng($img, $new_qrcode);
 
-  $srcImg=$cfg_weburl."/templates/default/images/img.jpg";
-  $waterImg= $cfg_weburl."/".$erweima;
+  $qrcode="../../uploads/erweima/code_".$erweima_name.".png";
+  pngMerge($new_qrcode,$qrcode);
+  unlink($new_qrcode);
+
+  //$srcImg="../../templates/default/images/img.jpg";
+  $waterImg=$cfg_weburl."/uploads/erweima/code_".$erweima_name.".png";
 
   $savename="new_".$erweima_name.".png";
   $savepath="../../uploads/erweima";
-  $newimg=img_water_mark($srcImg, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
+  $newimg1=img_water_mark($srcImg, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
+  $newimg=img_water_mark($newimg1, $tubiaopic, $savepath, $savename, $positon=2, $alpha=100);
+
+  unlink($save_path);
+
 
   $State = 1;
   $Descriptor = '小程序码生成成功!';

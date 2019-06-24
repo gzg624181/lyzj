@@ -234,11 +234,11 @@ else if($action=="checkfailed"){
 
     $agency_array=get_agency($id);
 
-    $account= $agency_array['account'];
-    //将旅行社审核未通过的用户单独放到另外一个表里面
-    $dosql->ExecNoneQuery("INSERT INTO pmw_unshenhe (type,account) VALUES ('$type','$account')");
+    //将审核未通过的信息保存到数据库中去
+    Save_Un_Agency($agency_array);
 
     $dosql->ExecNoneQuery("DELETE FROM  $tbname WHERE id=$id");
+
 
     if ($res['errcode'] == 0 && $res['errcode'] == "ok") {
 	   $gourls="check_content.php?mid=".$mid."&state=success";
@@ -287,9 +287,8 @@ else if($action=="checkfailed"){
 
   $guide_array=get_guide($id);
 
-  $account= $guide_array['account'];
-  //将旅行社审核未通过的用户单独放到另外一个表里面
-  $dosql->ExecNoneQuery("INSERT INTO pmw_unshenhe (type,account) VALUES ('$type','$account')");
+  //将审核未通过的信息保存到数据库中去
+  Save_Un_Guide($guide_array);
 
   $dosql->ExecNoneQuery("DELETE FROM  $tbname WHERE id=$id");
 
@@ -305,10 +304,16 @@ else if($action=="checkfailed"){
 
   }
 //无条件返回
-}else
+}elseif($action=="del99"){
+  $dosql->ExecNoneQuery("DELETE FROM  pmw_un_agency WHERE id=$id");
+  $gourl="agency.php?check=failed";
+  header("location:$gourl");
+  exit();
+}
+else
 {
     header("location:$gourl");
-	exit();
+	  exit();
 }
 
 ?>

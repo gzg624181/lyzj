@@ -42,7 +42,7 @@
 
 				foreach($question as $k=>$v)
 				{
-					echo "<option value=\"$k\">$v</option>";									
+					echo "<option value=\"$k\">$v</option>";
 				}
 				?>
 				</select></td>
@@ -58,20 +58,23 @@
 		</tr>
 		<tr>
 			<td height="40" align="right">管理组：</td>
-			<td><select name="levelname" id="levelname">
+			<td>
+
+				<select name="levelname" id="levelname">
 				<?php
+				$adminlevel=$_SESSION['adminlevel'];
+				if($adminlevel==1){
 				$dosql->Execute("SELECT * FROM `#@__admingroup` WHERE `checkinfo`='true' ORDER BY `id` ASC");
+			  }elseif($adminlevel==2){
+        $dosql->Execute("SELECT * FROM `#@__admingroup` WHERE `checkinfo`='true' and id=2 ORDER BY `id` ASC");
+				}else{
+        $dosql->Execute("SELECT * FROM `#@__admingroup` WHERE `checkinfo`='true' and id=3 ORDER BY `id` ASC");
+				}
 				while($row = $dosql->GetArray())
 				{
-					if($cfg_adminlevel == 1)
-					{
-						echo '<option value="'.$row['id'].'">'.$row['groupname'].'</option>';
-					}
-					else
-					{
-						if($row['id'] != 1)
-							echo '<option value="'.$row['id'].'">'.$row['groupname'].'</option>';
-					}
+
+				echo '<option value="'.$row['id'].'">'.$row['groupname'].'</option>';
+
 				}
 				?>
 				</select></td>

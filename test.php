@@ -356,7 +356,7 @@ echo $num;
 //
 // header("Content-type: image/png");
 // imagepng($dm);
-
+/*
 // 图片一 url地址或者相对地址
  $path_1 = $cfg_weburl.'/templates/default/images/img.jpg';
  // 图片二  url地址或者相对地址
@@ -405,4 +405,20 @@ echo $num;
 $o_pic ="./uploads/erweima/aaaaa.png";
 $name = pngMerge($o_pic,'./uploads/erweima/gzg1.png');
 unlink($o_pic);
+*/
+// 将两张图片合并，（png图片放到背景图片的最上面）
+
+$bigImgPath = '16351_213838405158_2.png';      //背景图片
+$qCodePath = "uploads/erweima/code_20190621063048.png";
+
+$bigImg =   imagecreatefromstring(file_get_contents($bigImgPath));
+$qCodeImg = imagecreatefromstring(file_get_contents($qCodePath));
+
+list($qCodeWidth, $qCodeHight, $qCodeType) = getimagesize($qCodePath);
+
+imagecopymerge($bigImg, $qCodeImg, 239, 677, 0, 0, $qCodeWidth, $qCodeHight, 100);
+
+list($bigWidth, $bigHight, $bigType) = getimagesize($bigImgPath);
+
+imagejpeg($bigImg,'g.jpg');
 ?>

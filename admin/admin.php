@@ -12,9 +12,9 @@
 </head>
 <body>
 <div class="topToolbar"> <span class="title">管理员管理</span>
-<a href="javascript:location.reload();" class="reload">刷新</a></div>
+<a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload; ?></a></div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
-	<tr align="left" class="head">
+	<tr align="center" class="head">
 		<td width="5%" height="36" class="firstCol">ID</td>
 		<td width="25%">用户名</td>
 		<td width="20%">管理组</td>
@@ -23,19 +23,21 @@
 		<td width="15%" class="endCol">操作</td>
 	</tr>
 	<?php
-
+	$username=$_SESSION['admin'];
+	$adminlevel=$_SESSION['adminlevel'];
+	if($adminlevel==1){
 	$sql = "SELECT * FROM `#@__admin`";
-
+	}else{
+	$sql = "SELECT * FROM `#@__admin` where username='$username'";
+	}
 
 	//如果非超级管理员,不显示超级管理员记录
-	if($cfg_adminlevel != 1)
-		$sql .= " WHERE `levelname`>1";
-
 
 	$dopage->GetPage($sql,$cfg_pagenum,'ASC');
 	while($row = $dosql->GetArray())
 	{
 		$r = $dosql->GetOne("SELECT `groupname` FROM `#@__admingroup` WHERE `id`=".$row['levelname']);
+
 		$groupname = isset($r['groupname']) ? $r['groupname'] : '';
 
 		switch($row['checkadmin'])
@@ -56,14 +58,18 @@
 		else
 			$checkstr = '<a href="admin_save.php?action=check&id='.$row['id'].'&checkadmin='.$row['checkadmin'].'" title="点击进行审核与未审操">'.$checkadmin.'</a>';
 
-
-		if($row['id'] == 1)
+    if($adminlevel==1){
+		if($row['id'] == 1){
 			$delstr =  "<i class='fa fa-trash-o' aria-hidden='true'></i>";
-		else
+		}else{
 			$delstr = '<a href="admin_save.php?action=del&id='.$row['id'].'" onclick="return ConfDel(0);">
 			<i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+		}
+		}else{
+		$delstr =  "<i class='fa fa-trash-o' aria-hidden='true'></i>";
+		}
 	?>
-	<tr align="left" class="dataTr">
+	<tr align="center" class="dataTr">
 		<td height="36" class="firstCol"><?php echo $row['id']; ?></td>
 		<td><?php echo $row['username']; ?></td>
 		<td><?php echo $groupname; ?></td>

@@ -178,7 +178,7 @@ $num=$dosql->GetTotalRow($one);
 	    }elseif($check=="success"){ //已通过
 		$dopage->GetPage("select * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
-		$dopage->GetPage("SELECT a.* from $tbname a inner join pmw_unshenhe b on a.account=b.account where b.type = 'guide'",15);
+		$dopage->GetPage("SELECT * from pmw_un_guide",15);
 	    }elseif($check=="reviewed"){ //待审核
 		$dopage->GetPage("select * from $tbname where checkinfo = 0",15);
 	    }elseif($check=="user"){ //搜索单个用户
@@ -244,8 +244,10 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=guide&id=<?php echo $row['id'];?>"><?php echo $guide_num;?></a></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:#4a34ea;font-weight:bold;" href="allorder.php?id=<?php echo $row['id'];?>&type=guide&check=guides"><?php echo get_ticket_sum($row['id'],'guide');?></a></td>
                 <td align="center">  <span><?php echo $checkinfo; ?></span> &nbsp;
+      <?php if($row['checkinfo']!=2){?>
 			<span><a title="编辑" href="guide_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
+    <?php }?>
 			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
                 <?php //}?>
               </tr>

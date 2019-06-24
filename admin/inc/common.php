@@ -452,7 +452,7 @@ return $num;
 function get_years($id){
 
 global $dosql;
-
+$return=array();
 $dosql->Execute("SELECT fabu_y FROM pmw_travel where aid=$id group by fabu_y");
 while($show=$dosql->GetArray()){
 	$return[]=$show;
@@ -730,4 +730,60 @@ function isjiesuan($id,$y,$m){
 		return $nums;
 	}
 
+
+   // 将未审核通过的旅行社的信息保存到数据库中去
+
+	  function Save_Un_Agency($agency_array)
+	 {
+	 	// code...
+		global $dosql;
+		$cardpic=$agency_array['cardpic'];
+		$address=$agency_array['address'];
+		$name=$agency_array['name'];
+		$tel = $agency_array['tel'];
+		$account = $agency_array['account'];
+		$password = $agency_array['password'];
+		$regtime = $agency_array['regtime'];
+		$regip = $agency_array['regip'];
+		$ymdtime =$agency_array['ymdtime'];
+		$images = $agency_array['images'];
+		$getcity =$agency_array['getcity'];
+		$openid= $agency_array['openid'];
+		$formid= $agency_array['formid'];
+		$company = $agency_array['company'];
+
+		//将旅行社审核未通过的用户单独放到另外一个表里面,全部都是未审核的
+
+		$sql = "INSERT INTO `#@__un_agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,formid,company,checkinfo) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$company',2)";
+		$dosql->ExecNoneQuery($sql);
+	 }
+
+	 // 将未审核通过的导游的信息保存到数据库中去
+
+	  function Save_Un_Guide($guide_array)
+	 {
+	 	// code...
+		global $dosql;
+		$name=$guide_array['name'];
+		$sex = $guide_array['sex'];
+		$card = $guide_array['card'];
+		$cardnumber = $guide_array['cardnumber'];
+		$tel = $guide_array['tel'];
+		$account = $guide_array['account'];
+		$password =$guide_array['password'];
+		$content = $guide_array['content'];
+		$pics =$guide_array['pics'];
+		$openid= $guide_array['openid'];
+		$formid= $guide_array['formid'];
+		$regtime = $guide_array['regtime'];
+		$regip = $guide_array['regip'];
+		$ymdtime = $guide_array['ymdtime'];
+		$images = $guide_array['images'];
+		$getcity = $guide_array['getcity'];
+
+		//将导游审核未通过的用户单独放到另外一个表里面,全部都是未审核的
+
+		$sql = "INSERT INTO `#@__un_guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,checkinfo) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid',2)";
+		$dosql->ExecNoneQuery($sql);
+	 }
 ?>
