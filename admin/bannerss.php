@@ -51,7 +51,7 @@ function message(Id){
 $action  = isset($action)  ? $action  : 'banner_save.php';
 $keyword = isset($keyword) ? $keyword : '';
 $check = isset($check) ? $check : '';
-
+$adminlevel=$_SESSION['adminlevel'];
 ?>
 <div class="topToolbar"> <span class="title">Banner轮播图片</span>
 <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a>
@@ -95,19 +95,19 @@ $check = isset($check) ? $check : '';
 		</tr>
 		<?php
 		$tbname='pmw_banner';
-		if($check=="index"){ 
+		if($check=="index"){
 		$dopage->GetPage("SELECT * FROM $tbname where typename='index'",10);
-		  }elseif($check=="travel"){ 
+		  }elseif($check=="travel"){
 		$dopage->GetPage("SELECT * FROM $tbname where typename='travel'",10);
-		  }elseif($check=="piao"){ 
+		  }elseif($check=="piao"){
 		$dopage->GetPage("SELECT * FROM $tbname where typename='piao'",10);
-		  }elseif($check=="guide"){ 
+		  }elseif($check=="guide"){
 		$dopage->GetPage("SELECT * FROM $tbname where typename='guide'",10);
-        }elseif($check=="ticket"){ 
+        }elseif($check=="ticket"){
 		$dopage->GetPage("SELECT * FROM $tbname where type='ticket'",10);
-		  }elseif($check=="reg"){ 
+		  }elseif($check=="reg"){
 		$dopage->GetPage("SELECT * FROM $tbname where type='reg'",10);
-		  }elseif($check=="text"){ 
+		  }elseif($check=="text"){
 		$dopage->GetPage("SELECT * FROM $tbname where type='text'",10);
 		  }elseif($check=="no"){
 		$dopage->GetPage("SELECT * FROM $tbname where type='no'",10);
@@ -136,9 +136,9 @@ $check = isset($check) ? $check : '';
 		break;
 
 		}
-		
+
 		switch($row['typename']){
-			
+
 		case 'index':
 		$typename = "首页Banner图片";
 		break;
@@ -156,7 +156,7 @@ $check = isset($check) ? $check : '';
 		break;
 
 		}
-		
+
 		?>
 		<tr align="left" class="dataTr">
 			<td height="54" align="center">&nbsp;</td>
@@ -170,7 +170,11 @@ $check = isset($check) ? $check : '';
 			<td align="center">
       <div id="jsddm">
 			<a title="编辑"  href="banner_update.php?id=<?php echo $row['id']; ?>&type=<?php echo $row['type'];?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></div>
+      <?php if($adminlevel==1){ ?>
     <div id="jsddm" style=" margin-top:3px;"><a title="删除" href="banner_save.php?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash" aria-hidden="true"></i></a></div>
+    <?php }else{ ?>
+      <div id="jsddm" style=" margin-top:3px;"><a title="删除"><i class="fa fa-trash" aria-hidden="true"></i></a></div>
+    <?php } ?>
             </td>
 		</tr>
 		<?php

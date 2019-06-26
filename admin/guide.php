@@ -171,10 +171,10 @@ $num=$dosql->GetTotalRow($one);
               <?php
 		if($check=="today"){
 		$time=date("Y-m-d"); //今天注册
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
-	    }elseif($check=="tomorrowzhuce"){ //昨天注册
+		$dopage->GetPage("select * from $tbname where ymdtime = '$time'",15);
+	    }elseif($check=="tomorrow"){ //昨天注册
 		$time=date("Y-m-d",strtotime("-1 day"));
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
+		$dopage->GetPage("select * from $tbname where ymdtime = '$time'",15);
 	    }elseif($check=="success"){ //已通过
 		$dopage->GetPage("select * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
@@ -248,7 +248,12 @@ $num=$dosql->GetTotalRow($one);
 			<span><a title="编辑" href="guide_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
     <?php }?>
-			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
+      <?php  if($adminlevel==1){ ?>
+			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php }else{?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+    <?php  }?>
+     </td>
                 <?php //}?>
               </tr>
               <?php

@@ -51,7 +51,7 @@ function checkguide(gid){
 $action  = isset($action)  ? $action  : 'travel_save.php';
 $keyword = isset($keyword) ? $keyword : '';
 $check = isset($check) ? $check : '';
-
+$adminlevel=$_SESSION['adminlevel'];  //用户级别
 ?>
 <div class="topToolbar"> <span class="title">发布行程列表管理</span>
 <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a>
@@ -210,7 +210,12 @@ $check = isset($check) ? $check : '';
 			<td align="center"><span><?php echo $state; ?></span> &nbsp;&nbsp;
 			<span><a title="编辑" href="travel_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
+      <?php if($adminlevel==1){ ?>
 			<span class="nb"><a title="删除发布的行程信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php }else{ ?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+      <?php  }?>
+
     </td>
 		</tr>
 		<?php

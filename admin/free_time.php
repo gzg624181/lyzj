@@ -153,11 +153,16 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center" class="num"><a href="guide.php?check=user&id=<?php echo $row['gid'];?>"><?php echo $row['name']; ?></a></td>
                 <td align="center"><?php echo $sex; ?></td>
                 <td align="center" class="num">
-                
+
                   <?php echo $freetime;?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
                 <td align="center">
-			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
+      <?php if($adminlevel==1){ ?>
+			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+    <?php }else{ ?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span> 
+    <?php } ?>
+    </td>
                 <?php //}?>
               </tr>
               <?php

@@ -170,17 +170,18 @@ $num=$dosql->GetTotalRow($one);
               <?php
 		if($check=="today"){
 		$time=date("Y-m-d"); //今天注册
-		$dopage->GetPage("SELECT * from $tbname where ymdtime = '%$time%'",15);
-	    }elseif($check=="tomorrowzhuce"){ //昨天注册
+		$dopage->GetPage("SELECT * from $tbname where ymdtime = '$time'",15);
+	    }elseif($check=="tomorrow"){ //昨天注册
 		$time=date("Y-m-d",strtotime("-1 day"));
-		$dopage->GetPage("SELECT * from $tbname where ymdtime = '%$time%'",15);
+		$dopage->GetPage("SELECT * from $tbname where ymdtime = '$time'",15);
 	    }elseif($check=="success"){ //已通过
 		$dopage->GetPage("SELECT * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
 		$dopage->GetPage("SELECT * from pmw_un_agency",15);
 	    }elseif($check=="reviewed"){ //待审核
 		$dopage->GetPage("SELECT * from $tbname where checkinfo = 0",15);
-	    }elseif($keyword!=""){ //关键字搜索
+	    }
+		elseif($keyword!=""){ //关键字搜索
 	    $dopage->GetPage("SELECT * FROM $tbname where account like '%$keyword%' or name  like '%$keyword%' ",15);
 		}else{
 		$dopage->GetPage("SELECT * FROM $tbname",15);
@@ -241,14 +242,14 @@ $num=$dosql->GetTotalRow($one);
       <?php
         $adminlevel=$_SESSION['adminlevel'];
         if($adminlevel==1){?>
-       
+
       <?php if($row['checkinfo']==2){?>
 			<span class="nb"><a title="删除未通过旅行社信息" href="<?php echo $action;?>?action=del99&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
     <?php }else{?>
       <span class="nb"><a title="删除旅行社信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
     <?php }?>
     <?php }else{?>
-      <i style="color: #d9d5d5;" class="fa fa-trash-o" aria-hidden="true"></i>
+      <i  class="fa fa-trash-o" aria-hidden="true"></i>
     <?  } ?>
     </td>
                 <?php //}?>

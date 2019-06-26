@@ -53,7 +53,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 <tr>
 <td height="40" align="right">分享背景图片：</td>
 <td>
-    <div id="layer-photos-demo_<?php  echo $r['id'];?>" class="layer-photos-demo"> <img  width="180px;" layer-src="<?php echo $r['imagesurl'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['imagesurl'];?>"/></div><br />
+    <div id="layer-photos-demo_<?php  echo $r['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $r['imagesurl'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['imagesurl'];?>"/></div><br />
   <input style="margin-top:-12px;" type="text" name="pic" id="pic" class="input" value="<?php echo $r['imagesurl']; ?>"  required="required"/>
 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span>
  </td>

@@ -169,7 +169,12 @@ $num=$dosql->GetTotalRow($one);
       <span><?php echo $checkinfo; ?></span> &nbsp;
  			<span><a title="编辑" href="scenic_update.php?id=<?php echo $row['id']; ?>">
  			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
- 			<span class="nb"><a title="删除景区" href="<?php echo $action;?>?action=del6&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
+      <?php if($adminlevel==1){ ?>
+ 			<span class="nb"><a title="删除景区" href="<?php echo $action;?>?action=del6&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php }else{ ?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+     <?php  }?>
+     </td>
                 <?php //}?>
               </tr>
               <?php
@@ -191,7 +196,7 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a></span></div>
+
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

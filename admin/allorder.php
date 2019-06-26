@@ -59,6 +59,7 @@ window.location.href='allorder.php?keyword='+keyword;
 $tbname="pmw_order";
 $check = isset($check) ? $check : '';
 $keyword = isset($keyword) ? $keyword : '';
+$adminlevel=$_SESSION['adminlevel'];
 ?>
 </head>
 <body>
@@ -128,7 +129,21 @@ $keyword = isset($keyword) ? $keyword : '';
    $dopage->GetPage("SELECT * FROM $tbname where did=$id and type='$type'",10);
  }elseif($check=="guides"){
    $dopage->GetPage("SELECT * FROM $tbname where did=$id and type='$type'",10);
- }elseif($keyword!=""){
+ }elseif($check=="today"){
+   $ymd=date("Y-m-d");
+   $dopage->GetPage("SELECT * FROM $tbname where ymd='$ymd'",10);
+ }elseif($check=="tomorrowdingdan"){
+   $ymd=date("Y-m-d",strtotime("-1 day"));
+   $dopage->GetPage("SELECT * FROM $tbname where ymd='$ymd'",10);
+  }elseif($check=="today_zhiufu"){
+   $ymd=date("Y-m-d");
+   $dopage->GetPage("SELECT * FROM $tbname where ymd='$ymd'",10);
+ }elseif($check=="tomorrow_zhifu"){
+   $ymd=date("Y-m-d",strtotime("-1 day"));
+   $dopage->GetPage("SELECT * FROM $tbname where ymd='$ymd'",10);
+  }
+
+ elseif($keyword!=""){
    $dopage->GetPage("SELECT * FROM $tbname where jingquname like '%$keyword%' OR contactname like '%$keyword%' OR contacttel like '%$keyword%'  OR usetime like '%$keyword%' ",10);
      }else{
 		 $dopage->GetPage("SELECT * from pmw_order",10);
@@ -198,7 +213,11 @@ $keyword = isset($keyword) ? $keyword : '';
             <?php }?>
       </td>
 		  <td width="2%">
+      <?php if($adminlevel==1){ ?>
      <a title="删除购票订单" href="allorder_save.php?id=<?php echo $row['id']; ?>&amp;action=del6" onclick="return ConfDel(0);"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
+   <?php }else{?>
+     <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+   <?php } ?>
     </td>
 		</tr>
 		<?php

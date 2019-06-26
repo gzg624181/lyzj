@@ -44,12 +44,14 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $orderid =date('YmdHis').rand(11111111,99999999);
 
+  $ymd=date("Y-m-d");
+
   $timestampuse= strtotime($usetime);
 
   //将用户的formid添加进去
   add_formid($openid,$formid);
 
-  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse)";
+  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd')";
   $dosql->ExecNoneQuery($sql);
 
   //下单成功之后发送双向消息
