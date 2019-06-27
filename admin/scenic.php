@@ -120,7 +120,7 @@ $num=$dosql->GetTotalRow($one);
                 </tr>
               <?php
 
-		$dopage->GetPage("SELECT * from $tbname",15);
+		$dopage->GetPage("SELECT a.*,b.title FROM $tbname a inner join pmw_ticketclass b on b.id=a.types",15);
 
 		while($row = $dosql->GetArray())
 		{
@@ -136,25 +136,11 @@ $num=$dosql->GetTotalRow($one);
 
 			}
 
-		  switch($row['types']){
-
-			  case "1":
-			  $title = "景点/园区/门票";
-			  break;
-
-			  case "2":
-			  $title = "跟团旅/行程";
-			  break;
-
-			  case "3":
-			  $title = "酒店/门票";
-			  break;
-			  }
 		?>
               <tr class="dataTr" align="left">
                 <td height="44" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
                 <td align="center"><?php echo $row['names'];?></td>
-                <td align="center"><?php echo $title;?></td>
+                <td align="center"><?php echo $row['title'];?></td>
                 <td align="center" class="num"><?php echo $row['label']; ?></td>
                 <td align="center" class="num"><?php echo $row['level']; ?>星</td>
                 <td align="center" class="num"><a style="cursor:pointer" onclick="getpic('<?php echo $id;?>');">点击查看</a></td>

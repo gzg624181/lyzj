@@ -93,8 +93,20 @@ $tbname='pmw_ticket';
 
         <tr>
         <td height="40" align="right">景区须知：</td>
-        <td><textarea class="input"  style="width:80%; height:220px;" name="xuzhi" id="xuzhi" class="kindeditor"></textarea>
-
+        <td><textarea name="xuzhi" id="xuzhi" class="kindeditor"></textarea>
+				<script>
+				var editor;
+				KindEditor.ready(function(K) {
+					editor = K.create('textarea[name="xuzhi"]', {
+						allowFileManager : true,
+						width:'80%',
+						height:'280px',
+						extraFileUploadParams : {
+							sessionid :  '<?php echo session_id().rand(111,999); ?>'
+						}
+					});
+				});
+				</script></textarea>
         </td>
         </tr>
 
@@ -109,11 +121,12 @@ $tbname='pmw_ticket';
 						width:'80%',
 						height:'280px',
 						extraFileUploadParams : {
-							sessionid :  '<?php echo session_id(); ?>'
+							sessionid :   '<?php echo session_id().rand(111,999); ?>'
 						}
 					});
 				});
 				</script></textarea>
+				 <span class="num" style="color:red;font-weight:bold; padding:5px; font-size:18px;" >编辑器里面的图片最大宽度为375，请在编辑器添加图片的时候修改图片的宽度！！!</span>
         </td>
         </tr>
 

@@ -97,7 +97,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 						foreach($picarr as $v)
 						{
 							$v = explode(',', $v);
-							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="../'.$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
+							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
 						}
 					}
 					?>
@@ -106,11 +106,24 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
       		</tr>
 
 
-        <tr>
-        <td height="40" align="right">景区须知：</td>
-        <td><textarea class="input" style="width:80%; height:250px;" name="xuzhi" id="xuzhi" class="kindeditor"><?php echo $r['xuzhi'];?></textarea>
-        </td>
-        </tr>
+					<tr>
+	        <td height="40" align="right">景区须知：</td>
+	        <td><textarea name="xuzhi" id="xuzhi" class="kindeditor"><?php echo $r['xuzhi']; ?></textarea>
+					<script>
+					var editor;
+					KindEditor.ready(function(G) {
+						editor = G.create('textarea[name="xuzhi"]', {
+							allowFileManager : true,
+							width:'80%',
+							height:'280px',
+							extraFileUploadParams : {
+								sessionid :  '<?php echo session_id(); ?>'
+							}
+						});
+					});
+					</script></textarea>
+	        </td>
+	        </tr>
 
          <tr>
         <td height="40" align="right">景区介绍：</td>

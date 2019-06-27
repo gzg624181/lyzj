@@ -17,6 +17,33 @@
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
 
+   //选择栏目分类
+
+	 function SelectType() {
+
+
+
+		 var options=$("#typename option:selected");
+
+     var objvalue =options.val();
+
+		 if(objvalue== -1){
+			 layer.alert("请选择Banner图片分类",{icon:0});
+			 return false;
+		 }
+
+		 var options=$("#type option:selected");
+
+		 var objvalue =options.val();
+
+		 if(objvalue== -1){
+		 	layer.alert("请选择Banner图片分类",{icon:0});
+
+			return false;
+		 }
+
+	 }
+
 //更改添加图片的类型
 	 function TypeChange(){
 
@@ -63,13 +90,14 @@
 </head>
 <body>
 <div class="formHeader"> <span class="title">添加Banner轮播图片</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
-<form name="form" id="form" method="post" action="banner_save.php">
+<form name="form" id="form" method="post" action="banner_save.php" onsubmit="return SelectType(this)">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
 
 	<tr>
 		<td height="40" align="right">栏目分类：</td>
 		<td colspan="2">
  <select class="input" name="typename" id="typename" style="width:508px;">
+	   <option value="-1">请选择栏目分类</option>
 		 <option value="index">首页Banner图片</option>
 		 <option value="travel">行程Banner图片</option>
 		 <option value="piao">票务Banner图片</option>
@@ -135,7 +163,9 @@
 						}
 					});
 				});
-				</script>	</td>
+				</script>
+       <span class="num" style="color:red;font-weight:bold; padding:5px; font-size:18px;" >编辑器里面的图片最大宽度为375，请在编辑器添加图片的时候修改图片的宽度！！!</span>
+			</td>
        	  </tr>
         	<tr>
         	  <td height="40" align="right">更新时间：</td>
@@ -152,8 +182,9 @@
        	  </tr>
           <tr>
         	  <td height="40" align="right"></td>
-        	  <td colspan="2"> <div class="formSubBtn" style="float:left; margin-bottom:30px;">
-         <input type="submit" class="submit" value="保存" />
+        	  <td colspan="2">
+		<div class="formSubBtn" style="float:left; margin-bottom:30px;">
+    <input type="submit" class="submit" value="保存" />
 		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
 		<input type="hidden" name="action" id="action" value="add" />
   </div></td>

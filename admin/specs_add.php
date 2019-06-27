@@ -20,7 +20,7 @@
 <script>
 
 function closes(){
-	
+
   var index=parent.layer.getFrameIndex(window.name);
 
 parent.layer.close(index);
@@ -60,7 +60,7 @@ $s=$dosql->GetOne("select * from `#@__ticket` where id=$id");
 		  <td width="31%">操作</td>
     </tr>
 <?php
-   $dosql->Execute("SELECT * FROM pmw_specs");
+   $dosql->Execute("SELECT * FROM pmw_specs where tid=$id");
    while($row=$dosql->GetArray()){
 ?>
   <tr>

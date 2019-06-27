@@ -22,10 +22,12 @@ require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-    $page = isset($page) ? $page : 0;
-    $pagenumber=4;
-    $first=$page * $pagenumber;
-    $dosql->Execute("SELECT id,name,sex,content,images FROM pmw_guide where checkinfo=1 order by id desc limit $page,$pagenumber");
+    $page = isset($page) ? $page : 1;
+    $pagenumber=5;
+
+    $first= ($page - 1) * $pagenumber;
+
+    $dosql->Execute("SELECT id,name,sex,content,images FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
 
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){

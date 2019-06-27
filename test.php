@@ -424,24 +424,33 @@ unlink($o_pic);
 
 
 
-$a = array(1, 2, 3, 4);
+// $a = array(1, 2, 3, 4);
+//
+// array_walk(
+//    $a,
+//    function(&$value, $key, $prefix){$value = $prefix.$value;},
+//    $cfg_weburl
+// );
+//     print_r($a);
+//
+//     $r=$dosql->GetOne("SELECT content from pmw_banner where id=38");
+//     //$content=$r['content'];
+//     $content='<div align="center">
+//     <img src="https://ceshi.yishekj.xyz/uploads/image/20190627/1561632711.png" alt="" />
+//     <br />
+// </div>';
+//     $content=replacePicUrl($content, $cfg_weburl);
+//     echo $content;
+//
 
-array_walk(
-   $a,
-   function(&$value, $key, $prefix){$value = $prefix.$value;},
-   $cfg_weburl
-);
-    print_r($a);
+$content ='22223242345<img alt="" src="/uploads/image/20190627/1561634483.png" /> <img alt="" src="/uploads/image/20190627/1561634044.png" /> 45354325<img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" />345254 <img alt="" src="/uploads/image/20190627/1561639134.png" /> <img alt="" src="https://ceshi.yishekj.xyz/uploads/image/20190627/1561635314.png" />';
 
-    $r=$dosql->GetOne("SELECT content from pmw_banner where id=19");
-    $content=$r['content'];
-    $content=replacePicUrl($content, $cfg_weburl);
-    echo $content;
+echo replacePicUrl($content,$cfg_weburl);
 
     function replacePicUrl($content = null, $strUrl = null) {
     		if ($strUrl) {
     				//提取图片路径的src的正则表达式 并把结果存入$matches中
-    				preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/",$content,$matches);
+    				preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/U",$content,$matches);
     				$img = "";
     				if(!empty($matches)) {
     				//注意，上面的正则表达式说明src的值是放在数组的第三个中
@@ -449,11 +458,18 @@ array_walk(
     				}else {
     					 $img = "";
     				}
+
     					if (!empty($img)) {
     								$patterns= array();
     								$replacements = array();
     								foreach($img as $imgItem){
-    										$final_imgUrl = $strUrl.$imgItem;
+
+                      if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
+                        $final_imgUrl = $strUrl.$imgItem;
+                      }else{
+                        $final_imgUrl = $imgItem;
+                      }
+
     										$replacements[] = $final_imgUrl;
     										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
     										$patterns[] = $img_new;
@@ -464,14 +480,63 @@ array_walk(
     								ksort($replacements);
 
     								//替换内容
-    								$vote_content = preg_replace($patterns, $replacements, $content);
+    								$vote_content  = preg_replace($patterns, $replacements, $content);
 
-    								return $vote_content;
+    								return  $vote_content;
     				}else {
-    						return $content;
+    						return   $content;
     				}
     		} else {
-    				return $content;
+    				return   $content;
     		}
     }
+
+
+
+
+// $content ='<img alt="" src="/uploads/image/20190627/1561634483.png" /> <img alt="" src="/uploads/image/20190627/1561634044.png" /> <img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" /> <img alt="" src="/uploads/image/20190627/1561639134.png" /> <img alt="" src="https://ceshi.yishekj.xyz/uploads/image/20190627/1561635314.png" />';
+// preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/U",$content,$matches);
+// print_r($matches[0]);
+//
+// $img = "";
+// if(!empty($matches)) {
+// //注意，上面的正则表达式说明src的值是放在数组的第三个中
+// $img = $matches[2];
+// }else {
+// $img = "";
+// }
+//
+// //print_r($img) ;
+//
+//
+//
+// if (!empty($img)) {
+//       $patterns= array();
+//       $replacements = array();
+//
+//       foreach($img as $imgItem){
+//         if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
+//           $final_imgUrl = $cfg_weburl.$imgItem;
+//         }else{
+//           $final_imgUrl = $imgItem;
+//         }
+//
+//           $replacements[] = $final_imgUrl;
+//           $img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
+//           $patterns[] = $img_new;
+//       }
+//
+//       //让数组按照key来排序
+//       ksort($patterns);
+//       ksort($replacements);
+//
+//       //替换内容
+//       $vote_content = preg_replace($patterns, $replacements, $content);
+//
+//       $content .= $vote_content;
+//
+// }
+//
+//
+// return $content;
 ?>

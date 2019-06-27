@@ -80,10 +80,11 @@ $num=$dosql->GetTotalRow($one);
           <tr align="left" class="head">
             <td width="3%" height="165" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
-                <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="15%" align="center">分类标题</td>
-                <td width="6%" align="center">分类图标</td>
-                <td width="16%" align="center">添加时间</td>
+                <td width="11%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
+                <td width="24%" align="center">分类标题</td>
+                <td width="23%" align="center">分类图标</td>
+                <td width="27%" align="center">添加时间</td>
+                <td width="15%" align="center">操作</td>
                 </tr>
               <?php
 
@@ -110,8 +111,9 @@ $num=$dosql->GetTotalRow($one);
                   <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="50px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['title']; ?>" />
                   </div>
                 </td>
-                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['posttime']);?>
-                 </td>
+                <td align="center"><?php echo date("Y-m-d H:i:s",$row['posttime']);?></td>
+                <td align="center" class="num"><span><a title="编辑" href="ticket_class_update.php?id=<?php echo $row['id']; ?>">
+ 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;</td>
               </tr>
               <?php } ?>
             </table></td>
@@ -131,7 +133,7 @@ if($dosql->GetTotalRow() == 0)
 }
 ?>
 <div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a> - <a style="cursor:pointer;" onclick="return history.go(-1);">返回</a></span>
-  <a href="add_ticket_class.php" class="dataBtn">添加景区分类</a> </div>
+  <!--<a href="add_ticket_class.php" class="dataBtn">添加景区分类</a>--> </div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

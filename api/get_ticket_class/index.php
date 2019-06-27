@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_ticket_content  获取发送的消息
+	   * 链接地址：get_ticket_class  获取票务分类
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -23,10 +23,11 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $r=$dosql->GetOne("SELECT * FROM `#@__ticket` WHERE id=$id and checkinfo=1");
-      if(!is_array($r)){
+      $dosql->Execute("SELECT * FROM `#@__ticketclass`");
+      $num=$dosql->GetTotalRow();
+      if($num==0){
         $State = 0;
-        $Descriptor = '暂无消息！';
+        $Descriptor = '暂无数据！';
         $result = array (
                     'State' => $State,
                     'Descriptor' => $Descriptor,
@@ -35,31 +36,9 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-      $one=1;
-
-      $content[]=$r;
-      $specs =array();
-      $dosql->Execute("SELECT * FROM `#@__specs` where tid=$id",$one);
-      while($row1=$dosql->GetArray($one)){
-       $specs[]=$row1;
-        }
-
-      //示例 1:引用循环变量的地址赋值
-
-      foreach($specs as &$shoplist){
-
-        $shoplist['label']=$r['label'];
-        $shoplist['remarks']=$r['remarks'];
-
+      while($row=$dosql->GetArray()){
+        $Data[]=$row;
       }
-      $Data= array(
-
-            "content" => $content,
-
-            "specs" => $specs
-
-      );
-
       $State = 1;
       $Descriptor = '内容获取成功！';
       $result = array (

@@ -48,7 +48,11 @@ else if($action == 'update')
 
     for($i=0;$i< $picarrNum;$i++)
     {
-      $picarrTmp[] = $cfg_weburl."/".$picarr[$i];
+      if(!check_str($picarr[$i],$cfg_weburl)){
+          $picarrTmp[] = $cfg_weburl."/".$picarr[$i].$picarr_txt[$i];
+      }else{
+      $picarrTmp[] =$picarr[$i].$picarr_txt[$i];
+      }
     }
 
     $picarr = json_encode($picarrTmp);
@@ -130,7 +134,7 @@ else if($action=="add_ticket"){
 
     for($i=0;$i<$picarrNum;$i++)
     {
-      $picarrTmp[] = $picarr[$i].$picarr_txt[$i];
+      $picarrTmp[] = $cfg_weburl."/".$picarr[$i].$picarr_txt[$i];
     }
 
     $picarr = json_encode($picarrTmp);
@@ -143,9 +147,10 @@ else if($action=="add_ticket"){
 	}
 
 
-  $contents=replacePicUrl($content ,$cfg_weburl);
+  $content=stripslashes($content);
+  $content=rePic($content, $cfg_weburl);
 
-  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$contents','$xuzhi','$lowmoney')";
+  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney')";
 
   if($dosql->ExecNoneQuery($sql))
   {
@@ -168,7 +173,7 @@ else if($action == 'getpic')
     $arr =json_decode($picarr);
   //  $arr .=print_r($arr);
     for($i=0;$i<count($arr);$i++){
-    $img = $cfg_weburl."/".rtrim($arr[$i],",");
+    $img = $arr[$i];
     $content .= "<img src='".$img."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
     }
 
@@ -223,7 +228,12 @@ else if($action=="del100"){
 
     for($i=0;$i<$picarrNum;$i++)
     {
-      $picarrTmp[] = $picarr[$i].','.$picarr_txt[$i];
+      if(!check_str($picarr[$i],$cfg_weburl)){
+          $picarrTmp[] = $cfg_weburl."/".$picarr[$i].$picarr_txt[$i];
+      }else{
+      $picarrTmp[] =$picarr[$i].$picarr_txt[$i];
+      }
+
     }
 
     $picarr = json_encode($picarrTmp);
@@ -233,13 +243,26 @@ else if($action=="del100"){
 	{
 		$flag = implode(',',$flag);
 	}
-  $content=replacePicUrl($content ,$cfg_weburl);
-  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content',xuzhi='$xuzhi',solds=$solds WHERE id=$id");
+  $content=stripslashes($content);
+  $content1=rePic($content, $cfg_weburl);
+
+  $xuzhi=stripslashes($xuzhi);
+  $xuzhi=rePic($xuzhi, $cfg_weburl);
+  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds WHERE id=$id");
   $gourl= "scenic.php";
   header("location:$gourl");
   exit();
 
 }
+ else if($action=="update_ticket_class"){
+   if(!check_str($icon,$cfg_weburl)){
+     $icon=$cfg_weburl."/".$icon; //导游证件
+   }
+   $dosql->ExecNoneQuery("UPDATE pmw_ticketclass SET title='$title',icon='$icon' WHERE id=$id");
+   $gourl= "ticket_class.php";
+   header("location:$gourl");
+   exit();
+ }
 //无条件返回
 else
 {
