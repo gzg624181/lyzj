@@ -40,11 +40,11 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 		 $dosql->Execute("SELECT * FROM `#@__infoflag` ORDER BY orderid ASC");
 		 while($row = $dosql->GetArray()){
 		 ?>
-         
+
          <span><input type="checkbox" <?php if($row['flag']==$r['flag']){echo "checked";}?>  name="flag[]" id="flag[]" value="<?php echo $row['flag'];?>" /><?php echo $row['flagname'];?><?php echo $row['flag'];?></span>
-			
-            
-          <?php }?> 
+
+
+          <?php }?>
 		 </td>
 	 </tr>
 
@@ -108,20 +108,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 
         <tr>
         <td height="40" align="right">景区须知：</td>
-        <td><textarea name="xuzhi" id="xuzhi" class="kindeditor"><?php echo $r['xuzhi'];?></textarea>
-				<script>
-				var editor;
-				KindEditor.ready(function(K) {
-					editor = K.create('textarea[name="xuzhi"]', {
-						allowFileManager : true,
-						width:'80%',
-						height:'250px',
-						extraFileUploadParams : {
-							sessionid :  '<?php echo session_id(); ?>'
-						}
-					});
-				});
-				</script>
+        <td><textarea class="input" style="width:80%; height:250px;" name="xuzhi" id="xuzhi" class="kindeditor"><?php echo $r['xuzhi'];?></textarea>
         </td>
         </tr>
 

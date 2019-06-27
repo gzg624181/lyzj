@@ -42,9 +42,10 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
 
   <tr>
-  <td height="40" align="right">分享小图标图片：</td>
-  <td>
-    <div id="layer-photos-demo_<?php  echo $r['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $r['tubiaopic'];?>" style="cursor:pointer; padding:8px; border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['tubiaopic'];?>"/></div><br />
+  <td width="15%" height="40" align="right">分享小图标图片：</td>
+  <td width="6%"><img  width="100px;" layer-src="<?php echo $r['tubiaopic'];?>" style="cursor:pointer; padding:8px; border-radius:12px;" src="<?php echo $r['tubiaopic'];?>"/></td>
+  <td width="79%">
+    
     <input style="margin-top:5px;" type="text" name="tubiaopic" id="tubiaopic" class="input" value="<?php echo $r['tubiaopic']; ?>"  required="required"/>
   <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'tubiaopic')">上 传</span></span>
    </td>
@@ -52,17 +53,23 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 
 <tr>
 <td height="40" align="right">分享背景图片：</td>
+<td> <img  width="100px;" layer-src="<?php echo $r['imagesurl'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['imagesurl'];?>"/></td>
 <td>
-    <div id="layer-photos-demo_<?php  echo $r['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $r['imagesurl'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['imagesurl'];?>"/></div><br />
+    
   <input style="margin-top:-12px;" type="text" name="pic" id="pic" class="input" value="<?php echo $r['imagesurl']; ?>"  required="required"/>
 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span>
  </td>
 </tr>
-
+<tr>
+<td height="40" align="right">分享图片实例：</td>
+<td><div id="layer-photos-demo_<?php  echo $r['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $r['examplepic'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['examplepic'];?>"/></div></td>
+<td class="num" style="color:red;">分享完成之后，生成的分享海报实例
+ ，点击图片查看分享海报大图</td>
+</tr>
 
     <tr>
     <td height="40" align="right"></td>
-    <td colspan="2"> <div class="formSubBtn" style="float:left; margin-bottom:30px;">
+    <td colspan="3"> <div class="formSubBtn" style="float:left; margin-bottom:30px;">
     <input type="submit" class="submit" value="保存" />
 		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
 		<input type="hidden" name="action" id="action" value="share_update" />

@@ -93,20 +93,8 @@ $tbname='pmw_ticket';
 
         <tr>
         <td height="40" align="right">景区须知：</td>
-        <td><textarea name="xuzhi" id="xuzhi" class="kindeditor"></textarea>
-				<script>
-				var editor;
-				KindEditor.ready(function(K) {
-					editor = K.create('textarea[name="xuzhi"]', {
-						allowFileManager : true,
-						width:'80%',
-						height:'280px',
-						extraFileUploadParams : {
-							sessionid :  '<?php echo session_id(); ?>'
-						}
-					});
-				});
-				</script>
+        <td><textarea class="input"  style="width:80%; height:220px;" name="xuzhi" id="xuzhi" class="kindeditor"></textarea>
+
         </td>
         </tr>
 

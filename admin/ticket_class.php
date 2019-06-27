@@ -68,7 +68,7 @@ $num=$dosql->GetTotalRow($one);
 
 <div class="topToolbar">
   <span class="title">  分类列表：<span class="num" style="color:red;"><?php echo $num;?></span>
-  </span> <a href="javascript:location.reload();" class="reload">刷新</a>
+</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload; ?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
@@ -107,7 +107,7 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><?php echo $row['title'];?></td>
 
                 <td align="center">
-                  <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['title']; ?>" />
+                  <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="50px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['title']; ?>" />
                   </div>
                 </td>
                 <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['posttime']);?>
@@ -130,7 +130,8 @@ if($dosql->GetTotalRow() == 0)
 	echo '<div class="dataEmpty">暂时没有相关的记录</div>';
 }
 ?>
-<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a> - <a style="cursor:pointer;" onclick="return history.go(-1);">返回</a></span><a href="add_ticket_class.php" class="dataBtn">添加景区分类</a> </div>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAllNone('<?php echo $action;?>');" onclick="return ConfDelAll(0);">删除</a> - <a style="cursor:pointer;" onclick="return history.go(-1);">返回</a></span>
+  <a href="add_ticket_class.php" class="dataBtn">添加景区分类</a> </div>
 <div class="page"> <?php echo $dopage->GetList(); ?> </div>
 <?php
 //判断是否启用快捷工具栏

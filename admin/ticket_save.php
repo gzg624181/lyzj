@@ -130,7 +130,7 @@ else if($action=="add_ticket"){
 
     for($i=0;$i<$picarrNum;$i++)
     {
-      $picarrTmp[] = $picarr[$i].','.$picarr_txt[$i];
+      $picarrTmp[] = $picarr[$i].$picarr_txt[$i];
     }
 
     $picarr = json_encode($picarrTmp);
@@ -142,7 +142,10 @@ else if($action=="add_ticket"){
 		$flag = implode(',',$flag);
 	}
 
-  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney')";
+
+  $contents=replacePicUrl($content ,$cfg_weburl);
+
+  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$contents','$xuzhi','$lowmoney')";
 
   if($dosql->ExecNoneQuery($sql))
   {
@@ -230,7 +233,7 @@ else if($action=="del100"){
 	{
 		$flag = implode(',',$flag);
 	}
-
+  $content=replacePicUrl($content ,$cfg_weburl);
   $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content',xuzhi='$xuzhi',solds=$solds WHERE id=$id");
   $gourl= "scenic.php";
   header("location:$gourl");

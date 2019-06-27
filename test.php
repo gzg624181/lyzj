@@ -408,17 +408,70 @@ unlink($o_pic);
 */
 // 将两张图片合并，（png图片放到背景图片的最上面）
 
-$bigImgPath = '16351_213838405158_2.png';      //背景图片
-$qCodePath = "uploads/erweima/code_20190621063048.png";
+// $bigImgPath = '16351_213838405158_2.png';      //背景图片
+// $qCodePath = "uploads/erweima/code_20190621063048.png";
+//
+// $bigImg =   imagecreatefromstring(file_get_contents($bigImgPath));
+// $qCodeImg = imagecreatefromstring(file_get_contents($qCodePath));
+//
+// list($qCodeWidth, $qCodeHight, $qCodeType) = getimagesize($qCodePath);
+//
+// imagecopymerge($bigImg, $qCodeImg, 239, 677, 0, 0, $qCodeWidth, $qCodeHight, 100);
+//
+// list($bigWidth, $bigHight, $bigType) = getimagesize($bigImgPath);
+//
+// imagejpeg($bigImg,'g.jpg');
 
-$bigImg =   imagecreatefromstring(file_get_contents($bigImgPath));
-$qCodeImg = imagecreatefromstring(file_get_contents($qCodePath));
 
-list($qCodeWidth, $qCodeHight, $qCodeType) = getimagesize($qCodePath);
 
-imagecopymerge($bigImg, $qCodeImg, 239, 677, 0, 0, $qCodeWidth, $qCodeHight, 100);
+$a = array(1, 2, 3, 4);
 
-list($bigWidth, $bigHight, $bigType) = getimagesize($bigImgPath);
+array_walk(
+   $a,
+   function(&$value, $key, $prefix){$value = $prefix.$value;},
+   $cfg_weburl
+);
+    print_r($a);
 
-imagejpeg($bigImg,'g.jpg');
+    $r=$dosql->GetOne("SELECT content from pmw_banner where id=19");
+    $content=$r['content'];
+    $content=replacePicUrl($content, $cfg_weburl);
+    echo $content;
+
+    function replacePicUrl($content = null, $strUrl = null) {
+    		if ($strUrl) {
+    				//提取图片路径的src的正则表达式 并把结果存入$matches中
+    				preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/",$content,$matches);
+    				$img = "";
+    				if(!empty($matches)) {
+    				//注意，上面的正则表达式说明src的值是放在数组的第三个中
+    				$img = $matches[2];
+    				}else {
+    					 $img = "";
+    				}
+    					if (!empty($img)) {
+    								$patterns= array();
+    								$replacements = array();
+    								foreach($img as $imgItem){
+    										$final_imgUrl = $strUrl.$imgItem;
+    										$replacements[] = $final_imgUrl;
+    										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
+    										$patterns[] = $img_new;
+    								}
+
+    								//让数组按照key来排序
+    								ksort($patterns);
+    								ksort($replacements);
+
+    								//替换内容
+    								$vote_content = preg_replace($patterns, $replacements, $content);
+
+    								return $vote_content;
+    				}else {
+    						return $content;
+    				}
+    		} else {
+    				return $content;
+    		}
+    }
 ?>

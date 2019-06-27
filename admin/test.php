@@ -32,12 +32,10 @@ require_once(dirname(__FILE__).'/inc/config.inc.php');IsModelPriv('admanage');
 //  }
 //
 
-
- $openid="oz7S15BU6YPAdg8d3aDTwovdFjl0";
- $formid=getformid($openid);
-
- echo $formid;
-
+$r=$dosql->GetOne("SELECT content from pmw_banner where id=19");
+$content=$r['content'];
+$content=replacePicUrl($content, $cfg_weburl);
+echo $content;
 
 
 

@@ -31,7 +31,7 @@ if($action == 'add')
 		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
 
 	}elseif($type=="text"){
-
+    $content=replacePicUrl($content, $cfg_weburl);
 		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime,typename) VALUES ('$title','$pic', '$type','$content','$pictime','$typename')";
 
 	}elseif($type=="ticket"){
@@ -61,8 +61,11 @@ else if($action == 'update')
 	if(!check_str($pic,$cfg_weburl)){
     $pic=$cfg_weburl."/".$pic; //banner图片
   }
+  $r=$dosql->GetOne("SELECT content from $tbname where id=$id");
+  $contents=$r['content'];
+  $content1=replacePicUrl($contents, $cfg_weburl);
 
-	$sql = "UPDATE `$tbname` SET title='$title',content='$content',pictime=$pictime, pic='$pic',linkurl='$linkurl',typename='$typename' WHERE id=$id";
+	$sql = "UPDATE `$tbname` SET title='$title',content='$content1',pictime=$pictime, pic='$pic',linkurl='$linkurl',typename='$typename' WHERE id=$id";
 	if($dosql->ExecNoneQuery($sql))
 	{
 		header("location:$gourl");
@@ -76,18 +79,7 @@ else if($action == 'update')
   header("location:$gourl");
   exit();
 }
-//修改
-else if($action == 'update')
-{
-	$pictime=strtotime($pictime);
-	$pic=$cfg_weburl."/".$pic;
-	$sql = "UPDATE `$tbname` SET title='$title',pic='$pic',content='$content',pictime=$pictime WHERE id=$id";
-	if($dosql->ExecNoneQuery($sql))
-	{
-		header("location:$gourl");
-		exit();
-	}
-}
+
 
 //无条件返回
 else

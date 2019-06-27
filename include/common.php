@@ -726,7 +726,7 @@ $begin_g = 250;
 $begin_b = 250;
 list($src_w, $src_h) = getimagesize($o_pic);// 获取原图像信息 宽高
 $src_im = imagecreatefrompng($o_pic); //读取png图片
-print_r($src_im);
+//print_r($src_im);
 imagesavealpha($src_im,true);//这里很重要 意思是不要丢了$src_im图像的透明色
 $src_white = imagecolorallocatealpha($src_im, 255, 255, 255,127); // 创建一副白色透明的画布
 for ($x = 0; $x < $src_w; $x++) {
@@ -753,7 +753,7 @@ imagefill($target_im, 0, 0, $tag_white);//在目标新图填充空白色
 imagecolortransparent($target_im, $tag_white);//替换成透明色
 imagecopymerge($target_im, $src_im, 0, 0, 0, 0, $src_w, $src_h, 100);//合并原图和新生成的透明图
 imagepng($target_im,$out_pic);
-return $out_pic;
+// return $out_pic;
 }
 
 

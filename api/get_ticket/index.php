@@ -29,20 +29,69 @@ if(isset($token) && $token==$cfg_auth_key){
       $three=3;
 
       $dosql->Execute("SELECT * FROM `#@__ticket` where types='1' and checkinfo=1",$one);
-      while($row1=$dosql->GetArray($one)){
-       $Data['one'][]=$row1;
+      for($i=0;$i<$dosql->GetTotalRow($one);$i++){
+       $row1 = $dosql->GetArray($one);
+       $picarrVar=$row1['picarr'];
+       $picarrArr=json_decode($picarrVar,true);
+
+       if(is_array($picarrArr)){
+       array_walk(
+          $picarrArr,
+          function(&$value, $key, $prefix){$value = $prefix.$value;},
+          $cfg_weburl."/"
+       );
+     }
+
+       $picarrVar1=json_encode($picarrArr);
+
+       $Data['one'][$i]=$row1;
+
+       $Data['one'][$i]['picarr']=$picarrVar1;
       }
 
+
+
       $dosql->Execute("SELECT * FROM `#@__ticket` where types='2'  and checkinfo=1",$two);
-      while($row2=$dosql->GetArray($two)){
-       $Data['two'][]=$row2;
+      for($i=0;$i<$dosql->GetTotalRow($two);$i++){
+       $row2 = $dosql->GetArray($two);
+       $picarrVar=$row2['picarr'];
+       $picarrArr=json_decode($picarrVar,true);
+if(is_array($picarrArr)){
+       array_walk(
+          $picarrArr,
+          function(&$value, $key, $prefix){$value = $prefix.$value;},
+          $cfg_weburl."/"
+       );
+     }
+
+       $picarrVar1=json_encode($picarrArr);
+
+       $Data['two'][$i]=$row1;
+
+       $Data['two'][$i]['picarr']=$picarrVar1;
       }
+
 
       $dosql->Execute("SELECT * FROM `#@__ticket` where types='3'  and checkinfo=1",$three);
 
-      while($row3=$dosql->GetArray($three)){
-       $Data['three'][]=$row3;
-       }
+      for($i=0;$i<$dosql->GetTotalRow($three);$i++){
+       $row3 = $dosql->GetArray($three);
+       $picarrVar=$row3['picarr'];
+       $picarrArr=json_decode($picarrVar,true);
+if(is_array($picarrArr)){
+       array_walk(
+          $picarrArr,
+          function(&$value, $key, $prefix){$value = $prefix.$value;},
+          $cfg_weburl."/"
+       );
+     }
+
+       $picarrVar1=json_encode($picarrArr);
+
+       $Data['three'][$i]=$row1;
+
+       $Data['three'][$i]['picarr']=$picarrVar1;
+      }
 
       $State = 1;
       $Descriptor = '内容获取成功！';

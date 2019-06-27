@@ -164,7 +164,12 @@ else if($action=='share_update'){
 
 	header("LOCATION:$gourl");
 }
+else if($action=="xieyi_update"){
+	$dosql->ExecNoneQuery("UPDATE pmw_xieyi SET content='$content' where id=1");
+	$gourl="xieyi.php";
 
+	header("LOCATION:$gourl");
+}
 //无条件返回
 else
 {
