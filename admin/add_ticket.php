@@ -14,6 +14,7 @@
 <script type="text/javascript" src="plugin/calendar/calendar.js"></script>
 <script type="text/javascript" src="editor/kindeditor-min.js"></script>
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -93,39 +94,39 @@ $tbname='pmw_ticket';
 
         <tr>
         <td height="40" align="right">景区须知：</td>
-        <td><textarea name="xuzhi" id="xuzhi" class="kindeditor"></textarea>
-				<script>
-				var editor;
-				KindEditor.ready(function(K) {
-					editor = K.create('textarea[name="xuzhi"]', {
-						allowFileManager : true,
-						width:'80%',
-						height:'280px',
-						extraFileUploadParams : {
-							sessionid :  '<?php echo session_id().rand(111,999); ?>'
-						}
-					});
-				});
-				</script></textarea>
+        <td style="padding:10px 5px;"><textarea style="padding:5px;" name="xuzhi" id="xuzhi" class="kindeditor"></textarea>
+					<script>
+		var editor,editor1;
+		KindEditor.ready(function(K) {
+			editor = K.create('textarea[name="xuzhi"]', {
+				allowFileManager : true,
+				width:'80%',
+				height:'200px',
+				extraFileUploadParams : {
+					sessionid :  '<?php echo session_id(); ?>'
+				}
+			});
+		});
+		</script>
         </td>
         </tr>
 
          <tr>
         <td height="40" align="right">景区介绍：</td>
-        <td><textarea name="content" id="content" class="kindeditor"></textarea>
-				<script>
-				var editor;
-				KindEditor.ready(function(K) {
-					editor = K.create('textarea[name="content"]', {
-						allowFileManager : true,
-						width:'80%',
-						height:'280px',
-						extraFileUploadParams : {
-							sessionid :   '<?php echo session_id().rand(111,999); ?>'
-						}
-					});
-				});
-				</script></textarea>
+        <td style="padding:10px 5px;"><textarea style="padding:5px;" name="content" id="content" class="kindeditor"></textarea>
+					<script>
+		var editor1;
+		KindEditor.ready(function(K) {
+			editor1 = K.create('textarea[name="content"]', {
+				allowFileManager : true,
+				width:'80%',
+				height:'200px',
+				extraFileUploadParams : {
+					sessionid :  '<?php echo session_id(); ?>'
+				}
+			});
+		});
+		</script>
 				 <span class="num" style="color:red;font-weight:bold; padding:5px; font-size:18px;" >编辑器里面的图片最大宽度为375，请在编辑器添加图片的时候修改图片的宽度！！!</span>
         </td>
         </tr>

@@ -35,6 +35,28 @@ function message(Id){
 <div class="formHeader"> <span class="title">修改banner图片</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
 <?php
 $row = $dosql->GetOne("SELECT * FROM `pmw_banner` WHERE id=$id");
+switch ($type) {
+  case 'ticket':
+    // code...
+    $typename="景区";
+    break;
+
+    case 'reg':
+      // code...
+      $typename="注册";
+      break;
+
+    case 'text':
+        // code...
+      $typename="文本";
+      break;
+
+    case 'no':
+          // code...
+    $typename="无跳转链接";
+    break;
+
+}
 ?>
 <form name="form" id="form" method="post" action="banner_save.php" onsubmit="return quan();">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
@@ -49,27 +71,40 @@ $row = $dosql->GetOne("SELECT * FROM `pmw_banner` WHERE id=$id");
            <option <?php if($row['typename']=="guide"){ echo "selected='selected'";}?> value="guide">导游Banner图片</option>
          </select></td>
 	</tr>
-
+  <tr>
+    <td height="40" align="right">图片类型：</td>
+    <td colspan="2" class="num" style="font-weight:bold;font-size:14px;color:red;"><?php echo $typename; ?></td>
+  </tr>
 		<tr>
 		  <td height="40" align="right">图片标题：</td>
 		  <td colspan="2"><input type="text" name="title" id="title" class="input" value="<?php echo $row['title'];?>"/></td>
     </tr>
+    <?php if($type=="ticket"){ ?>
 		<tr>
 			<td height="40" align="right">跳转链接：</td>
-			<td colspan="2"><input type="text" name="linkurl" id="linkurl" class="input" <?php if($row['linkurl']==""){ echo "readonly";}  ?> value="<?php echo $row['linkurl'];?>"/>
+			<td colspan="2"><select name="linkurl" id="linkurl" class="input" style="width:508px;">
+                 <?php
+        $dosql->Execute("SELECT * FROM pmw_ticket order by id asc");
+        while($r=$dosql->GetArray()){
+        ?>
+      <option <?php if($r['id']==$row['linkurl']){ echo "selected='selected'";}?>  value="<?php echo $row['id'];?>"><?php echo $row['names'];?></option>
+      <?php }?>
+      </select>
 			</td>
 		</tr>
-
+  <?php } ?>
 		<tr>
 			<td width="9%" height="75" align="right">banner图片：</td>
 			<td width="8%" align="center"><img  width="100" height="50" style="cursor:pointer; padding:5px;border-radius:3px;" layer-src="<?php echo $row['pic']; ?>" onclick="message('<?php echo $row['id']; ?>');"
 			src="<?php echo $row['pic']; ?>" alt="<?php echo $row['title']; ?>" /></td>
 			<td width="83%"></div>
-   <input style="margin-top:5px;" type="text" name="pic" id="pic" class="input" value="<?php echo $row['pic']; ?>" />
+   <input style="margin-top:5px;width:390px;" type="text" name="pic" id="pic" class="input" value="<?php echo $row['pic']; ?>" />
 	 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span></td>
 		</tr>
+
+    <?php if($type=="text"){ ?>
         	<tr>
-        	  <td height="40" align="right">简介：</td>
+        	  <td height="40" align="right">图片简介：</td>
         	  <td colspan="2"> <textarea <?php if($row['content']==""){ echo "readonly";}  ?>  name="content" id="content" class="kindeditor"><?php echo $row['content'];?></textarea>
        	      <script>
 				var editor;
@@ -85,6 +120,7 @@ $row = $dosql->GetOne("SELECT * FROM `pmw_banner` WHERE id=$id");
 				});
 				</script>	</td>
        	  </tr>
+  <?php }?>
         	<tr>
         	  <td height="40" align="right">更新时间：</td>
         	  <td colspan="2"> <input type="text" name="pictime" id="pictime" class="inputms" value="<?php echo GetDateTime(time()); ?>" />
@@ -104,7 +140,8 @@ $row = $dosql->GetOne("SELECT * FROM `pmw_banner` WHERE id=$id");
          <input type="submit" class="submit" value="保存" />
 		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
 		<input type="hidden" name="action" id="action" value="update" />
-        <input type="hidden" name="id" id="id" value="<?php echo $row['id'];?>" />
+    <input type="hidden" name="id" id="id" value="<?php echo $row['id'];?>" />
+    <input type="hidden" name="type" id="type" value="<?php echo $type;?>" />
   </div></td>
        	  </tr>
   </table>

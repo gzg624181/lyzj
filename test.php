@@ -443,53 +443,53 @@ unlink($o_pic);
 //     echo $content;
 //
 
-$content ='22223242345<img alt="" src="/uploads/image/20190627/1561634483.png" /> <img alt="" src="/uploads/image/20190627/1561634044.png" /> 45354325<img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" />345254 <img alt="" src="/uploads/image/20190627/1561639134.png" /> <img alt="" src="https://ceshi.yishekj.xyz/uploads/image/20190627/1561635314.png" />';
-
-echo replacePicUrl($content,$cfg_weburl);
-
-    function replacePicUrl($content = null, $strUrl = null) {
-    		if ($strUrl) {
-    				//提取图片路径的src的正则表达式 并把结果存入$matches中
-    				preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/U",$content,$matches);
-    				$img = "";
-    				if(!empty($matches)) {
-    				//注意，上面的正则表达式说明src的值是放在数组的第三个中
-    				$img = $matches[2];
-    				}else {
-    					 $img = "";
-    				}
-
-    					if (!empty($img)) {
-    								$patterns= array();
-    								$replacements = array();
-    								foreach($img as $imgItem){
-
-                      if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
-                        $final_imgUrl = $strUrl.$imgItem;
-                      }else{
-                        $final_imgUrl = $imgItem;
-                      }
-
-    										$replacements[] = $final_imgUrl;
-    										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
-    										$patterns[] = $img_new;
-    								}
-
-    								//让数组按照key来排序
-    								ksort($patterns);
-    								ksort($replacements);
-
-    								//替换内容
-    								$vote_content  = preg_replace($patterns, $replacements, $content);
-
-    								return  $vote_content;
-    				}else {
-    						return   $content;
-    				}
-    		} else {
-    				return   $content;
-    		}
-    }
+// $content ='22223242345<img alt="" src="/uploads/image/20190627/1561634483.png" /> <img alt="" src="/uploads/image/20190627/1561634044.png" /> 45354325<img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" />345254 <img alt="" src="/uploads/image/20190627/1561639134.png" /> <img alt="" src="https://ceshi.yishekj.xyz/uploads/image/20190627/1561635314.png" />';
+//
+// echo replacePicUrl($content,$cfg_weburl);
+//
+//     function replacePicUrl($content = null, $strUrl = null) {
+//     		if ($strUrl) {
+//     				//提取图片路径的src的正则表达式 并把结果存入$matches中
+//     				preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/U",$content,$matches);
+//     				$img = "";
+//     				if(!empty($matches)) {
+//     				//注意，上面的正则表达式说明src的值是放在数组的第三个中
+//     				$img = $matches[2];
+//     				}else {
+//     					 $img = "";
+//     				}
+//
+//     					if (!empty($img)) {
+//     								$patterns= array();
+//     								$replacements = array();
+//     								foreach($img as $imgItem){
+//
+//                       if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
+//                         $final_imgUrl = $strUrl.$imgItem;
+//                       }else{
+//                         $final_imgUrl = $imgItem;
+//                       }
+//
+//     										$replacements[] = $final_imgUrl;
+//     										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
+//     										$patterns[] = $img_new;
+//     								}
+//
+//     								//让数组按照key来排序
+//     								ksort($patterns);
+//     								ksort($replacements);
+//
+//     								//替换内容
+//     								$vote_content  = preg_replace($patterns, $replacements, $content);
+//
+//     								return  $vote_content;
+//     				}else {
+//     						return   $content;
+//     				}
+//     		} else {
+//     				return   $content;
+//     		}
+//     }
 
 
 
@@ -539,4 +539,50 @@ echo replacePicUrl($content,$cfg_weburl);
 //
 //
 // return $content;
+
+$starttime="1563984000";
+$title="那片草原";
+Send_Remind($starttime,$title);
+
+// $todaytime=strtotime(date("Y-m-d"));
+//
+//
+// $dosql->Execute("SELECT * FROM pmw_freetime where usetime <> $todaytime");
+//
+// while($row=$dosql->GetArray()){
+//
+//   $content= $row['content'];  //导游发布的所有的空闲时间
+//
+//   if(check_str($content,$starttime)){  //进行匹配操作
+//
+//   $gid= $row['gid'];  //导游的id
+//
+//   $id= $row['id'];  //当前用户发布的空闲时间id
+//
+//   $array=Get_Guide_Infromation($gid);
+//
+//   $openid=$array['openid'];
+//
+//   $name=$array['name'];
+//
+//   $formid=get_new_formid($openid);
+//
+//   $travel_date=date("Y-m-d",$starttime);
+//
+//   $travel_bak="亲爱的".$name."你好，与您空闲时间匹配的行程已经出现，请点击进入我的小程序查看详情";
+//
+//   $page="pages/searchDetail/index?data=".$travel_date;
+//
+//   $travel_date=date("Y-m-d",$starttime)."开始出发";
+//
+//   Send_Freetime_Message($openid,$cfg_free_time,$page,$formid,$title,$travel_date,$travel_bak,$cfg_appid,$cfg_appsecret);
+//
+//   del_formid($formid,$openid);
+//
+//   //将用户今天的空闲时间更改为一次，每天只能有一次发送模板消息的机会
+//
+//   $dosql->ExecNoneQuery("UPDATE pmw_freetime SET usetime=$todaytime where id=$id");
+//
+//   }
+// }
 ?>

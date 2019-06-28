@@ -249,6 +249,7 @@ function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_can
 function check_str($str, $substr)
 {
  $nums=substr_count($str,$substr);
+
  if ($nums>=1)
  {
 	return true;
@@ -757,4 +758,102 @@ imagepng($target_im,$out_pic);
 }
 
 
+// 空闲时间发送模板消息提醒
+
+function Send_Remind($starttime,$title)
+{
+	// code...  计算所有导游发布的空闲时间,每天只能发送一次
+	  global $dosql,$cfg_free_time,$cfg_appid,$cfg_appsecret;
+
+	  $todaytime=strtotime(date("Y-m-d"));
+
+		$dosql->Execute("SELECT * FROM pmw_freetime where usetime <> $todaytime");
+
+		while($row=$dosql->GetArray()){
+
+		$content1= $row['content'];  //导游发布的所有的空闲时间
+
+		if(check_str($content1,$starttime)){  //进行匹配操作
+
+    $gid= $row['gid'];  //导游的id
+
+		$id= $row['id'];  //当前用户发布的空闲时间id
+
+		$array=Get_Guide_Infromation($gid);
+
+    $openids=$array['openid'];
+
+		$name=$array['name'];
+
+		$formids=get_new_formid($openids);
+
+		$travel_date=date("Y-m-d",$starttime);
+
+		$travel_bak="亲爱的".$name."你好，与您空闲时间匹配的行程已经出现，请点击进入我的小程序查看详情";
+
+		$page="pages/searchDetail/index?data=".$travel_date;
+
+		$travel_date=date("Y-m-d",$starttime)."开始出发";
+
+		Send_Freetime_Message($openids,$cfg_free_time,$page,$formids,$title,$travel_date,$travel_bak,$cfg_appid,$cfg_appsecret);
+
+	  del_formid($formids,$openids);
+
+		//将用户今天的空闲时间更改为一次，每天只能有一次发送模板消息的机会
+
+		$dosql->ExecNoneQuery("UPDATE pmw_freetime SET usetime=$todaytime where id=$id");
+
+		}
+	}
+
+}
+
+
+// 发送空闲时间模板消息
+function Send_Freetime_Message($openid,$cfg_free_time,$page,$formid,$travel_name,$travel_date,$travel_bak,$cfg_appid,$cfg_appsecret)
+{
+ // code...
+ $data = array(
+		 'touser' => $openid,                     //要发送给导游的openid
+ 'template_id' => $cfg_free_time,         //改成自己的模板id，在微信后台模板消息里查看
+			 'page' => $page,                      //点击模板消息详情之后跳转连接
+		'form_id' => $formid,                   //导游的formid
+			 'data' => array(
+				 'keyword1' => array(
+						 'value' => $travel_name,          //行程名称
+						 'color' => "#3d3d3d"
+				 ),
+				 'keyword2' => array(
+						 'value' => $travel_date,            //行程日期
+						 'color' => "#3d3d3d"
+				 ),
+				 'keyword3' => array(
+						 'value' => $travel_bak,               //行程备注
+						 'color' => "#3d3d3d"
+				 )
+		 ),
+ );
+
+ $ACCESS_TOKEN = token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+
+ //模板消息请求URL
+ $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
+
+ $data = json_encode($data);//转化成json数组让微信可以接收
+ $data = https_request($url, urldecode($data));//请求开始
+ $data = json_decode($data, true);
+ // $errcode=$data['errcode'];  //判断模板消息发送是否成功
+ // return $errcode;
+}
+
+//获取导游的信息
+function Get_Guide_Infromation($id)
+{
+	// code...
+	global $dosql;
+
+	$r=$dosql->GetOne("SELECT * from pmw_guide where id=$id");
+
+	return $r;
+}
 ?>

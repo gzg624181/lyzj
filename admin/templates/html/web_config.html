@@ -6,6 +6,7 @@
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="plugin/colorpicker/colorpicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 function tabs(tabobj, obj)
 {
@@ -398,7 +399,7 @@ require_once($manageui_inc);
 			<tr class="nb">
 				<td height="40" align="right">所属组：</td>
 				<td><?php
-					echo '<select name="vargroup">';
+					echo '<select name="vargroup" class="input">';
 					foreach($config_tab_arr as $vargroup_id => $vargroup)
 					{
 						echo '<option value='.$vargroup_id.'>'.$vargroup.'</option>';

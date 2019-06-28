@@ -150,6 +150,9 @@ else if($action=="add_ticket"){
   $content=stripslashes($content);
   $content=rePic($content, $cfg_weburl);
 
+  $xuzhi=stripslashes($xuzhi);
+  $xuzhi=rePic($xuzhi, $cfg_weburl);
+
   $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney')";
 
   if($dosql->ExecNoneQuery($sql))

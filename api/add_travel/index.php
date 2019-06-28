@@ -38,13 +38,20 @@ if(isset($token) && $token==$cfg_auth_key){
   $posttime=time();  //添加时间
   $fabu_y=date("Y");
   $fabu_ym=date("Y-m");
+
+
   $days=($endtime-$starttime) / (60 * 60 * 24) +1;  //行程的天数
   $jiesuanmoney = $cfg_jiesuan * $days;
   $r=$dosql->GetOne("SELECT company from pmw_agency where id=$aid");
   $company=$r['company'];
   $starttime_ymd=date("Y-m-d",$starttime);
-  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y','$fabu_ym',$aid,'$jiesuanmoney','$company',$days)";
+  $starttime=strtotime($starttime_ymd);
+  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y',
+    '$fabu_ym',$aid,'$jiesuanmoney','$company',$days)";
   $dosql->ExecNoneQuery($sql);
+
+  //匹配用户的空闲时间，旅行社发布的空闲时间如果匹配的话 ，则向导游发送空闲时间的模板消息，每个导游一天最多发送一条消息
+   Send_Remind($starttime,$title);
 
   //将用户的formid添加进去
    add_formid($openid,$formid);
