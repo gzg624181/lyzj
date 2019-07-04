@@ -43,9 +43,9 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 
   <tr>
   <td width="15%" height="40" align="right">分享小图标图片：</td>
-  <td width="6%"><img  width="100px;" layer-src="<?php echo $r['tubiaopic'];?>" style="cursor:pointer; padding:8px; border-radius:12px;" src="<?php echo $r['tubiaopic'];?>"/></td>
+  <td width="6%"><img  width="100px;" layer-src="<?php echo $r['tubiaopic'];?>" style="cursor:pointer; padding:8px; border-radius:12px;" src="<?php echo $cfg_weburl."/".$r['tubiaopic'];?>"/></td>
   <td width="79%">
-    
+
     <input style="margin-top:5px;" type="text" name="tubiaopic" id="tubiaopic" class="input" value="<?php echo $r['tubiaopic']; ?>"  required="required"/>
   <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'tubiaopic')">上 传</span></span>
    </td>
@@ -53,9 +53,9 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 
 <tr>
 <td height="40" align="right">分享背景图片：</td>
-<td> <img  width="100px;" layer-src="<?php echo $r['imagesurl'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['imagesurl'];?>"/></td>
+<td> <img  width="100px;" layer-src="<?php echo $cfg_weburl."/".$r['imagesurl'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $cfg_weburl."/".$r['imagesurl'];?>"/></td>
 <td>
-    
+
   <input style="margin-top:-12px;" type="text" name="pic" id="pic" class="input" value="<?php echo $r['imagesurl']; ?>"  required="required"/>
 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span>
  </td>

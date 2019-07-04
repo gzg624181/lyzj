@@ -35,6 +35,9 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
+        $agreement=stripslashes($r['agreement']);
+        $agreement=GetPic($agreement, $cfg_weburl);
+        $r['agreement']=$agreement;
       $State = 1;
       $Descriptor = '合同图片获取成功！';
       $result = array (

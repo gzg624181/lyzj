@@ -29,8 +29,8 @@ if($action == 'add')
   $erweima_name=date("Ymdhis");
   $urls="/uploads/erweima/".$erweima_name.".png";
   $save_path=$cfg_weburl.$urls;         //生成成功之后的二维码地址
-  $url=$cfg_weburl."/".$url;
-	$sql = "INSERT INTO `#@__music` (title, url, num, codeurl, addtime, orderid, sharename) VALUES ('$title', '$url', $num, '$save_path', '$addtime', $orderid, '$sharename')";
+  $url=$url;
+	$sql = "INSERT INTO `#@__music` (title, url, num, codeurl, addtime, orderid, sharename) VALUES ('$title', '$url', $num, '$urls', '$addtime', $orderid, '$sharename')";
 	if($dosql->ExecNoneQuery($sql))
 	{
 		$gourl="music.php";
@@ -49,10 +49,10 @@ else if($action == 'playmp3')
 }
 else if($action=="share_update"){
 	if(!check_str($pic,$cfg_weburl)){
-    $pic=$cfg_weburl."/".$pic; //
+    $pic1=$cfg_weburl."/".$pic; //
   }
 	if(!check_str($tubiaopic,$cfg_weburl)){
-		$tubiaopic=$cfg_weburl."/".$tubiaopic; //导游证件
+		$tubiaopic1=$cfg_weburl."/".$tubiaopic; //导游证件
 	}
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET tubiaopic='$tubiaopic',imagesurl='$pic' where id=2");
 	$gourl="share_config.php";
@@ -63,8 +63,8 @@ else if($action=="share_update"){
 	$savename="example_".$erweima_name.".png";
 	$savepath="../uploads/erweima";
 
-  $newimg1=img_water_mark($pic, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
-  $newimg=img_water_mark($newimg1, $tubiaopic, $savepath, $savename, $positon=2, $alpha=100);
+  $newimg1=img_water_mark($pic1, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
+  $newimg=img_water_mark($newimg1, $tubiaopic1, $savepath, $savename, $positon=2, $alpha=100);
 
   $dosql->ExecNoneQuery("UPDATE pmw_share SET examplepic='$newimg' where id=2");
 	header("LOCATION:$gourl");

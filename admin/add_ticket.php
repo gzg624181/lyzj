@@ -81,6 +81,12 @@ $tbname='pmw_ticket';
       </td>
       </tr>
 
+			<tr>
+			<td width="25%" height="40" align="right">景区备注：</td>
+			<td width="75%">
+			<input type="text" class="input" id="remarks" name="remarks" required="required">
+			</td>
+			</tr>
       <tr>
       			<td height="124" align="right">景区图片：</td>
       			<td colspan="11"><fieldset class="picarr" style="width:78%">

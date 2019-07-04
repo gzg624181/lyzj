@@ -152,7 +152,7 @@ layui.use('laydate', function(){
 
  //日期范围选择
 laydate.render({
-  elem: '#time'
+   elem: '#time'
   ,range: "--" //或 range: '~' 来自定义分割字符
 });
 
@@ -179,8 +179,6 @@ function selecttime(num){
       ins22.hint(msg);
     }
   });
-
-
 });
 
 }

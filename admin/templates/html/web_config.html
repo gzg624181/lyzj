@@ -81,11 +81,13 @@ function DelThisLoginBg(str)
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable" >
 			<?php
 
-			if($config_tab_id == 0)
+			if($config_tab_id == 0){
 				$sql = "SELECT * FROM `#@__webconfig` WHERE `siteid`='$cfg_siteid' AND `vargroup`=$config_tab_id ORDER BY `orderid` ASC";
-			else
+			 }elseif($config_tab_id==2){
+	      $sql = "SELECT * FROM `#@__webconfig` WHERE vargroup=$config_tab_id and checkinfo=1 ORDER BY orderid ASC";
+				}else{
 				$sql = "SELECT * FROM `#@__webconfig` WHERE vargroup=$config_tab_id ORDER BY orderid ASC";
-
+	      }
 			$dosql->Execute($sql);
 			$i = 1;
 			while($row = $dosql->GetArray())

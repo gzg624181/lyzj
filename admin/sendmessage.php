@@ -8,7 +8,7 @@ function getDataArray($openid,$type,$name,$tel,$state,$content,$applytime,$sendt
         'touser' => $openid,                //要发送给用户的openid
         'template_id' => $cfg_regfailed,    //改成自己的模板id，在微信后台模板消息里查看
         'page' => $page,                     //点击模板消息详情之后跳转连接
-		'form_id' => $form_id,                  //form_id
+		'form_id' => $form_id,              //form_id
         'data' => array(
             'keyword1' => array(
                 'value' => $type,            //账户类型

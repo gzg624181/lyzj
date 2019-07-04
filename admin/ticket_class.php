@@ -96,9 +96,9 @@ $num=$dosql->GetTotalRow($one);
 
 			if($row['icon']==""){
 			$images="../templates/default/images/noimage.jpg";
-		    }else{
-      $images=$row['icon'];
-            }
+		   }else{
+      $images=$cfg_weburl."/".$row['icon'];
+       }
 
 		?>
               <tr class="dataTr" align="left">

@@ -37,7 +37,7 @@ $adminlevel=$_SESSION['adminlevel'];
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar"> <span class="title" style="text-align:center;">添加票务规格</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><?php echo $cfg_reload;?></a></div>
 <?php
-$s=$dosql->GetOne("select * from `#@__specs` where id=$id");
+$s=$dosql->GetOne("SELECT * from `#@__specs` where id=$id");
 ?>
 <form name="form" id="form" method="post" action="ticket_save.php">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
@@ -51,13 +51,9 @@ $s=$dosql->GetOne("select * from `#@__specs` where id=$id");
   <td height="40" align="right">票务类型：</td>
   <td><input type="text" name="tickettype" id="tickettype" placeholder="请输入票务类型" value="<?php echo $s['tickettype'];?>" required="required"  class="input"/></td>
   </tr>
-		<tr>
+	  	<tr>
 		  <td height="40" align="right">平常价格：</td>
 		  <td><input type="text" name="normalmoney" id="normalmoney" placeholder="请输入金额" required="required" value="<?php echo $s['normalmoney'];?>" class="input"/></td>
-      </tr>
-      <tr>
-		  <td height="40" align="right">双休价格：</td>
-		  <td><input type="text" name="resetmoney" id="resetmoney" placeholder="请输入金额" value="<?php echo $s['resetmoney'];?>" required="required"  class="input"/></td>
       </tr>
 
   </table>

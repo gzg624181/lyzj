@@ -156,9 +156,9 @@ else if($action=='sets'){
 
 }
 else if($action=='share_update'){
-	if(!check_str($pic,$cfg_weburl)){
-    $pic=$cfg_weburl."/".$pic; //导游证件
-  }
+	// if(!check_str($pic,$cfg_weburl)){
+  //   $pic=$cfg_weburl."/".$pic; //导游证件
+  // }
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET title='$title',imagesurl='$pic' where id=1");
 	$gourl="share.php";
 

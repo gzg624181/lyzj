@@ -33,7 +33,7 @@ if($action == 'update')
 
 		for($i=0;$i< $picarrNum;$i++)
 		{
-			$picarrTmp[] = $cfg_weburl."/".$picarr[$i];
+			$picarrTmp[] = $picarr[$i];
 		}
 
 		$picarr = json_encode($picarrTmp);
@@ -41,9 +41,7 @@ if($action == 'update')
 
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
-  if(!check_str($cardpic,$cfg_weburl)){
-    $cardpic=$cfg_weburl."/".$cardpic; //导游证件
-  }
+
   if($password==""){ //密码不修改
     $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
   }else{
@@ -63,7 +61,7 @@ else if($action == 'checkagency')
 {
   if($type=="cardpic"){
 	$r=$dosql->GetOne("SELECT cardpic,company FROM $tbname WHERE id=$id");
-  $contents = $r['cardpic'];
+  $contents = $cfg_weburl."/".$r['cardpic'];
   $content =  "<span style='font-size:18px;font-weight:bold;margin-bottom:10px;'>".$r['company']."营业执照"."</span>";
   $content .= "<img src='".$contents."' width=90% style='margin-top:17px;'>";
 	echo $content;

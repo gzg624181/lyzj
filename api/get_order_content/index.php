@@ -36,6 +36,9 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
+      $picarr=stripslashes($r['picarr']);
+      $picarr=GetPic($picarr, $cfg_weburl);
+      $r['picarr']=$picarr;
       $State = 1;
       $Descriptor = '数据获取成功！';
       $result = array (

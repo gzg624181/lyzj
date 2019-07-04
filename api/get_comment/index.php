@@ -36,8 +36,17 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-      while($row=$dosql->GetArray()){
+      for($i=0;$i<$dosql->GetTotalRow();$i++){
+        $row=$dosql->GetArray();
         $Data[]=$row;
+        if($row['images']==""){
+        $images=$cfg_weburl."/templates/default/images/noimage.jpg";
+        }elseif(check_str($row['images'],"https")){
+        $images=$row['images'];   //用户头像
+        }else{
+        $images=$cfg_weburl."/".$row['images'];
+        }
+        $Data[$i]['images']=$images;
       }
       $State = 1;
       $Descriptor = '评价内容获取成功！';

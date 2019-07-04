@@ -28,6 +28,15 @@ if(isset($token) && $token==$cfg_auth_key){
       for($i=0;$i<$dosql->GetTotalRow($one);$i++){
        $row1 = $dosql->GetArray($one);
        $Data[$i]=$row1;
+       $picarr=stripslashes($row1['picarr']);
+       $picarr=GetPic($picarr, $cfg_weburl);
+       $content=stripslashes($row1['content']);
+       $content=rePic($content, $cfg_weburl);
+       $xuzhi=stripslashes($row1['xuzhi']);
+       $xuzhi=rePic($xuzhi, $cfg_weburl);
+        $Data[$i]['picarr']=$picarr;
+        $Data[$i]['xuzhi']=$xuzhi;
+        $Data[$i]['content']=$content;
       }
 
       $State = 1;

@@ -56,7 +56,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   if(isset($images)){
   $images = base64_image_content($images,$savepath);
-  $images=str_replace("../..",$cfg_weburl,$images);
+  $images=str_replace("../../",'',$images);
   }
   //将相册里面的图片进行处理
 
@@ -67,9 +67,9 @@ if(isset($token) && $token==$cfg_auth_key){
   for($i=0;$i<count($arr);$i++){
     $pics  = base64_image_content($arr[$i],$savepath);
     if($i==count($arr)-1){
-      $thispic = str_replace("../../",$cfg_weburl.'/',$pics);
+      $thispic = str_replace("../../",'',$pics);
     }else{
-      $thispic = str_replace("../../",$cfg_weburl.'/',$pics)."|";
+      $thispic = str_replace("../../",'',$pics)."|";
     }
     $pic .= $thispic;
     }
@@ -112,7 +112,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   if(isset($images)){
     if($lastkey=="images"){
-      $sql .= " images='$images' ";
+      $sql .= " images='$images'";
     }else{
       $sql .= " images='$images',";
     }
@@ -123,6 +123,15 @@ if(isset($token) && $token==$cfg_auth_key){
   $r=$dosql->GetOne("SELECT * FROM pmw_guide where id=$id");
   if(is_array($r)){
   $Data[]=$r;
+  $agreement=stripslashes($r['agreement']);
+  $agreement=GetPic($agreement, $cfg_weburl);
+  $pics=stripslashes($r['pics']);
+  $pics=GetPics($pics, $cfg_weburl);
+  $Data[0]['type']='guide';
+  $Data[0]['card']=$cfg_weburl."/".$r['card'];
+  $Data[0]['images']=$cfg_weburl."/".$r['images'];
+  $Data[0]['agreement']=$agreement;
+  $Data[0]['pics']=$pics;
   $State = 1;
   $Descriptor = '导游信息修改成功!';
   $result = array (

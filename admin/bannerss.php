@@ -163,8 +163,8 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td align="center"><?php echo $typename;?></td>
 			<td align="center"><?php echo $row['title'];?></td>
 			<td align="center"><?php echo $type;?></td>
-			<td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="200px;" layer-src="<?php echo $row['pic'];?>" style="cursor:pointer; padding:5px; border-radius:9px;"
-			onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $row['pic'];?>" alt="<?php echo $row['title']; ?>" /></div></td>
+			<td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="200px;" layer-src="<?php echo $cfg_weburl."/".$row['pic'];?>" style="cursor:pointer; padding:5px; border-radius:9px;"
+			onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $cfg_weburl."/".$row['pic'];?>" alt="<?php echo $row['title']; ?>" /></div></td>
 			<td align="center"><?php echo $row['linkurl'];?></td>
 			<td align="center"><?php echo date("Y-m-d H:i:s",$row['pictime']);?></td>
 			<td align="center">

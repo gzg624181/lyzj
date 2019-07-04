@@ -30,7 +30,7 @@ $r=$dosql->GetOne("SELECT * from $tbname where id=$id");
 		</tr>
                 <tr>
 			<td height="40" align="right">分类图标：</td>
-			<td width="4%" align="center"><img style="border-radius:3px; width:40px;" src="<?php echo $r['icon'];?>" /></td>
+			<td width="4%" align="center"><img style="border-radius:3px; width:40px;" src="<?php echo $cfg_weburl."/".$r['icon'];?>" /></td>
 			<td width="68%">
               <input style="margin-top:5px; width:446px;" type="text" name="icon" id="icon" class="input"  required="required"
                value="<?php echo $r['icon'];?>"/>

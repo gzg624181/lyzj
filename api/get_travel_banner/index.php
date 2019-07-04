@@ -37,9 +37,14 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-      while($row=$dosql->GetArray()){
+        for($i=0;$i<$dosql->GetTotalRow();$i++){
+        $row=$dosql->GetArray();
         $Data[]=$row;
-      }
+        $content=stripslashes($row['content']);
+        $content=rePic($content, $cfg_weburl);
+        $Data[$i]['pic']=$cfg_weburl."/".$row['pic'];
+        $Data[$i]['content']=$content;
+        }
       $State = 1;
       $Descriptor = '图片获取成功！';
       $result = array (

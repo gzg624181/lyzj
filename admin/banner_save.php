@@ -23,8 +23,7 @@ require_once(ADMIN_INC.'/action.class.php');
 if($action == 'add')
 {
 
-  $pictime=strtotime($pictime);
-	$pic=$cfg_weburl."/".$pic;
+
 
 	if($type=="reg"){
 		//注册的banner、图片
@@ -58,21 +57,13 @@ echo $type;
 else if($action == 'update')
 {
 	$pictime=strtotime($pictime);
-
-
-
-	if(!check_str($pic,$cfg_weburl)){
-    $pic=$cfg_weburl."/".$pic; //banner图片
-  }
-
   if($type=="reg" || $type=="no"){
 	$sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename' WHERE id=$id";
 }elseif($type=="ticket"){
   $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',linkurl='$linkurl' WHERE id=$id";
 }elseif($type=="text"){
-  $content=stripslashes($content);
-  $content1=rePic($content, $cfg_weburl);
-  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',content='$content1' WHERE id=$id";
+
+  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',content='$content' WHERE id=$id";
 }
 
 	if($dosql->ExecNoneQuery($sql))

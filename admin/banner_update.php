@@ -87,7 +87,8 @@ switch ($type) {
         $dosql->Execute("SELECT * FROM pmw_ticket order by id asc");
         while($r=$dosql->GetArray()){
         ?>
-      <option <?php if($r['id']==$row['linkurl']){ echo "selected='selected'";}?>  value="<?php echo $row['id'];?>"><?php echo $row['names'];?></option>
+      <option <?php if($r['id']==$row['linkurl']){ echo "selected='selected'";}?>
+         value="<?php echo $r['id'];?>"><?php echo $r['names'];?></option>
       <?php }?>
       </select>
 			</td>
@@ -96,7 +97,7 @@ switch ($type) {
 		<tr>
 			<td width="9%" height="75" align="right">banner图片：</td>
 			<td width="8%" align="center"><img  width="100" height="50" style="cursor:pointer; padding:5px;border-radius:3px;" layer-src="<?php echo $row['pic']; ?>" onclick="message('<?php echo $row['id']; ?>');"
-			src="<?php echo $row['pic']; ?>" alt="<?php echo $row['title']; ?>" /></td>
+			src="<?php echo $cfg_weburl."/".$row['pic']; ?>" alt="<?php echo $row['title']; ?>" /></td>
 			<td width="83%"></div>
    <input style="margin-top:5px;width:390px;" type="text" name="pic" id="pic" class="input" value="<?php echo $row['pic']; ?>" />
 	 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span></td>

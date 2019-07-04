@@ -51,6 +51,9 @@ if(isset($token) && $token==$cfg_auth_key){
         $row = $dosql->GetArray($we);
         $Data['All'][$i]=$row;
         $Data['All'][$i]['posttime']=date("Y-m-d",$row['posttime']);
+        $picarr=stripslashes($row['picarr']);
+        $picarr=GetPic($picarr, $cfg_weburl);
+        $Data['All'][$i]['picarr']=$picarr;
       }
       #待出行
       $dosql->Execute("SELECT a.*,b.picarr FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id  WHERE a.did=$id and a.type='$type' and a.timestampuse > $now",$me);
@@ -58,6 +61,9 @@ if(isset($token) && $token==$cfg_auth_key){
         $show = $dosql->GetArray($me);
         $Data['Tobe_travelled'][$j]=$show;
         $Data['Tobe_travelled'][$j]['posttime']=date("Y-m-d",$show['posttime']);
+        $picarr=stripslashes($show['picarr']);
+        $picarr=GetPic($picarr, $cfg_weburl);
+        $Data['Tobe_travelled'][$j]['picarr']=$picarr;
       }
       #已出行
     $dosql->Execute("SELECT a.*,b.picarr FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id  WHERE a.did=$id and a.type='$type' and a.timestampuse <= $now",$one);
@@ -65,6 +71,10 @@ if(isset($token) && $token==$cfg_auth_key){
         $row1 = $dosql->GetArray($one);
         $Data['Traveled'][$i]=$row1;
         $Data['Traveled'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
+
+        $picarr=stripslashes($row1['picarr']);
+        $picarr=GetPic($picarr, $cfg_weburl);
+        $Data['Traveled'][$i]['picarr']=$picarr;
       }
 
       $State = 1;

@@ -31,8 +31,23 @@ if(isset($token) && $token==$cfg_auth_key){
 
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){
-    while($row=$dosql->GetArray()){
+    for($i=0;$i<$num;$i++){
+    $row=$dosql->GetArray();
       $Data[]=$row;
+      switch($row['sex']){
+        case 1:
+        $sex="男";
+        break;
+        case 0:
+        $sex="女";
+        break;
+      }
+      $Data[$i]['sex']=$sex;
+      if(check_str($row['images'],"https")){
+        $Data[$i]['images']=$row['images'];
+      }else{
+      $Data[$i]['images']=$cfg_weburl."/".$row['images'];
+      }
     }
       $State = 1;
       $Descriptor = '数据获取成功！';

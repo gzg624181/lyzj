@@ -32,7 +32,7 @@ $row=$dosql->GetOne("SELECT * FROM pmw_xieyi where id=1");
     </tr>
 
 <tr>
-<td height="40" align="right">分享背景图片：</td>
+<td height="40" align="right">协议内容：</td>
 <td> <textarea <?php if($row['content']==""){ echo "readonly";}  ?>  name="content" id="content" class="kindeditor"><?php echo $row['content'];?></textarea>
        	      <script>
 				var editor;
@@ -46,7 +46,7 @@ $row=$dosql->GetOne("SELECT * FROM pmw_xieyi where id=1");
 						}
 					});
 				});
-				</script>	
+				</script>
  </td>
 </tr>
 

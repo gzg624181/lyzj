@@ -52,13 +52,25 @@
      $savepath= "../../uploads/image/";
 
      $cardpic = base64_image_content($cardpic,$savepath);
-     $cardpic = str_replace("../..",$cfg_weburl,$cardpic);
+     $cardpic = str_replace("../../",'',$cardpic);
 
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-$r=$dosql->GetOne("SELECT * FROM `#@__agency` WHERE account='$account' and checkinfo <>2");
+
+$r=$dosql->GetOne("SELECT * FROM `#@__agency` WHERE account='$account'");
 if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
+  if($r['checkinfo']==0){
+    $State = 3;
+    $Descriptor = '此电话号码正在审核中，请等待管理员审核！';
+    $result = array (
+                'State' => $State,
+                'Descriptor' => $Descriptor,
+                'Version' => $Version,
+                'Data' => $Data
+                 );
+    echo phpver($result);
+  }elseif($r['checkinfo']==1){
   $State = 0;
   $Descriptor = '此电话号码已经被注册，请重新注册！';
   $result = array (
@@ -68,6 +80,8 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
               'Data' => $Data
                );
   echo phpver($result);
+  }
+
 }else{
   $appid=$cfg_appid;
   $appsecret=$cfg_appsecret;
@@ -81,7 +95,7 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   add_formid($openid,$formid);
   if($dosql->ExecNoneQuery($sql)){
   $State = 1;
-  $Descriptor = '旅行社注册信息已提交成功！';
+  $Descriptor = '旅行社注册信息已提交,请等待管理员审核！';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
@@ -101,6 +115,7 @@ if(is_array($r)){ //判断当前注册的手机账号是否已经被注册过
   echo phpver($result);
 }
 }
+
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

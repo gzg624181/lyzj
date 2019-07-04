@@ -839,4 +839,59 @@ function isjiesuan($id,$y,$m){
  				return $content;
  		}
  }
+
+ //计算当月有多少天
+
+function getMonthLastDay($month, $year) {
+switch ($month) {
+case 4 :
+case 6 :
+case 9 :
+case 11 :
+$days = 30;
+break;
+case 2 :
+if ($year % 4 == 0) {
+if ($year % 100 == 0) {
+$days = $year % 400 == 0 ? 29 : 28;
+} else {
+$days = 29;
+}
+} else {
+$days = 28;
+}
+break;
+
+default :
+$days = 31;
+break;
+}
+return $days;
+}
+
+//添加景区规格的时候，自动将此规格一年的价格生成出来
+
+function add_default_price($tid,$sid,$price)
+{
+	// code...
+  global $dosql;
+
+	$year=date("Y");
+
+  for($j=1;$j<=12;$j++){
+
+	$days=getMonthLastDay($j, $year);
+
+	for($i=1;$i<=$days;$i++){
+		$month=str_pad($j,2,"0",STR_PAD_LEFT);
+		$day=str_pad($i,2,"0",STR_PAD_LEFT);
+		$datetimes =date($year."-".$month."-".$day);
+		$timestamps = strtotime($datetimes);
+		$month=str_pad($month,2,"0",STR_PAD_LEFT);
+    $dosql->ExecNoneQuery("INSERT INTO pmw_selectdate (tid,sid,timestamps,datetimes,price,years,month,days) VALUES ($tid,$sid,$timestamps,'$datetimes','$price',$year,'$month','$day')");
+	}
+
+  }
+
+}
 ?>

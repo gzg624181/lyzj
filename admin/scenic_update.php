@@ -82,7 +82,12 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
       <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
       </td>
       </tr>
-
+			<tr>
+			<td width="25%" height="40" align="right">景区备注：</td>
+			<td width="75%">
+			<input type="text" class="input" id="remarks" name="remarks" required="required" value="<?php echo $r['remarks']; ?>">
+			</td>
+			</tr>
       <tr>
       			<td height="124" align="right">景区图片：</td>
       			<td colspan="11"><fieldset class="picarr" style="width:78%">
@@ -97,7 +102,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 						foreach($picarr as $v)
 						{
 							$v = explode(',', $v);
-							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
+							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$cfg_weburl."/".$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
 						}
 					}
 					?>

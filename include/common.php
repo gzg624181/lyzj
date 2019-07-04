@@ -266,12 +266,19 @@ function get_months_success($id,$y){
 
 global $dosql;
 
-$dosql->Execute("SELECT complete_ym as time FROM pmw_travel where aid=$id and complete_y='$y' group by complete_ym");
-while($show=$dosql->GetArray()){
-	$return[]=$show;
-}
 
-return $return;
+$dosql->Execute("SELECT complete_ym as time FROM pmw_travel where aid=$id and complete_y='$y' group by complete_ym");
+
+$num=$dosql->GetTotalRow();
+$arr =array();
+if($num==0){
+while($show=$dosql->GetArray()){
+	$arr[]=$show;
+}
+}else{
+	$arr =array();
+}
+return $arr;
 
 }
 
@@ -659,7 +666,7 @@ function img_water_mark($srcImg, $waterImg, $savepath=null, $savename=null, $pos
     $temp = pathinfo($srcImg);
     $name = $temp['basename'];
     $path = $temp['dirname'];
-    $exte = $temp['extension'];
+  //  $exte = $temp['extension'];
     $savename = $savename ? $savename : $name;
     $savepath = $savepath ? $savepath : $path;
     $savefile = $savepath.'/'.$savename;
@@ -763,13 +770,13 @@ imagepng($target_im,$out_pic);
 function Send_Remind($starttime,$title)
 {
 	// code...  计算所有导游发布的空闲时间,每天只能发送一次
-	  global $dosql,$cfg_free_time,$cfg_appid,$cfg_appsecret;
+  global $dosql,$cfg_free_time,$cfg_appid,$cfg_appsecret;
 
-	  $todaytime=strtotime(date("Y-m-d"));
+  $todaytime=strtotime(date("Y-m-d"));
 
-		$dosql->Execute("SELECT * FROM pmw_freetime where usetime <> $todaytime");
+	$dosql->Execute("SELECT * FROM pmw_freetime where usetime <> $todaytime");
 
-		while($row=$dosql->GetArray()){
+	while($row=$dosql->GetArray()){
 
 		$content1= $row['content'];  //导游发布的所有的空闲时间
 
@@ -856,4 +863,128 @@ function Get_Guide_Infromation($id)
 
 	return $r;
 }
+
+//替换编辑器里面的图片链接 ，前面自动加上域名
+/**
+ * 替换fckedit中的图片 添加域名
+ * @param  string $content 要替换的内容
+ * @param  string $strUrl 内容中图片要加的域名
+ * @return string
+ * @eg
+ */
+ function GetPic($content = null, $strUrl = null) {
+ 		if ($strUrl) {
+ 		     $img=json_decode($content,TRUE);
+ 					if (!empty($img)) {
+ 								$patterns= array();
+ 								$replacements = array();
+ 								foreach($img as $imgItem){
+ 									if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
+ 										$final_imgUrl = $strUrl."/".$imgItem;
+ 									}else{
+ 										$final_imgUrl = $imgItem;
+ 									}
+ 										$replacements[] = $final_imgUrl;
+ 										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
+ 										$patterns[] = $img_new;
+ 								}
+
+ 								//让数组按照key来排序
+ 								ksort($patterns);
+ 								ksort($replacements);
+
+ 								//替换内容
+ 								$vote_content = preg_replace($patterns, $replacements, $content);
+
+ 								return $vote_content;
+
+
+ 				}else {
+ 						return $content;
+ 				}
+ 		} else {
+ 				return $content;
+ 		}
+ }
+
+ //替换相册里面的图片，加上域名、
+
+ function GetPics($content = null, $strUrl = null) {
+ 		if ($strUrl) {
+ 		     $img=explode("|",$content);
+ 					if (!empty($img)) {
+ 								$patterns= array();
+ 								$replacements = array();
+ 								foreach($img as $imgItem){
+ 									if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
+ 										$final_imgUrl = $strUrl."/".$imgItem;
+ 									}else{
+ 										$final_imgUrl = $imgItem;
+ 									}
+ 										$replacements[] = $final_imgUrl;
+ 										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
+ 										$patterns[] = $img_new;
+ 								}
+
+ 								//让数组按照key来排序
+ 								ksort($patterns);
+ 								ksort($replacements);
+
+ 								//替换内容
+ 								$vote_content = preg_replace($patterns, $replacements, $content);
+
+ 								return $vote_content;
+
+
+ 				}else {
+ 						return $content;
+ 				}
+ 		} else {
+ 				return $content;
+ 		}
+ }
+
+ function rePic($content = null, $strUrl = null) {
+ 		if ($strUrl) {
+ 				//提取图片路径的src的正则表达式 并把结果存入$matches中
+ 				preg_match_all("/<img(.*)src=\"([^\"]+)\"[^>]+>/U",$content,$matches);
+ 				$img = "";
+ 				if(!empty($matches)) {
+ 				//注意，上面的正则表达式说明src的值是放在数组的第三个中
+ 				$img = $matches[2];
+ 				}else {
+ 				$img = "";
+ 				}
+
+ 					if (!empty($img)) {
+ 								$patterns= array();
+ 								$replacements = array();
+ 								foreach($img as $imgItem){
+ 									if(!filter_var($imgItem, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
+ 										$final_imgUrl = $strUrl.$imgItem;
+ 									}else{
+ 										$final_imgUrl = $imgItem;
+ 									}
+ 										$replacements[] = $final_imgUrl;
+ 										$img_new = "/".preg_replace("/\//i","\/",$imgItem)."/";
+ 										$patterns[] = $img_new;
+ 								}
+
+ 								//让数组按照key来排序
+ 								ksort($patterns);
+ 								ksort($replacements);
+
+ 								//替换内容
+ 								$vote_content = preg_replace($patterns, $replacements, $content);
+
+ 								return $vote_content;
+
+
+ 				}else {
+ 						return $content;
+ 				}
+ 		} else {
+ 				return $content;
+ 		}
+ }
 ?>

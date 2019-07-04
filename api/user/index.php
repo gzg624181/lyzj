@@ -36,6 +36,9 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
       $Data[]=$r;
+      $Data[0]['type']='agency';
+      $Data[0]['cardpic']=$cfg_weburl."/".$r['cardpic'];
+      $Data[0]['images']=$cfg_weburl."/".$r['images'];
       $State = 1;
       $Descriptor = '旅行社信息获取成成功！';
       $result = array (
@@ -69,6 +72,19 @@ if(isset($token) && $token==$cfg_auth_key){
         break;
       }
       $Data[0]['sex']=$sex;
+      $agreement=stripslashes($r['agreement']);
+      $agreement=GetPic($agreement, $cfg_weburl);
+      $pics=stripslashes($r['pics']);
+      $pics=GetPics($pics, $cfg_weburl);
+      $Data[0]['type']='guide';
+      $Data[0]['card']=$cfg_weburl."/".$r['card'];
+      if(check_str($r['images'],"https")){
+        $Data[0]['images']=$r['images'];
+      }else{
+      $Data[0]['images']=$cfg_weburl."/".$r['images'];
+      }
+      $Data[0]['agreement']=$agreement;
+      $Data[0]['pics']=$pics;
       $State = 1;
       $Descriptor = '导游信息获取成功！';
       $result = array (

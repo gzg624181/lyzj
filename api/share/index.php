@@ -23,7 +23,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT * FROM `#@__share`");
+      $dosql->Execute("SELECT id,title,imagesurl,tubiaopic FROM `#@__share`");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;
@@ -36,9 +36,14 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-      while($row=$dosql->GetArray()){
-        $Data[]=$row;
-      }
+        for($i=0;$i<$dosql->GetTotalRow();$i++){
+         $row1 = $dosql->GetArray();
+         $Data[$i]=$row1;
+         $imagesurl=$cfg_weburl."/".$row1['imagesurl'];
+         $tubiaopic=$cfg_weburl."/".$row1['tubiaopic'];
+         $Data[$i]['imagesurl']=$imagesurl;
+         $Data[$i]['tubiaopic']=$tubiaopic;
+        }
       $State = 1;
       $Descriptor = '数据获取成功！';
       $result = array (

@@ -15,17 +15,7 @@ $username=$_SESSION['admin'];
 <script>
 
 
-function Specs(id)
-{
-layer.open({
-  type: 2,
-  title: '',
-  maxmin: true,
-  shadeClose: true, //点击遮罩关闭	层
-  area : ['480px' , '420px'],
-  content: 'specs_add.php?id='+id,
-  });
-}
+
 
 function ChangeState(id,checkinfo){
 
@@ -107,16 +97,16 @@ $num=$dosql->GetTotalRow($one);
             <td width="3%" height="87" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="11%" align="center">景区名称</td>
-                <td width="8%" align="center">景区分类</td>
-                <td width="22%" align="center">景区标签</td>
-                <td width="5%" align="center">景区等级</td>
+                <td width="15%" align="center">景区名称</td>
+                <td width="11%" align="center">景区分类</td>
+                <td width="11%" align="center">景区标签</td>
+                <td width="9%" align="center">景区等级</td>
                 <td width="6%" align="center">景区图片</td>
                 <td width="9%" align="center">已售数量起始值</td>
-                <td width="13%" align="center">发布时间</td>
-                <td width="8%" aligin="center">票务统计(张）</td>
-                <td width="8%" aligin="center">票务总金额</td>
-								<td width="9%" aligin="center">操作</td>
+                <td width="12%" align="center">发布时间</td>
+                <td width="7%" aligin="center">票务统计(张）</td>
+                <td width="7%" aligin="center">票务总金额</td>
+								<td width="12%" aligin="center">操作</td>
                 </tr>
               <?php
 
@@ -141,17 +131,17 @@ $num=$dosql->GetTotalRow($one);
                 <td height="44" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
                 <td align="center"><?php echo $row['names'];?></td>
                 <td align="center"><?php echo $row['title'];?></td>
-                <td align="center" class="num"><?php echo $row['label']; ?></td>
-                <td align="center" class="num"><?php echo $row['level']; ?>星</td>
-                <td align="center" class="num"><a style="cursor:pointer" onclick="getpic('<?php echo $id;?>');">点击查看</a></td>
-                <td align="center" class="num"><?php echo $row['solds'];?></td>
-                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['posttime']);?>
+                <td align="center"><?php echo $row['label']; ?></td>
+                <td align="center"><?php echo $row['level']; ?>星</td>
+                <td align="center"><a style="cursor:pointer" onclick="getpic('<?php echo $id;?>');">点击查看</a></td>
+                <td align="center"><?php echo $row['solds'];?></td>
+                <td align="center"><?php echo date("Y-m-d H:i:s",$row['posttime']);?>
                  </td>
                 <td align="center" class="num" style="color:red; font-size:18px; cursor:pointer;"><span onclick="checknum('<?php echo $row['id'];?>');"><?php $arr=get_nums($row['id']);  echo $arr['nums'] ?></span></td>
                 <td align="center" class="num" style="color:#3476cb; font-size:18px; cursor:pointer;"><span onclick="checknum('<?php echo $row['id'];?>');"><?php echo $arr['total'] ?></span></td>
 								 <td align="center">
-      <a title="点击添加票务规格" style="cursor:pointer" onclick="Specs('<?php echo $id;?>');">
-        <i class="fa fa-plus-square-o" aria-hidden="true"></i></a>&nbsp;
+      <a title="点击添加票务规格" style="cursor:pointer"  href="specs_add.php?id=<?php echo $id;?>&lowmoney=<?php echo $row['lowmoney'];?>">
+        <i class="fa fa-folder-open" aria-hidden="true"></i></a>&nbsp;
       <span><?php echo $checkinfo; ?></span> &nbsp;
  			<span><a title="编辑" href="scenic_update.php?id=<?php echo $row['id']; ?>">
  			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;

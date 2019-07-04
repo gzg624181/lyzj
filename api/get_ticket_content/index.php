@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_ticket_content  获取发送的消息
+	   * 链接地址：get_ticket_content  获取票务规格
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -26,7 +26,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $r=$dosql->GetOne("SELECT * FROM `#@__ticket` WHERE id=$id and checkinfo=1");
       if(!is_array($r)){
         $State = 0;
-        $Descriptor = '暂无消息！';
+        $Descriptor = '暂无数据！';
         $result = array (
                     'State' => $State,
                     'Descriptor' => $Descriptor,
@@ -37,7 +37,19 @@ if(isset($token) && $token==$cfg_auth_key){
       }else{
       $one=1;
 
-      $content[]=$r;
+      $picarr=stripslashes($r['picarr']);
+      $picarr=GetPic($picarr, $cfg_weburl);
+
+      $content=stripslashes($r['content']);
+      $content=rePic($content, $cfg_weburl);
+
+      $xuzhi=stripslashes($r['xuzhi']);
+      $xuzhi=rePic($xuzhi, $cfg_weburl);
+
+      $r['picarr']=$picarr;
+      $r['xuzhi']=$xuzhi;
+      $r['content']=$content;
+
       $specs =array();
       $dosql->Execute("SELECT * FROM `#@__specs` where tid=$id",$one);
       while($row1=$dosql->GetArray($one)){
@@ -54,7 +66,7 @@ if(isset($token) && $token==$cfg_auth_key){
       }
       $Data= array(
 
-            "content" => $content,
+            "content" => $r,
 
             "specs" => $specs
 

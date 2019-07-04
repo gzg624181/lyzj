@@ -37,11 +37,11 @@ function message(Id){
 <body>
 <?php
 $row = $dosql->GetOne("SELECT * FROM `#@__guide` WHERE id=$id");
-if($row['images']==""){
-			$images="../templates/default/images/noimage.jpg";
-		    }else{
-            $images=$row['images'];
-            }
+if(check_str($row['images'], "https")){
+  $images= $row['images'];
+}else{
+  $images=  $cfg_weburl."/".$row['images'];
+}
 $adminlevel=$_SESSION['adminlevel'];
 ?>
 <div class="formHeader"> <span class="title">修改导游信息</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
@@ -65,7 +65,8 @@ $adminlevel=$_SESSION['adminlevel'];
 		<tr>
 		  <td height="155" align="right">导游证件：</td>
 		  	<td colspan="11" valign="middle">
-             <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $row['card'];?>" style="cursor:pointer; padding:8px;" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $row['card'];?>" alt="<?php echo $row['name']; ?>" /></div><br />
+             <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $cfg_weburl."/".$row['card'];?>" style="cursor:pointer; padding:8px;" onclick="message('<?php echo $row['id']; ?>');"
+              src="<?php echo $cfg_weburl."/".$row['card'];?>" alt="<?php echo $row['name']; ?>" /></div><br />
             <input style="margin-top:5px;" type="text" name="card" id="card" class="input" value="<?php echo $row['card'];?>"  required="required"/>
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'card')">上 传</span> </span></td>
 	  </tr>
@@ -88,12 +89,12 @@ $adminlevel=$_SESSION['adminlevel'];
 						foreach($picarr as $v)
 						{
 							$v = explode(',', $v);
-							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
+							echo '<li rel="'.$v[0].'"><input type="hidden" name="picarr[]" value="'.$v[0].'"><img src="'.$cfg_weburl."/".$v[0].'" width="100" height="120" ><a href="javascript:void(0);" onclick="ClearPicArr(\''.$v[0].'\')">删除</a></li>';
 						}
 					}
 					?>
 					</ul>
-			
+
 				</fieldset>（长宽比例 2：1）</td>
 	  </tr>
 		<tr>
@@ -112,9 +113,9 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td height="163" align="right">头　像：</td>
 			<td colspan="11" valign="middle">
             <img  width="100px;" src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /><br />
-   <input style="margin-top:5px;" type="text" name="images" id="images" class="input" value="<?php echo $images;?>"  required="required"/>
+   <input style="margin-top:5px;" type="text" name="images" id="images" class="input" value="<?php echo $row['images'];?>"  required="required"/>
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'images')">上 传</span> </span></td>
-				
+
           </td>
 		</tr>
 		<tr>

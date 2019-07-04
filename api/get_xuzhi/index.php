@@ -35,6 +35,10 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
+        if($r['xuzhi']!=""){
+        $xuzhi=rePic($r['xuzhi'], $cfg_weburl);
+        $r['xuzhi']=$xuzhi;
+        }
       $State = 1;
       $Descriptor = '景区须知获取成功！';
       $result = array (

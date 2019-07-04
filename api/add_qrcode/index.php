@@ -27,8 +27,8 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   $k=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
-  $srcImg=$k['imagesurl'];  //分享的背景图片
-  $tubiaopic=$k['tubiaopic'];
+  $srcImg=$cfg_weburl."/".$k['imagesurl'];  //分享的背景图片
+  $tubiaopic=$cfg_weburl."/".$k['tubiaopic'];
 
   //1.第一步 先生成小程序二维码
   $xiaochengxu_path="pages/play/index";  //默认扫码之后进入的页面
@@ -53,7 +53,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $savepath="../../uploads/erweima";
   $newimg1=img_water_mark($srcImg, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
   $newimg=img_water_mark($newimg1, $tubiaopic, $savepath, $savename, $positon=2, $alpha=100);
-
+  $newimg = str_replace("../..",$cfg_weburl,$newimg);
   unlink($save_path);
 
 

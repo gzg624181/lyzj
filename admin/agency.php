@@ -194,9 +194,11 @@ $num=$dosql->GetTotalRow($one);
 			$id=$row['id'];
 			if($row['images']==""){
 			$images="../templates/default/images/noimage.jpg";
-		    }else{
-            $images=$row['images'];
-            }
+    }elseif(check_str($row['images'],"https")){
+     $images=$row['images'];   //用户头像
+    }else{
+      $images=$cfg_weburl."/".$row['images'];
+      }
 
 			if($row['checkinfo']==0){
 

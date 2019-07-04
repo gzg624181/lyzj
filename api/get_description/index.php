@@ -35,6 +35,10 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
+        if($r['content']!=""){
+        $content=rePic($r['content'], $cfg_weburl);
+        $r['content']=$content;
+        }
       $State = 1;
       $Descriptor = '景区介绍获取成功！';
       $result = array (

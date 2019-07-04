@@ -203,11 +203,13 @@ $num=$dosql->GetTotalRow($one);
 					break;
 
 			}
-			if($row['images']==""){
-			$images="../templates/default/images/noimage.jpg";
-		    }else{
-            $images=$row['images'];
-            }
+      if($row['images']==""){
+      $images="../templates/default/images/noimage.jpg";
+    }elseif(check_str($row['images'],"https")){
+     $images=$row['images'];   //用户头像
+    }else{
+      $images=$cfg_weburl."/".$row['images'];
+      }
 					if($row['checkinfo']==0){
 
 				 $checkinfo = "<a href='agency_save.php?action=checkinfo&info=guide&id={$id}'><i onclick='return ConfCheck(0);' style='color:#509ee1; cursor:pointer;' title='审核通过' class='fa fa-circle-o' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;";
