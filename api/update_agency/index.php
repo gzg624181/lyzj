@@ -20,7 +20,7 @@
      * id               旅行社id
      * images           旅行社头像
      * name             联系人姓名
-     * tel             联系电话
+     * tel              联系电话
      */
 require_once("../../include/config.inc.php");
 
@@ -51,7 +51,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   if(isset($images)){
   $images = base64_image_content($images,$savepath);
-  $images=str_replace("../..",$cfg_weburl,$images);
+  $images=str_replace("../..",'',$images);
   }
 
 // 将GET传过来的参数进行判断最后一个参数，如果是最后一个参数，则最后一个逗号去除掉、
@@ -94,6 +94,9 @@ if(isset($token) && $token==$cfg_auth_key){
   $r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");
   if(is_array($r)){
   $Data[]=$r;
+  $Data[0]['type']='agency';
+  $Data[0]['cardpic']=$cfg_weburl."/".$r['cardpic'];
+  $Data[0]['images']=$cfg_weburl."/".$r['images'];
   $State = 1;
   $Descriptor = '旅行社信息修改成功!';
   $result = array (

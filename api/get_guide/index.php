@@ -22,15 +22,32 @@ require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-    $page = isset($page) ? $page : 0;
-    $pagenumber=4;
-    $first=$page * $pagenumber;
-    $dosql->Execute("SELECT id,name,sex,content,images FROM pmw_guide where checkinfo=1 order by id desc limit $page,$pagenumber");
+    $page = isset($page) ? $page : 1;
+    $pagenumber=5;
+
+    $first= ($page - 1) * $pagenumber;
+
+    $dosql->Execute("SELECT id,name,sex,content,images FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
 
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){
-    while($row=$dosql->GetArray()){
+    for($i=0;$i<$num;$i++){
+    $row=$dosql->GetArray();
       $Data[]=$row;
+      switch($row['sex']){
+        case 1:
+        $sex="男";
+        break;
+        case 0:
+        $sex="女";
+        break;
+      }
+      $Data[$i]['sex']=$sex;
+      if(check_str($row['images'],"https")){
+        $Data[$i]['images']=$row['images'];
+      }else{
+      $Data[$i]['images']=$cfg_weburl."/".$row['images'];
+      }
     }
       $State = 1;
       $Descriptor = '数据获取成功！';

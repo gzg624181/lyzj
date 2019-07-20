@@ -296,11 +296,22 @@ else
 		<iframe name="menu" id="menu" frameborder="0" src="left_menu.php" scrolling="no"></iframe>
 	</div>
 </div>
+<?php $adminlevel=$_SESSION['adminlevel'];
+if($adminlevel==3){?>
 <div class="right">
 	<div class="main">
-		<iframe name="main" id="main" frameborder="0" src="home.php" <?php if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) echo 'scrolling="yes"'; ?>></iframe>
+		<iframe name="main" id="main" frameborder="0" src="music.php"
+		 <?php if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) echo 'scrolling="yes"'; ?>></iframe>
 	</div>
 </div>
+<?php }else{?>
+	<div class="right">
+		<div class="main">
+			<iframe name="main" id="main" frameborder="0" src="home.php"
+			 <?php if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) echo 'scrolling="yes"'; ?>></iframe>
+		</div>
+	</div>
+<?php }?>
 <div class="lockScreenBg">
 	<div class="winBox">
 		<div class="pwd">

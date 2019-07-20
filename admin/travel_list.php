@@ -51,7 +51,7 @@ function checkguide(gid){
 $action  = isset($action)  ? $action  : 'travel_save.php';
 $keyword = isset($keyword) ? $keyword : '';
 $check = isset($check) ? $check : '';
-
+$adminlevel=$_SESSION['adminlevel'];  //用户级别
 ?>
 <div class="topToolbar"> <span class="title">发布行程列表管理</span>
 <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a>
@@ -101,6 +101,7 @@ $check = isset($check) ? $check : '';
 		$username=$_SESSION['admin'];
 		$adminlevel=$_SESSION['adminlevel'];
 		$tbname='pmw_travel';
+
 		 if($check=="appointment"){ //待预约
 		$dopage->GetPage("SELECT * FROM $tbname where state=0",10);
 		  }elseif($check=="confirm"){ //待确认
@@ -108,7 +109,7 @@ $check = isset($check) ? $check : '';
 		  }elseif($check=="complete"){ //已完成
 		$dopage->GetPage("SELECT * FROM $tbname where state=2",10);
 		  }elseif($check=="concel"){ //已取消
-		$dopage->GetPage("SELECT * FROM $tbname where state=3",10);
+		$dopage->GetPage("SELECT * FROM $tbname where state=3 or state=5",10);
      }elseif($check=="invalid"){ //已取消
 		$dopage->GetPage("SELECT * FROM $tbname where state=4",10);
 		  }elseif($check=="agency"){ //旅行社发布的行程
@@ -153,6 +154,10 @@ $check = isset($check) ? $check : '';
   					$state= "<i class='fa fa-stop-circle-o' aria-hidden='true' style='color:#ccc'></i>";
             $color="#ccc";
   					break;
+        case 5://已取消
+    					$state= "<i class='fa fa-chain-broken' aria-hidden='true' style='color:#F00'></i>";
+              $color="#F00";
+    					break;
 				default:
                $state = '暂无分类';
 
@@ -184,7 +189,9 @@ $check = isset($check) ? $check : '';
 			<td align="center"><?php
 			$aid= $row['aid'];
 			$j=$dosql->GetOne("SELECT company FROM pmw_agency where id=$aid");
+      if(is_array($j)){
 			echo $j['company'];
+      }
 			 ?></td>
 			<td align="center"><?php echo date("Y-m-d",$row['starttime']); ?></td>
 			<td align="center"><?php echo date("Y-m-d",$row['endtime']); ?></td>
@@ -203,7 +210,12 @@ $check = isset($check) ? $check : '';
 			<td align="center"><span><?php echo $state; ?></span> &nbsp;&nbsp;
 			<span><a title="编辑" href="travel_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
+      <?php if($adminlevel==1){ ?>
 			<span class="nb"><a title="删除发布的行程信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php }else{ ?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+      <?php  }?>
+
     </td>
 		</tr>
 		<?php

@@ -17,9 +17,10 @@
      * @return string
      *
      * @导游发布空闲日期   提供返回参数账号，
-     * gid             导游id
+     * id               导游id
      * time            空闲时间json数据
      * formid          更新导游的formid
+     * openid           发布空闲时间
      * addtime         添加时间
      */
 require_once("../../include/config.inc.php");
@@ -28,12 +29,24 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：添加空闲时间 content 内容以json字符串的形式保存在数据库中去
+  //  判断表里面是否有这个导游的空闲时间列表
 
-  $addtime=time();  //添加时间
-  $sql = "INSERT INTO `#@__freetime` (gid,content,addtime) VALUES ($id,'$time',$addtime)";
-  $dosql->ExecNoneQuery($sql);
+  $r=$dosql->GetOne("SELECT id from pmw_freetime where gid=$id");
+
+  if(!is_array($r)){
+    $addtime=time();  //更新时间
+    $sql = "INSERT INTO `#@__freetime` (gid,content,addtime) VALUES ($id,'$time',$addtime)";
+    $dosql->ExecNoneQuery($sql);
+  }else{
+    $addtime=time();  //更新时间
+    $sql = "UPDATE  `#@__freetime` SET content='$time',addtime=$addtime where gid=$id";
+    $dosql->ExecNoneQuery($sql);
+  }
   # 更新导游的formid
   $dosql->ExecNoneQuery("UPDATE `#@__guide` set formid='$formid' where id=$id");
+
+  //将用户的formid添加进去
+  add_formid($openid,$formid);
   $State = 1;
   $Descriptor = '导游空闲时间发布成功!';
   $result = array (

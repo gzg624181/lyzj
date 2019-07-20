@@ -1,4 +1,4 @@
-<?php require_once(dirname(__FILE__).'/inc/config.inc.php');IsModelPriv('admanage'); ?>
+<?php require_once(dirname(__FILE__).'/inc/config.inc.php');?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -28,11 +28,25 @@ $tbname='pmw_music';
              <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
              </td>
 		</tr>
+		<tr>
+ <td width="25%" height="40" align="right">分享标题：</td>
+ <td width="75%">
+				<input type="text" class="input" id="sharename" name="sharename" required="required">
+				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
+				</td>
+  </tr>
+	<tr>
+<td height="40" align="right">图片分享上传：</td>
+<td>
+<input style="margin-top:5px;" type="text" name="share" id="share" class="input"  required="required"/>
+<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','图片上传','image','image',1,20971520,'share')">上 传</span>
+</td>
+</tr>
                 <tr>
-			<td height="40" align="right">文件地址：</td>
+			<td height="40" align="right">音频文件上传：</td>
 			<td>
               <input style="margin-top:5px;" type="text" name="url" id="url" class="input"  required="required"/>
-				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'url')">上 传</span> 
+				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','音频文件上传','media','media',1,20971520,'url')">上 传</span>
              </td>
 		</tr>
 		<tr>

@@ -27,6 +27,12 @@
 			<!-- <div class="nav-top">
 				<div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)"><img src="templates/memnu/images/mini.png" ></div>
 			</div> -->
+			<?php
+
+			//用户权限
+			$adminlevel=$_SESSION['adminlevel'];
+      if($adminlevel==1){
+			 ?>
 			<ul>
 				<?php
 			$parentid=0;
@@ -50,8 +56,60 @@
 					</ul>
 				</li>
     <?php }?>
-
 			</ul>
+<?php }elseif($adminlevel==2){ ?>
+	<ul>
+		<?php
+	$parentid=0;
+	$idi=0;
+	$ids=1;
+	$dosql->Execute("select * from `#@__infoclass_left` where parentid='$parentid' and id <> 13 and checkinfo=true order by orderid asc",$idi);
+	while($row = $dosql->GetArray($idi)){
+	$gourl=$row['linkurl'];
+	?>
+
+		<li class="nav-item">
+			<a href="javascript:;"><i style="font-size:16px;" class="<?php echo $row['keywords'];?>"></i><span><?php echo $row['classname'];?></span><i class="my-icon nav-more"></i></a>
+			<ul>
+				<?php
+			$pid=$row['id'];
+			$dosql->Execute("select * from `#@__infoclass_left` where parentid='$pid'  and id <> 14  and checkinfo=true order by orderid asc",$ids);
+			while($show = $dosql->GetArray($ids)){
+			$gourls=$show['linkurl'];
+			?>
+				<li><a href="<?php echo $gourls;?>" target="main"><span><?php echo $show['classname'];?></span></a></li>
+			<?php }?>
+			</ul>
+		</li>
+
+<?php }?>
+	</ul>
+<?php }elseif($adminlevel==3){?>
+	<ul>
+		<?php
+	$parentid=0;
+	$idi=0;
+	$ids=1;
+	$dosql->Execute("select * from `#@__infoclass_left` where parentid='$parentid' and id = 13 and checkinfo=true order by orderid asc",$idi);
+	while($row = $dosql->GetArray($idi)){
+	$gourl=$row['linkurl'];
+	?>
+		<li class="nav-item">
+			<a href="javascript:;"><i style="font-size:16px;" class="<?php echo $row['keywords'];?>"></i><span><?php echo $row['classname'];?></span><i class="my-icon nav-more"></i></a>
+			<ul style="display:block;">
+				<?php
+			$pid=$row['id'];
+			$dosql->Execute("select * from `#@__infoclass_left` where parentid='$pid' and checkinfo=true order by orderid asc",$ids);
+			while($show = $dosql->GetArray($ids)){
+			$gourls=$show['linkurl'];
+			?>
+				<li><a href="<?php echo $gourls;?>" target="main"><span><?php echo $show['classname'];?></span></a></li>
+			<?php }?>
+			</ul>
+		</li>
+	<?php }?>
+	</ul>
+<?php }?>
 		</div>
 
 	</div>
@@ -60,8 +118,8 @@
 <div class="copyright">@<?php echo $cfg_shortname;?>
 </div>
 
-<div class="tabMenu">
+<!-- <div class="tabMenu">
 	<a href="left_menu_user_simple.php" title="切换到用户菜单" class="model"></a>
-</div>
+</div> -->
 </body>
 </html>

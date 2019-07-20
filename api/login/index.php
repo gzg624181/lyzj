@@ -74,9 +74,16 @@ if(isset($token) && $token==$cfg_auth_key){
             }else{
          //账号密码正确，且审核通过，则更新用户的formid
           $dosql->ExecNoneQuery("UPDATE `#@__agency` SET formid='$formid' WHERE account='$account' and password='$password'");
+          //将用户的formid添加进去
+          add_formid($openid,$formid);
           $show=$dosql->GetOne("SELECT * FROM `pmw_agency` where account='$account' and password='$password'");
           $Data[]=$show;
-          $Data['type']='agency';
+          $agreement=stripslashes($show['agreement']);
+          $agreement=GetPic($agreement, $cfg_weburl);
+          $Data[0]['type']='agency';
+          $Data[0]['cardpic']=$cfg_weburl."/".$show['cardpic'];
+          $Data[0]['images']=$cfg_weburl."/".$show['images'];
+          $Data[0]['agreement']=$agreement;
           $State = 2;
           $Descriptor = '账号登陆成功';
           $result = array (
@@ -138,9 +145,19 @@ if(isset($token) && $token==$cfg_auth_key){
         }else{
         //账号密码正确，则更新用户的formid
           $dosql->ExecNoneQuery("UPDATE `#@__guide` SET formid='$formid' WHERE account='$account' and password='$password'");
+          //将用户的formid添加进去
+           add_formid($openid,$formid);
           $show=$dosql->GetOne("SELECT * FROM `pmw_guide` where account='$account' and password='$password'");
           $Data[]=$show;
-          $Data['type']='guide';
+          $agreement=stripslashes($show['agreement']);
+          $agreement=GetPic($agreement, $cfg_weburl);
+          $pics=stripslashes($show['pics']);
+          $pics=GetPics($pics, $cfg_weburl);
+          $Data[0]['type']='guide';
+          $Data[0]['card']=$cfg_weburl."/".$show['card'];
+          $Data[0]['images']=$cfg_weburl."/".$show['images'];
+          $Data[0]['agreement']=$agreement;
+          $Data[0]['pics']=$pics;
           $State = 2;
           $Descriptor = '账号登陆成功';
           $result = array (

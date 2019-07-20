@@ -84,18 +84,10 @@ $num=$dosql->GetTotalRow($one);
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
 <span class="title">导游空闲时间列表：<span class="num" style="color:red;"><?php echo $num;?></span>
-</span> <a href="javascript:location.reload();" class="reload">刷新</a>
+</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
-<!--
-<ul>
- <li class="<?php if($check==""){echo "on";}?>"><a href="guide.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过</a></li>
- <li class="line">-</li>
- <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过</a></li>
- <li class="line">-</li>
- <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核</a></li>
-</ul>-->
+
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入搜索日期" title="请输入搜索日期" />
 		</span> <span class="b"><a href="javascript:;" onclick="GetSearchs();"></a></span></div>
@@ -121,10 +113,11 @@ $num=$dosql->GetTotalRow($one);
                 </tr>
               <?php
 	     if($keyword!=""){ //关键字搜索
+      $keyword=strtotime($keyword);
 	    $dopage->GetPage("SELECT a.*,b.account,b.images,b.name,b.sex FROM $tbname a inner join pmw_guide b on a.gid=b.id  where a.content like '%$keyword%'",15);
-		}else{
-		$dopage->GetPage("SELECT a.*,b.account,b.images,b.name,b.sex FROM $tbname a inner join pmw_guide b on a.gid=b.id",15);
-		}
+    		}else{
+    		$dopage->GetPage("SELECT a.*,b.account,b.images,b.name,b.sex FROM $tbname a inner join pmw_guide b on a.gid=b.id",15);
+    		}
 
 		while($row = $dosql->GetArray())
 		{
@@ -142,16 +135,16 @@ $num=$dosql->GetTotalRow($one);
 			if($row['images']==""){
 			$images="../templates/default/images/noimage.jpg";
 		    }else{
-            $images=$row['images'];
+      $images=$row['images'];
             }
-			
+
 			$freetime="";
-			$content=json_decode($row['content'],true);	
+			$content=json_decode($row['content'],true);
 			foreach($content as $val){
-				
-				$freetime .=$val."&nbsp;&nbsp;&nbsp;&nbsp;";
-				
-				}	
+
+				$freetime .=date("Y-m-d",$val)."&nbsp;&nbsp;&nbsp;&nbsp;";
+
+				}
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
@@ -159,10 +152,17 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
                 <td align="center" class="num"><a href="guide.php?check=user&id=<?php echo $row['gid'];?>"><?php echo $row['name']; ?></a></td>
                 <td align="center"><?php echo $sex; ?></td>
-                <td align="center" class="num"><?php echo $freetime;?></td>
+                <td align="center" class="num">
+
+                  <?php echo $freetime;?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
-                <td align="center"> 
-			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
+                <td align="center">
+      <?php if($adminlevel==1){ ?>
+			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+    <?php }else{ ?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span> 
+    <?php } ?>
+    </td>
                 <?php //}?>
               </tr>
               <?php
@@ -209,6 +209,13 @@ layui.use('laydate', function(){
  //日期范围选择
 laydate.render({
   elem: '#keyword'
+});
+
+//初始赋值
+laydate.render({
+  elem: '#test19'
+  ,value: '1989-10-14',
+  ,isInitValue: true
 });
 
 });

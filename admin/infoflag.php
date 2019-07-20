@@ -7,6 +7,13 @@
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/forms.func.js"></script>
+<style>
+.input {
+    width: 386px;
+    height: 35px;
+    border-radius: 3px;
+}
+</style>
 </head>
 <body>
 <div class="topToolbar"> <span class="title">信息标记管理</span> <a href="javascript:location.reload();" class="reload">刷新</a></div>
@@ -29,13 +36,13 @@
 		?>
 		<tr align="left" class="dataTr">
 			<td height="36" class="firstCol"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
-			<td><input type="text" name="flagname[]" id="flagname[]" class="inputd" value="<?php echo $row['flagname']; ?>" />
+			<td align="center"><input type="text" name="flagname[]" id="flagname[]" class="inputd" value="<?php echo $row['flagname']; ?>" />
 				<input type="hidden" name="id[]" id="id[]" value="<?php echo $row['id']; ?>" /></td>
-			<td><input type="text" name="flag[]" id="flag[]" class="inputd" value="<?php echo $row['flag']; ?>" /></td>
+		  <td align="center"><input type="text" name="flag[]" id="flag[]" class="inputd" value="<?php echo $row['flag']; ?>" /></td>
 			<td align="center"><a href="infoflag_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=up" class="leftArrow" title="提升排序"></a>
 				<input type="text" name="orderid[]" id="orderid[]" class="inputls" value="<?php echo $row['orderid']; ?>" />
 				<a href="infoflag_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=down" class="rightArrow" title="下降排序"></a>
-			<td class="action endCol"><a href="infoflag_save.php?action=del2&id=<?php echo $row['id'] ?>" onclick="return ConfDel(0);">删除</a></td>
+		  <td align="center" class="action endCol"><a href="infoflag_save.php?action=del2&id=<?php echo $row['id'] ?>" onclick="return ConfDel(0);">删除</a></td>
 		</tr>
 		<?php
 			}

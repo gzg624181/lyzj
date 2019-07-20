@@ -59,7 +59,7 @@ function SendCheck(id,type)
 {
 if(confirm("是否确认拒绝导游注册审核？"))
  {
- 
+
 layer.open({
   type: 2,
   title: '审核未通过模板消息：',
@@ -127,16 +127,16 @@ $num=$dosql->GetTotalRow($one);
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
 <span class="title">导游合计：<span class="num" style="color:red;"><?php echo $num;?></span>
-</span> <a href="javascript:location.reload();" class="reload">刷新</a>
+</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
 <ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="guide.php">全部</a></li> <li class="line">-</li>
- <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过</a></li>
+ <li class="<?php if($check=="success"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('success')">已通过&nbsp;&nbsp;<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过</a></li>
+ <li class="<?php if($check=="failed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('failed')">未通过&nbsp;&nbsp;<i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-dot-circle-o' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核</a></li>
+ <li class="<?php if($check=="reviewed"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('reviewed ')">待审核&nbsp;&nbsp;<i style='color:#509ee1; cursor:pointer;' title='待审核' class='fa fa-circle-o' aria-hidden='true'></i></a></a></li>
 </ul>
 	<div id="search" class="search"> <span class="s">
 <input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入用户账号或者导游姓名" title="请输入用户账号或者导游姓名" />
@@ -153,31 +153,32 @@ $num=$dosql->GetTotalRow($one);
             <td width="3%" height="165" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
               <tr align="left" class="head" style="font-weight:bold;">
                 <td width="1%" height="36" align="center"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-                <td width="7%" align="center">用户账号</td>
+                <td width="6%" align="center">用户账号</td>
                 <td width="6%" align="center">头像</td>
-                <td width="7%" align="center">导游姓名</td>
-                <td width="4%" align="center">性别</td>
-                <td width="5%" align="center">导游证件</td>
-                <td width="10%" align="center">导游证号</td>
-                <td width="7%" align="center">导游电话</td>
+                <td width="6%" align="center">导游姓名</td>
+                <td width="3%" align="center">性别</td>
+                <td width="4%" align="center">导游证件</td>
+                <td width="9%" align="center">导游证号</td>
+                <td width="8%" align="center">导游电话</td>
                 <td width="6%" align="center">导游简介</td>
-                <td width="6%" align="center">导游相册</td>
-                <td width="11%" align="center">最后登陆城市</td>
+                <td width="7%" align="center">导游相册</td>
+                <td width="8%" align="center">最后登陆城市</td>
                 <td width="11%" align="center">注册时间</td>
-                <td width="9%" align="center">已接行程</td>
+                <td width="8%" align="center">已接行程</td>
+                <td width="7%" align="center">已购票</td>
                 <td width="10%" align="center">操作</td>
                 </tr>
               <?php
 		if($check=="today"){
 		$time=date("Y-m-d"); //今天注册
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
-	    }elseif($check=="tomorrowzhuce"){ //昨天注册
+		$dopage->GetPage("select * from $tbname where ymdtime = '$time'",15);
+	    }elseif($check=="tomorrow"){ //昨天注册
 		$time=date("Y-m-d",strtotime("-1 day"));
-		$dopage->GetPage("select * from $tbname where ymdtime = '%$time%'",15);
+		$dopage->GetPage("select * from $tbname where ymdtime = '$time'",15);
 	    }elseif($check=="success"){ //已通过
 		$dopage->GetPage("select * from $tbname where checkinfo = 1",15);
 	    }elseif($check=="failed"){ //未通过
-		$dopage->GetPage("select * from $tbname where checkinfo = 2",15);
+		$dopage->GetPage("SELECT * from pmw_un_guide",15);
 	    }elseif($check=="reviewed"){ //待审核
 		$dopage->GetPage("select * from $tbname where checkinfo = 0",15);
 	    }elseif($check=="user"){ //搜索单个用户
@@ -202,25 +203,27 @@ $num=$dosql->GetTotalRow($one);
 					break;
 
 			}
-			if($row['images']==""){
-			$images="../templates/default/images/noimage.jpg";
-		    }else{
-            $images=$row['images'];
-            }
+      if($row['images']==""){
+      $images="../templates/default/images/noimage.jpg";
+    }elseif(check_str($row['images'],"https")){
+     $images=$row['images'];   //用户头像
+    }else{
+      $images=$cfg_weburl."/".$row['images'];
+      }
 					if($row['checkinfo']==0){
-				 
+
 				 $checkinfo = "<a href='agency_save.php?action=checkinfo&info=guide&id={$id}'><i onclick='return ConfCheck(0);' style='color:#509ee1; cursor:pointer;' title='审核通过' class='fa fa-circle-o' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;";
-				 
+
 				 $checkinfo .="<a href='javascript:void(0);' onclick=\"SendCheck('$id','guide')\"><i style='color:red;cursor:pointer;'  title='审核不通过' class='fa fa-circle-o' aria-hidden='true'></i></a>";
-				
+
 			}elseif($row['checkinfo']==1){
-				
-			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
+
+			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
 			}elseif($row['checkinfo']==2){
-				
-			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";	
-				
+
+			 $checkinfo = "<i style='color:red; cursor:pointer;' title='审核未通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
 			}
 			$id=$row['id'];
 			$five=5;
@@ -241,10 +244,18 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><?php echo $row['getcity']?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=guide&id=<?php echo $row['id'];?>"><?php echo $guide_num;?></a></td>
+                <td align="center" class="num"><a title="点击查看详情"  style="color:#4a34ea;font-weight:bold;" href="allorder.php?id=<?php echo $row['id'];?>&type=guide&check=guides"><?php echo get_ticket_sum($row['id'],'guide');?></a></td>
                 <td align="center">  <span><?php echo $checkinfo; ?></span> &nbsp;
+      <?php if($row['checkinfo']!=2){?>
 			<span><a title="编辑" href="guide_update.php?id=<?php echo $row['id']; ?>">
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
-			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span> </td>
+    <?php }?>
+      <?php  if($adminlevel==1){ ?>
+			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php }else{?>
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+    <?php  }?>
+     </td>
                 <?php //}?>
               </tr>
               <?php

@@ -1,5 +1,4 @@
-<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');IsModelPriv('admin');
-
+<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');
 /*
 **************************
 (C)2010-2015 phpMyWind.com
@@ -145,7 +144,35 @@ else if($action == 'del')
 	}
 }
 
+else if($action=='sets'){
+	//先将系统里面前面是购票管理员的修改掉
+	$dosql->ExecNoneQuery("UPDATE pmw_members SET sets=0 where sets=1");
+	//将更新后的购票管理员更新
+	$dosql->ExecNoneQuery("UPDATE pmw_members SET sets=1 where id=$id");
 
+	$gourl="members.php";
+
+	header("LOCATION:$gourl");
+
+}
+else if($action=='share_update'){
+	// if(!check_str($pic,$cfg_weburl)){
+  //   $pic=$cfg_weburl."/".$pic; //导游证件
+  // }
+	$dosql->ExecNoneQuery("UPDATE pmw_share SET title='$title',imagesurl='$pic' where id=1");
+	$gourl="share.php";
+	header("LOCATION:$gourl");
+}
+else if($action=="xieyi_update"){
+	$dosql->ExecNoneQuery("UPDATE pmw_xieyi SET content='$content' where id=1");
+	$gourl="xieyi.php";
+
+	header("LOCATION:$gourl");
+}else if($action=="default_update"){
+	$dosql->ExecNoneQuery("UPDATE pmw_share SET imagesurl='$pic' where id=3");
+	$gourl="default_jpg.php";
+	header("LOCATION:$gourl");
+}
 //无条件返回
 else
 {

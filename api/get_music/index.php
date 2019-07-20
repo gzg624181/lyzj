@@ -16,15 +16,15 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号
      */
 require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-
-      $dosql->Execute("SELECT * FROM `#@__music`");
-      $num=$dosql->GetTotalRow();
+      $one=1;
+      $dosql->Execute("SELECT * FROM `#@__music` order by orderid asc",$one);
+      $num=$dosql->GetTotalRow($one);
       if($num==0){
         $State = 0;
         $Descriptor = '暂无数据！';
@@ -36,8 +36,13 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-      while($row=$dosql->GetArray()){
+
+        for($i=0;$i<$num;$i++){
+        $row=$dosql->GetArray($one);
         $Data[]=$row;
+        $Data[$i]['url']=$cfg_weburl."/".$row['url'];
+        $Data[$i]['codeurl']=$cfg_weburl."/".$row['codeurl'];
+
       }
       $State = 1;
       $Descriptor = '音频内容获取成功！';

@@ -38,7 +38,7 @@ class Page
     }
 
 	//获取分页变量
-	function GetPage($sql,$pagenum='', $ordermode='desc')
+	function GetPage($sql,$pagenum='', $ordermode='desc', $order_var='id')
 	{
 		global $dosql;
 
@@ -57,7 +57,7 @@ class Page
 
 		$startnum = ($this->page-1) * $this->pagenum;
 
-		$sql .= " ORDER BY id $ordermode LIMIT $startnum, $this->pagenum";
+		$sql .= " ORDER BY $order_var  $ordermode LIMIT $startnum, $this->pagenum";
 
 		return $dosql->Execute($sql);
 	}

@@ -23,7 +23,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
     if($type=="agency"){
-      $dosql->Execute("SELECT id,stitle,title,faxtime,state FROM `#@__message` WHERE type='$type' and mid=$id");
+      $dosql->Execute("SELECT id,stitle,title,faxtime,state FROM `#@__message` WHERE type='$type' and mid=$id order by id desc");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;
@@ -50,7 +50,7 @@ if(isset($token) && $token==$cfg_auth_key){
       echo phpver($result);
       }
     }elseif($type=="guide"){
-      $dosql->Execute("SELECT id,stitle,title,faxtime,state FROM `#@__message` WHERE type='$type' and mid=$id");
+      $dosql->Execute("SELECT id,stitle,title,faxtime,state FROM `#@__message` WHERE type='$type' and mid=$id order by id desc");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

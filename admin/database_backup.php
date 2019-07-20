@@ -1,8 +1,8 @@
-<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');IsModelPriv('database_backup');
+<?php	require_once(dirname(__FILE__).'/inc/config.inc.php');
 
 
 //定义登入常量
-define('IN_BKUP', TRUE);
+ define('IN_BKUP', TRUE);
 
 
 //初始化变量
@@ -23,7 +23,7 @@ $backup_dir = PHPMYWIND_BACKUP.'/';
 <script type="text/javascript" src="templates/js/db.func.js"></script>
 </head>
 <body>
-<div class="topToolbar"> <span class="title">数据库管理</span> 
+<div class="topToolbar"> <span class="title">数据库管理</span>
 	<?php
 	if($dopost == 'struct') echo "<span class='text'>表结构：<a href='?action=$action'>$tbname</a></span>";
 	if($dopost == 'sqldir') echo "<span class='text'>目录：<a href='?action=$action'>/$tbname/</a></span>";
@@ -123,7 +123,7 @@ switch($action)
 			{
 				$dosql->ExecNoneQuery("OPTIMIZE TABLE `$tbname`");
 			}
-			
+
 			ShowDataMsg('<span class="blue">数据表优化完毕!</span>','?action='.$action);
 			exit();
 		}
@@ -144,7 +144,7 @@ switch($action)
 				$total_size += $r['Data_length'];
 				$i++;
 			}
-			
+
 			require_once('database_export.php');
 			exit();
 		}
@@ -242,7 +242,7 @@ switch($action)
 					$oknum++;
 				}
 			}
-	
+
 			ShowDataMsg("<span class='blue'>成功删除 $oknum 备份文件！</span>",'?action='.$action.'&dopost=sqldir&tbname='.$dirname);
 			exit();
 		}
@@ -385,7 +385,7 @@ switch($action)
 				{
 					$q = trim($q);
 					if($q == '') continue;
-					
+
 					$dosql->ExecNoneQuery($q);
 					$i++;
 				}
@@ -412,7 +412,7 @@ switch($action)
 		}
 	break;
 
-	
+
 	default:
 }
 

@@ -73,36 +73,40 @@ a:hover {
 </head>
 <body>
 <div class="homeHeader" style="margin-bottom:10px;">
-	<div class="header"  style="margin-bottom: -40px;"><span class="title"  style="margin-left: 8px;">首页</span><a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a></div>
+	<div class="header"  style="margin-bottom: -40px;"><a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a></div>
 <div class="news">
 		<div class="title"></div >
-		<div style=" margin-top:-6px;margin-left: 36px;">欢迎&nbsp;<font color="red"><b><?php echo $_SESSION['admin'];?></b></font>&nbsp;进入<?php echo $cfg_webname?>!</div>
+		<div style=" margin-top:-6px;">欢迎&nbsp;<font color="red"><b><?php echo $_SESSION['admin'];?></b></font>&nbsp;进入<?php echo $cfg_webname?>!</div>
 	</div>
 </div>
 <table width="100%" style="background-image:url(templates/images/bg1.jpg); height:200px; margin-bottom:25px;border-radius: 3px;" >
   <tr>
-    <td width="27%" height="53" class="fon" style="text-align: center">今日下注</td>
-    <td width="29%" class="fon" style="text-align: center">今日充值</td>
-    <td width="22%" class="fon" style="text-align: center">申请提现</td>
+    <td width="27%" height="53" class="fon" style="text-align: center">今日购票订单</td>
+    <td width="29%" class="fon" style="text-align: center">今日支付总额</td>
+    <td width="22%" class="fon" style="text-align: center">今日旅行社注册会员</td>
     <td width="2%" style="text-align: center">&nbsp;</td>
-    <td width="20%" class="fon" style="text-align: center">今日注册会员</td>
+    <td width="20%" class="fon" style="text-align: center">今日导游注册会员</td>
   </tr>
     <tr>
     <td width="27%" height="32" class="ziti" style="text-align: center;"><a style=" color:white;" href="allorder.php?check=today"><?php
 				$starttime =strtotime(date("Y-m-d"));
-                $endtime = strtotime(date("Y-m-d",time()+24*3600));
-				$dosql->Execute("select id from pmw_xiazhuorder where xiazhu_timestamp >=$starttime and xiazhu_timestamp<$endtime");
+        $endtime = strtotime(date("Y-m-d",time()+24*3600));
+				$dosql->Execute("SELECT id from pmw_order where posttime >=$starttime and posttime<$endtime");
 				$num=$dosql->GetTotalRow();
 				echo $num;
 					?></a></td>
-    <td class="ziti" style="text-align: center"><a style="color:white;"href="chargelist.php?check=todaychongzhi"><?php
-					$time=date("Y-m-d");
-					$dosql->Execute("select id from pmw_charge where charge_ymd='$time'");
-					$num=$dosql->GetTotalRow();
-					echo $num;
+    <td class="ziti" style="text-align: center"><a style="color:white;"href="allorder.php?check=today_zhiufu"><?php
+
+					$r=$dosql->GetOne("SELECT SUM(totalamount) as money from pmw_order where posttime >=$starttime and posttime<$endtime");
+					$money=$r['money'];
+					if($money==null){
+						echo 0;
+					}else{
+					echo $money;
+				  }
 					?></a></td>
-    <td class="ziti" style="text-align: center"><a style="color:white;" href="money.php?check=shenqintixian"><?php
-					$dosql->Execute("select id from pmw_pickmoney where pick_statues=0");
+    <td class="ziti" style="text-align: center"><a style="color:white;" href="agency.php?check=today"><?php
+					$dosql->Execute("SELECT id from pmw_agency where regtime >=$starttime and regtime < $endtime");
 					$num=$dosql->GetTotalRow();
 					if($num==0){
 					echo $num;
@@ -112,36 +116,45 @@ a:hover {
 					?></a></td>
     <td style="text-align: center">&nbsp;</td>
     <td class="ziti" style="text-align: center"><a style="color:white;" href="member.php?check=today"><?php
-					$time=date("Y-m-d");
-					$dosql->Execute("select * from pmw_members where ymdtime like '%$time%'");
-					$num=$dosql->GetTotalRow();
-					echo $num;
+		$dosql->Execute("SELECT id from pmw_guide where regtime >=$starttime and regtime < $endtime");
+		$num=$dosql->GetTotalRow();
+		if($num==0){
+		echo $num;
+			}else{
+		echo "<font color='red'>".$num."</font>";
+			}
 					?></a></td>
   </tr>
   <tr>
     <td width="27%" height="20" class="tor" style="text-align: center">昨日：<a style="color:white;" href="allorder.php?check=tomorrowdingdan"><?php
 				$starttime =strtotime(date("Y-m-d",time()-24*3600));
-                $endtime = strtotime(date("Y-m-d"));
-				$dosql->Execute("select id from pmw_xiazhuorder where xiazhu_timestamp >=$starttime and xiazhu_timestamp<$endtime");
+        $endtime = strtotime(date("Y-m-d"));
+				$dosql->Execute("SELECT id from pmw_order where posttime >=$starttime and posttime<$endtime");
 				$num=$dosql->GetTotalRow();
 				echo $num;
 					?></a></td>
-    <td style="text-align: center"><span class="tor">昨日：<a style="color:white;" href="chargelist.php?check=tomorrowchongzhi"><?php
-					$time=date("Y-m-d",strtotime("-1 day"));
-					$dosql->Execute("select id from pmw_charge where charge_ymd='$time'");
-					$num=$dosql->GetTotalRow();
-					echo $num;
+    <td style="text-align: center"><span class="tor">昨日：<a style="color:white;" href="allorder.php?check=tomorrow_zhifu"><?php
+		$r=$dosql->GetOne("SELECT SUM(totalamount) as money from pmw_order where posttime >=$starttime and posttime<$endtime");
+		$money=$r['money'];
+		if($money==null){
+			echo 0;
+		}else{
+		echo $money;
+		}
 					?></a></span></td>
-    <td style="text-align: center"><span class="tor">今日提现：<a style="color:white;" href="money.php?check=tixian"><?php
-					$time=date("Y-m-d");
-					$dosql->Execute("select id from pmw_pickmoney where pick_statues=0 and pick_ymd=$time");
-					$num=$dosql->GetTotalRow();
-					echo $num;
+    <td style="text-align: center"><span class="tor">昨日注册：<a style="color:white;" href="agency.php?check=tomorrow"><?php
+		$dosql->Execute("SELECT id from pmw_agency where regtime >=$starttime and regtime < $endtime");
+		$num=$dosql->GetTotalRow();
+		if($num==0){
+		echo $num;
+			}else{
+		echo "<font color='red'>".$num."</font>";
+			}
 					?></a></span></td>
     <td style="text-align: center">&nbsp;</td>
-    <td style="text-align: center"><span class="tor">昨日：<a style="color:white;" href="member.php?check=tomorrowzhuce"><?php
+    <td style="text-align: center"><span class="tor">昨日注册：<a style="color:white;" href="guide.php?check=tomorrow"><?php
 					$time=date("Y-m-d",strtotime("-1 day"));
-					$dosql->Execute("select * from pmw_members where ymdtime like '%$time%'");
+					$dosql->Execute("SELECT * from pmw_guide where ymdtime like '%$time%'");
 					$num=$dosql->GetTotalRow();
 					echo $num;
 					?></a></span></td>
@@ -201,7 +214,7 @@ a:hover {
 		</div>
 	</div>
 
-    <div class="rightArea">
+    <div  style="float:right">
 
 		<div class="count">
 			<h2 class="title">日志<span><a href="sysevent.php">更多&gt;&gt;</a></span></h2>
@@ -265,30 +278,21 @@ a:hover {
 date_default_timezone_set('PRC');
 $dates2="";
 
-$dosql->Execute("SELECT *,sum(xiazhu_kjstate) as xiazhu,sum(xiazhu_sum) as sum,sum(xiazhu_jiangjin) as jiangjin  from `pmw_xiazhuorder` group by xiazhu_ymd asc limit 15");
+$dosql->Execute("SELECT *,sum(totalamount) as money,sum(nums) as nums from `pmw_order` group by ymd asc limit 15");
 while($row=$dosql->GetArray()){
-      $pv[] = floatval($row['xiazhu']);//提现总金额  //注意这里必须要用intval强制转换，不然图表不能显示
-	  $tz[] = floatval($row['sum']);
-	  $jj[] = floatval($row['jiangjin']);
-	  $yk[] = floatval($row['sum'])-floatval($row['jiangjin']);
-	  $dates2.="'".$row['xiazhu_ymd']."',";
+      $pv[] = floatval($row['money']);//购买金额  //注意这里必须要用intval强制转换，不然图表不能显示
+	  $tz[] = floatval($row['nums']);
+	  $dates2.="'".$row['ymd']."',";
 }
 $data = array(
 array(
-"name"=>"订单数量(单)",
+"name"=>"购票金额(元)",
 "data"=>$pv)
 ,
 array(
-"name"=>"下注金额(元)",
-"data"=>$tz)
-,
-array(
-"name"=>"奖金金额(元)",
-"data"=>$jj)
-,
-array(
-"name"=>"后台盈亏(元)",
-"data"=>$yk)
+"name"=>"购票数量(张)",
+"data"=>$tz
+)
 );
 $data = json_encode($data);    //把获取的数据对象转换成json格式
 
@@ -300,7 +304,7 @@ $data = json_encode($data);    //把获取的数据对象转换成json格式
 $(function () {
         $('#container').highcharts({
             title: {
-                text: '<?php echo $cfg_webname;?>'+ "15天下单数量,下注金额，中奖金额，盈亏统计表",
+                text: '<?php echo $cfg_webname;?>'+ "15天购票金额,购票数量统计表",
                 x: -20 //center
             },
             subtitle: {

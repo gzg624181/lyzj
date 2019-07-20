@@ -99,7 +99,10 @@ $agency=get_agency($id);
       if($Settlement=="YES"){
       $checkinfo .="<a href='travel_list.php?id={$id}&m={$m}&check=month'><i  style='color:#509ee1; cursor:pointer;' title='{$m}月账单已结清' class='fa fa-check' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       }elseif($Settlement=="NO"){
+      $now_month= date("m");
+      if($now_month > $month){
       $checkinfo .=  "<a onclick='return jiesuan({$month})'><i  style='color:red; cursor:pointer;' title='{$m}月账单还未结清' class='fa fa-exclamation' aria-hidden='true'></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      }
       }else{
       $checkinfo .=  "<i  style='color:#ccc; cursor:pointer;' title='{$m}月暂无需要结算的行程' class='fa fa fa-minus-circle' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;";
       }

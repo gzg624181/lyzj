@@ -35,6 +35,22 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
+        $agreement=stripslashes($r['agreement']);
+        $agreement=GetPic($agreement, $cfg_weburl);
+        $r['agreement']=$agreement;
+        $r['card']=$cfg_weburl."/".$r['card'];
+      if($r['images']==""){
+        $images=$cfg_weburl."/templates/default/images/noimage.jpg";
+      }elseif(check_str($r['images'],"https")){
+       $images=$r['images'];   //用户头像
+      }else{
+        $images=$cfg_weburl."/".$r['images'];
+      }
+      $r['images']=$images;
+
+      $pics=stripslashes($r['pics']);
+      $pics=GetPics($pics, $cfg_weburl);
+      $r['pics']=$pics;
       $State = 1;
       $Descriptor = '内容获取成功！';
       $result = array (

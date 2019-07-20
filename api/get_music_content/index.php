@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_message  获取发送的消息
+	   * 链接地址：get_music_content
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -36,7 +36,11 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
       $Data[]=$r;
-      $Data[0]['share']=$cfg_weburl."/uploads/image/20190601/weixin.png";
+      $k=$dosql->GetOne("SELECT share FROM pmw_share where id=2");
+      $Data[0]['url']=$cfg_weburl."/".$r['url'];
+      $Data[0]['codeurl']=$cfg_weburl.$r['codeurl'];
+      $Data[0]['share']=$cfg_weburl."/".$k['share'];
+      $Data[0]['shareurl']=$cfg_weburl."/".$r['share'];
       $State = 1;
       $Descriptor = '内容获取成功！';
       $result = array (

@@ -19,9 +19,11 @@
      * @旅行社发布旅游行程   提供返回参数账号，
      * id        此条行程的id
      * formid    旅行社的formid
+     * openid    旅行社的openid
      * reason     旅行社取消的原因
      * aid        旅行社id
      * gid       导游id
+     * reason    取消原因
      */
 require_once("../../include/config.inc.php");
 require_once("../../admin/sendmessage.php");
@@ -34,7 +36,7 @@ if(isset($token) && $token==$cfg_auth_key){
   // 2.待确认状态下的时候，发送双向模板消息
   $r=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
   if($r['state']==0){
-    $sql = "UPDATE `#@__travel` set state=3 WHERE id=$id";
+    $sql = "UPDATE `#@__travel` set state=5 WHERE id=$id";
     if($dosql->ExecNoneQuery($sql)){
     $s=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
     $State = 1;
@@ -69,22 +71,31 @@ if(isset($token) && $token==$cfg_auth_key){
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
 
-    $openid_agency=$a['openid'];    //旅行社联系人openid
+    //将用户的formid添加进去
+    add_formid($openid,$formid);
 
-    $openid_guide=$g['openid'];    //导游openid
+    $openid_agency=$openid;            //旅行社联系人openid
+    $formid= get_new_formid($openid);  //旅行社formid
 
-    $form_id =$g['formid'];
+
+    $openid_guide=$g['openid'];               //导游openid
+    $form_id =get_new_formid($openid_guide);  //导游formid
 
 
     $title=$x['title'];           //旅行社发布的行程标题
 
     $time=date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']); //旅行社发布的行程时间
 
-    $reason="世界这么大，我想自己单独出去走走";
+    //$reason="世界这么大，我想自己单独出去走走";
+    $arr = array();
+
+    $arr =explode(".",$reason);
+
+    $reason =$arr[1];
 
     $tishi="您发布的此条行程已取消，可进入小程序再次发布行程，欢迎您再次使用。";
 
-    $page="pages/about/enter/enter";
+    $page="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
 
     $data_agency=CancelAgency($title,$time,$reason,$tishi,$openid_agency,$cfg_concel_agency,$page,$formid);
 
@@ -97,6 +108,8 @@ if(isset($token) && $token==$cfg_auth_key){
     $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
     $res_agency = json_decode($res_agency, true);
   //  $errcode_agency=$res_agency['errcode'];
+  //删除已经用过的formid
+     del_formid($formid,$openid_agency);
 //==================================================================================================
     //将旅行社注撤销行程的模板消息保存起来
     $type = 'agency';
@@ -116,10 +129,10 @@ if(isset($token) && $token==$cfg_auth_key){
 //===========================================================================================
 
     //向导游发送取消行程的模板消息
-    $nickname =$a['company'];   //旅行社的名称
+    $nickname =$a['company'];    //旅行社的名称
     $tel = $a['tel'];            //旅行社联系人电话号码
     $tishi="您预约的此条行程已取消，可进入小程序再次预约行程，欢迎您再次使用。";
-    $page="pages/about/enter/enter";
+    $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem";
 
     $data_guide=CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid_guide,$cfg_cancel_guide,$page,$form_id);
 
@@ -129,9 +142,10 @@ if(isset($token) && $token==$cfg_auth_key){
     $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
 
     $json_data_guide = json_encode($data_guide);//转化成json数组让微信可以接收
-    $res_guide = https_request($url, urldecode($json_data_agency));//请求开始
+    $res_guide = https_request($url, urldecode($json_data_guide));//请求开始
     $res_guide = json_decode($res_guide, true);
   //  $errcode_guide=$res_guide['errcode'];
+     del_formid($form_id,$openid_guide);
     //==================================================================================================
         //将导游接收到的撤销行程的模板消息保存起来
         $type = 'guide';

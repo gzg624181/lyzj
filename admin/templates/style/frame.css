@@ -10,7 +10,7 @@ person: Feng
 
 
 /*全局设置*/
-body{line-height:22px;font-size:12px;color:#333;overflow:hidden;}
+body{line-height:0px;font-size:12px;color:#333;overflow:hidden;}
 html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,p{margin:0;padding:0;}
 input{font-size:12px;font-family:Arial;vertical-align:middle;}
 input[type="password"]:focus{box-shadow:0 0 1px #09f;outline:none;}
@@ -44,9 +44,9 @@ a{color:#333;text-decoration:none;}a:hover{text-decoration:underline;}a:focus{ou
 
 .header .user{position:absolute;left:85px;top:24px;}
 .header .user .name{float:left;font-family:Verdana;font-size:20px;color:#fff;}
-.header .user .userPanel{float:left;display:block;margin:3px 0 0 10px;font-family:"微软雅黑";}
+.header .user .userPanel{float:right;display:block;margin:3px 0 0 10px;font-family:"微软雅黑";}
 .header .user .userPanel a.on{background:url(../images/headerBtnOn.png) no-repeat 0 bottom;}
-.header .user .userPanel .arrow{display:block;width:16px;height:16px;background:url(../images/headerBtn.png) no-repeat 0 bottom;}
+.header .user .userPanel .arrow{display:block;width:32px;height:16px;background:url(../images/headerBtn.png) no-repeat 0 bottom;}
 .header .user .userPanel .arrow:hover{background:url(../images/headerBtnOn.png) no-repeat 0 bottom;}
 .header .user .userPanel .panel{width:244px;min-height:212px;line-height:20px;position:absolute;top:37px;left:-24px;background:#fff;box-shadow:1px 1px 10px rgba(0,0,0,0.1);border:1px solid #f5f5f5;display:none; border-radius: 3px;}
 .header .user .userPanel .panel .warp{padding:11px 11px 0;}

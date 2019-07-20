@@ -46,28 +46,28 @@ if(isset($token) && $token==$cfg_auth_key){
       $five=5;
       #待出发
       $now=time();
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and (state=2 or state=1) and starttime <= $now",$we);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and (state=2 or state=1) and starttime  >= $now order by id desc",$we);
       for($i=0;$i<$dosql->GetTotalRow($we);$i++){
         $row = $dosql->GetArray($we);
         $Data['daichufa'][$i]=$row;
         $Data['daichufa'][$i]['posttime']=date("Y-m-d",$row['posttime']);
       }
       #待确认
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=1",$me);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=1 order by id desc",$me);
       for($j=0;$j<$dosql->GetTotalRow($me);$j++){
         $show = $dosql->GetArray($me);
         $Data['daiqueren'][$j]=$show;
         $Data['daiqueren'][$j]['posttime']=date("Y-m-d",$show['posttime']);
       }
       #已取消
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=3",$one);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=3 order by id desc",$one);
       for($i=0;$i<$dosql->GetTotalRow($one);$i++){
         $row1 = $dosql->GetArray($one);
         $Data['yiquxiao'][$i]=$row1;
         $Data['yiquxiao'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
       }
       #已完成
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=2",$five);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=2 order by id desc",$five);
       for($j=0;$j<$dosql->GetTotalRow($five);$j++){
         $show1 = $dosql->GetArray($five);
         $Data['yiwancheng'][$j]=$show1;
@@ -75,7 +75,7 @@ if(isset($token) && $token==$cfg_auth_key){
       }
 
       #全部行程
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id",$two);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id order by id desc",$two);
       for($j=0;$j<$dosql->GetTotalRow($two);$j++){
         $show2 = $dosql->GetArray($two);
         $Data['all'][$j]=$show2;

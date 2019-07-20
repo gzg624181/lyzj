@@ -23,7 +23,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
    if(isset($page)){
-    $pagenumber=2;
+    $pagenumber=4;
     $first=$page * $pagenumber;
     $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 order by id desc limit $first,$pagenumber");
    }else{

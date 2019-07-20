@@ -16,7 +16,8 @@
      *
      * @return string
      *
-     * @提供返回参数账号   行程标题 title   行程起始时间 starttime_ymd   行程时间 days
+     * @提供返回参数账号  keyword=>   行程标题 title   行程起始时间 starttime_ymd   行程时间 days
+     *                   用户的openid
      */
 require_once("../../include/config.inc.php");
 $Data = array();
@@ -35,7 +36,24 @@ if(isset($token) && $token==$cfg_auth_key){
 
     if(isset($title)){
 
-    $dosql->Execute("SELECT * FROM pmw_travel where title like '%$title%' and  state=0 order by id desc ");
+      preg_match_all("/./u", $title, $arr);
+
+      $arr=$arr[0];
+      $sql1="";
+      for($i=0;$i<count($arr);$i++){
+      if($i==count($arr)-1){
+        $sql1 .= " title like "."'%".$arr[$i]."%'";
+      }else{
+        $sql1 .= " title like "."'%".$arr[$i]."%'". " or ";
+       }
+      }
+
+      $sql = "SELECT * FROM pmw_travel where state=0  and ";
+
+      $sql .= "(".$sql1.")"." order by id desc";
+
+
+      $dosql->Execute($sql);
 
     }elseif(isset($starttime_ymd)){
 
@@ -45,25 +63,52 @@ if(isset($token) && $token==$cfg_auth_key){
 
     $dosql->Execute("SELECT * FROM pmw_travel where days=$days and state=0 order by id desc ");
 
-     }
+    }
 
     $num=$dosql->GetTotalRow();//获取数据条数
 
    }else{
 
+   //当没有关键字搜索的时候
    $num=0;
 
    }
 
-
-
+    //searchlist  搜索历史
+    //list        搜索内容
+    //recommand   推荐
 
     if($num>0){
 
-    while($row=$dosql->GetArray()){
-      $Data[]=$row;
+    //如果搜索的有数据的时候，则将搜索记录保存到数据库中去
+    if(isset($openid)){
+
+     while($row=$dosql->GetArray()){
+        $Data['list'][]=$row;
+      }
+
+    $two=2;
+    $posttime=time();
+    $r=$dosql->GetOne("SELECT keyword FROM pmw_searchlist where keyword='$keyword' and openid='$openid' and type=0");
+    if(!is_array($r)){
+    $sql="INSERT INTO  `#@__searchlist` (keyword,openid,posttime) values ('$keyword','$openid',$posttime)";
+     $dosql->ExecNoneQuery($sql);
     }
-    
+
+     $dosql->Execute("SELECT * FROM `#@__searchlist` where openid='$openid' and type=0 order by id desc limit  5",$two);
+     while($show=$dosql->GetArray($two)){
+      $Data['searchlist'][]=$show;
+     }
+
+   }
+
+
+      //默认推荐四条数据
+      $four=4;
+      $dosql->Execute("SELECT * from pmw_travel where state=0 order by rand() limit 4",$four);
+      while($sow=$dosql->GetArray($four)){
+        $Data['recommand'][]=$sow;
+      }
       $State = 1;
       $Descriptor = '搜索数据查询成功！';
       $result = array (
@@ -74,11 +119,21 @@ if(isset($token) && $token==$cfg_auth_key){
                    );
       echo phpver($result);
     }else{
-
-      $dosql->Execute("SELECT * FROM pmw_travel where state=0 order by rand() limit 4");
-      while($row=$dosql->GetArray()){
-        $Data[]=$row;
+      $six=6;
+      $dosql->Execute("SELECT * FROM pmw_travel where state=0 order by rand() limit 4",$six);
+      while($row=$dosql->GetArray($six)){
+      $Data['recommand'][]=$row;
       }
+      if(isset($openid)){
+       $five=5;
+       $dosql->Execute("SELECT * FROM `#@__searchlist` where openid='$openid' and type=0 order by id desc limit 5",$five);
+
+       while($go=$dosql->GetArray($five)){
+       $Data['searchlist'][]=$go;
+                      }
+       }
+
+
       $State = 0;
       $Descriptor = '搜索数据为空，推荐数据获取成功！';
       $result = array (

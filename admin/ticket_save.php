@@ -9,8 +9,8 @@ person: Feng
 */
 
 
-//初始化参数
-$tbname = '#@__ticket';
+//初始化参数pmw_ticketclass
+$tbname = '#@__ticketclass';
 $gourl  = 'ticket.php';
 
 
@@ -48,7 +48,9 @@ else if($action == 'update')
 
     for($i=0;$i< $picarrNum;$i++)
     {
-      $picarrTmp[] = $cfg_weburl."/".$picarr[$i];
+
+      $picarrTmp[] =$picarr[$i].$picarr_txt[$i];
+
     }
 
     $picarr = json_encode($picarrTmp);
@@ -57,13 +59,13 @@ else if($action == 'update')
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
 
-  if(!check_str($card,$cfg_weburl)){
-    $card=$cfg_weburl."/".$card; //导游证件
-  }
-
-  if(!check_str($images,$cfg_weburl)){
-    $images=$cfg_weburl."/".$images; //导游头像
-  }
+  // if(!check_str($card,$cfg_weburl)){
+  //   $card=$cfg_weburl."/".$card; //导游证件
+  // }
+  //
+  // if(!check_str($images,$cfg_weburl)){
+  //   $images=$cfg_weburl."/".$images; //导游头像
+  // }
 
   if($password==""){ //密码不修改
     $sql = "UPDATE `$tbname` SET name='$name', agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime' WHERE id=$id";
@@ -111,7 +113,243 @@ header("location:$gourl");
 exit();
 
 }
+else if($action=="del6"){
+//删除景区
+$dosql->ExecNoneQuery("DELETE FROM pmw_ticket WHERE id=$id");
+$gourl="scenic.php";
+header("location:$gourl");
+exit();
 
+}
+else if($action=="add_ticket"){
+
+  $posttime=strtotime($posttime);
+  //文章组图
+  if(is_array($picarr))
+  {
+    $picarrNum = count($picarr);
+    $picarrTmp = '';
+
+    for($i=0;$i<$picarrNum;$i++)
+    {
+      $picarrTmp[] = $picarr[$i].$picarr_txt[$i];
+    }
+
+    $picarr = json_encode($picarrTmp);
+  }
+
+  //文章属性
+	if(is_array($flag))
+	{
+		$flag = implode(',',$flag);
+	}
+
+
+  // $content=stripslashes($content);
+  // $content=rePic($content, $cfg_weburl);
+
+  // $xuzhi=stripslashes($xuzhi);
+  // $xuzhi=rePic($xuzhi, $cfg_weburl);
+
+  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney,orderid) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney',$orderid)";
+
+  if($dosql->ExecNoneQuery($sql))
+  {
+    $gourl= "scenic.php";
+    header("location:$gourl");
+    exit();
+  }
+
+}
+//获取景区图片
+else if($action == 'getpic')
+{
+
+  $tbname="pmw_ticket";
+  $r=$dosql->GetOne("SELECT picarr,names FROM $tbname WHERE id=$id");
+  $picarr = $r['picarr'];
+  $name = $r['names'];
+  $content =  "<span class='num' style='font-size:14px;font-weight:bold;margin-bottom:10px;'>".$name."--景区相册"."</span>";
+
+    $arr =json_decode($picarr);
+  //  $arr .=print_r($arr);
+    for($i=0;$i<count($arr);$i++){
+    $img = $cfg_weburl."/".$arr[$i];
+    $content .= "<img src='".$img."' width=90% style='margin-top:17px;margin-bottom:8px;border-radius:3px;'><br>";
+    }
+
+  echo  $content;
+  }
+
+  //修改上线下线的操作
+else if($action =="changestate"){
+
+//上线操作
+if($checkinfo==0){
+$dosql->ExecNoneQuery("UPDATE pmw_ticket set checkinfo=1 WHERE id=$id");
+//下线操作
+}else if($checkinfo==1){
+$dosql->ExecNoneQuery("UPDATE pmw_ticket set checkinfo=0 WHERE id=$id");
+$gourl="scenic.php";
+header("location:$gourl");
+}
+}
+//添加票务规格
+else if($action=="specs_add"){
+
+  $randnumber=rand(11111111,9999999);
+  $sql="INSERT INTO pmw_specs (names,tid,tickettype,normalmoney,randnumber) VALUES ('$names',$tid,'$tickettype','$lowmoney',$randnumber)";
+  $dosql->ExecNoneQuery($sql);
+
+  //更新这一条数据
+  $k=$dosql->GetOne("SELECT id FROM pmw_specs where randnumber=$randnumber");
+  $sid=$k['id'];
+
+  $r=$dosql->GetOne("SELECT price FROM pmw_selectdate where timestamps=$selectdate and tid=$id");
+  if(is_array($r)){
+    //更新当前的价格
+    $dosql->ExecNoneQuery("UPDATE pmw_selectdate SET price='$prices' where timestamps=$selectdate and tid=$id");
+  }else{
+    $datetimes = date("Y-m-d",$selectdate);
+    $dosql->ExecNoneQuery("INSERT INTO pmw_selectdate (tid,sid,timestamps,datetimes,price) VALUES ($id,$sid,$selectdate,'$datetimes','$prices')");
+  }
+
+    $gourl= "specs_add.php?id=".$tid."&lowmoney=".$lowmoney;
+    header("location:$gourl");
+    exit();
+
+}
+//添加景区的规格类别
+else if($action=="add_guige"){
+
+  $randnumber=rand(11111111,9999999);
+
+  $sql="INSERT INTO pmw_specs (names,tid,tickettype,normalmoney,randnumber) VALUES ('$names',$tid,'$tickettype','$lowmoney',$randnumber)";
+  $dosql->ExecNoneQuery($sql);
+
+  //更新这一条数据
+  $k=$dosql->GetOne("SELECT id FROM pmw_specs where randnumber=$randnumber");
+  $sid=$k['id'];
+
+  add_default_price($tid,$sid,$lowmoney);
+
+  $gourl= "specs_add.php?id=".$tid."&lowmoney=".$lowmoney;
+  header("location:$gourl");
+  exit();
+}
+else if($action=="del100"){
+
+  $dosql->ExecNoneQuery("DELETE FROM pmw_specs WHERE id=$id");
+  $gourl= "specs_add.php?id=".$tid."&lowmoney=".$lowmoney;
+  header("location:$gourl");
+  exit();
+
+}else if($action=="specs_update"){
+
+  $dosql->ExecNoneQuery("UPDATE pmw_specs SET tickettype='$tickettype',normalmoney='$normalmoney',resetmoney='$resetmoney' WHERE id=$id");
+  $gourl= "specs_add.php?id=".$tid;
+  header("location:$gourl");
+  exit();
+
+}else if($action=="update_ticket"){
+
+  if(is_array($picarr))
+  {
+    $picarrNum = count($picarr);
+    $picarrTmp = '';
+
+    for($i=0;$i<$picarrNum;$i++)
+    {
+
+    $picarrTmp[] = $picarr[$i].$picarr_txt[$i];
+
+
+    }
+
+    $picarr = json_encode($picarrTmp);
+  }
+
+  if(is_array($flag))
+	{
+		$flag = implode(',',$flag);
+	}
+
+  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,orderid=$orderid,content='$content' WHERE id=$id");
+  $gourl= "scenic.php";
+  header("location:$gourl");
+  exit();
+
+}
+ else if($action=="update_ticket_class"){
+
+   $dosql->ExecNoneQuery("UPDATE pmw_ticketclass SET title='$title',icon='$icon' WHERE id=$id");
+   $gourl= "ticket_class.php";
+   header("location:$gourl");
+   exit();
+
+ }
+ else if($action=="searchdate"){
+
+   $k=$dosql->GetOne("SELECT lowmoney FROM pmw_ticket where id=$id");
+   $lowmoney=$k['lowmoney']; //最低价格
+
+   $r=$dosql->GetOne("SELECT price FROM pmw_selectdate where timestamps=$selectdate and tid=$id");
+
+   if(is_array($r)){
+   $price=$r['price'];
+   }else{
+   $price= $lowmoney;
+   }
+
+   echo $price;
+ }
+ //修改票务规格的价格
+ else if($action=="specs_update_price"){
+
+   $dosql->ExecNoneQuery("UPDATE pmw_selectdate SET price='$price' WHERE id=$id");
+
+   $r=$dosql->GetOne("SELECT * FROM pmw_selectdate where id=$id");
+
+   $tid=$r['tid'];
+   $sid=$r['sid'];
+   $gourl= "specs_update_date.php?tid=".$tid."&sid=".$sid."&names=".$names."&tickettype=".$tickettype;
+   header("location:$gourl");
+   exit();
+ }else if($action=="ups"){
+   //往上排序
+   //如果是最上面的一行 ，则不往上翻
+   $r=$dosql->GetOne("SELECT MAX(orderid) as orderid from pmw_ticket");
+   $orderid_max= $r['orderid'];   //第一个orderid
+   if($orderid_max != $orderid){
+     //将上一个和点击的这一个进行替换操作
+     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid > $orderid order by orderid desc limit 1");
+     //上一个orderid的值
+     $orderid_up = $k['orderid'];  $id_up = $k['id'];
+     //将两个id进行替换
+     $dosql->ExecNoneQuery("UPDATE pmw_ticket set orderid=$orderid where id=$id_up");
+     $dosql->ExecNoneQuery("UPDATE pmw_ticket set orderid=$orderid_up where id=$id");
+     }
+     $gourl = "scenic.php";
+     header("location:$gourl");
+     exit();
+ }else if($action=="downs"){
+   //往下排序
+   //如果是最下面的一行 ，则不往下翻
+   $r=$dosql->GetOne("SELECT MIN(orderid) as orderid from pmw_ticket");
+   $orderid_max= $r['orderid'];   //第一个orderid
+   if($orderid_max != $orderid){
+     //将上一个和点击的这一个进行替换操作
+     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid < $orderid order by orderid desc limit 1");
+     //上一个orderid的值
+     $orderid_up = $k['orderid'];  $id_up = $k['id'];
+     //将两个id进行替换
+     $dosql->ExecNoneQuery("UPDATE pmw_ticket set orderid=$orderid where id=$id_up");
+     $dosql->ExecNoneQuery("UPDATE pmw_ticket set orderid=$orderid_up where id=$id");
+     }
+     $gourl = "scenic.php";
+     header("location:$gourl");
+     exit();
+ }
 //无条件返回
 else
 {

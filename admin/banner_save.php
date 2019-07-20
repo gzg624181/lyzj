@@ -23,21 +23,23 @@ require_once(ADMIN_INC.'/action.class.php');
 if($action == 'add')
 {
 
-  $pictime=strtotime($pictime);
-	$pic=$cfg_weburl."/".$pic;
+
 
 	if($type=="reg"){
 		//注册的banner、图片
-		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime) VALUES ('$title','$pic', '$type','$pictime')";
+		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
 
 	}elseif($type=="text"){
-
-		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime) VALUES ('$title','$pic', '$type','$content','$pictime')";
+    $content=stripslashes($content);
+    $content1=rePic($content, $cfg_weburl);
+		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime,typename) VALUES ('$title','$pic', '$type','$content1','$pictime','$typename')";
 
 	}elseif($type=="ticket"){
 
-	$sql = "INSERT INTO `$tbname` (title, pic,type, linkurl, pictime) VALUES ('$title','$pic', '$type','$linkurl','$pictime')";
+	$sql = "INSERT INTO `$tbname` (title, pic,type, linkurl, pictime,typename) VALUES ('$title','$pic', '$type','$linkurl','$pictime','$typename')";
 
+}elseif($type=="no"){
+    	$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
   }
 	if($dosql->ExecNoneQuery($sql))
 	{
@@ -55,12 +57,15 @@ echo $type;
 else if($action == 'update')
 {
 	$pictime=strtotime($pictime);
+  if($type=="reg" || $type=="no"){
+	$sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename' WHERE id=$id";
+}elseif($type=="ticket"){
+  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',linkurl='$linkurl' WHERE id=$id";
+}elseif($type=="text"){
 
-	if(!check_str($pic,$cfg_weburl)){
-    $pic=$cfg_weburl."/".$pic; //banner图片
-  }
+  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',content='$content' WHERE id=$id";
+}
 
-	$sql = "UPDATE `$tbname` SET title='$title',content='$content',pictime=$pictime, pic='$pic',linkurl='$linkurl' WHERE id=$id";
 	if($dosql->ExecNoneQuery($sql))
 	{
 		header("location:$gourl");
@@ -74,18 +79,7 @@ else if($action == 'update')
   header("location:$gourl");
   exit();
 }
-//修改
-else if($action == 'update')
-{
-	$pictime=strtotime($pictime);
-	$pic=$cfg_weburl."/".$pic;
-	$sql = "UPDATE `$tbname` SET title='$title',pic='$pic',content='$content',pictime=$pictime WHERE id=$id";
-	if($dosql->ExecNoneQuery($sql))
-	{
-		header("location:$gourl");
-		exit();
-	}
-}
+
 
 //无条件返回
 else
