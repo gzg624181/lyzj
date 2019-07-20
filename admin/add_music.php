@@ -34,7 +34,6 @@ $tbname='pmw_music';
 				<input type="text" class="input" id="sharename" name="sharename" required="required">
 				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
 				</td>
-<<<<<<< HEAD
   </tr>
 	<tr>
 <td height="40" align="right">图片分享上传：</td>
@@ -42,18 +41,12 @@ $tbname='pmw_music';
 <input style="margin-top:5px;" type="text" name="share" id="share" class="input"  required="required"/>
 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','图片上传','image','image',1,20971520,'share')">上 传</span>
 </td>
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 </tr>
                 <tr>
 			<td height="40" align="right">音频文件上传：</td>
 			<td>
               <input style="margin-top:5px;" type="text" name="url" id="url" class="input"  required="required"/>
-<<<<<<< HEAD
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','音频文件上传','media','media',1,20971520,'url')">上 传</span>
-=======
-				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'url')">上 传</span>
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
              </td>
 		</tr>
 		<tr>

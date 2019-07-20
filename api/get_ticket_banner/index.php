@@ -23,11 +23,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-<<<<<<< HEAD
       $dosql->Execute("SELECT * from pmw_banner where typename='piao'");
-=======
-      $dosql->Execute("SELECT * from pmw_banner  where type='ticket'");
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

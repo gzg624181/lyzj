@@ -66,10 +66,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
         <td width="25%" height="40" align="right">景区级别：</td>
         <td>
          <select class="input" name="level" id="level" style="width:508px;">
-<<<<<<< HEAD
 					 <option <?php if($r['level']=="NULL"){ echo "selected='selected'";}?> value="NULL">无</option>
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
            <option <?php if($r['level']==1){ echo "selected='selected'";}?> value="1">1星</option>
            <option <?php if($r['level']==2){ echo "selected='selected'";}?> value="2">2星</option>
            <option <?php if($r['level']==3){ echo "selected='selected'";}?> value="3">3星</option>
@@ -82,11 +79,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
       <tr>
       <td width="25%" height="40" align="right">景区标签：</td>
       <td width="75%">
-<<<<<<< HEAD
       <input type="text" class="input" id="label" name="label"  value="<?php echo $r['label'];?>">
-=======
-      <input type="text" class="input" id="label" name="label" required="required" value="<?php echo $r['label'];?>">
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
       </td>
       </tr>
@@ -172,7 +165,6 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
         <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
         </td>
         </tr>
-<<<<<<< HEAD
         
         <tr>
         <td width="25%" height="40" align="right">排序设置：</td>
@@ -181,8 +173,6 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
         <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
         </td>
         </tr>
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
 		<tr>
 			<td height="40" align="right">添加时间：</td>

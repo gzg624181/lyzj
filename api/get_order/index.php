@@ -45,11 +45,8 @@ if(isset($token) && $token==$cfg_auth_key){
 
       $now=time();
       #全部
-<<<<<<< HEAD
       $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
       $cfg_default = $r['imagesurl'];
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
       $dosql->Execute("SELECT a.*,b.picarr FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id  WHERE a.did=$id and a.type='$type'",$we);
       for($i=0;$i<$dosql->GetTotalRow($we);$i++){
@@ -57,7 +54,6 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['All'][$i]=$row;
         $Data['All'][$i]['posttime']=date("Y-m-d",$row['posttime']);
         $picarr=stripslashes($row['picarr']);
-<<<<<<< HEAD
 
         if($picarr==""){
         $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
@@ -66,9 +62,6 @@ if(isset($token) && $token==$cfg_auth_key){
         $picarr=GetPic($picarr, $cfg_weburl);
         }
 
-=======
-        $picarr=GetPic($picarr, $cfg_weburl);
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
         $Data['All'][$i]['picarr']=$picarr;
       }
       #待出行
@@ -78,16 +71,12 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['Tobe_travelled'][$j]=$show;
         $Data['Tobe_travelled'][$j]['posttime']=date("Y-m-d",$show['posttime']);
         $picarr=stripslashes($show['picarr']);
-<<<<<<< HEAD
         if($picarr==""){
         $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
         $picarr = json_encode($picarrTmp);
         }else{
         $picarr=GetPic($picarr, $cfg_weburl);
         }
-=======
-        $picarr=GetPic($picarr, $cfg_weburl);
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
         $Data['Tobe_travelled'][$j]['picarr']=$picarr;
       }
       #已出行
@@ -98,16 +87,12 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['Traveled'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
 
         $picarr=stripslashes($row1['picarr']);
-<<<<<<< HEAD
         if($picarr==""){
         $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
         $picarr = json_encode($picarrTmp);
         }else{
         $picarr=GetPic($picarr, $cfg_weburl);
         }
-=======
-        $picarr=GetPic($picarr, $cfg_weburl);
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
         $Data['Traveled'][$i]['picarr']=$picarr;
       }
 

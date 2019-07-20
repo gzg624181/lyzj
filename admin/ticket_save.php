@@ -151,11 +151,7 @@ else if($action=="add_ticket"){
   // $xuzhi=stripslashes($xuzhi);
   // $xuzhi=rePic($xuzhi, $cfg_weburl);
 
-<<<<<<< HEAD
   $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney,orderid) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney',$orderid)";
-=======
-  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney')";
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
   if($dosql->ExecNoneQuery($sql))
   {
@@ -278,11 +274,7 @@ else if($action=="del100"){
 		$flag = implode(',',$flag);
 	}
 
-<<<<<<< HEAD
   $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,orderid=$orderid,content='$content' WHERE id=$id");
-=======
-  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,content='$content' WHERE id=$id");
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   $gourl= "scenic.php";
   header("location:$gourl");
   exit();
@@ -323,7 +315,6 @@ else if($action=="del100"){
    $gourl= "specs_update_date.php?tid=".$tid."&sid=".$sid."&names=".$names."&tickettype=".$tickettype;
    header("location:$gourl");
    exit();
-<<<<<<< HEAD
  }else if($action=="ups"){
    //往上排序
    //如果是最上面的一行 ，则不往上翻
@@ -358,8 +349,6 @@ else if($action=="del100"){
      $gourl = "scenic.php";
      header("location:$gourl");
      exit();
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
  }
 //无条件返回
 else

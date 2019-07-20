@@ -52,7 +52,6 @@ if(isset($token) && $token==$cfg_auth_key){
   add_formid($openid,$formid);
 
   $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd')";
-<<<<<<< HEAD
   if($dosql->ExecNoneQuery($sql)){
   //下单成功之后发送双向消息
   #给购票的下单用户发送模板消息
@@ -61,16 +60,6 @@ if(isset($token) && $token==$cfg_auth_key){
 
   //判断formid是否为空
 
-=======
-  $dosql->ExecNoneQuery($sql);
-
-  //下单成功之后发送双向消息
-  #给购票的用户发送模板消息
-
-  // $information= get_information($did,$type);
-  // $openid=$information['openid'];
-  $form_id=get_new_formid($openid);
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   $id=get_orderid($did,$posttime);
   $page="pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem";
   $posttime=date("Y-m-d H:i:s"); //购票时间
@@ -81,11 +70,8 @@ if(isset($token) && $token==$cfg_auth_key){
   //删除已经用过的formid
   del_formid($form_id,$openid);
 
-<<<<<<< HEAD
 
 //=============================================================================
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   #向下票人发送购票成功订单的模板消息
   $page="pages/index/index?tem=tem";
   switch($type){
@@ -110,7 +96,6 @@ if(isset($token) && $token==$cfg_auth_key){
     break;
 
   }
-<<<<<<< HEAD
   //获取管理员的信息
   $array_admin=get_openid_formid();
   $openid=$array_admin['openid'];
@@ -132,12 +117,6 @@ if(isset($token) && $token==$cfg_auth_key){
 
   }else{
 
-=======
-  $array_admin=get_openid_formid();
-  $openid=$array_admin['openid'];
-  $form_id=get_new_formid($openid);
-
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytype,$posttime,$cfg_appid,$cfg_appsecret);
 
   //删除已经用过的formid
@@ -153,7 +132,6 @@ if(isset($token) && $token==$cfg_auth_key){
                );
   echo phpver($result);
 
-<<<<<<< HEAD
   }
 }else{
   $State = 0;
@@ -166,8 +144,6 @@ if(isset($token) && $token==$cfg_auth_key){
                );
   echo phpver($result);
 }
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

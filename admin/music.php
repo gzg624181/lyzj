@@ -37,10 +37,7 @@ function playmp3(id){
 	data: "data" ,
 	dataType:'html',
     success:function(data){
-<<<<<<< HEAD
 		
-=======
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
         layer.open({
         type: 1
         ,title: false //不显示标题栏
@@ -129,21 +126,12 @@ $num=$dosql->GetTotalRow($one);
 		{
 			$id=$row['id'];
 
-<<<<<<< HEAD
 			
-=======
-			if($row['codeurl']==""){
-			$images="../templates/default/images/noimage.jpg";
-		    }else{
-            $images=$row['codeurl'];
-            }
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
 		?>
               <tr class="dataTr" align="left">
                 <td height="110" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
                 <td align="center"><?php echo $row['title'];?></td>
-<<<<<<< HEAD
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $cfg_weburl."/".$row['share'];?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $cfg_weburl."/".$row['share'];?>" alt="<?php echo $row['title']; ?>" /></div></td>
                 <td align="center" class="num" style="cursor:pointer;"><span onclick="playmp3('<?php echo $row['id'];?>')">点击播放测试</span></td>
                 <td align="center" class="num"><?php echo $row['num']; ?></td>
@@ -153,14 +141,6 @@ $num=$dosql->GetTotalRow($one);
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
             	<span class="nb"><a title="删除信息" href="<?php echo $action;?>?action=del22&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
             </td>
-=======
-                <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['title']; ?>" /></div></td>
-                <td align="center" class="num" style="cursor:pointer;"><span onclick="playmp3('<?php echo $row['id'];?>')">点击播放测试</span></td>
-                <td align="center" class="num"><?php echo $row['num']; ?></td>
-                <td align="center" class="num"><?php echo $row['orderid']; ?></td>
-                <td align="center" class="num"><?php echo date("Y-m-d H:i:s",$row['addtime']);?>
-                 </td>
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
                 <?php //}?>
               </tr>
               <?php

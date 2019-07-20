@@ -36,19 +36,12 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-<<<<<<< HEAD
 
         for($i=0;$i<$num;$i++){
         $row=$dosql->GetArray($one);
         $Data[]=$row;
         $Data[$i]['url']=$cfg_weburl."/".$row['url'];
         $Data[$i]['codeurl']=$cfg_weburl."/".$row['codeurl'];
-=======
-        for($i=0;$i<$dosql->GetTotalRow();$i++){
-        $row=$dosql->GetTotalRow();
-        $Data[$i]['url']=$cfg_weburl."/".$row['url'];
-        $Data[$i]['codeurl']=$cfg_weburl.$row['url'];
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
       }
       $State = 1;

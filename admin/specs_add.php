@@ -87,11 +87,7 @@ $s=$dosql->GetOne("SELECT * from `#@__ticket` where id=$id");
 
   <tr>
   <td height="40" align="right">最低价格：</td>
-<<<<<<< HEAD
   <td><input type="text" style="width:494px;" name="lowmoney" id="lowmoney"  required="required"  class="input"/></td>
-=======
-  <td><input type="text" style="width:494px;" name="lowmoney" id="lowmoney"  value="<?php echo $lowmoney;?>" required="required" readonly class="input"/></td>
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   </tr>
   <tr>
   <td height="40" align="right"></td>

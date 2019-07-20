@@ -14,15 +14,9 @@
 <script type="text/javascript" src="plugin/calendar/calendar.js"></script>
 <script type="text/javascript" src="editor/kindeditor-min.js"></script>
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
-<<<<<<< HEAD
 <script type="text/javascript" src="layer/layer.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-=======
-<script type="text/javascript" src="layui/layui.js"></script>
-<link href="layui/css/layui.css" rel="stylesheet" type="text/css" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 </head>
 <body>
 <div class="formHeader"> <span class="title">分享设置</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a> </div>

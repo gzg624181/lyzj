@@ -191,7 +191,6 @@ if($state==0){
      $num=2;
 
      break;
-<<<<<<< HEAD
 
    }elseif($starttime <= $f && $e <= $endtime){
 
@@ -199,15 +198,6 @@ if($state==0){
 
      break;
 
-=======
-
-   }elseif($starttime <= $f && $e <= $endtime){
-
-     $num=3;
-
-     break;
-
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
    }elseif($f< $starttime && $endtime< $e){
 
      $num=4;
@@ -252,7 +242,6 @@ while($sow=$dosql->GetArray($one)){
  $f=$sow['starttime'];
 
  $e=$sow['endtime'];
-<<<<<<< HEAD
 
  if($starttime < $e && $e < $endtime){
 
@@ -262,17 +251,6 @@ while($sow=$dosql->GetArray($one)){
 
  }elseif($f< $endtime && $endtime< $e){
 
-=======
-
- if($starttime < $e && $e < $endtime){
-
-    $num=1;
-
-    break;
-
- }elseif($f< $endtime && $endtime< $e){
-
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
    $num=2;
 
    break;
@@ -329,13 +307,8 @@ echo $num;
 // $o_pic = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561008806808&di=6a74347ba057df6269559851323985a4&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F62%2F31%2F84D58PIC7Vy_1024.png';
 // $name = pngMerge($o_pic,'aaaa.png');
 // print_r($name);
-<<<<<<< HEAD
 
 
-=======
-
-
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 //背景图片路径
 // $srcurl = $cfg_weburl.'/templates/default/images/img.jpg';
 // //目标图片路径
@@ -470,20 +443,11 @@ unlink($o_pic);
 //     echo $content;
 //
 
-<<<<<<< HEAD
 //  $content ='22223242345<img alt="" src="/uploads/image/20190627/1561634483.png" /> <img alt="" src="/uploads/image/20190627/1561634044.png" /> 45354325<img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" />345254 <img alt="" src="/uploads/image/20190627/1561639134.png" />';
 //
 // $r=$dosql->GetOne("SELECT xuzhi from pmw_ticket where id=1");
 // //$xuzhi=stripslashes($r['xuzhi']);
 // $xuzhi=replacePicUrl($r['xuzhi'], $cfg_weburl);
-=======
-//  $content ='22223242345<img alt="" src="/uploads/image/20190627/1561634483.png" />
-//  <img alt="" src="/uploads/image/20190627/1561634044.png" /> 45354325<img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" />345254 <img alt="" src="/uploads/image/20190627/1561639134.png" />';
-//
-// $r=$dosql->GetOne("SELECT xuzhi from pmw_ticket where id=1");
-// $xuzhi=stripslashes($r['xuzhi']);
-// $xuzhi=replacePicUrl($xuzhi, $cfg_weburl);
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 //
 // echo $xuzhi;
 // echo "<pre>";
@@ -584,7 +548,6 @@ unlink($o_pic);
 //   }
 // }
 
-<<<<<<< HEAD
 // $dosql->Execute("SELECT id FROM pmw_ticket");
 // while($row=$dosql->GetArray()){
 //   $id=$row['id'];
@@ -605,18 +568,4 @@ if($i==count($arr)-1){
 }
 
 echo $sql;
-=======
-
-$url = "http://news.sina.com.cn/c/nd/2016-10-23/doc-ifxwztru6951143.shtml";
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-$html = curl_exec($ch);
-curl_close($ch);
-
-echo "<textarea style='width:800px;height:600px;'>".$html."</textarea>";
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 ?>

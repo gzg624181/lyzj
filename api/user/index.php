@@ -38,15 +38,11 @@ if(isset($token) && $token==$cfg_auth_key){
       $Data[]=$r;
       $Data[0]['type']='agency';
       $Data[0]['cardpic']=$cfg_weburl."/".$r['cardpic'];
-<<<<<<< HEAD
       if(check_str($r['images'],"https")){
         $Data[0]['images']=$r['images'];
       }else{
       $Data[0]['images']=$cfg_weburl."/".$r['images'];
       }
-=======
-      $Data[0]['images']=$cfg_weburl."/".$r['images'];
->>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $State = 1;
       $Descriptor = '旅行社信息获取成成功！';
       $result = array (
