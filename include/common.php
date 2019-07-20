@@ -580,14 +580,18 @@ function add_formid($openid,$formid)
 
 	$k=$dosql->GetOne("SELECT MIN(id) as id	FROM `#@__formid` where openid='$openid'");
 
+<<<<<<< HEAD
   //判断formid表里面是否还有这个用户的formid
 
   if($k['id']!=NULL){
 
+=======
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 	$ids=$k['id'];
 
 	$r=$dosql->GetOne("SELECT formid FROM `#@__formid` where id=$ids");
 
+<<<<<<< HEAD
 	$formid=$r['formid'];
 
 	}else{
@@ -598,6 +602,16 @@ function add_formid($openid,$formid)
 
 	return $formid;
 
+=======
+
+  if(is_array($r)){
+
+	$formid=$r['formid'];
+
+  }
+
+	return $formid;
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
  }
 
  //用户使用完毕formid之后，删除已经已经使用过的formid
@@ -804,7 +818,11 @@ function Send_Remind($starttime,$title)
 
 		$travel_bak="亲爱的".$name."你好，与您空闲时间匹配的行程已经出现，请点击进入我的小程序查看详情";
 
+<<<<<<< HEAD
   	$page="pages/searchDetail/index?data=".$travel_date."&search=true";
+=======
+		$page="pages/searchDetail/index?data=".$travel_date;
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
 		$travel_date=date("Y-m-d",$starttime)."开始出发";
 

@@ -60,6 +60,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'pic')">上 传</span></span>
  </td>
 </tr>
+<<<<<<< HEAD
 
 <tr>
 <td height="40" align="right">分享图片：</td>
@@ -70,6 +71,8 @@ $r=$dosql->GetOne("SELECT * FROM pmw_share where id=2");
 <span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'share')">上 传</span></span>
  </td>
 </tr>
+=======
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 <tr>
 <td height="40" align="right">分享图片实例：</td>
 <td><div id="layer-photos-demo_<?php  echo $r['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $r['examplepic'];?>" style="cursor:pointer; padding:8px;border-radius:12px;" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $r['examplepic'];?>"/></div></td>

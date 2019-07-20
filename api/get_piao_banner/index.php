@@ -37,7 +37,11 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
+<<<<<<< HEAD:api/get_piao_banner/index.php
         for($i=0;$i<$num;$i++){
+=======
+        for($i=0;$i<$dosql->GetTotalRow();$i++){
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587:api/get_banner/index.php
         $row=$dosql->GetArray();
         $Data[]=$row;
         $Data[$i]['pic']=$cfg_weburl."/".$row['pic'];

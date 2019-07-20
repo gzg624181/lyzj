@@ -151,9 +151,15 @@ else if($action=='sets'){
 	$dosql->ExecNoneQuery("UPDATE pmw_members SET sets=1 where id=$id");
 
 	$gourl="members.php";
+<<<<<<< HEAD
 
 	header("LOCATION:$gourl");
 
+=======
+
+	header("LOCATION:$gourl");
+
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 }
 else if($action=='share_update'){
 	// if(!check_str($pic,$cfg_weburl)){
@@ -161,6 +167,10 @@ else if($action=='share_update'){
   // }
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET title='$title',imagesurl='$pic' where id=1");
 	$gourl="share.php";
+<<<<<<< HEAD
+=======
+
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 	header("LOCATION:$gourl");
 }
 else if($action=="xieyi_update"){
@@ -168,10 +178,13 @@ else if($action=="xieyi_update"){
 	$gourl="xieyi.php";
 
 	header("LOCATION:$gourl");
+<<<<<<< HEAD
 }else if($action=="default_update"){
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET imagesurl='$pic' where id=3");
 	$gourl="default_jpg.php";
 	header("LOCATION:$gourl");
+=======
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 }
 //无条件返回
 else

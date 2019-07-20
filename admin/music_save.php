@@ -30,8 +30,12 @@ if($action == 'add')
   $urls="/uploads/erweima/".$erweima_name.".png";
   $save_path=$cfg_weburl.$urls;         //生成成功之后的二维码地址
   $url=$url;
+<<<<<<< HEAD
 
 	$sql = "INSERT INTO `#@__music` (title, url, num, codeurl, addtime, orderid, sharename,share) VALUES ('$title', '$url', $num, '$urls', '$addtime', $orderid, '$sharename','$share')";
+=======
+	$sql = "INSERT INTO `#@__music` (title, url, num, codeurl, addtime, orderid, sharename) VALUES ('$title', '$url', $num, '$urls', '$addtime', $orderid, '$sharename')";
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 	if($dosql->ExecNoneQuery($sql))
 	{
 		$gourl="music.php";
@@ -43,6 +47,7 @@ else if($action == 'playmp3')
 {
 
 	$r=$dosql->GetOne("SELECT url,title FROM pmw_music WHERE id=$id");
+<<<<<<< HEAD
   $url= $cfg_weburl."/".$r['url'];
   // $content =  "<span style='font-size:18px;font-weight:bold;margin-bottom:10px;'>".$r['title']."播放测试"."</span>";
 	$content ="<video controls='' autoplay='' name='media'><source src=".$url." type='audio/mpeg'></video>";
@@ -62,6 +67,21 @@ else if($action=='update'){
 	// 	$tubiaopic1=$cfg_weburl."/".$tubiaopic; //导游证件
 	// }
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET tubiaopic='$tubiaopic',imagesurl='$pic',share='$share' where id=2");
+=======
+  $url= $r['url'];
+  $content =  "<span style='font-size:18px;font-weight:bold;margin-bottom:10px;'>".$r['title']."播放测试"."</span>";
+	$content .="<video controls='' autoplay='' name='media'><source src=".$url." type='audio/mpeg'></video>";
+	echo $content;
+}
+else if($action=="share_update"){
+	if(!check_str($pic,$cfg_weburl)){
+    $pic1=$cfg_weburl."/".$pic; //
+  }
+	if(!check_str($tubiaopic,$cfg_weburl)){
+		$tubiaopic1=$cfg_weburl."/".$tubiaopic; //导游证件
+	}
+	$dosql->ExecNoneQuery("UPDATE pmw_share SET tubiaopic='$tubiaopic',imagesurl='$pic' where id=2");
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 	$gourl="share_config.php";
 
   // 生成实例海报图片
@@ -70,17 +90,23 @@ else if($action=='update'){
 	$savename="example_".$erweima_name.".png";
 	$savepath="../uploads/erweima";
 
+<<<<<<< HEAD
   $pic1=$cfg_weburl."/".$pic;
 	$tubiaopic1=$cfg_weburl."/".$tubiaopic;
+=======
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   $newimg1=img_water_mark($pic1, $waterImg, $savepath, $savename, $positon=5, $alpha=100);
   $newimg=img_water_mark($newimg1, $tubiaopic1, $savepath, $savename, $positon=2, $alpha=100);
 
   $dosql->ExecNoneQuery("UPDATE pmw_share SET examplepic='$newimg' where id=2");
 	header("LOCATION:$gourl");
+<<<<<<< HEAD
 }else if($action=="del22"){
 	$dosql->ExecNoneQuery("DELETE from pmw_music where id=$id");
 	$gourl="music.php";
 	header("LOCATION:$gourl");
+=======
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 }
 //无条件返回
 else

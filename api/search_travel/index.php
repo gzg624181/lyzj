@@ -82,6 +82,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     //如果搜索的有数据的时候，则将搜索记录保存到数据库中去
     if(isset($openid)){
+<<<<<<< HEAD
 
      while($row=$dosql->GetArray()){
         $Data['list'][]=$row;
@@ -103,6 +104,25 @@ if(isset($token) && $token==$cfg_auth_key){
    }
 
 
+=======
+    $two=2;
+    $posttime=time();
+    $r=$dosql->GetOne("SELECT keyword FROM pmw_searchlist where keyword='$keyword' and openid='$openid'");
+    if(!is_array($r)){
+    $sql="INSERT INTO  `#@__searchlist` (keyword,openid,posttime) values ('$keyword','$openid',$posttime)";
+     $dosql->ExecNoneQuery($sql);
+    }
+
+     $dosql->Execute("SELECT * FROM `#@__searchlist` where openid='$openid' order by id desc limit  5",$two);
+     while($show=$dosql->GetArray($two)){
+      $Data['searchlist'][]=$show;
+     }
+   }
+
+    while($row=$dosql->GetArray()){
+      $Data['list'][]=$row;
+    }
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       //默认推荐四条数据
       $four=4;
       $dosql->Execute("SELECT * from pmw_travel where state=0 order by rand() limit 4",$four);
@@ -126,7 +146,11 @@ if(isset($token) && $token==$cfg_auth_key){
       }
       if(isset($openid)){
        $five=5;
+<<<<<<< HEAD
        $dosql->Execute("SELECT * FROM `#@__searchlist` where openid='$openid' and type=0 order by id desc limit 5",$five);
+=======
+       $dosql->Execute("SELECT * FROM `#@__searchlist` where openid='$openid' order by id desc limit 5",$five);
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
        while($go=$dosql->GetArray($five)){
        $Data['searchlist'][]=$go;

@@ -16,6 +16,7 @@
      *
      * @return string
      *
+<<<<<<< HEAD
      * @提供返回参数账号  keyword=>    title
      */
 require_once("../../include/config.inc.php");
@@ -111,6 +112,28 @@ if(isset($token) && $token==$cfg_auth_key){
           $Data['recommand'][$i]['picarr']=$picarr;
 
          }
+=======
+     * @提供返回参数账号  keyword=>   行程标题 title
+     */
+require_once("../../include/config.inc.php");
+$Data = array();
+$Version=date("Y-m-d H:i:s");
+if(isset($token) && $token==$cfg_auth_key){
+
+    $dosql->Execute("SELECT id,names,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where names like '%$keyword%' and  checkinfo=1 order by id desc ");
+
+    $num=$dosql->GetTotalRow();//获取数据条数
+
+      if($num!=0){
+        for($i=0;$i<$num;$i++){
+         $row = $dosql->GetArray();
+         $Data[$i]=$row;
+         $picarr=stripslashes($row['picarr']);
+         $picarr=GetPic($picarr, $cfg_weburl);
+         $Data[$i]['picarr']=$picarr;
+        }
+
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $State = 1;
       $Descriptor = '搜索数据查询成功！';
       $result = array (
@@ -121,6 +144,7 @@ if(isset($token) && $token==$cfg_auth_key){
                    );
       echo phpver($result);
       }else{
+<<<<<<< HEAD
 
     //  当搜索数据内容为空的时候，随机选出4个
 
@@ -149,6 +173,9 @@ if(isset($token) && $token==$cfg_auth_key){
      }
      }
 
+=======
+        $Data=array();
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
         $State = 0;
         $Descriptor = '搜索数据为空！';
         $result = array (
@@ -165,8 +192,13 @@ if(isset($token) && $token==$cfg_auth_key){
   $State = 520;
   $Descriptor = 'token验证失败！';
   $result = array (
+<<<<<<< HEAD
                    'State' => $State,
                    'Descriptor' => $Descriptor,
+=======
+                  'State' => $State,
+                  'Descriptor' => $Descriptor,
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
   				         'Version' => $Version,
                    'Data' => $Data,
                    );

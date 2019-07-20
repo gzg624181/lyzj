@@ -23,19 +23,27 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 $one=1;
 if(isset($token) && $token==$cfg_auth_key){
+<<<<<<< HEAD
         $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
         $cfg_default = $r['imagesurl'];
+=======
+
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $dosql->Execute("SELECT * FROM `#@__ticket` where types='7' and checkinfo=1",$one);
       for($i=0;$i<$dosql->GetTotalRow($one);$i++){
        $row1 = $dosql->GetArray($one);
        $Data[$i]=$row1;
        $picarr=stripslashes($row1['picarr']);
+<<<<<<< HEAD
        if($picarr==""){
        $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
        $picarr = json_encode($picarrTmp);
        }else{
        $picarr=GetPic($picarr, $cfg_weburl);
        }
+=======
+       $picarr=GetPic($picarr, $cfg_weburl);
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
        $content=stripslashes($row1['content']);
        $content=rePic($content, $cfg_weburl);
        $xuzhi=stripslashes($row1['xuzhi']);

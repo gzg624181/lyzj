@@ -1,6 +1,10 @@
 <?php
     /**
+<<<<<<< HEAD
 	   * 链接地址：get_recommand_scenic  搜索景点 关键字模糊搜索
+=======
+	   * 链接地址：get_recommand_scenic  推荐景点
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -22,8 +26,11 @@ require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+<<<<<<< HEAD
     $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
     $cfg_default = $r['imagesurl'];
+=======
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
     $dosql->Execute("SELECT id,names,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where checkinfo=1 order by id desc ");
 
@@ -34,6 +41,7 @@ if(isset($token) && $token==$cfg_auth_key){
          $row = $dosql->GetArray();
          $Data[$i]=$row;
          $picarr=stripslashes($row['picarr']);
+<<<<<<< HEAD
          if($picarr==""){
          $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
          $picarr = json_encode($picarrTmp);
@@ -41,6 +49,9 @@ if(isset($token) && $token==$cfg_auth_key){
          $picarr=GetPic($picarr, $cfg_weburl);
          }
 
+=======
+         $picarr=GetPic($picarr, $cfg_weburl);
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
          $Data[$i]['picarr']=$picarr;
         }
 

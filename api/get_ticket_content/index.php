@@ -22,8 +22,12 @@ require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+<<<<<<< HEAD
       $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
       $cfg_default = $r['imagesurl'];
+=======
+
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $r=$dosql->GetOne("SELECT * FROM `#@__ticket` WHERE id=$id and checkinfo=1");
       if(!is_array($r)){
         $State = 0;
@@ -39,12 +43,16 @@ if(isset($token) && $token==$cfg_auth_key){
       $one=1;
 
       $picarr=stripslashes($r['picarr']);
+<<<<<<< HEAD
       if($picarr==""){
       $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
       $picarr = json_encode($picarrTmp);
       }else{
       $picarr=GetPic($picarr, $cfg_weburl);
       }
+=======
+      $picarr=GetPic($picarr, $cfg_weburl);
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
 
       $content=stripslashes($r['content']);
       $content=rePic($content, $cfg_weburl);

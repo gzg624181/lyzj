@@ -22,8 +22,12 @@ require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+<<<<<<< HEAD
       $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
       $cfg_default = $r['imagesurl'];
+=======
+
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $r=$dosql->GetOne("SELECT a.*,b.label, b.picarr,b.solds,b.level,b.lowmoney FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id WHERE a.id=$id");
       $num=$dosql->GetTotalRow();
       if($num==0){
@@ -38,12 +42,16 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
       $picarr=stripslashes($r['picarr']);
+<<<<<<< HEAD
       if($picarr==""){
       $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
       $picarr = json_encode($picarrTmp);
       }else{
       $picarr=GetPic($picarr, $cfg_weburl);
       }
+=======
+      $picarr=GetPic($picarr, $cfg_weburl);
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
       $r['picarr']=$picarr;
       $State = 1;
       $Descriptor = '数据获取成功！';

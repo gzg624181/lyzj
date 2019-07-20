@@ -139,7 +139,11 @@ $tbname='pmw_ticket';
         </tr>
 
         <tr>
+<<<<<<< HEAD
         <td width="25%" height="40" align="right">起始价格：</td>
+=======
+        <td width="25%" height="40" align="right">最低价格：</td>
+>>>>>>> fce197250f6cdcc1f69b07457834e5d555fdb587
         <td width="75%">
         <input type="text" class="input" id="lowmoney" name="lowmoney" required="required">
         <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
