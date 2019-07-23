@@ -140,9 +140,9 @@ $num=$dosql->GetTotalRow($one);
                  </td>
                 <td align="center" class="num" style="color:red; font-size:18px; cursor:pointer;"><span onclick="checknum('<?php echo $row['id'];?>');"><?php $arr=get_nums($row['id']);  echo $arr['nums'] ?></span></td>
                 <td align="center" class="num" style="color:#3476cb; font-size:18px; cursor:pointer;"><span onclick="checknum('<?php echo $row['id'];?>');"><?php echo $arr['total'] ?></span></td>
-                <td align="center"><a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=ups" class="leftArrow" title="提升排序"></a>
+                <td align="center"><a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=ups&types=<?php echo $row['types'];?>" class="leftArrow" title="提升排序"></a>
 				<input style="font-family:Verdana, Geneva, sans-serif; font-weight:bold;" type="text" name="orderid[]" id="orderid[]" class="inputls" value="<?php echo $row['orderid']; ?>" />
-				<a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=downs" class="rightArrow" title="下降排序"></a></td>
+				<a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=downs&types=<?php echo $row['types'];?>" class="rightArrow" title="下降排序"></a></td>
 								 <td align="center">
       <a title="点击添加票务规格" style="cursor:pointer"  href="specs_add.php?id=<?php echo $id;?>&lowmoney=<?php echo $row['lowmoney'];?>">
         <i class="fa fa-folder-open" aria-hidden="true"></i></a>&nbsp;

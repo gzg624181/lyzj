@@ -26,7 +26,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $three=3;
       $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
       $cfg_default = $r['imagesurl'];
-      $dosql->Execute("SELECT * FROM `#@__ticket` where types='9'  and checkinfo=1",$three);
+      $dosql->Execute("SELECT * FROM `#@__ticket` where types='9'  and checkinfo=1 order by orderid desc",$three);
 
       for($i=0;$i<$dosql->GetTotalRow($three);$i++){
        $row3 = $dosql->GetArray($three);

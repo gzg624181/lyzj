@@ -318,11 +318,11 @@ else if($action=="del100"){
  }else if($action=="ups"){
    //往上排序
    //如果是最上面的一行 ，则不往上翻
-   $r=$dosql->GetOne("SELECT MAX(orderid) as orderid from pmw_ticket");
+   $r=$dosql->GetOne("SELECT MAX(orderid) as orderid from pmw_ticket where types='$types'");
    $orderid_max= $r['orderid'];   //第一个orderid
    if($orderid_max != $orderid){
      //将上一个和点击的这一个进行替换操作
-     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid > $orderid order by orderid desc limit 1");
+     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid > $orderid and types='$types' order by orderid asc limit 1");
      //上一个orderid的值
      $orderid_up = $k['orderid'];  $id_up = $k['id'];
      //将两个id进行替换
@@ -335,11 +335,11 @@ else if($action=="del100"){
  }else if($action=="downs"){
    //往下排序
    //如果是最下面的一行 ，则不往下翻
-   $r=$dosql->GetOne("SELECT MIN(orderid) as orderid from pmw_ticket");
+   $r=$dosql->GetOne("SELECT MIN(orderid) as orderid from pmw_ticket where types='$types'");
    $orderid_max= $r['orderid'];   //第一个orderid
    if($orderid_max != $orderid){
      //将上一个和点击的这一个进行替换操作
-     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid < $orderid order by orderid desc limit 1");
+     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid < $orderid and types='$types' order by orderid desc limit 1");
      //上一个orderid的值
      $orderid_up = $k['orderid'];  $id_up = $k['id'];
      //将两个id进行替换
