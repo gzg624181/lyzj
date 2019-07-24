@@ -307,7 +307,17 @@ else if($action=="checkfailed"){
   $gourl="agency.php?check=failed";
   header("location:$gourl");
   exit();
+//删除旅行社（同时删除关于旅行社的所有信息）
+// 1.已经发布的行程
+// 2.旅行社对导游的评论
+// 3.消息记录
+// 4.留言反馈
+// 5.票务订单
+// 6.删除旅行社账号信息
 }
+// elseif(){
+//
+// }
 else
 {
     header("location:$gourl");
