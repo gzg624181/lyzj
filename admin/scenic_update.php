@@ -36,13 +36,13 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 
 		<tr>
 		 <td height="40" align="right">属　性：</td>
-		 <td class="attrArea"><?php
+		 <td class="attrArea">
+			 <?php
 		 $dosql->Execute("SELECT * FROM `#@__infoflag` ORDER BY orderid ASC");
 		 while($row = $dosql->GetArray()){
 		 ?>
 
          <span><input type="checkbox" <?php if($row['flag']==$r['flag']){echo "checked";}?>  name="flag[]" id="flag[]" value="<?php echo $row['flag'];?>" /><?php echo $row['flagname'];?><?php echo $row['flag'];?></span>
-
 
           <?php }?>
 		 </td>
@@ -51,14 +51,17 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
     <tr>
     <td width="25%" height="40" align="right">景区分类：</td>
     <td>
-    <select name="types" id="types" class="input" style="width:508px;">
-       <?php
-      $dosql->Execute("SELECT * FROM pmw_ticketclass order by id asc");
-      while($row=$dosql->GetArray()){
-      ?>
-    <option <?php if($r['types']==$row['id']){ echo "selected='selected'";}?>   value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
-    <?php }?>
-    </select>
+			<?php
+	 $dosql->Execute("SELECT * FROM `#@__ticketclass`");
+	 while($row = $dosql->GetArray()){
+	 ?>
+
+				<span>
+
+				<input type="checkbox" <?php if(check_str($r['types'],$row['id'])){echo "checked";}?>  name="types[]" id="types[]" value="<?php echo $row['id'];?>" />
+				<?php echo $row['title'];?></span>
+				 <?php }?>
+    
     </td>
   </tr>
 
@@ -165,7 +168,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
         <span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
         </td>
         </tr>
-        
+
         <tr>
         <td width="25%" height="40" align="right">排序设置：</td>
         <td width="75%">

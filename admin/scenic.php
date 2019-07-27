@@ -14,9 +14,6 @@ $username=$_SESSION['admin'];
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
 
-
-
-
 function ChangeState(id,checkinfo){
 
    var url = "ticket_save.php?action=changestate&id="+id+"&checkinfo="+checkinfo;
@@ -29,7 +26,17 @@ function checknum(id) {
   var url="allorder.php?id="+id+"&check=numsid";
   window.location.href=url;
 }
+function changeorderid(id) {
 
+    layer.confirm('确定更改景区排序？', function(index) {
+
+    var orderid = $("#orderid_"+id).val();
+
+    var url = "ticket_save.php?action=changeorderid&id="+id+"&orderid="+orderid;
+
+    window.location.href= url;
+  });
+}
 function getpic(id){
 	 var ajax_url='ticket_save.php?action=getpic&id='+id;
    //alert(ajax_url);
@@ -111,11 +118,16 @@ $num=$dosql->GetTotalRow($one);
                 </tr>
               <?php
 
-		$dopage->GetPage("SELECT a.*,b.title FROM $tbname a inner join pmw_ticketclass b on b.id=a.types ",15,'desc','orderid');
+		$dopage->GetPage("SELECT * FROM $tbname",15,'desc','orderid');
 
 		while($row = $dosql->GetArray())
 		{
-			$id=$row['id'];
+		$id=$row['id'];
+
+    //获取景区的分类
+    $types = $row['types'];
+
+    $title =get_ticket_class($types);
 
 	  if($row['checkinfo']==1){
 
@@ -131,7 +143,7 @@ $num=$dosql->GetTotalRow($one);
               <tr class="dataTr" align="left">
                 <td height="44" align="center"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
                 <td align="center"><?php echo $row['names'];?></td>
-                <td align="center"><?php echo $row['title'];?></td>
+                <td align="center"><?php echo $title;?></td>
                 <td align="center"><?php echo $row['label']; ?></td>
                 <td align="center"><?php echo $row['level']; ?>星</td>
                 <td align="center"><a style="cursor:pointer" onclick="getpic('<?php echo $id;?>');">点击查看</a></td>
@@ -140,10 +152,12 @@ $num=$dosql->GetTotalRow($one);
                  </td>
                 <td align="center" class="num" style="color:red; font-size:18px; cursor:pointer;"><span onclick="checknum('<?php echo $row['id'];?>');"><?php $arr=get_nums($row['id']);  echo $arr['nums'] ?></span></td>
                 <td align="center" class="num" style="color:#3476cb; font-size:18px; cursor:pointer;"><span onclick="checknum('<?php echo $row['id'];?>');"><?php echo $arr['total'] ?></span></td>
-                <td align="center"><a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=ups&types=<?php echo $row['types'];?>" class="leftArrow" title="提升排序"></a>
-				<input style="font-family:Verdana, Geneva, sans-serif; font-weight:bold;" type="text" name="orderid[]" id="orderid[]" class="inputls" value="<?php echo $row['orderid']; ?>" />
-				<a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=downs&types=<?php echo $row['types'];?>" class="rightArrow" title="下降排序"></a></td>
-								 <td align="center">
+                <td align="center"><a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=ups" class="leftArrow" title="提升排序"></a>
+				<input style="font-family:Verdana, Geneva, sans-serif; font-weight:bold;" type="text" name="orderid_<?php echo $row['id'];?></input>" id="orderid_<?php echo $row['id'];?>" class="inputls" value="<?php echo $row['orderid']; ?>" />
+				<a href="ticket_save.php?id=<?php echo $row['id']; ?>&orderid=<?php echo $row['orderid']; ?>&action=downs" class="rightArrow" title="下降排序"></a></td>
+			<td align="center">
+      <a title="点击更改景区排序" style="cursor:pointer" onclick="changeorderid('<?php echo $row['id']; ?>')">
+      <i class="fa fa-wrench" aria-hidden="true"></i></a>&nbsp;
       <a title="点击添加票务规格" style="cursor:pointer"  href="specs_add.php?id=<?php echo $id;?>&lowmoney=<?php echo $row['lowmoney'];?>">
         <i class="fa fa-folder-open" aria-hidden="true"></i></a>&nbsp;
       <span><?php echo $checkinfo; ?></span> &nbsp;

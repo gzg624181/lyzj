@@ -20,8 +20,8 @@
      * id        此条行程的id
      * formid    旅行社的formid
      * openid    旅行社的openid
-     * reason    旅行社取消的原因
-     * aid       旅行社id
+     * reason     旅行社取消的原因
+     * aid        旅行社id
      * gid       导游id
      * reason    取消原因
      */
@@ -33,7 +33,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：取消行程的时候分为两种状态
   // 1.待预约状态的时候，直接取消
-  // 2.待确认状态下的时候，给导游发送取消行程的模板消息
+  // 2.待确认状态下的时候，发送双向模板消息
   $r=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
   if($r['state']==0){
     $sql = "UPDATE `#@__travel` set state=5 WHERE id=$id";
@@ -74,10 +74,8 @@ if(isset($token) && $token==$cfg_auth_key){
     //将用户的formid添加进去
     add_formid($openid,$formid);
 
-    //旅行社不发送模板消息
-
-    //$openid_agency=$openid;            //旅行社联系人openid
-    //$formid= get_new_formid($openid);  //旅行社formid
+    $openid_agency=$openid;            //旅行社联系人openid
+    $formid= get_new_formid($openid);  //旅行社formid
 
 
     $openid_guide=$g['openid'];               //导游openid
@@ -99,7 +97,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     $page="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
 
-    /*$data_agency=CancelAgency($title,$time,$reason,$tishi,$openid_agency,$cfg_concel_agency,$page,$formid);
+    $data_agency=CancelAgency($title,$time,$reason,$tishi,$openid_agency,$cfg_concel_agency,$page,$formid);
 
     $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
@@ -112,8 +110,7 @@ if(isset($token) && $token==$cfg_auth_key){
   //  $errcode_agency=$res_agency['errcode'];
   //删除已经用过的formid
      del_formid($formid,$openid_agency);
-     */
-//======================================================================================
+//==================================================================================================
     //将旅行社注撤销行程的模板消息保存起来
     $type = 'agency';
     $messagetype='template';

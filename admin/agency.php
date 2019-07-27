@@ -71,6 +71,14 @@ layer.open({
   });
   }
 }
+
+//更改用户的权限  forbiden 1，允许 0，禁止
+function changeforbiden(id){
+  layer.confirm('是否更改用户的权限？',function(index){
+
+    window.location.href="agency_save.php?action=changeforbiden&id="+id;
+  })
+}
 //审核，未审，功能
   function checkinfo(key){
      var v= key;
@@ -209,6 +217,12 @@ $num=$dosql->GetTotalRow($one);
 			}elseif($row['checkinfo']==1){
 
 			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+
+       if($row['forbiden']==0){
+       $checkinfo .= "&nbsp;&nbsp;&nbsp;"."<i onclick='changeforbiden({$id})' style='color:red; cursor:pointer;' title='账户权限已被禁止，点击更改用户权限' class='fa fa-toggle-on' aria-hidden='true'></i>";
+       }elseif($row['forbiden']==1){
+        $checkinfo .= "&nbsp;&nbsp;&nbsp;"."<i onclick='changeforbiden({$id})' style='color:#509ee1; cursor:pointer;' title='账户权限已被允许，点击禁止用户权限' class='fa fa-toggle-off' aria-hidden='true'></i>";
+       }
 
 			}elseif($row['checkinfo']==2){
 

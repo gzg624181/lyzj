@@ -26,7 +26,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $two=2;
       $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
       $cfg_default = $r['imagesurl'];
-      $dosql->Execute("SELECT * FROM `#@__ticket` where types='8'  and checkinfo=1 order by orderid desc ",$two);
+      $dosql->Execute("SELECT * FROM `#@__ticket` where types like '%8%'  and checkinfo=1 order by orderid desc",$two);
       for($i=0;$i<$dosql->GetTotalRow($two);$i++){
        $row2 = $dosql->GetArray($two);
        $Data[$i]=$row2;

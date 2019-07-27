@@ -48,14 +48,12 @@ $tbname='pmw_ticket';
     <tr>
     <td width="25%" height="40" align="right">景区分类：</td>
     <td>
-    <select name="types" id="types" class="input" style="width:508px;">
-               <?php
-      $dosql->Execute("SELECT * FROM pmw_ticketclass order by id asc");
-      while($row=$dosql->GetArray()){
-      ?>
-    <option value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
-    <?php }?>
-    </select>
+			<?php
+	 $dosql->Execute("SELECT * FROM pmw_ticketclass order by id asc");
+	 while($row=$dosql->GetArray()){
+	 ?>
+	 <label><input name="types[]" id="types[]" type="checkbox" value="<?php echo $row['id'];?>" />&nbsp;<?php echo $row['title'];?></label>&nbsp;&nbsp;
+	 <?php }?>
     </td>
   </tr>
 

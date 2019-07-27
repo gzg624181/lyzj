@@ -87,7 +87,19 @@ header("location:$gourl");
 exit();
 
 }
-
+//更改用户的权限
+elseif($action=="changeforbiden"){
+   $r= $dosql->GetOne("SELECT forbiden FROM pmw_guide where id=$id");
+   $forbiden = $r['forbiden'];
+   //将权限改为允许
+   if($forbiden==1){
+    $dosql->ExecNoneQuery("UPDATE pmw_guide set forbiden=0 where id=$id");
+    }else{
+      $dosql->ExecNoneQuery("UPDATE pmw_guide set forbiden=1 where id=$id");
+    }
+    header("location:$gourl");
+	  exit();
+}
 //无条件返回
 else
 {

@@ -144,21 +144,20 @@ else if($action=="add_ticket"){
 		$flag = implode(',',$flag);
 	}
 
-
-  // $content=stripslashes($content);
-  // $content=rePic($content, $cfg_weburl);
-
-  // $xuzhi=stripslashes($xuzhi);
-  // $xuzhi=rePic($xuzhi, $cfg_weburl);
-
-  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney,orderid) VALUES ('$names','$types','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney',$orderid)";
-
-  if($dosql->ExecNoneQuery($sql))
-  {
-    $gourl= "scenic.php";
-    header("location:$gourl");
-    exit();
+  //多个分类
+  $num = count($types);
+  if($num==1){
+    $type = $types[0];
+  }else{
+    $type = implode(",",$types);
   }
+  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney,orderid) VALUES ('$names','$type','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney',$orderid)";
+  if($dosql->ExecNoneQuery($sql)){
+  $gourl= "scenic.php";
+  header("location:$gourl");
+  }
+  exit();
+
 
 }
 //获取景区图片
@@ -274,6 +273,11 @@ else if($action=="del100"){
 		$flag = implode(',',$flag);
 	}
 
+  if(is_array($types))
+  {
+    $types = implode(',',$types);
+  }
+
   $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,orderid=$orderid,content='$content' WHERE id=$id");
   $gourl= "scenic.php";
   header("location:$gourl");
@@ -318,11 +322,11 @@ else if($action=="del100"){
  }else if($action=="ups"){
    //往上排序
    //如果是最上面的一行 ，则不往上翻
-   $r=$dosql->GetOne("SELECT MAX(orderid) as orderid from pmw_ticket where types='$types'");
+   $r=$dosql->GetOne("SELECT MAX(orderid) as orderid from pmw_ticket");
    $orderid_max= $r['orderid'];   //第一个orderid
    if($orderid_max != $orderid){
      //将上一个和点击的这一个进行替换操作
-     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid > $orderid and types='$types' order by orderid asc limit 1");
+     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid > $orderid order by orderid desc limit 1");
      //上一个orderid的值
      $orderid_up = $k['orderid'];  $id_up = $k['id'];
      //将两个id进行替换
@@ -335,11 +339,11 @@ else if($action=="del100"){
  }else if($action=="downs"){
    //往下排序
    //如果是最下面的一行 ，则不往下翻
-   $r=$dosql->GetOne("SELECT MIN(orderid) as orderid from pmw_ticket where types='$types'");
+   $r=$dosql->GetOne("SELECT MIN(orderid) as orderid from pmw_ticket");
    $orderid_max= $r['orderid'];   //第一个orderid
    if($orderid_max != $orderid){
      //将上一个和点击的这一个进行替换操作
-     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid < $orderid and types='$types' order by orderid desc limit 1");
+     $k=$dosql->GetOne("SELECT orderid,id from pmw_ticket where orderid < $orderid order by orderid desc limit 1");
      //上一个orderid的值
      $orderid_up = $k['orderid'];  $id_up = $k['id'];
      //将两个id进行替换
@@ -349,6 +353,11 @@ else if($action=="del100"){
      $gourl = "scenic.php";
      header("location:$gourl");
      exit();
+ }elseif($action=="changeorderid"){
+    $dosql->ExecNoneQuery("UPDATE pmw_ticket set orderid=$orderid where id=$id");
+    $gourl = "scenic.php";
+    header("location:$gourl");
+    exit();
  }
 //无条件返回
 else

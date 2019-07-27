@@ -36,24 +36,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     if(isset($title)){
 
-      preg_match_all("/./u", $title, $arr);
-
-      $arr=$arr[0];
-      $sql1="";
-      for($i=0;$i<count($arr);$i++){
-      if($i==count($arr)-1){
-        $sql1 .= " title like "."'%".$arr[$i]."%'";
-      }else{
-        $sql1 .= " title like "."'%".$arr[$i]."%'". " or ";
-       }
-      }
-
-      $sql = "SELECT * FROM pmw_travel where state=0  and ";
-
-      $sql .= "(".$sql1.")"." order by id desc";
-
-
-      $dosql->Execute($sql);
+    $dosql->Execute("SELECT * FROM pmw_travel where title like '%$title%' and  state=0 order by id desc ");
 
     }elseif(isset($starttime_ymd)){
 
@@ -82,67 +65,23 @@ if(isset($token) && $token==$cfg_auth_key){
 
     //如果搜索的有数据的时候，则将搜索记录保存到数据库中去
     if(isset($openid)){
-
-     while($row=$dosql->GetArray()){
-        $Data['list'][]=$row;
-      }
-
     $two=2;
     $posttime=time();
-    //判断历史搜索记录表里面是否有相同的字段
-
-    $r=$dosql->GetOne("SELECT keyword FROM pmw_searchlist where keyword='$keyword' and openid='$openid' and type=0");
-
-    //假如搜索历史记录里面没有这条记录
+    $r=$dosql->GetOne("SELECT keyword FROM pmw_searchlist where keyword='$keyword' and openid='$openid'");
     if(!is_array($r)){
+    $sql="INSERT INTO  `#@__searchlist` (keyword,openid,posttime) values ('$keyword','$openid',$posttime)";
+     $dosql->ExecNoneQuery($sql);
+    }
 
-   //判断这个用户的历史搜索记录里面一起有多少条数据
-   $dosql->Execute("SELECT id FROM pmw_searchlist where openid='$openid' and type=0");
-   $nums = $dosql->GetTotalRow();
-
-    //每个用户最多只能保存五条数据
-      if($nums==5){
-        //自动将保存的五条数据的最后一条数据删除掉，同时往搜索历史表里面插入新的数据
-        $k=$dosql->GetOne("SELECT id from pmw_searchlist where openid='$openid' and type=1 order by id asc");
-        $last_id = $k['id'];
-        //删除倒数排序最后一条数据
-        $dosql->ExecNoneQuery("DELETE from pmw_searchlist where id=$last_id");
-        //往搜索历史记录表里面添加搜索记录
-        $posttime = time();
-        $sql="INSERT INTO  `#@__searchlist` (keyword,openid,posttime,type) values ('$keyword','$openid',$posttime,0)";
-         $dosql->ExecNoneQuery($sql);
-      }else{
-        //往搜索历史记录表里面添加搜索记录
-        $posttime = time();
-        $sql="INSERT INTO  `#@__searchlist` (keyword,openid,posttime,type) values ('$keyword','$openid',$posttime,0)";
-         $dosql->ExecNoneQuery($sql);
-      }
-    //假如搜索记录里面有这个关键字的记录
-     }else{
-       //判断这个用户的历史搜索记录有几条数据
-       $dosql->Execute("SELECT id from pmw_searchlist where openid='$openid' and type=0 order by id desc");
-       $nums = $dosql->GetTotalRow();
-       //每个用户最多只能保存五条数据
-       if($nums<=5){
-         //删除已经存在的这条关键字的记录
-         $dosql->ExecNoneQuery("DELETE from pmw_searchlist where openid='$openid' and type=0 and keyword='$keyword'");
-         //保存最新的搜索关键字
-         //往搜索历史记录表里面添加搜索记录
-         $posttime = time();
-         $sql="INSERT INTO  `#@__searchlist` (keyword,openid,posttime,type) values ('$keyword','$openid',$posttime,0)";
-          $dosql->ExecNoneQuery($sql);
-       }
-     }
-
-     //查询历史搜索记录（显示最新的五条搜索记录）
      $dosql->Execute("SELECT * FROM `#@__searchlist` where openid='$openid' and type=0 order by id desc limit  5",$two);
      while($show=$dosql->GetArray($two)){
       $Data['searchlist'][]=$show;
      }
-
    }
 
-
+    while($row=$dosql->GetArray()){
+      $Data['list'][]=$row;
+    }
       //默认推荐四条数据
       $four=4;
       $dosql->Execute("SELECT * from pmw_travel where state=0 order by rand() limit 4",$four);

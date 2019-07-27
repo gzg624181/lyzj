@@ -315,9 +315,19 @@ else if($action=="checkfailed"){
 // 5.票务订单
 // 6.删除旅行社账号信息
 }
-// elseif(){
-//
-// }
+//更改用户的权限
+elseif($action=="changeforbiden"){
+   $r= $dosql->GetOne("SELECT forbiden FROM pmw_agency where id=$id");
+   $forbiden = $r['forbiden'];
+   //将权限改为允许
+   if($forbiden==1){
+    $dosql->ExecNoneQuery("UPDATE pmw_agency set forbiden=0 where id=$id");
+    }else{
+      $dosql->ExecNoneQuery("UPDATE pmw_agency set forbiden=1 where id=$id");
+    }
+    header("location:$gourl");
+	  exit();
+}
 else
 {
     header("location:$gourl");

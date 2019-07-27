@@ -374,7 +374,7 @@ function https_request($url,$data = null){
 
 
 	//匹配测试
-	function check_str($str, $substr)
+	function check_str($str, $substr)    //原字符串  ，匹配的字符串
 	{
 	 $nums=substr_count($str,$substr);
 	 if ($nums>=1)
@@ -893,5 +893,23 @@ function add_default_price($tid,$sid,$price)
 
   }
 
+}
+
+//获取门票的所有的分类
+
+function get_ticket_class($types)
+{
+	// code...
+	global $dosql;
+
+	$array = explode(",",$types);
+  $title = "";
+	for($i=0;$i<count($array);$i++){
+		$type = $array[$i];
+		$r=$dosql->GetOne("SELECT title FROM pmw_ticketclass where id=$type");
+		$title .= $r['title']."&nbsp;&nbsp;";
+	}
+
+	return $title;
 }
 ?>
