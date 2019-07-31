@@ -42,7 +42,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 		 while($row = $dosql->GetArray()){
 		 ?>
 
-         <span><input type="checkbox" <?php if($row['flag']==$r['flag']){echo "checked";}?>  name="flag[]" id="flag[]" value="<?php echo $row['flag'];?>" /><?php echo $row['flagname'];?><?php echo $row['flag'];?></span>
+         <span><input type="checkbox" <?php if(check_str($row['flag'],$r['flag'])){echo "checked";}?>  name="flag[]" id="flag[]" value="<?php echo $row['flag'];?>" /><?php echo $row['flagname'];?><?php echo $row['flag'];?></span>
 
           <?php }?>
 		 </td>
@@ -61,7 +61,7 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 				<input type="checkbox" <?php if(check_str($r['types'],$row['id'])){echo "checked";}?>  name="types[]" id="types[]" value="<?php echo $row['id'];?>" />
 				<?php echo $row['title'];?></span>
 				 <?php }?>
-    
+
     </td>
   </tr>
 

@@ -21,7 +21,8 @@
      * images          导游头像
      * pics            相册
      * tel             电话号码
-     * content         导游简介
+     * content
+     * experience      带团经验
      */
 require_once("../../include/config.inc.php");
 
@@ -47,6 +48,10 @@ $content = $_POST['content'];
 
 if(isset($_POST['tel'])){
 $tel = $_POST['tel'];
+}
+
+if(isset($_POST['experience'])){
+$experience = $_POST['experience'];
 }
 
 if(isset($token) && $token==$cfg_auth_key){
@@ -115,6 +120,14 @@ if(isset($token) && $token==$cfg_auth_key){
       $sql .= " images='$images'";
     }else{
       $sql .= " images='$images',";
+    }
+  }
+
+  if(isset($experience)){
+    if($lastkey=="experience"){
+      $sql .= " experience='$experience'";
+    }else{
+      $sql .= " experience='$experience',";
     }
   }
 

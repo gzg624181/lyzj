@@ -127,7 +127,7 @@ if(isset($token) && $token==$cfg_auth_key){
      for($i=0;$i<$dosql->GetTotalRow($five);$i++){
      $go=$dosql->GetArray($five);
      $Data['searchlist'][$i]=$go;
-                    }
+     }
      }
 
         $State = 0;

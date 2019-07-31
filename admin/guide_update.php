@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>修改会员</title>
+<title>修改导游信息</title>
 <link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/getuploadify.js"></script>
@@ -16,6 +16,12 @@
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="templates/js/ajax.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
+<style>
+.img {
+  border: 0;
+  border-radius: 12px;
+}
+</style>
 <script>
 
 function message(Id){
@@ -32,6 +38,19 @@ function message(Id){
 });
 }
 
+function messages(Id){
+  // alert(Id);
+   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+   layer.photos({
+   photos: '#layer-photos-demos_'+Id,
+	// area:['300px','270px'],  //图片的宽度和高度
+   shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
+   closeBtn:1,
+   offset:'40px',  //离上方的距离
+   shadeClose:false
+  });
+});
+}
 </script>
 </head>
 <body>
@@ -74,6 +93,30 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td height="45" align="right">导游证号：</td>
 			<td><input type="text" name="cardnumber" id="cardnumber" class="input" value="<?php echo $row['cardnumber']; ?>" /></td>
 		</tr>
+    <tr>
+      <td height="45" align="right">身份证号码：</td>
+      <td><input type="text" name="cardidnumber" id="cardidnumber" class="input" value="<?php echo $row['cardidnumber']; ?>" /></td>
+    </tr>
+    <tr>
+		  <td height="155" align="right">身份证正反面图片：</td>
+		  	<td colspan="11" valign="middle">
+
+        <?php
+        if($row['cardid_picarr']!=""){
+        $arr =explode("|",$row['cardid_picarr']);
+        for($i=0;$i<count($arr);$i++){
+           ?>
+        <div id="layer-photos-demos_<?php  echo $row['id'].$i;?>" class="layer-photos-demo">
+        <img  width="192px;" height="123px" layer-src="<?php echo $cfg_weburl."/".$arr[$i];?>" style="cursor:pointer; float: left;padding:8px;" onclick="messages('<?php echo $row['id'].$i; ?>');"
+        src="<?php echo $cfg_weburl."/".$arr[$i];?>" alt="<?php echo $row['name']; ?>" />
+      </div>
+      <?php }} ?>
+      </td>
+	  </tr>
+    <tr>
+			<td height="45" align="right">带团经验：</td>
+			<td><input type="text"  name="experience" id="experience" class="input"  placeholder="请输入带团经验" value="<?php echo $row['experience'] ?>" /></td>
+		</tr>
         <tr>
 		  <td height="155" align="right">合同：</td>
 		  	<td colspan="11" valign="middle">
@@ -101,7 +144,7 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td height="45" align="right">导游电话：</td>
 			<td><?php echo $row['tel']; ?></td>
 		</tr>
-        <tr>
+    <tr>
 			<td height="45" align="right">密　码：</td>
 			<td><input type="text"  name="password" id="password" class="input"  placeholder="如果密码不修改，则默认为空" /></td>
 		</tr>

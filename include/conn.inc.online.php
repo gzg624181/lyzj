@@ -10,13 +10,13 @@
 $db_host = 'localhost';
 
 //数据库用户名
-$db_user =  'lyzj';
+$db_user =  'lvzj_yishekj_co';
 
 //数据库密码
-$db_pwd = 'cs5SZatdbGXYb6Yt';
+$db_pwd = 'X3z7PDXaQKScMwjQ';
 
 //数据库名
-$db_name =  'lyzj';
+$db_name =  'lvzj_yishekj_co';
 
 //数据表前缀
 $db_tablepre = 'pmw_';

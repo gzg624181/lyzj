@@ -81,7 +81,8 @@ $cfg_ticketsuccess = '6WjPCECjnN2mTuBiIS4Nj8pRKG7boqp6VwPW_M-EGWk';
 $cfg_system_template_message = 'j4AYVQkUlSPB9iBGxdGca20b7n9gdKQbtY7xyodswsE';
 $cfg_contact_name = '邓陈';
 $cfg_contact_tel = '027-87865165';
-$cfg_isguide = 'Y';
+$cfg_isguide = 'N';
 $cfg_free_time = 'j4AYVQkUlSPB9iBGxdGca0WGOkENL_-WSasBPmp_JR0';
 $cfg_free_time_message = 'Y';
+$cfg_default = 'templates/default/images/default.jpg';
 ?>

@@ -442,7 +442,7 @@ unlink($o_pic);
 //     $content=replacePicUrl($content, $cfg_weburl);
 //     echo $content;
 //
-
+//
 //  $content ='22223242345<img alt="" src="/uploads/image/20190627/1561634483.png" /> <img alt="" src="/uploads/image/20190627/1561634044.png" /> 45354325<img alt="" src="/uploads/image/20190627/1561639661.png" /> <img alt="" src="/uploads/image/20190627/1561636990.png" />345254 <img alt="" src="/uploads/image/20190627/1561639134.png" />';
 //
 // $r=$dosql->GetOne("SELECT xuzhi from pmw_ticket where id=1");
@@ -548,24 +548,29 @@ unlink($o_pic);
 //   }
 // }
 
-// $dosql->Execute("SELECT id FROM pmw_ticket");
-// while($row=$dosql->GetArray()){
-//   $id=$row['id'];
-//   $dosql->ExecNoneQuery("UPDATE pmw_ticket set orderid=$id where id=$id");
+
+// $str = "7";
+//
+// $array = explode(",",$str);
+//
+// print_r($array);
+//
+// $types = "7,8,9";
+//
+// $array = explode(",",$types);
+//
+// for($i=0;$i<count($array);$i++){
+//   $type = $array[$i];
+//   $r=$dosql->GetOne("SELECT title FROM pmw_ticketclass where id=$type");
+//   $title .=$r['title'];
 // }
+//
+// echo $title;
 
-$str = "hi钓鱼岛是中国的";
-preg_match_all("/./u", $str, $arr);
-print_r($arr);
-$arr=$arr[0];
-$sql="";
-for($i=0;$i<count($arr);$i++){
-if($i==count($arr)-1){
-  $sql .= "name like ".$arr[$i];
+$id = "34052419800101001X";
+if(is_idcard( $id )){
+  echo "1";
 }else{
-  $sql .= "name like ".$arr[$i]. " and ";
- }
+  echo "0";
 }
-
-echo $sql;
 ?>

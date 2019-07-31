@@ -94,7 +94,7 @@ $num=$dosql->GetTotalRow($one);
 	<div class="cl"></div>
 </div>
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
-  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable" style="word-break:break-all; word-wrap:break-all;">
   <tr align="left" class="head">
     <td width="3%" align="center"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
       <tr align="left" class="head">
@@ -152,15 +152,13 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
                 <td align="center" class="num"><a href="guide.php?check=user&id=<?php echo $row['gid'];?>"><?php echo $row['name']; ?></a></td>
                 <td align="center"><?php echo $sex; ?></td>
-                <td align="center" class="num">
-
-                  <?php echo $freetime;?></td>
+                <td align="center" class="num"  style="line-height:1cm;font-size:12px;padding:5px"><?php echo $freetime;?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
                 <td align="center">
       <?php if($adminlevel==1){ ?>
 			<span class="nb"><a title="删除空闲日期" href="<?php echo $action;?>?action=del5&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
     <?php }else{ ?>
-      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span> 
+      <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
     <?php } ?>
     </td>
                 <?php //}?>

@@ -78,8 +78,8 @@ if(isset($token) && $token==$cfg_auth_key){
     $formid= get_new_formid($openid);  //旅行社formid
 
 
-    $openid_guide=$g['openid'];               //导游openid
-    $form_id =get_new_formid($openid_guide);  //导游formid
+    $openid_guide=$x['openid_guide'];               //导游openid
+    $form_id =get_new_formid($openid_guide);       //导游formid
 
 
     $title=$x['title'];           //旅行社发布的行程标题
@@ -94,7 +94,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $reason =$arr[1];
 
     $tishi="您发布的此条行程已取消，可进入小程序再次发布行程，欢迎您再次使用。";
-
+/*
     $page="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
 
     $data_agency=CancelAgency($title,$time,$reason,$tishi,$openid_agency,$cfg_concel_agency,$page,$formid);
@@ -110,6 +110,7 @@ if(isset($token) && $token==$cfg_auth_key){
   //  $errcode_agency=$res_agency['errcode'];
   //删除已经用过的formid
      del_formid($formid,$openid_agency);
+     */
 //==================================================================================================
     //将旅行社注撤销行程的模板消息保存起来
     $type = 'agency';

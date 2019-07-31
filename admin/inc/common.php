@@ -751,10 +751,12 @@ function isjiesuan($id,$y,$m){
 		$openid= $agency_array['openid'];
 		$formid= $agency_array['formid'];
 		$company = $agency_array['company'];
-
+		$recommender_openid = $agency_array['recommender_openid'];
+    $recommender_type = $agency_array['recommender_type'];
+		$uid = $agency_array['uid'];
 		//将旅行社审核未通过的用户单独放到另外一个表里面,全部都是未审核的
 
-		$sql = "INSERT INTO `#@__un_agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,formid,company,checkinfo) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$company',2)";
+		$sql = "INSERT INTO `#@__un_agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,formid,company,checkinfo,recommender_openid,recommender_type,uid) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$company',2,'$recommender_openid','$recommender_type','$uid')";
 		$dosql->ExecNoneQuery($sql);
 	 }
 
@@ -780,10 +782,13 @@ function isjiesuan($id,$y,$m){
 		$ymdtime = $guide_array['ymdtime'];
 		$images = $guide_array['images'];
 		$getcity = $guide_array['getcity'];
-
+		$recommender_openid = $guide_array['recommender_openid'];
+		$recommender_openid = $guide_array['recommender_openid'];
+		$recommender_type = $guide_array['recommender_type'];
+		$uid = $guide_array['uid'];
 		//将导游审核未通过的用户单独放到另外一个表里面,全部都是未审核的
 
-		$sql = "INSERT INTO `#@__un_guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,checkinfo) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid',2)";
+		$sql = "INSERT INTO `#@__un_guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,checkinfo,recommender_openid,recommender_type,uid) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pics',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid',2,'$recommender_openid','$recommender_type',$uid)";
 		$dosql->ExecNoneQuery($sql);
 	 }
 
@@ -911,5 +916,84 @@ function get_ticket_class($types)
 	}
 
 	return $title;
+}
+
+//获取用户推荐的人数
+
+function get_recommender($openid,$type,$uid)
+{
+	// code...
+	global $dosql;
+
+	$one = 1;
+	$two = 2;
+
+	$dosql->Execute("SELECT id from pmw_agency where recommender_openid='$openid' and recommender_type='$type' and uid='$uid'",$one);
+
+	$nums_agency = $dosql->GetTotalRow($one);
+
+	$dosql->Execute("SELECT id from pmw_guide where recommender_openid='$openid' and recommender_type='$type' and uid='$uid'",$two);
+
+	$nums_guide = $dosql->GetTotalRow($two);
+
+	$nums= $nums_agency +$nums_guide;
+
+	return $nums;
+}
+
+//给推荐人发放推荐佣金
+
+//  推荐人的openid     recommender_openid
+//  此用户的类别        type
+//  此用户的id          id
+
+function send_servant($recommender_openid,$recommender_id,$recommender_type,$type,$uid,$openid)
+{
+
+  global $dosql;
+
+	global $cfg_commisson;
+	//判断此用户是否有推荐人,如果有推荐人的话 ，则向推荐人的账号里面添加佣金
+
+	if($recommender_openid!=""){
+
+  //判断推荐人是否是 导游或者旅行社
+
+  if($recommender_type=="guide"){
+	#如果推荐人是导游的话
+  $r=$dosql->GetOne("SELECT id from pmw_guide where openid ='$recommender_openid'");
+
+	if(is_array($r)){
+
+		$id = $r['id'];
+    //向用户的账号里面添加推荐佣金
+
+		$dosql->ExecNoneQuery("UPDATE pmw_guide set money = money + $cfg_commisson where id=$id");
+
+		//将推广的会员的记录保存下来
+    $addtime = time();
+		$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,recommender_openid,addtime) values ($uid,'$openid','$type','$cfg_commisson',$id,'guide','$recommender_openid',$addtime)");
+}
+}elseif($recommender_type=="agency"){
+
+		#如果推荐人旅行社的话
+		$j=$dosql->GetOne("SELECT id from pmw_agency where openid ='$recommender_openid' and ");
+
+		 if(is_array($j)){
+
+			$id = $j['id'];
+			//向用户的账号里面添加推荐佣金
+
+			$dosql->ExecNoneQuery("UPDATE pmw_agency set money = money + $cfg_commisson where id=$id");
+
+			//将推广的会员的记录保存下来
+			$addtime = time();
+			$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,recommender_openid,addtime) values ($uid,'$openid','$type','$cfg_commisson',$id,'agency','$recommender_openid',$addtime)");
+	}
+}
+
+
+	}
+
 }
 ?>

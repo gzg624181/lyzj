@@ -78,8 +78,10 @@ if(isset($token) && $token==$cfg_auth_key){
       $Data[0]['sex']=$sex;
       $agreement=stripslashes($r['agreement']);
       $agreement=GetPic($agreement, $cfg_weburl);
+
       $pics=stripslashes($r['pics']);
       $pics=GetPics($pics, $cfg_weburl);
+
       $Data[0]['type']='guide';
       $Data[0]['card']=$cfg_weburl."/".$r['card'];
       if(check_str($r['images'],"https")){
@@ -89,6 +91,7 @@ if(isset($token) && $token==$cfg_auth_key){
       }
       $Data[0]['agreement']=$agreement;
       $Data[0]['pics']=$pics;
+
       $State = 1;
       $Descriptor = '导游信息获取成功！';
       $result = array (

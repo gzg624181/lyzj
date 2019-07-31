@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_member  获取用户个人信息
+	   * 链接地址：get_bank  获取用户提现账号信息
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -16,14 +16,14 @@
      *
      * @return string
      *
-     * @
+     * @用户的uid  用户的类别type（agency  guide）
      */
 require_once("../../include/config.inc.php");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $r=$dosql->GetOne("SELECT * FROM `#@__members` WHERE id=$id");
+      $r=$dosql->GetOne("SELECT * FROM `#@__bank` WHERE uid=$uid and type='$type'");
       if(!is_array($r)){
         $State = 0;
         $Descriptor = '暂无数据！';
@@ -35,9 +35,6 @@ if(isset($token) && $token==$cfg_auth_key){
                      );
         echo phpver($result);
       }else{
-      $sex=$r['sex'];
-      switch($sex){ case 1: $sex="男"; break;case 0: $sex='女'; break;}
-      $r['sex']=$sex;
       $State = 1;
       $Descriptor = '内容获取成功！';
       $result = array (

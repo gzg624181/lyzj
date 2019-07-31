@@ -46,15 +46,14 @@ if(isset($token) && $token==$cfg_auth_key){
   $company=$r['company'];
   $starttime_ymd=date("Y-m-d",$starttime);
   $starttime=strtotime($starttime_ymd);
-  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y',
-    '$fabu_ym',$aid,'$jiesuanmoney','$company',$days)";
+  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days,openid,formid) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y','$fabu_ym',$aid,'$jiesuanmoney','$company',$days,'$openid','$formid')";
   $dosql->ExecNoneQuery($sql);
 
  if($cfg_free_time_message=="Y"){
   //匹配用户的空闲时间，旅行社发布的空闲时间如果匹配的话 ，则向导游发送空闲时间的模板消息，每个导游一天最多发送一条消息
    Send_Remind($starttime,$title);
  }
-  //将用户的formid添加进去
+  //将旅行社的formid添加进去
    add_formid($openid,$formid);
 
   $State = 1;

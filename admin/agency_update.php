@@ -18,6 +18,12 @@
 <script type="text/javascript" src="templates/js/getarea.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
+<style>
+img {
+  border: 0;
+  border-radius: 12px;
+}
+</style>
 <script>
 
 function message(Id){
@@ -25,6 +31,20 @@ function message(Id){
    layer.ready(function(){ //为了layer.ext.js加载完毕再执行
    layer.photos({
    photos: '#layer-photos-demo_'+Id,
+	// area:['300px','270px'],  //图片的宽度和高度
+   shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
+   closeBtn:1,
+   offset:'40px',  //离上方的距离
+   shadeClose:false
+  });
+});
+}
+
+function messages(Id){
+  // alert(Id);
+   layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+   layer.photos({
+   photos: '#layer-photos-demos_'+Id,
 	// area:['300px','270px'],  //图片的宽度和高度
    shift: 0 ,//0-6的选择，指定弹出图片动画类型，默认随机
    closeBtn:1,
@@ -69,9 +89,29 @@ $adminlevel=$_SESSION['adminlevel'];
                 </span> </span></td>
 	  </tr>
 		<tr>
-			<td height="45" align="right">公司地址：</td>
-			<td><input type="text" name="address" id="address" class="input" value="<?php echo $row['address']; ?>" /></td>
+			<td height="45" align="right">营业执照号码：</td>
+			<td><input type="text" name="cardpicnumber" id="cardpicnumber" class="input" value="<?php echo $row['cardpicnumber']; ?>" /></td>
 		</tr>
+    <tr>
+			<td height="45" align="right">身份证号码：</td>
+			<td><input type="text" name="cardidnumber" id="cardidnumber" class="input" value="<?php echo $row['cardidnumber']; ?>" /></td>
+		</tr>
+    <tr>
+		  <td height="155" align="right">身份证正反面图片：</td>
+		  	<td colspan="11" valign="middle">
+
+        <?php
+        if($row['cardid_picarr']!=""){
+        $arr =explode("|",$row['cardid_picarr']);
+        for($i=0;$i<count($arr);$i++){
+           ?>
+        <div id="layer-photos-demos_<?php  echo $row['id'].$i;?>" class="layer-photos-demo">
+        <img  width="192px;" height="123px" layer-src="<?php echo $cfg_weburl."/".$arr[$i];?>" style="cursor:pointer; float: left;padding:8px;" onclick="messages('<?php echo $row['id'].$i; ?>');"
+        src="<?php echo $cfg_weburl."/".$arr[$i];?>" alt="<?php echo $row['name']; ?>" />
+      </div>
+      <?php }} ?>
+      </td>
+	  </tr>
         <tr>
 		  <td height="155" align="right">合同：</td>
 		  	<td colspan="11" valign="middle">
@@ -118,6 +158,18 @@ $adminlevel=$_SESSION['adminlevel'];
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'images')">上 传</span> </span></td>
 
           </td>
+		</tr>
+    <tr>
+			<td height="45" align="right">推荐人：</td>
+			<td><input readonly type="text" name="recommender_openid" id="regtime" class="input"  value="<?php
+       $recommender_openid =$row['recommender_openid'];
+       if($recommender_openid!=""){
+       $r = $dosql->GetOne("SELECT nickname FROM pmw_members where openid='$recommender_openid'");
+       if(is_array($r)){
+       echo $r['nickname'];
+       }
+       }
+       ?>"  /></td>
 		</tr>
 		<tr>
 			<td height="45" align="right">注册时间：</td>

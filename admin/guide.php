@@ -166,15 +166,16 @@ $num=$dosql->GetTotalRow($one);
                 <td width="6%" align="center">头像</td>
                 <td width="6%" align="center">导游姓名</td>
                 <td width="3%" align="center">性别</td>
-                <td width="4%" align="center">导游证件</td>
+                <td width="4%" align="center">证件</td>
                 <td width="9%" align="center">导游证号</td>
                 <td width="8%" align="center">导游电话</td>
                 <td width="6%" align="center">导游简介</td>
                 <td width="7%" align="center">导游相册</td>
-                <td width="8%" align="center">最后登陆城市</td>
+                <td width="10%" align="center">登陆城市</td>
                 <td width="11%" align="center">注册时间</td>
-                <td width="8%" align="center">已接行程</td>
-                <td width="7%" align="center">已购票</td>
+                <td width="6%" align="center">已接行程</td>
+                <td width="6%" align="center">已购票</td>
+                <td width="4%" align="center">推荐</td>
                 <td width="10%" align="center">操作</td>
                 </tr>
               <?php
@@ -202,6 +203,7 @@ $num=$dosql->GetTotalRow($one);
 		while($row = $dosql->GetArray())
 		{
 			$id=$row['id'];
+      $type = "guide";
 			switch($row['sex'])
 			{
 				case 1:
@@ -252,15 +254,16 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
                 <td align="center"><?php echo $row['name']; ?></td>
                 <td align="center"><?php echo $sex; ?></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','card');">点击查看</a></td>
-                <td align="center" class="num"><?php echo $row['cardnumber']; ?></td>
+                <td align="center"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','card');">查看</a></td>
+                <td align="center"><?php echo $row['cardnumber']; ?></td>
                 <td align="center"><?php echo $row['tel']; ?></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','content');">点击查看</a></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','pics');">点击查看相册</a></td>
+                <td align="center"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','content');">查看</a></td>
+                <td align="center"><a style="cursor:pointer;" onclick="checkguide('<?php echo $row['id'];?>','pics');">查看</a></td>
                 <td align="center"><?php echo $row['getcity']?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=guide&id=<?php echo $row['id'];?>"><?php echo $guide_num;?></a></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:#4a34ea;font-weight:bold;" href="allorder.php?id=<?php echo $row['id'];?>&type=guide&check=guides"><?php echo get_ticket_sum($row['id'],'guide');?></a></td>
+                <td align="center" class="num"><?php echo get_recommender($row['openid'],$type,$id); ?></td>
                 <td align="center">  <span><?php echo $checkinfo; ?></span> &nbsp;
       <?php if($row['checkinfo']!=2){?>
 			<span><a title="编辑" href="guide_update.php?id=<?php echo $row['id']; ?>">

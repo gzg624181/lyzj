@@ -96,7 +96,7 @@ if(isset($token) && $token==$cfg_auth_key){
   add_formid($openid,$formid);
 
   $formid=get_new_formid($openid);   //导游的formid
-  $openid_guide=$openid;           //导游openid
+  $openid_guide=$openid;             //导游openid
 
   $company=$a['company'];   //旅行社公司名称
 
@@ -111,7 +111,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $time=date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']); //旅行社发布的行程时间
 
   # 更改行程为待确认
-  $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=1,gid=$gid,name='$name_guide' where id=$id");
+  $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=1,gid=$gid,name='$name_guide',openid_guide='$openid',formid_guide='$formid' where id=$id");
 
   $tishi="亲爱的".$name_guide."您好，您预约的行程已提交成功，请尽快与旅行社核实行程信息并查看详情确认此行程。";
 
@@ -153,11 +153,11 @@ if(isset($token) && $token==$cfg_auth_key){
   //===========================================================================================
 
 
-  #向旅行社发送模板消息
+  #向旅行社发送模板消息 ,当条行程的openid在行程表里面查找
   $tel_guide=$g['tel'];
   $timestamp=date("Y-m-d H:i:s");
   $page_agency="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
-  $openid_agency=$a['openid'];     //旅行社联系人openid
+  $openid_agency=$x['openid'];     //发布此条行程的联系人的openid
   $form_id_agency=get_new_formid($openid_agency) ;
 
 
