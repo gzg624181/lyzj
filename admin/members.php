@@ -103,10 +103,12 @@ $num=$dosql->GetTotalRow($one);
 				case 1:
 					$sex = "<i title='男' style='font-size:16px;color: blue; font-weight:bold;' class='fa fa-venus' aria-hidden='true'></i>";
 					break;
-				case 0:
+				case 2:
 					$sex = "<i title='女' style='font-size:16px;color: red;font-weight:bold;' class='fa fa-mercury' aria-hidden='true'></i>";
 					break;
-
+        case 0:
+            $sex = "<i title='未知' style='font-size:16px;color: #666;font-weight:bold;' class='fa fa-minus-circle' aria-hidden='true'></i>";
+            break;
 			}
 			if($row['images']==""){
 			$images="../templates/default/images/noimage.jpg";

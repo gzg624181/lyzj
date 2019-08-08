@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @提供返回参数账号     用户的openid   用户的uid  用户的类别classes
+     * @提供返回参数账号        用户的uid  用户的类别classes
      *                    选择的类别type:
      *                                       审核中：shenhe
      *                                       成功：  success
@@ -27,7 +27,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-     //计算用户的佣余额
+     //计算用户的佣金余额
      if($classes =="agency"){
        $tbname = "pmw_agency";
      }else{
@@ -46,17 +46,17 @@ if(isset($token) && $token==$cfg_auth_key){
       $eight =8;
 
       #所有邀请推荐注册的会员
-      $dosql->Execute("SELECT id FROM pmw_guide where recommender_openid='$openid' and recommender_type='$classes' and uid='$uid'",$one);
+      $dosql->Execute("SELECT id FROM pmw_guide where  recommender_type='$classes' and uid='$uid'",$one);
       $nums_guide = $dosql->GetTotalRow($one);
 
-      $dosql->Execute("SELECT id FROM pmw_agency where recommender_openid='$openid' and recommender_type='$classes' and uid='$uid'",$two);
+      $dosql->Execute("SELECT id FROM pmw_agency where  recommender_type='$classes' and uid='$uid'",$two);
       $nums_agency = $dosql->GetTotalRow($two);
 
       $nums = $nums_guide + $nums_agency;    //合计推荐注册的会员
 
       #审核中
       if($type == 'shenhe'){
-      $dosql->Execute("SELECT name,regtime FROM pmw_guide where recommender_openid='$openid' and recommender_type='$classes' and uid='$uid' and checkinfo=0",$three);
+      $dosql->Execute("SELECT name,regtime FROM pmw_guide where  recommender_type='$classes' and uid='$uid' and checkinfo=0",$three);
       $nums_guide_shenhe = $dosql->GetTotalRow($three);
       $list = array();
       if($nums_guide_shenhe==0){
@@ -70,7 +70,7 @@ if(isset($token) && $token==$cfg_auth_key){
         }
       }
 
-      $dosql->Execute("SELECT name,regtime FROM pmw_agency where recommender_openid='$openid'  and recommender_type='$classes' and uid='$uid' and checkinfo=0",$four);
+      $dosql->Execute("SELECT name,regtime FROM pmw_agency where  recommender_type='$classes' and uid='$uid' and checkinfo=0",$four);
       $nums_agency_shenhe = $dosql->GetTotalRow($four);
       $list2 = array();
       if($nums_agency_shenhe==0){
@@ -99,7 +99,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
 
       #注册成功的会员
-      $dosql->Execute("SELECT name,regtime FROM pmw_guide where recommender_openid='$openid'  and recommender_type='$classes' and uid='$uid' and checkinfo=1",$five);
+      $dosql->Execute("SELECT name,regtime FROM pmw_guide where  recommender_type='$classes' and uid='$uid' and checkinfo=1",$five);
       $nums_guide_success = $dosql->GetTotalRow($five);
 
       if($nums_guide_success==0){
@@ -113,7 +113,7 @@ if(isset($token) && $token==$cfg_auth_key){
         }
       }
 
-      $dosql->Execute("SELECT name,regtime FROM pmw_agency where recommender_openid='$openid'  and recommender_type='$classes' and uid='$uid' and checkinfo=1",$six);
+      $dosql->Execute("SELECT name,regtime FROM pmw_agency where  recommender_type='$classes' and uid='$uid' and checkinfo=1",$six);
       $nums_agency_success = $dosql->GetTotalRow($six);
 
       if($nums_agency_success==0){
@@ -140,7 +140,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     }elseif($type=="failed"){
       #审核未通过的会员
-      $dosql->Execute("SELECT name,regtime,account FROM pmw_un_guide where recommender_openid='$openid'  and recommender_type='$classes' and uid='$uid' and checkinfo=2",$seven);
+      $dosql->Execute("SELECT name,regtime,account FROM pmw_un_guide where  recommender_type='$classes' and uid='$uid' and checkinfo=2",$seven);
       $nums_guide_failed = $dosql->GetTotalRow($seven);
 
       if($nums_guide_failed==0){
@@ -158,7 +158,7 @@ if(isset($token) && $token==$cfg_auth_key){
         }
       }
 
-      $dosql->Execute("SELECT name,regtime,account FROM pmw_un_agency where recommender_openid='$openid' and recommender_type='$classes' and uid='$uid'  and checkinfo=2",$eight);
+      $dosql->Execute("SELECT name,regtime,account FROM pmw_un_agency where  recommender_type='$classes' and uid='$uid'  and checkinfo=2",$eight);
       $nums_agency_failed = $dosql->GetTotalRow($eight);
 
       if($nums_agency_failed==0){

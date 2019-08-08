@@ -1,5 +1,6 @@
 <?php	if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 
+//将php数组转换为json
 function phpver($result){
 	if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     $json = preg_replace_callback("#\\\u([0-9a-f]{4})#i", function ($matches) {
@@ -1054,4 +1055,106 @@ function Get_Guide_Infromation($id)
   }
 
  }
+
+
+  // 统计推荐人推荐的人数
+
+	#当推荐的人数达到系统指定的人数的时候，则将营销活动的总开关关闭掉
+
+	#在总开关开启的情况下，执行统计人数
+
+	function add_recommender_nums()
+	{
+
+		global $dosql;
+
+		global $cfg_allmoney;  //获取营销的总金额
+
+		global $cfg_money;     //获取推荐注册了之后，给推荐人的账户添加佣金
+
+		global $cfg_task;      //获取营销的总金额
+
+		if($cfg_task=="Y"){
+
+		$sumnums = $cfg_allmoney / $cfg_money;
+
+		$dosql->ExecNoneQuery("UPDATE pmw_count set nums = nums +1  where id=1");
+
+		//当统计的人数达到指定的人数的时候，则关闭总开关
+
+		$r = $dosql->GetOne("SELECT nums FROM pmw_count where id=1");
+
+		$nums = $r['nums'];
+
+		if($nums >= $sumnums){  // 当推广的数量大于等于设置的人数的时候，则将总开关关闭
+
+    $dosql->ExecNoneQuery("UPDATE pmw_webconfig set varvalue='N' where varname='cfg_task'");
+
+		}
+
+	  }
+
+	}
+
+
+	// 判断通过推荐码推荐过来的推荐人是否还存在
+
+	function get_recommender_array($recommender_type,$uid)
+	{
+		global $dosql;
+
+		if($recommender_type=="agency"){
+
+			$r=$dosql->GetOne("SELECT id from pmw_agency where id=$uid");
+
+			if(is_array($r)){
+
+        //说明存在这个推荐人
+				$array = array(
+
+									"recommender_type"   => $recommender_type,
+
+									"uid"                => $uid
+
+				);
+			}else{
+
+			//说明推荐人的个人信息已经被删除
+			$array = array(
+
+								"recommender_type"   => "",
+
+								"uid"                => ""
+
+			);
+			}
+		}elseif($recommender_type=="guide"){
+
+			$r=$dosql->GetOne("SELECT id from pmw_guide where id=$uid");
+
+			if(is_array($r)){
+
+        //说明存在这个推荐人
+				$array = array(
+
+									"recommender_type"   => $recommender_type,
+
+									"uid"                => $uid
+
+				);
+			}else{
+
+			//说明推荐人的个人信息已经被删除
+			$array = array(
+
+								"recommender_type"   => "",
+
+								"uid"                => ""
+
+			);
+			}
+		}
+
+		return $array;
+	}
  ?>

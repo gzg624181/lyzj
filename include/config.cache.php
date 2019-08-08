@@ -1,6 +1,6 @@
 <?php	if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 
-$cfg_webname = '游壹路';
+$cfg_webname = '游壹路--管理中心';
 $cfg_weburl = 'https://ceshi.yishekj.xyz';
 $cfg_webpath = '';
 $cfg_author = 'admin';
@@ -84,5 +84,9 @@ $cfg_contact_tel = '027-87865165';
 $cfg_isguide = 'N';
 $cfg_free_time = 'j4AYVQkUlSPB9iBGxdGca0WGOkENL_-WSasBPmp_JR0';
 $cfg_free_time_message = 'Y';
-$cfg_default = 'templates/default/images/default.jpg';
+$cfg_share = 'Y';
+$cfg_task = 'Y';
+$cfg_commisson = '5';
+$cfg_allmoney = '10';
+$cfg_money = '5';
 ?>

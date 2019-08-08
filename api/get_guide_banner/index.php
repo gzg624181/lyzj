@@ -24,7 +24,7 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
     //
-      $dosql->Execute("SELECT * from pmw_banner where typename='guide'");
+      $dosql->Execute("SELECT * from pmw_banner where typename='guide' and checkinfo=1");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

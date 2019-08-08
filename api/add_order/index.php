@@ -53,7 +53,9 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd')";
   if($dosql->ExecNoneQuery($sql)){
-  //下单成功之后发送双向消息
+  //下单成功之后发送双向消息，同时将更新这个景点的票务数量
+
+  $dosql->ExecNoneQuery("UPDATE pmw_ticket set solds = solds + $nums where id=$tid");
   #给购票的下单用户发送模板消息
 
   $form_id=get_new_formid($openid);

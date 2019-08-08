@@ -89,6 +89,60 @@ $adminlevel=$_SESSION['adminlevel'];
             <input style="margin-top:5px;" type="text" name="card" id="card" class="input" value="<?php echo $row['card'];?>"  required="required"/>
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'card')">上 传</span> </span></td>
 	  </tr>
+    <tr>
+     <td height="45" align="right">导游账号余额：</td>
+     <td><input name="money" type="text" class="input" id="money" value="<?php echo $row['money']; ?>"  required="required" readonly/>(禁止修改)</td>
+   </tr>
+   <tr>
+    <td height="45" align="right">账号状态：</td>
+    <td>
+      <p>
+        <label>
+       <input type="radio" readonly name="checkinfo" value="0" <?php if($row['checkinfo']==0){echo "checked='checked'";} ?> id="checkinfo" />
+       待审核</label>
+        &nbsp;&nbsp;
+          <label>
+         <input type="radio" readonly name="checkinfo" value="1" <?php if($row['checkinfo']==1){echo "checked='checked'";} ?> id="checkinfo" />
+         审核通过</label>
+          &nbsp;&nbsp;
+       <label>
+         <input type="radio" readonly name="checkinfo" value="2" <?php if($row['checkinfo']==2){echo "checked='checked'";} ?> id="checkinfo" />
+         审核失败</label>&nbsp;&nbsp;(禁止修改)<br />
+       </p>
+
+    </td>
+   </tr>
+   <tr>
+    <td height="45" align="right">用户权限：</td>
+    <td>
+      <p>
+          <label>
+         <input type="radio" name="forbiden" value="1" <?php if($row['forbiden']==1){echo "checked='checked'";} ?> id="forbiden" />
+         通过</label>
+          &nbsp;&nbsp;
+       <label>
+         <input type="radio" name="forbiden" value="0" <?php if($row['forbiden']==0){echo "checked='checked'";} ?> id="forbiden" />
+         禁止</label><span class="num" style="color:red">（权限禁止后，则用户不能进行任何操作，请谨慎操作！）</span><br />
+
+       </p>
+
+    </td>
+   </tr>
+   <tr>
+    <td height="45" align="right">用户提现开关：</td>
+    <td>
+      <p>
+          <label>
+         <input type="radio" name="cashmoney" value="1" <?php if($row['cashmoney']==1){echo "checked='checked'";} ?> id="cashmoney" />
+         开启</label>
+          &nbsp;&nbsp;
+       <label>
+         <input type="radio" name="cashmoney" value="0" <?php if($row['cashmoney']==0){echo "checked='checked'";} ?> id="cashmoney" />
+         关闭</label><br />
+       </p>
+    </td>
+  </tr>
+
 		<tr>
 			<td height="45" align="right">导游证号：</td>
 			<td><input type="text" name="cardnumber" id="cardnumber" class="input" value="<?php echo $row['cardnumber']; ?>" /></td>
@@ -160,6 +214,52 @@ $adminlevel=$_SESSION['adminlevel'];
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'images')">上 传</span> </span></td>
 
           </td>
+		</tr>
+    <tr>
+			<td height="45" align="right">推荐人：</td>
+			<td><input readonly type="text" name="recommender_openid" id="recommender_openid" class="input"  value="<?php
+      $recommender_id = $row['uid'];  //推荐人的id
+      $recommender_type = $row['recommender_type']; //推荐人的类型
+      if($recommender_type=="guide"){
+        $tb = "pmw_guide";
+        $tyname ="导游";
+      }elseif($recommender_type=="agency"){
+        $tb = "pmw_agency";
+        $tyname ="旅行社";
+      }
+
+      if($recommender_id!=""){
+        $k = $dosql->GetOne("SELECT name from $tb where id=$recommender_id");
+        if(is_array($k)){
+        $recommender_name = $k['name'];
+        }else{
+          $recommender_name = '';
+        }
+        }else{
+          $recommender_name = '';
+        }
+        echo $recommender_name;
+       ?>"  /></td>
+		</tr>
+
+    <tr>
+			<td height="45" align="right">推荐人类型：</td>
+			<td><input readonly type="text" name="recommender_type" id="recommender_type" class="input"  value="<?php
+       $recommender_type =$row['recommender_type'];
+       if($recommender_type =="agency"){
+       echo "旅行社";
+       }else{
+       echo "导游";
+       }
+       ?>"  />(禁止修改)</td>
+		</tr>
+    <tr>
+			<td height="45" align="right">注册IP：</td>
+			<td><input readonly type="text" name="regip" id="regip" class="input"  value="<?php echo $row['regip']; ?>"  />(禁止修改)</td>
+		</tr>
+    <tr>
+			<td height="45" align="right">注册城市：</td>
+			<td><input readonly type="text" name="getcity" id="getcity" class="input"  value="<?php echo $row['getcity']; ?>"  />(禁止修改)</td>
 		</tr>
 		<tr>
 			<td height="45" align="right">注册时间：</td>

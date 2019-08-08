@@ -162,6 +162,10 @@ else if($action=='share_update'){
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET title='$title',imagesurl='$pic' where id=1");
 	$gourl="share.php";
 	header("LOCATION:$gourl");
+}else if($action=='sharepic_update'){
+	$dosql->ExecNoneQuery("UPDATE pmw_share SET title='$title',imagesurl='$imagesurl', share='$share',tubiaopic='$tubiaopic' where id=3");
+	$gourl="share.php";
+	header("LOCATION:$gourl");
 }
 else if($action=="xieyi_update"){
 	$dosql->ExecNoneQuery("UPDATE pmw_xieyi SET content='$content' where id=1");

@@ -723,6 +723,7 @@ function isjiesuan($id,$y,$m){
 		// code...
 		global $dosql;
 		$r=$dosql->GetOne("SELECT SUM(nums) as nums from pmw_order where type='$type' and did=$id");
+
 		$nums=$r['nums'];
 		if($nums==null){
 			$nums=0;
@@ -920,7 +921,7 @@ function get_ticket_class($types)
 
 //获取用户推荐的人数
 
-function get_recommender($openid,$type,$uid)
+function get_recommender($type,$uid)
 {
 	// code...
 	global $dosql;
@@ -928,11 +929,11 @@ function get_recommender($openid,$type,$uid)
 	$one = 1;
 	$two = 2;
 
-	$dosql->Execute("SELECT id from pmw_agency where recommender_openid='$openid' and recommender_type='$type' and uid='$uid'",$one);
+	$dosql->Execute("SELECT id from pmw_agency where recommender_type='$type' and uid='$uid'",$one);
 
 	$nums_agency = $dosql->GetTotalRow($one);
 
-	$dosql->Execute("SELECT id from pmw_guide where recommender_openid='$openid' and recommender_type='$type' and uid='$uid'",$two);
+	$dosql->Execute("SELECT id from pmw_guide where recommender_type='$type' and uid='$uid'",$two);
 
 	$nums_guide = $dosql->GetTotalRow($two);
 
@@ -944,10 +945,16 @@ function get_recommender($openid,$type,$uid)
 //给推荐人发放推荐佣金
 
 //  推荐人的openid     recommender_openid
+//  推荐人的id         recommender_id
+//  推荐人的类别        recommender_type
 //  此用户的类别        type
-//  此用户的id          id
+//  此用户的id          uid
+//  此用户的openid      openid
 
-function send_servant($recommender_openid,$recommender_id,$recommender_type,$type,$uid,$openid)
+//如果有推荐人的时候，则执行以下发送佣金的函数
+
+
+function send_servant($recommender_id,$recommender_type,$type,$uid,$openid)
 {
 
   global $dosql;
@@ -955,45 +962,34 @@ function send_servant($recommender_openid,$recommender_id,$recommender_type,$typ
 	global $cfg_commisson;
 	//判断此用户是否有推荐人,如果有推荐人的话 ，则向推荐人的账号里面添加佣金
 
-	if($recommender_openid!=""){
-
   //判断推荐人是否是 导游或者旅行社
 
   if($recommender_type=="guide"){
+
 	#如果推荐人是导游的话
-  $r=$dosql->GetOne("SELECT id from pmw_guide where openid ='$recommender_openid'");
 
-	if(is_array($r)){
+    //向用户的账号里面添加推荐佣金,
 
-		$id = $r['id'];
-    //向用户的账号里面添加推荐佣金
-
-		$dosql->ExecNoneQuery("UPDATE pmw_guide set money = money + $cfg_commisson where id=$id");
+		$dosql->ExecNoneQuery("UPDATE pmw_guide set money = money + $cfg_commisson,cashmoney=1 where id=$recommender_id");
 
 		//将推广的会员的记录保存下来
     $addtime = time();
-		$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,recommender_openid,addtime) values ($uid,'$openid','$type','$cfg_commisson',$id,'guide','$recommender_openid',$addtime)");
-}
-}elseif($recommender_type=="agency"){
+		$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,addtime) values ($uid,'$openid','$type','$cfg_commisson',$recommender_id,'guide',$addtime)");
 
-		#如果推荐人旅行社的话
-		$j=$dosql->GetOne("SELECT id from pmw_agency where openid ='$recommender_openid' and ");
+		}elseif($recommender_type=="agency"){
 
-		 if(is_array($j)){
+			#如果推荐人是导游的话
 
-			$id = $j['id'];
-			//向用户的账号里面添加推荐佣金
+		    //向用户的账号里面添加推荐佣金,
 
-			$dosql->ExecNoneQuery("UPDATE pmw_agency set money = money + $cfg_commisson where id=$id");
+				$dosql->ExecNoneQuery("UPDATE pmw_agency set money = money + $cfg_commisson,cashmoney=1 where id=$recommender_id");
 
-			//将推广的会员的记录保存下来
-			$addtime = time();
-			$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,recommender_openid,addtime) values ($uid,'$openid','$type','$cfg_commisson',$id,'agency','$recommender_openid',$addtime)");
-	}
-}
+				//将推广的会员的记录保存下来
+		    $addtime = time();
+				$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,addtime) values ($uid,'$openid','$type','$cfg_commisson',$recommender_id,'agency',$addtime)");
 
+    }
 
-	}
 
 }
 ?>

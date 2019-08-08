@@ -72,10 +72,71 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td height="45" align="right"> 联系人姓名：</td>
 			<td><input name="name" type="text" class="input" id="name" value="<?php echo $row['name']; ?>"  required="required" /></td>
 		</tr>
+
 		<tr>
 		  <td height="45" align="right">旅行社名称：</td>
 		  <td><input name="company" type="text" class="input" id="company" value="<?php echo $row['company']; ?>"  required="required" /></td>
 	  </tr>
+
+    <tr>
+      <td height="45" align="right">旅行社地址：</td>
+      <td><input name="address" type="text" class="input" id="address" value="<?php echo $row['address']; ?>"  required="required" /></td>
+    </tr>
+
+     <tr>
+      <td height="45" align="right">用户账号余额：</td>
+      <td><input name="money" type="text" class="input" id="money" value="<?php echo $row['money']; ?>"  required="required" readonly/>(禁止修改)</td>
+    </tr>
+    <tr>
+     <td height="45" align="right">账号状态：</td>
+     <td>
+       <p>
+         <label>
+        <input type="radio" readonly name="checkinfo" value="0" <?php if($row['checkinfo']==0){echo "checked='checked'";} ?> id="checkinfo" />
+        待审核</label>
+         &nbsp;&nbsp;
+           <label>
+          <input type="radio" readonly name="checkinfo" value="1" <?php if($row['checkinfo']==1){echo "checked='checked'";} ?> id="checkinfo" />
+          审核通过</label>
+           &nbsp;&nbsp;
+        <label>
+          <input type="radio" readonly name="checkinfo" value="2" <?php if($row['checkinfo']==2){echo "checked='checked'";} ?> id="checkinfo" />
+          审核失败</label>&nbsp;&nbsp;(禁止修改)<br />
+        </p>
+
+     </td>
+    </tr>
+    <tr>
+     <td height="45" align="right">用户权限：</td>
+     <td>
+       <p>
+           <label>
+          <input type="radio" name="forbiden" value="1" <?php if($row['forbiden']==1){echo "checked='checked'";} ?> id="forbiden" />
+          通过</label>
+           &nbsp;&nbsp;
+        <label>
+          <input type="radio" name="forbiden" value="0" <?php if($row['forbiden']==0){echo "checked='checked'";} ?> id="forbiden" />
+          禁止</label><span class="num" style="color:red">（权限禁止后，则用户不能进行任何操作，请谨慎操作！）</span><br />
+
+        </p>
+
+     </td>
+    </tr>
+    <tr>
+     <td height="45" align="right">用户提现开关：</td>
+     <td>
+       <p>
+           <label>
+ 		      <input type="radio" name="cashmoney" value="1" <?php if($row['cashmoney']==1){echo "checked='checked'";} ?> id="cashmoney" />
+ 		      开启</label>
+           &nbsp;&nbsp;
+ 		    <label>
+ 		      <input type="radio" name="cashmoney" value="0" <?php if($row['cashmoney']==0){echo "checked='checked'";} ?> id="cashmoney" />
+ 		      关闭</label><br />
+ 	      </p>
+     </td>
+   </tr>
+
 
 		<tr>
 		  <td height="155" align="right">营业执照：</td>
@@ -161,24 +222,54 @@ $adminlevel=$_SESSION['adminlevel'];
 		</tr>
     <tr>
 			<td height="45" align="right">推荐人：</td>
-			<td><input readonly type="text" name="recommender_openid" id="regtime" class="input"  value="<?php
-       $recommender_openid =$row['recommender_openid'];
-       if($recommender_openid!=""){
-       $r = $dosql->GetOne("SELECT nickname FROM pmw_members where openid='$recommender_openid'");
-       if(is_array($r)){
-       echo $r['nickname'];
-       }
-       }
-       ?>"  /></td>
+			<td><input readonly type="text" name="uid" id="uid" class="input"  value="<?php
+      $recommender_id = $row['uid'];  //推荐人的id
+      $recommender_type = $row['recommender_type']; //推荐人的类型
+      if($recommender_type=="guide"){
+        $tb = "pmw_guide";
+        $tyname ="导游";
+      }elseif($recommender_type=="agency"){
+        $tb = "pmw_agency";
+        $tyname ="旅行社";
+      }
+
+      if($recommender_id!=""){
+        $k = $dosql->GetOne("SELECT name from $tb where id=$recommender_id");
+        if(is_array($k)){
+        $recommender_name = $k['name'];
+        }else{
+          $recommender_name = '';
+        }
+        }else{
+          $recommender_name = '';
+        }
+        echo $recommender_name;
+       ?>"  />(禁止修改)</td>
 		</tr>
-		<tr>
+
+    <tr>
+			<td height="45" align="right">推荐人类型：</td>
+			<td><input readonly type="text" name="recommender_type" id="recommender_type" class="input"  value="<?php
+       $recommender_type =$row['recommender_type'];
+       if($recommender_type =="agency"){
+       echo "旅行社";
+       }else{
+       echo "导游";
+       }
+       ?>"  />(禁止修改)</td>
+		</tr>
+    <tr>
+			<td height="45" align="right">注册IP：</td>
+			<td><input readonly type="text" name="regip" id="regip" class="input"  value="<?php echo $row['regip']; ?>"  />(禁止修改)</td>
+		</tr>
+    <tr>
+			<td height="45" align="right">注册城市：</td>
+			<td><input readonly type="text" name="getcity" id="getcity" class="input"  value="<?php echo $row['getcity']; ?>"  />(禁止修改)</td>
+		</tr>
+    <tr>
 			<td height="45" align="right">注册时间：</td>
 			<td><input type="text" name="regtime" id="regtime" class="input"  value="<?php echo date("Y-m-d H:i:s",$row['regtime']); ?>"  /></td>
 		</tr>
-        <?php
-		if($adminlevel==1){
-		?>
-        <?php }?>
 	</table>
 	<div class="formSubBtn">
 		<input type="submit" class="submit" value="提交" />

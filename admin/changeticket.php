@@ -35,8 +35,8 @@
 </head>
 <script>
 function closes(){
-	
-  var index=parent.layer.getFrameIndex(window.name);
+
+var index=parent.layer.getFrameIndex(window.name);
 
 parent.layer.close(index);
 }
@@ -59,7 +59,7 @@ $company= $s['company'];
 
 }elseif($type=="guide"){
 $r=$dosql->GetOne("select * from `#@__guide` where id=$id");
-$tp="导游";	
+$tp="导游";
 $name=$r['name'];
 $tel=$r['tel'];
 $company=$r['name'];

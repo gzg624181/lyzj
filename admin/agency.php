@@ -72,6 +72,15 @@ layer.open({
   }
 }
 
+ function userinfo_agency(id) {
+   layer.open({
+      type:2,
+      title:'旅行社注册详情',
+      maxmin:true,
+      area:['800px','550px'],
+      content: 'userinfo_agency.php?id='+id,
+   });
+ }
 //更改用户的权限  forbiden 1，允许 0，禁止
 function changeforbiden(id){
   layer.confirm('是否更改用户的权限？',function(index){
@@ -96,14 +105,6 @@ if($("#keyword").val() == "")
 }
 window.location.href='agency.php?keyword='+keyword;
 }
-function member_update(Id){
- var adminlevel=document.getElementById("adminlevel").value;
-  if(adminlevel==1){
-	  window.location("member_update.php?id="+Id);
-    }else{
-	  alert("亲，您还没有操作本模块的权限，请联系超级管理员！");
-		}
-	}
 
 function del_member(){
  var adminlevel=document.getElementById("adminlevel").value;
@@ -165,14 +166,14 @@ $num=$dosql->GetTotalRow($one);
                 <td width="7%" align="center">用户账号</td>
                 <td width="6%" align="center">头像</td>
                 <td width="6%" align="center">姓名</td>
-                <td width="5%" align="center">营业执照</td>
+                <td width="5%" align="center">执照</td>
                 <td width="11%" align="center">旅行社名称</td>
-                <td width="10%" align="center">公司地址</td>
                 <td width="8%" align="center">联系电话</td>
-                <td width="9%" align="center">最后登陆城市</td>
+                <td width="4%" align="center">剩余推广佣金</td>
+                <td width="9%" align="center">推荐人</td>
                 <td width="10%" align="center">注册时间</td>
-                <td width="6%" align="center">行程</td>
-                <td width="6%" align="center">已购票</td>
+                <td width="4%" align="center">行程</td>
+                <td width="4%" align="center">已购票</td>
                 <td width="4%" align="center">推荐</td>
                 <td width="10%" align="center">操作</td>
                 </tr>
@@ -196,18 +197,37 @@ $num=$dosql->GetTotalRow($one);
 		$dopage->GetPage("SELECT * FROM $tbname",15);
 		}
 
-
-
 		while($row = $dosql->GetArray())
 		{
 			$id=$row['id'];
       $type= "agency";
 			if($row['images']==""){
 			$images="../templates/default/images/noimage.jpg";
-    }elseif(check_str($row['images'],"https")){
-     $images=$row['images'];   //用户头像
-    }else{
+      }elseif(check_str($row['images'],"https")){
+       $images=$row['images'];   //用户头像
+      }else{
       $images=$cfg_weburl."/".$row['images'];
+      }
+
+      $recommender_id = $row['uid'];  //推荐人的id
+      $recommender_type = $row['recommender_type']; //推荐人的类型
+
+      if($recommender_type=="guide"){
+        $tb = "pmw_guide";
+        $tyname ="导游";
+      }elseif($recommender_type=="agency"){
+        $tb = "pmw_agency";
+        $tyname ="旅行社";
+      }
+      if($recommender_id!=""){
+        $k = $dosql->GetOne("SELECT name from $tb where id=$recommender_id");
+        if(is_array($k)){
+        $recommender_name = $k['name'];
+      }else{
+        $recommender_name = '<i title="无推荐人" class="fa fa-minus-circle" aria-hidden="true"></i>';
+      }
+      }else{
+        $recommender_name = '<i title="无推荐人" class="fa fa-minus-circle" aria-hidden="true"></i>';
       }
 
 			if($row['checkinfo']==0){
@@ -218,7 +238,7 @@ $num=$dosql->GetTotalRow($one);
 
 			}elseif($row['checkinfo']==1){
 
-			 $checkinfo = "<i style='color:#509ee1; cursor:pointer;' title='审核已通过' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
+			 $checkinfo = "<i onClick='userinfo_agency({$id})' style='color:#509ee1; cursor:pointer;' title='审核已通过,点击查看旅行社详情' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
 
        if($row['forbiden']==0){
        $checkinfo .= "&nbsp;&nbsp;&nbsp;"."<i onclick='changeforbiden({$id})' style='color:red; cursor:pointer;' title='账户权限已被禁止，点击更改用户权限' class='fa fa-toggle-on' aria-hidden='true'></i>";
@@ -243,15 +263,16 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><?php echo $row['account']; ?></td>
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
                 <td align="center"><?php echo $row['name']; ?></td>
-                <td align="center" class="num"><a style="cursor:pointer;" onclick="checkagency('<?php echo $row['id'];?>','cardpic');">查看</a></td>
+                <td align="center"><a style="cursor:pointer;" onclick="checkagency('<?php echo $row['id'];?>','cardpic');">查看</a></td>
                 <td align="center"><?php echo $row['company']; ?></td>
-                <td align="center"><?php echo $row['address']; ?></td>
                 <td align="center"><?php echo $row['tel']; ?></td>
-                <td align="center"><?php echo $row['getcity']?></td>
+                <td align="center" class="num"><?php echo sprintf("%.2f",$row['money']);?></td>
+                <td align="center"><?php echo $recommender_name;?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['regtime']);?></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:red;font-weight:bold;" href="travel_list.php?check=agency&id=<?php echo $row['id'];?>"><?php echo $agency_num;?></a></td>
                 <td align="center" class="num"><a title="点击查看详情"  style="color:#4a34ea;font-weight:bold;" href="allorder.php?id=<?php echo $row['id'];?>&type=agency&check=agencys"><?php echo get_ticket_sum($row['id'],'agency');?></a></td>
-                <td align="center" class="num"><?php echo get_recommender($row['openid'],$type,$id); ?></td>
+                <td align="center" class="num">
+                  <a title="点击查看推荐注册的会员列表" href="recommender.php?uid=<?php echo $id; ?>&type=agency" ><?php echo get_recommender($type,$id); ?></a></td>
                 <td align="center">
                 <span><?php echo $checkinfo; ?></span> &nbsp;
       <?php if($row['checkinfo']!=2){?>

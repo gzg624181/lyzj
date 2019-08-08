@@ -30,7 +30,7 @@ if(isset($token) && $token==$cfg_auth_key){
   if($type =="agency"){
      $tbname = "pmw_agency";
   }else{
-     $tbname =  "pmw_guide";
+     $tbname = "pmw_guide";
   }
 
   $r = $dosql->GetOne("SELECT money from $tbname where id=$uid");

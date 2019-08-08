@@ -136,6 +136,20 @@ switch ($type) {
 				</script></td>
        	  </tr>
           <tr>
+            <td height="40" align="right">是否显示：</td>
+            <td>
+          <p>
+              <label>
+    		      <input type="radio" name="checkinfo" value="1" <?php if($row['checkinfo']==1){echo "checked='checked'";}?> id="checkinfo" />
+    		      显示</label>
+              &nbsp;&nbsp;
+    		    <label>
+    		      <input name="checkinfo" type="radio" id="checkinfo" value="0" <?php if($row['checkinfo']==0){echo "checked='checked'";}?> />
+    		      隐藏</label><br />
+    	      </p>
+          </td>
+        </tr>
+          <tr>
         	  <td height="40" align="right"></td>
         	  <td colspan="2"> <div class="formSubBtn" style="float:left; margin-bottom:30px;">
          <input type="submit" class="submit" value="保存" />

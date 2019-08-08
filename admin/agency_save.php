@@ -41,24 +41,21 @@ if($action == 'update')
 
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
-  $r = $dosql->GetOne("SELECT id from pmw_agency where cardpicnumber='$cardpicnumber' and checkinfo=1");
-  if(!is_array($r)){
+
 
   if($password==""){ //密码不修改
-    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber' WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber',cashmoney=$cashmoney,forbiden=$forbiden WHERE id=$id";
   }else{
     $password=md5(md5($password));
-    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',password='$password',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber'  WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',password='$password',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber',cashmoney=$cashmoney,forbiden=$forbiden  WHERE id=$id";
   }
+
   if($dosql->ExecNoneQuery($sql))
 	{
 
 		header("location:$gourl");
 		exit();
 	}
-}else{
-  ShowMsg("营业执照号码已被注册，请重新修改！",-1);
-}
 
 
 }
@@ -87,11 +84,13 @@ else if($action == 'checkagency')
      $applytime=date("Y-m-d H:i:s",$s['regtime']);
      $sendtime=date("Y-m-d H:i:s");
      $content="亲爱的会员您好，恭喜您申请的旅行社注册信息已通过审核！";
-     $recommender_openid =$s['recommender_openid'] ;   //推荐人的openid
+
      $recommender_id = $s['uid'];                      //推荐人的id
      $recommender_type = $s['recommender_type'];       //推荐人的类别
-     //给推荐人发送推荐佣金
-     send_servant($recommender_openid,$recommender_id,$recommender_type,'agency',$id,$s['openid']);
+     //给推荐人发送推荐佣金,
+     if($recommender_id!="" && $recommender_type!=""){
+     send_servant($recommender_id,$recommender_type,'agency',$id,$s['openid']);
+     }
      //============================================================================================
          //将旅行社注册成功的系统消息保存起来
          $type=$info;
@@ -145,7 +144,7 @@ else if($action == 'checkagency')
     $tbname="pmw_guide";
     $dosql->ExecNoneQuery("UPDATE $tbname SET checkinfo=1 WHERE id=$id");
 
-    $s=$dosql->GetOne("select * from $tbname where id=$id");
+    $s=$dosql->GetOne("SELECT * from $tbname where id=$id");
     $tbnames='pmw_message';
     $tp="导游";
     $name=$s['name'];
@@ -154,11 +153,14 @@ else if($action == 'checkagency')
     $applytime=date("Y-m-d H:i:s",$s['regtime']);
     $sendtime=date("Y-m-d H:i:s");
     $content="亲爱的会员您好，恭喜您申请的导游注册信息已通过审核！";
-    $recommender_openid =$s['recommender_openid'] ;   //推荐人的openid
+
+
     $recommender_id = $s['uid'];                      //推荐人的id
     $recommender_type = $s['recommender_type'];       //推荐人的类别
-    //给推荐人发送推荐佣金
-    send_servant($recommender_openid,$recommender_id,$recommender_type,'guide',$id,$s['openid']);
+    //给推荐人发送推荐佣金,如果有推荐人的时候：
+    if($recommender_id!="" && $recommender_type!="" ){
+    send_servant($recommender_id,$recommender_type,'guide',$id,$s['openid']);
+    }
 //============================================================================================
     //将导游注册成功的系统消息保存起来
     $type=$info;
@@ -266,7 +268,7 @@ else if($action=="checkfailed"){
 
   }elseif($type=="guide"){
   $tbname="pmw_guide";
-  // $dosql->ExecNoneQuery("UPDATE $tbname SET checkinfo=2 WHERE id=$id");
+
   //将用户的发送消息保存起来
   $randnumber=rand(111111111,999999999);
   $tbnames='pmw_agency_message';

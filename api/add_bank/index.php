@@ -17,12 +17,12 @@
      * @return string
      *
      * @导游或者旅行社添加提现账号
-     * uid             用户id
+     * uid            用户id
      * type           用户的类型（agency,guide）
-     * openid          用户的openid
+     * openid         用户的openid
      * name           提现用户的姓名
-     * tel           提现用户的电话号码
-     * cardname      提现银行名称
+     * tel            提现用户的电话号码
+     * cardname       提现银行名称
      * cardnumber     提现银行卡号
      */
 require_once("../../include/config.inc.php");
@@ -33,9 +33,9 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $addtime=time();  //添加时间
 
-
+  $r = $dosql->GetOne("SELECT id from pmw_bank where uid=$uid and type='$type'");
+  if(!is_array($r)){
   $sql = "INSERT INTO `#@__bank`(uid,name,tel,cardname,cardnumber,openid,type,addtime) VALUES ($uid,'$name','$tel','$cardname',  '$cardnumber','$openid','$type',$addtime)";
-
   if($dosql->ExecNoneQuery($sql)){
     $State = 1;
     $Descriptor = '用户银行卡信息添加成功!';
@@ -57,7 +57,7 @@ if(isset($token) && $token==$cfg_auth_key){
                  );
     echo phpver($result);
   }
-
+ }
 
 }else{
   $State = 520;

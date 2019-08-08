@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_banner  获取banner图片
+	   * 链接地址：get_index_banner  获取首页banner图片
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -23,8 +23,11 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-    //
-      $dosql->Execute("SELECT * from pmw_banner where typename='index'");
+       //判断营销活动的开关是否开启
+       $r = $dosql->GetOne("SELECT varvalue from pmw_webconfig where varname='cfg_task'");
+       $cfg_task = $r['varvalue'];
+       
+      $dosql->Execute("SELECT * from pmw_banner where typename='index' and checkinfo=1");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;
@@ -40,11 +43,29 @@ if(isset($token) && $token==$cfg_auth_key){
         for($i=0;$i<$dosql->GetTotalRow();$i++){
         $row=$dosql->GetArray();
         $Data[]=$row;
-        $pic=$cfg_weburl."/".$row['pic'];
-        $content=stripslashes($row['content']);
-        $content=rePic($content, $cfg_weburl);
-        $Data[$i]['content']=$content;
-        $Data[$i]['pic']=$pic;
+        $id = $Data[$i]['id'];
+        //首页营销banner图片根据营销开关是否显示出来,指定的id为49，不允许删除
+
+        if($id==49){
+
+          //当营销的开关关闭的时候，则在首页不显示
+          if($cfg_task == "N" ){
+            unset($Data[$i]);
+          }elseif($cfg_task == "Y" ){
+            $Data[$i]['linkurl']="指向营销推广的页面的url";
+            $pic=$cfg_weburl."/".$row['pic'];
+            $Data[$i]['pic']=$pic;
+            $Data[$i]['type']="share";
+          }
+
+        }else{
+          $pic=$cfg_weburl."/".$row['pic'];
+          $content=stripslashes($row['content']);
+          $content=rePic($content, $cfg_weburl);
+          $Data[$i]['content']=$content;
+          $Data[$i]['pic']=$pic;
+        }
+
       }
       $State = 1;
       $Descriptor = '图片获取成功！';

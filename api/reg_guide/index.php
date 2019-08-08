@@ -156,7 +156,19 @@ if(is_array($r)){
     $card_picarr .= $thispic;
   }
 
-  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,cardidnumber,cardid_picarr,experience,recommender_openid,uid,recommender_type) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$cardidnumber','$card_picarr','$experience','$recommender_openid','$uid','$recommender_type')";
+  //判断是否有这个推荐人的信息
+  if($uid!=""){
+    $arr = get_recommender_array($recommender_type,$uid);
+    $recommender_type   = $arr['recommender_type'];
+    $uid = $arr['uid'];
+  }
+
+  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,cardidnumber,cardid_picarr,experience,uid,recommender_type) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$cardidnumber','$card_picarr','$experience','$uid','$recommender_type')";
+
+  // 添加推荐统计人数，如果是推荐人推荐注册过来的话，则记录推荐的人数
+  if($uid!=""){
+    add_recommender_nums();
+  }
 
   add_formid($openid,$formid);
 

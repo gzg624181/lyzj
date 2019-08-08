@@ -11,7 +11,7 @@
      * @param string $Descriptor  提示信息
      *
 	   * @param string $Version  操作时间
-     *
+     *管沟  ceshi     
      * @param array $Data 数据
      *
      * @return string
@@ -25,9 +25,9 @@ if(isset($token) && $token==$cfg_auth_key){
    if(isset($page)){
     $pagenumber=4;
     $first=$page * $pagenumber;
-    $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 order by id desc limit $first,$pagenumber");
+    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 order by id desc limit $first,$pagenumber");
    }else{
-    $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 order by id desc limit 0,$pagenumber");
+    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 order by id desc limit 0,$pagenumber");
   }
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){

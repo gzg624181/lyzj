@@ -81,14 +81,14 @@ a:hover {
 </div>
 <table width="100%" style="background-image:url(templates/images/bg1.jpg); height:200px; margin-bottom:25px;border-radius: 3px;" >
   <tr>
-    <td width="27%" height="53" class="fon" style="text-align: center">今日购票订单</td>
-    <td width="29%" class="fon" style="text-align: center">今日支付总额</td>
-    <td width="22%" class="fon" style="text-align: center">今日旅行社注册会员</td>
+    <td width="25%" height="53" class="fon" style="text-align: center">今日购票订单</td>
+    <td width="25%" class="fon" style="text-align: center">今日支付总额</td>
+    <td width="25%" class="fon" style="text-align: center">今日旅行社注册会员</td>
     <td width="2%" style="text-align: center">&nbsp;</td>
-    <td width="20%" class="fon" style="text-align: center">今日导游注册会员</td>
+    <td width="23%" class="fon" style="text-align: center">今日导游注册会员</td>
   </tr>
     <tr>
-    <td width="27%" height="32" class="ziti" style="text-align: center;"><a style=" color:white;" href="allorder.php?check=today"><?php
+    <td width="25%" height="32" class="ziti" style="text-align: center;"><a style=" color:white;" href="allorder.php?check=today"><?php
 				$starttime =strtotime(date("Y-m-d"));
         $endtime = strtotime(date("Y-m-d",time()+24*3600));
 				$dosql->Execute("SELECT id from pmw_order where posttime >=$starttime and posttime<$endtime");
@@ -126,7 +126,7 @@ a:hover {
 					?></a></td>
   </tr>
   <tr>
-    <td width="27%" height="20" class="tor" style="text-align: center">昨日：<a style="color:white;" href="allorder.php?check=tomorrowdingdan"><?php
+    <td width="25%" height="20" class="tor" style="text-align: center">昨日：<a style="color:white;" href="allorder.php?check=tomorrowdingdan"><?php
 				$starttime =strtotime(date("Y-m-d",time()-24*3600));
         $endtime = strtotime(date("Y-m-d"));
 				$dosql->Execute("SELECT id from pmw_order where posttime >=$starttime and posttime<$endtime");
@@ -160,7 +160,7 @@ a:hover {
 					?></a></span></td>
   </tr>
     <tr>
-    <td width="27%" height="34" style="text-align: center">&nbsp;</td>
+    <td width="25%" height="5" style="text-align: center">&nbsp;</td>
     <td style="text-align: center">&nbsp;</td>
     <td style="text-align: center">&nbsp;</td>
     <td style="text-align: center">&nbsp;</td>

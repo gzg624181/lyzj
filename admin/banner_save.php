@@ -27,19 +27,19 @@ if($action == 'add')
 
 	if($type=="reg"){
 		//注册的banner、图片
-		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
+		$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename,checkinfo) VALUES ('$title','$pic', '$type','$pictime','$typename',$checkinfo)";
 
 	}elseif($type=="text"){
     $content=stripslashes($content);
     $content1=rePic($content, $cfg_weburl);
-		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime,typename) VALUES ('$title','$pic', '$type','$content1','$pictime','$typename')";
+		$sql = "INSERT INTO `$tbname` (title, pic, type,content, pictime,typename,checkinfo) VALUES ('$title','$pic', '$type','$content1','$pictime','$typename',$checkinfo)";
 
 	}elseif($type=="ticket"){
 
-	$sql = "INSERT INTO `$tbname` (title, pic,type, linkurl, pictime,typename) VALUES ('$title','$pic', '$type','$linkurl','$pictime','$typename')";
+	$sql = "INSERT INTO `$tbname` (title, pic,type, linkurl, pictime,typename,checkinfo) VALUES ('$title','$pic', '$type','$linkurl','$pictime','$typename',$checkinfo)";
 
 }elseif($type=="no"){
-    	$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename) VALUES ('$title','$pic', '$type','$pictime','$typename')";
+    	$sql = "INSERT INTO `$tbname` (title, pic, type, pictime,typename,checkinfo) VALUES ('$title','$pic', '$type','$pictime','$typename',$checkinfo)";
   }
 	if($dosql->ExecNoneQuery($sql))
 	{
@@ -58,12 +58,12 @@ else if($action == 'update')
 {
 	$pictime=strtotime($pictime);
   if($type=="reg" || $type=="no"){
-	$sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename' WHERE id=$id";
+	$sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',checkinfo=$checkinfo WHERE id=$id";
 }elseif($type=="ticket"){
-  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',linkurl='$linkurl' WHERE id=$id";
+  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',linkurl='$linkurl',checkinfo=$checkinfo WHERE id=$id";
 }elseif($type=="text"){
 
-  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',content='$content' WHERE id=$id";
+  $sql = "UPDATE `$tbname` SET title='$title',pictime=$pictime, pic='$pic',typename='$typename',content='$content',checkinfo=$checkinfo WHERE id=$id";
 }
 
 	if($dosql->ExecNoneQuery($sql))
