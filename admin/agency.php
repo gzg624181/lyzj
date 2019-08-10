@@ -123,7 +123,9 @@ $check = isset($check) ? $check : '';
 $username=$_SESSION['admin'];
 $adminlevel=$_SESSION['adminlevel'];
 $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
-
+//将新的注册记录清空掉
+$update = new Agency();
+$update->update_agency_travel('agency');
 ?>
 </head>
 <body>
@@ -209,6 +211,7 @@ $num=$dosql->GetTotalRow($one);
       $images=$cfg_weburl."/".$row['images'];
       }
 
+      if($check!="failed"){
       $recommender_id = $row['uid'];  //推荐人的id
       $recommender_type = $row['recommender_type']; //推荐人的类型
 
@@ -229,6 +232,9 @@ $num=$dosql->GetTotalRow($one);
       }else{
         $recommender_name = '<i title="无推荐人" class="fa fa-minus-circle" aria-hidden="true"></i>';
       }
+    }else{
+      $recommender_name = '';
+    }
 
 			if($row['checkinfo']==0){
 

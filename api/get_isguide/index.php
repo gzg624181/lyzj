@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_isguide  获取系统配置文件里面 导游列表是否显示
+	   * 链接地址：get_isguide  获取系统配置文件里面 导游列表是否显示 旅游订票的开关
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -23,6 +23,13 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
+     $Data = array(
+
+       "isguide"=>$cfg_isguide,
+
+       "tickettel"=>$cfg_tickettel
+
+     );
 
       $State = 1;
       $Descriptor = '数据获取成功！';
@@ -30,7 +37,7 @@ if(isset($token) && $token==$cfg_auth_key){
                   'State' => $State,
                   'Descriptor' => $Descriptor,
                   'Version' => $Version,
-                  'Data' => $cfg_isguide
+                  'Data' => $Data
                    );
       echo phpver($result);
 

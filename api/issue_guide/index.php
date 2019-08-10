@@ -47,6 +47,10 @@ if(isset($token) && $token==$cfg_auth_key){
 
   //将用户的formid添加进去
   add_formid($openid,$formid);
+  //注册成功自动在数据里面加上1
+  $add = new Guide();
+  $add->get_guide_freetime('freetime');
+
   $State = 1;
   $Descriptor = '导游空闲时间发布成功!';
   $result = array (

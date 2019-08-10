@@ -118,7 +118,7 @@ $num=$dosql->GetTotalRow($one);
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
 <ul>
- <li class="<?php if($check==""){echo "on";}?>"><a href="message.php">全部</a></li> 
+ <li class="<?php if($check==""){echo "on";}?>"><a href="message.php">全部</a></li>
  <li class="line">-</li>
  <li class="<?php if($check=="agency"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('agency')">旅行社消息&nbsp;&nbsp;<i style='color:#45b5b3; cursor:pointer;' title='旅行社消息' class='fa fa-university' aria-hidden='true'></i></a></li>
  <li class="line">-</li>
@@ -195,7 +195,7 @@ $num=$dosql->GetTotalRow($one);
 
 		while($row = $dosql->GetArray())
 		{
-			
+
 
 			if($row['state']==0){
 
@@ -206,54 +206,62 @@ $num=$dosql->GetTotalRow($one);
 		$state = "<i style='color:#509ee1; cursor:pointer;' title='已读' class='fa fa-dot-circle-o' aria-hidden='true'></i>";
 
 			}
-			
+
 			$id=$row['mid'];
-			
+
 			$type = $row['type'];
-			
+
 			$messagetype = $row['messagetype'];
-			
+
 			$templatetype =$row['templatetype'];
-			
+
 			switch($type){
-				
+
 				case 'agency':
 				$r=$dosql->GetOne("SELECT account from pmw_agency where id=$id");
+        if(is_array($r)){
 				$account=$r['account'];
+        }else{
+          $account=0;
+        }
 				$type = '旅行社';
 				break;
-				
+
 				case 'guide':
 				$r=$dosql->GetOne("SELECT account from pmw_guide where id=$id");
+        if(is_array($r)){
 				$account=$r['account'];
+        }else{
+          $account=0;
+        }
 				$type = '导游';
 				break;
 			}
 			switch ($messagetype){
-				
+
 				case 'system':
 				$messagetype = '系统消息';
 				break;
-				
+
 				case 'template':
 				$messagetype='模板消息';
 				break;
 			}
-			
+
 		    switch ($templatetype){
-				
+
 				case 'cancel':
 				$templatetype = '取消行程';
 				break;
-				
+
 				case 'appointment':
 				$templatetype='预约行程';
 				break;
-				
+
 			    case 'reg':
 				$templatetype='注册成功';
 				break;
-				
+
 				case '':
 				$templatetype ='<i class="fa fa-minus-circle" aria-hidden="true"></i>';
 				break;

@@ -36,6 +36,8 @@ if(isset($token) && $token==$cfg_auth_key){
   $dosql->ExecNoneQuery($sql);
    #更新旅游行程的状态为1，已经评论
   $dosql->ExecNoneQuery("UPDATE `#@__travel` set comment_state=1 where id=$id");
+  $add = new Comment();
+  $add->get_comment('comment');
   $State = 1;
   $Descriptor = '评论信息发布成功！!';
   $result = array (

@@ -577,61 +577,21 @@ $openid = 'oz7S15GN_EPrXdVlGqeoXYl1EEhg';
 
 //$url="http://ceshi.yishekj.xyz/api/get_invite_num/index.php?classes=".$type."&token=".$cfg_auth_key."&type=success&uid=".$uid."&openid=".$openid;
 //
-$url ="https://ceshi.yishekj.xyz/api/get_invite_num/?token=wFu1lIfZcfhWf3IX&uid=3&type=success&openid=oz7S15MSCHbjDhRF1EsqvQy4vOGE&classes=guide";
-
- $info = stripslashes(file_get_contents($url));
-
- echo $info;
-
- $srr = json_decode($info,true);
-
- $arr =$srr['Data']['list'];
-
- print_r($arr);
-
-
-$json1 ='{
-"State": 1,
-"Descriptor": "数据获取成功！",
-"Version": "2019-08-07 10:18:25",
-"Data": {
-"nums": 2,
-"money": "10",
-"list": [
-{
-"name": "谢姗",
-"regtime": "1565073885",
-"type": "guide",
-"state": "success"
-},
-{
-"name": "余辉",
-"regtime": "1565070744",
-"type": "agency",
-"state": "success"
-}
-]
-}
-}';
-
-$srr = json_decode($json1,true);
-
-$arr =$srr['Data']['list'];
-
-
-//print_r($arr);
 
 
 
-// $x=74;
-// $token="7b689aa81b813a987148820c8";
-// $url = "http://www.ezzls.com/wxapi/wx.php?tid=".$x."&token=".$token;
-//
-// $arr = file_get_contents(stripslashes($url));  //去除对象里面的斜杠
-// echo $arr;
-// $srr = json_decode($arr,true);
-//$str=$srr['Data'];
-//print_r($str);
+  class Myclass {
 
+    public static $weburl;
+
+    public static function  say(){
+
+    echo "网站域名是：".self::$weburl;
+
+    }
+
+  }
+
+    Myclass::say($cfg_weburl);
 
 ?>

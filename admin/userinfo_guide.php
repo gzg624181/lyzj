@@ -249,8 +249,10 @@ $adminlevel=$_SESSION['adminlevel'];
        $recommender_type =$row['recommender_type'];
        if($recommender_type =="agency"){
        echo "旅行社";
-       }else{
+       }elseif($recommender_type=="guide"){
        echo "导游";
+       }else{
+         echo "";
        }
        ?>"  /></td>
 		</tr>

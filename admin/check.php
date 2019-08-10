@@ -50,7 +50,7 @@ $applytime=date("Y-m-d H:i:s",$s['regtime']);
 $pic="您的营业执照";
 }elseif($type=="guide"){
 $r=$dosql->GetOne("select * from `#@__guide` where id=$id");
-$tp="导游";	
+$tp="导游";
 $name=$r['name'];
 $tel=$r['tel'];
 $applytime=date("Y-m-d H:i:s",$r['regtime']);
@@ -83,7 +83,7 @@ $pic="您的导游证件";
 		  <td height="40" align="right">申请时间：</td>
 		  <td><input type="text" name="applytime" id="applytime" value="<?php echo $applytime;?>" readonly="readonly" class="input"/></td>
     </tr>
-		
+
 		<tr>
 		  <td height="40" align="right">审核时间：</td>
 		  <td><input type="text" name="sendtime" id="sendtime" class="inputms" value="<?php echo GetDateTime(time()); ?>" readonly="readonly" />
@@ -100,15 +100,15 @@ $pic="您的导游证件";
       <tr>
 		  <td height="40" align="right">&nbsp;</td>
 		  <td><div class="formSubBtn" style="float:left; margin-left:1px;margin-top: 15px;">
-            <input type="submit" class="submit" value="发送" />
-    		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
-    		<input type="hidden" name="action" id="action" value="checkfailed" />
+      <input type="submit" class="submit" value="发送" />
+    	<input type="button" class="back" value="返回" onclick="history.go(-1);" />
+    	<input type="hidden" name="action" id="action" value="checkfailed" />
       <input type="hidden" name="type" id="type" value="<?php echo $type;?>" />
       <input type="hidden" name="id" id="id" value="<?php echo $id;?>" />
   </div></td>
     </tr>
   </table>
-	
+
 </form>
 </body>
 </html>

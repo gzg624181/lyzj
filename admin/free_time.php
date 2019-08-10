@@ -70,7 +70,8 @@ $check = isset($check) ? $check : '';
 $username=$_SESSION['admin'];
 $adminlevel=$_SESSION['adminlevel'];
 $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
-
+$update = new Guide();
+$update->update_guide_freetime('freetime');
 ?>
 </head>
 <body style="padding:10px;">

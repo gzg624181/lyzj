@@ -56,6 +56,11 @@ if(isset($token) && $token==$cfg_auth_key){
   //将旅行社的formid添加进去
    add_formid($openid,$formid);
 
+  //将行程的记录添加进去
+
+   $add = new Agency();
+   $add->get_agency_travel('travel');
+
   $State = 1;
   $Descriptor = '旅行行程发布成功！!';
   $result = array (

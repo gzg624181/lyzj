@@ -23,6 +23,7 @@
      * aid             旅行社的id
      * formid          导游的formid
      * openid          导游的openid
+     * openid_agency   旅行社的openid
      */
 require_once("../../include/config.inc.php");
 require_once("../../admin/sendmessage.php");
@@ -96,7 +97,7 @@ if(isset($token) && $token==$cfg_auth_key){
   add_formid($openid,$formid);
 
   $formid=get_new_formid($openid);   //导游的formid
-  $openid_guide=$openid;             //导游openid
+              //导游openid
 
   $company=$a['company'];   //旅行社公司名称
 
@@ -122,7 +123,7 @@ if(isset($token) && $token==$cfg_auth_key){
   //模板消息请求URL
   $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
 
-  $data_guide=SendGuide($openid_guide,$company,$names,$tel,$title,$time,$tishi,$cfg_guide_appointment,$page,$formid);
+  $data_guide=SendGuide($openid,$company,$names,$tel,$title,$time,$tishi,$cfg_guide_appointment,$page,$formid);
 
   $json_data = json_encode($data_guide);//转化成json数组让微信可以接收
   $res = https_request($url, urldecode($json_data));//请求开始
@@ -130,8 +131,8 @@ if(isset($token) && $token==$cfg_auth_key){
   $errcode_guide=$res_guide['errcode'];
 
   //删除已经用过的formid
-  del_formid($formid,$openid_guide);
-  //==================================================================================================
+  del_formid($formid,$openid);
+  //==================================================================================
       //将导游预约的行程保存到消息表里面去
       $tbnames = 'pmw_message';
       $type = 'guide';
@@ -160,16 +161,6 @@ if(isset($token) && $token==$cfg_auth_key){
   $openid_agency=$x['openid'];     //发布此条行程的联系人的openid
   $form_id_agency=get_new_formid($openid_agency) ;
 
-
-  $data_agency=SendAgency($openid_agency,$title,$tel_guide,$name_guide,$time,$timestamp,$cfg_agency_remind,$page_agency,$form_id_agency);
-
-  $json_data_agency = json_encode($data_agency);//转化成json数组让微信可以接收
-  $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
-  $res_agency = json_decode($res_agency, true);
-  $errcode_agency=$res_agency['errcode'];
-
-  //删除已经用过的formid
-  del_formid($form_id_agency,$openid_agency);
   //==================================================================================================
       //行程被导游预约，将向旅行社发布的消息表里面去
       $type = 'agency';
@@ -187,11 +178,23 @@ if(isset($token) && $token==$cfg_auth_key){
       $banames = 'pmw_message';
       $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $aid, $faxtime)";
       $dosql->ExecNoneQuery($sql);
-  //===========================================================================================
+  //==================================================================================
 
+  if($errcode_guide==0){
+    //sleep(1);
+    $ACCESS_TOKENS = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
+    //模板消息请求URL
+    $urls = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKENS;
 
-  if($errcode_guide==0 && $errcode_agency==0){
+    $data_agency=SendAgency($openid_agency,$title,$tel_guide,$name_guide,$time,$timestamp,$cfg_agency_remind,$page_agency,$form_id_agency);
+
+    $json_data_agency = json_encode($data_agency);//转化成json数组让微信可以接收
+    $res_agency = https_request($urls, urldecode($json_data_agency));//请求开始
+    $res_agency = json_decode($res_agency, true);
+    $errcode_agency=$res_agency['errcode'];
+    //删除已经用过的formid
+    del_formid($form_id_agency,$openid_agency);
       $State = 1;
       $Descriptor = '导游预约行程成功!，模板消息发送成功！';
       $result = array (

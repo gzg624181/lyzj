@@ -60,6 +60,9 @@ $tbname="pmw_order";
 $check = isset($check) ? $check : '';
 $keyword = isset($keyword) ? $keyword : '';
 $adminlevel=$_SESSION['adminlevel'];
+//将新的注册记录清空掉
+$update = new Order();
+$update->update_order('order');
 ?>
 </head>
 <body>
@@ -97,16 +100,17 @@ $adminlevel=$_SESSION['adminlevel'];
 			<td width="6%">取票人电话</td>
 			<td width="8%">景区名称</td>
 			<td width="6%">使用日期</td>
-			<td width="5%">票务类型</td>
+			<td width="10%">票务类型</td>
 			<td width="6%">票务价格</td>
 			<td width="6%" align="center">数量</td>
 			<td width="6%" align="center">支付总金额</td>
 			<td width="6%" align="center">实际取票数量</td>
 			<td width="8%" align="center">实际支付总金额</td>
 			<td width="7%" align="center">支付类型</td>
-			<td width="13%" align="center">下票人信息</td>
+      <td width="7%" align="center">支付状态</td>
+			<td width="5%" align="center">下票人</td>
 			<td width="8%" align="center">购买时间</td>
-			<td width="3%" align="center">状态</td>
+			<td width="5%" align="center">状态</td>
 			<td colspan="2" align="center">操作</td>
 		</tr>
 		<?php
@@ -153,13 +157,24 @@ $adminlevel=$_SESSION['adminlevel'];
 			switch($row['states'])
 			{
 
-				    case 1:
+				  case 1:
 					$states = "<font color='#339933'><B>"."<i title='已处理' class='fa fa-check' aria-hidden='true'></i>"."</b></font>";
 					break;
 				    case 0:
 					$states = "<font color='#FF0000'><B>"."<i title='未处理' class='fa fa-times' aria-hidden='true'></i>"."</b></font>";
 					break;
 				}
+
+        switch($row['pay_state'])
+        {
+
+            case 1:
+            $pay_state = "<font color='#339933'><B>"."<i title='已支付' class='fa fa-check' aria-hidden='true'></i>"."</b></font>";
+            break;
+              case 0:
+            $pay_state = "<font color='#FF0000'><B>"."<i title='未支付' class='fa fa-times' aria-hidden='true'></i>"."</b></font>";
+            break;
+          }
 
 				switch($row['paytype'])
 			{
@@ -171,6 +186,8 @@ $adminlevel=$_SESSION['adminlevel'];
 					$pay = "<font color='#4bb1cf'><B>"."线下支付"."</b></font>";
 					break;
 				}
+
+        $eye ="<font color='blue'><B>"."<i title='点击查看下票人信息' class='fa fa-eye' aria-hidden='true'></i>"."</b></font>"
 		?>
 		<tr align="center" class="dataTr">
 			<td height="40" class="firstCol"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
@@ -201,7 +218,8 @@ $adminlevel=$_SESSION['adminlevel'];
 			?>
             </td>
 			<td align="center"><?php echo $pay;?></td>
-			<td align="center"><a style="cursor:pointer" onclick="getticket('<?php echo $row['did']; ?>','<?php echo $row['type'];?>')" title="点击查看下票人信息">点击查看下票人信息</a></td>
+      <td align="center"><?php echo $pay_state; ?></td>
+			<td align="center"><a style="cursor:pointer" onclick="getticket('<?php echo $row['did']; ?>','<?php echo $row['type'];?>')" title="点击查看下票人信息"><?php echo $eye; ?></a></td>
 			<td align="center" class="num"><?php  echo date("Y-m-d",$row['posttime']);?></td>
 			<td align="center"><?php echo $states; ?></td>
 			<td width="2%">

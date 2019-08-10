@@ -123,7 +123,7 @@ else if($mode == 'sql')
 
 	if($action=='dir_left_update'){
 		$tbname="pmw_api";
-		$sql = "UPDATE $tbname  SET `explain` = '$explain',`parameter` = '$parameter',`updatetime` = '$updatetime' WHERE `id` =$id;";
+		$sql = "UPDATE $tbname  SET `explain` = '$explain',`parameter` = '$parameter' WHERE `id` =$id;";
 		if($dosql->ExecNoneQuery($sql))
 		{
 			$gourlss="upload_filemgr_api_dir.php";

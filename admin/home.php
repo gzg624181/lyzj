@@ -139,7 +139,7 @@ a:hover {
 		if($money==null){
 			echo 0;
 		}else{
-		echo $money;
+		echo sprintf("%.2f",$money);
 		}
 					?></a></span></td>
     <td style="text-align: center"><span class="tor">昨日注册：<a style="color:white;" href="agency.php?check=tomorrow"><?php

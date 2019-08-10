@@ -21,6 +21,16 @@ function ChangeState(id,checkinfo){
 	 window.location.href= url;
 
 }
+function GetSearchs(){
+var keyword= document.getElementById("keyword").value;
+if($("#keyword").val() == "")
+{
+ layer.alert("请输入搜索内容！",{icon:0});
+ $("#keyword").focus();
+ return false;
+}
+window.location.href='agency.php?keyword='+keyword;
+}
 
 function checknum(id) {
   var url="allorder.php?id="+id+"&check=numsid";
@@ -66,6 +76,13 @@ function getpic(id){
 	});
 	}
 
+
+  //审核，未审，功能
+    function checkinfo(key){
+       var v= key;
+  	// alert(v)
+  	window.location.href='scenic.php?check='+v;
+  	}
 </script>
 
 
@@ -73,6 +90,7 @@ function getpic(id){
 //初始化参数
 $action  = isset($action)  ? $action  : '';
 $check = isset($check) ? $check : '';
+$keyword = isset($keyword) ? $keyword : '';
 $username=$_SESSION['admin'];
 $adminlevel=$_SESSION['adminlevel'];
 $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
@@ -90,10 +108,25 @@ $num=$dosql->GetTotalRow($one);
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 
 <div class="topToolbar">
-  <span class="title">景区列表管理：<span class="num" style="color:red;"><?php echo $num;?></span>
+<span class="title">景区列表管理：<span class="num" style="color:red;"><?php echo $num;?></span>
 </span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
+<ul>
+ <li class="<?php if($check==""){echo "on";}?>"><a href="scenic.php">全部</a></li> <li class="line">-</li>
+
+ <li class="<?php if($check=="up"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('up')">上架&nbsp;&nbsp;<i style='color:#509ee1;cursor:pointer;'  title='上架' class='fa fa-arrow-up' aria-hidden='true'></i></a></li>
+ <li class="line">-</li>
+
+ <li class="<?php if($check=="down"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('down ')">下架&nbsp;&nbsp;<i style='color:red; cursor:pointer;' title='下架' class='fa fa-arrow-down' aria-hidden='true'></i></a></li>
+
+</ul>
+	<div id="search" class="search"> <span class="s">
+<input name="keyword" id="keyword" type="text" class="number" style="font-size:11px;" placeholder="请输入景区名称" title="请输入景区名称" />
+		</span> <span class="b"><a href="javascript:;" onclick="GetSearchs();"></a></span></div>
+	<div class="cl"></div>
+</div>
+
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
   <tr align="left" class="head">
@@ -117,9 +150,15 @@ $num=$dosql->GetTotalRow($one);
 								<td width="11%" aligin="center">操作</td>
                 </tr>
               <?php
-
-		$dopage->GetPage("SELECT * FROM $tbname",15,'desc','orderid');
-
+    if($check=="up"){  // 上线
+		$dopage->GetPage("SELECT * FROM $tbname where checkinfo=1",15,'desc','orderid');
+    }elseif($check=="down"){
+    $dopage->GetPage("SELECT * FROM $tbname  where checkinfo=0",15,'desc','orderid');
+    }elseif($keyword!=""){
+    $dopage->GetPage("SELECT * FROM $tbname  where names like '%$keyword%'",15,'desc','orderid');
+    }else{
+    $dopage->GetPage("SELECT * FROM $tbname",15,'desc','orderid');
+    }
 		while($row = $dosql->GetArray())
 		{
 		$id=$row['id'];

@@ -13,7 +13,7 @@ require_once(dirname(__FILE__).'/common.inc.php');
 require_once(PHPMYWIND_INC.'/func.class.php');
 require_once(PHPMYWIND_INC.'/page.class.php');
 require_once(PHPMYWIND_INC.'/common.php');
-
+require_once(PHPMYWIND_INC.'/common.class.php');
 if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 
 

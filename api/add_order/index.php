@@ -48,11 +48,18 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $timestampuse= strtotime($usetime);
 
+
   //将用户的formid添加进去
   add_formid($openid,$formid);
 
-  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd')";
+  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd,pay_state) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd',1)";
   if($dosql->ExecNoneQuery($sql)){
+
+  if($paytype=="wxpay"){
+  //拉起微信支付
+  include("../weixinpay/index.php");
+  }
+
   //下单成功之后发送双向消息，同时将更新这个景点的票务数量
 
   $dosql->ExecNoneQuery("UPDATE pmw_ticket set solds = solds + $nums where id=$tid");
@@ -87,17 +94,7 @@ if(isset($token) && $token==$cfg_auth_key){
     break;
   }
 
-  switch($paytype){
 
-    case "wxpay":
-    $paytype="微信支付";
-    break;
-
-    case "outline":
-    $paytype="线下支付";
-    break;
-
-  }
   //获取管理员的信息
   $array_admin=get_openid_formid();
   $openid=$array_admin['openid'];
@@ -106,6 +103,18 @@ if(isset($token) && $token==$cfg_auth_key){
   $form_id=get_new_formid($openid);
 
   if($form_id==""){
+
+    switch($paytype){
+
+      case "wxpay":
+      $Data=$return;
+      break;
+
+      case "outline":
+      $Data=$Data;
+      break;
+
+    }
 
     $State = 2;
     $Descriptor = '订单下注成功！向售票管理员发送模板消息失败!';
@@ -123,7 +132,22 @@ if(isset($token) && $token==$cfg_auth_key){
 
   //删除已经用过的formid
   del_formid($form_id,$openid);
+  //将行程的记录添加进去
 
+  $add = new Order();
+  $add->get_order('order');
+
+  switch($paytype){
+
+    case "wxpay":
+    $Data=$return;
+    break;
+
+    case "outline":
+    $Data=$Data;
+    break;
+
+  }
   $State = 1;
   $Descriptor = '订单下注成功！!';
   $result = array (

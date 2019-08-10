@@ -132,7 +132,9 @@ $check = isset($check) ? $check : '';
 $username=$_SESSION['admin'];
 $adminlevel=$_SESSION['adminlevel'];
 $r=$dosql->GetOne("select * from pmw_admin where username='$username'");
-
+//将新的注册记录清空掉
+$update = new Guide();
+$update->update_guide_freetime('guide');
 ?>
 </head>
 <body>

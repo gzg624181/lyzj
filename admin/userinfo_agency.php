@@ -246,12 +246,14 @@ $adminlevel=$_SESSION['adminlevel'];
     <tr>
 			<td height="45" align="right">推荐人类型：</td>
 			<td><input readonly type="text" name="recommender_type" id="recommender_type" class="input"  value="<?php
-       $recommender_type =$row['recommender_type'];
-       if($recommender_type =="agency"){
-       echo "旅行社";
-       }else{
-       echo "导游";
-       }
+      $recommender_type =$row['recommender_type'];
+      if($recommender_type =="agency"){
+      echo "旅行社";
+      }elseif($recommender_type=="guide"){
+      echo "导游";
+      }else{
+        echo "";
+      }
        ?>"  /></td>
 		</tr>
     <tr>

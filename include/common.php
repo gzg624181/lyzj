@@ -1080,13 +1080,18 @@ function Get_Guide_Infromation($id)
 
 		$dosql->ExecNoneQuery("UPDATE pmw_count set nums = nums +1  where id=1");
 
+    //更新营销金额
+		$r = $dosql->GetOne("SELECT nums from pmw_count where id=1");
+		$nowmoney = $r['nums'] * $cfg_money;
+		$lastmoney = $cfg_allmoney - $nowmoney;
+		$dosql->ExecNoneQuery("UPDATE pmw_webconfig set varvalue='$lastmoney' where orderid=130");
+		//将统计人数更新掉
+		$k = $dosql->GetOne("SELECT nums from pmw_count where id=1");
+		$lastnums = $k['nums'];
+		$dosql->ExecNoneQuery("UPDATE pmw_webconfig set varvalue='$lastnums' where orderid=131");
 		//当统计的人数达到指定的人数的时候，则关闭总开关
 
-		$r = $dosql->GetOne("SELECT nums FROM pmw_count where id=1");
-
-		$nums = $r['nums'];
-
-		if($nums >= $sumnums){  // 当推广的数量大于等于设置的人数的时候，则将总开关关闭
+		if($lastnums >= $sumnums){  // 当推广的数量大于等于设置的人数的时候，则将总开关关闭
 
     $dosql->ExecNoneQuery("UPDATE pmw_webconfig set varvalue='N' where varname='cfg_task'");
 

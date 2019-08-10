@@ -25,3 +25,11 @@ $(function(){
         }
     });
 });
+
+/*使用JavaScript来实现*/
+
+var  menuHeight = document.getElementByTagName('nav')[0];
+
+var  screenHeight = window.innerHeight  //浏览器窗口的内部高度
+/* var  screenHeight =  document.documentElement.clientHeight; */
+menuHeight.style.height=screenHeight-80+"px";

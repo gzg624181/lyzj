@@ -784,12 +784,11 @@ function isjiesuan($id,$y,$m){
 		$images = $guide_array['images'];
 		$getcity = $guide_array['getcity'];
 		$recommender_openid = $guide_array['recommender_openid'];
-		$recommender_openid = $guide_array['recommender_openid'];
 		$recommender_type = $guide_array['recommender_type'];
 		$uid = $guide_array['uid'];
 		//将导游审核未通过的用户单独放到另外一个表里面,全部都是未审核的
 
-		$sql = "INSERT INTO `#@__un_guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,checkinfo,recommender_openid,recommender_type,uid) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pics',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid',2,'$recommender_openid','$recommender_type',$uid)";
+		$sql = "INSERT INTO `#@__un_guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,checkinfo,recommender_openid,recommender_type,uid) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pics',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid',2,'$recommender_openid','$recommender_type','$uid')";
 		$dosql->ExecNoneQuery($sql);
 	 }
 

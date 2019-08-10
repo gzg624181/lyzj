@@ -72,6 +72,9 @@ function reply(id){
 <body>
 <?php
 $adminlevel=$_SESSION['adminlevel'];
+//将新的注册记录清空掉
+$update = new Comment();
+$update->update_comment_fankui('fankui');
 ?>
 <div class="topToolbar"> <span class="title">所有反馈</span> <a href="javascript:location.reload();" class="reload">刷新</a></div>
 <form name="form" id="form" method="post" action="comment_save.php">
@@ -95,11 +98,19 @@ $adminlevel=$_SESSION['adminlevel'];
       if($type=="agency"){
         $type = "旅行社";
         $r = $dosql->GetOne("SELECT company from pmw_agency where id=$mid");
+        if(is_array($r)){
         $name = $r['company'];
+        }else{
+          $name = "";
+        }
       }elseif($type=="guide"){
         $type = "导游";
         $r = $dosql->GetOne("SELECT name from pmw_guide where id=$mid");
+        if(is_array($r)){
         $name = $r['name'];
+        }else{
+        $name = "";
+        }
       }
 
       // if(check_str($row['images'],"https")){

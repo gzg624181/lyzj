@@ -166,6 +166,11 @@ if($uid!=""){
 add_formid($openid,$formid);
 
 if($dosql->ExecNoneQuery($sql)){
+
+  //注册成功自动在数据里面加上1
+  $add = new Agency();
+  $add->get_agency_travel('agency');
+
   $State = 1;
   $Descriptor = '旅行社注册信息已提交成功！';
   $result = array (

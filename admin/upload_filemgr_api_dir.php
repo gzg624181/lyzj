@@ -13,7 +13,7 @@ function dir_left(id){
 	//alert(id);
 	var explain=$("#explain"+id).val();
 	var parameter=$("#parameter"+id).val();
-	var updatetime=$("#updatetime"+id).val(); ajax_url='upload_filemgr_api_save.php?mode=sql&explain='+explain+'&parameter='+parameter+'&id='+id+'&action='+'dir_left_update'+'&updatetime='+updatetime;
+	var updatetime=$("#updatetime"+id).val(); ajax_url='upload_filemgr_api_save.php?mode=sql&explain='+explain+'&parameter='+parameter+'&id='+id+'&action='+'dir_left_update';
 	//alert(ajax_url);
 	window.location.href=ajax_url;
 	}
@@ -57,7 +57,7 @@ else
 ?>
 <div class="topToolbar"> <span class="title">接口API文件管理</span>
 	<span class="text">[当前目录：<strong>/<?php echo $dirname; ?></strong><span>|</span><a href="<?php echo $dirhigh; ?>" class="topFolder"><?php echo $dirtext; ?></a>]</span>
-	 <div class="topToolbar"><a href="javascript:location.reload();" class="reload">刷新</a></div>
+	 <div class="topToolbar"><a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload; ?></a></div>
  </div>
 <div class="toolbarTab">
 	<ul>
@@ -73,11 +73,10 @@ else
 	<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" class="dataTable">
 		<tr align="left" class="head">
 			<td width="3%" height="36" class="firstCol"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
-			<td width="19%">接口文件名称</td>
-			<td width="13%">上传日期</td>
-			<td width="21%">接口说明</td>
-			<td width="29%">接口参数</td>
-			<td width="8%">文件大小</td>
+			<td width="20%">接口文件名称</td>
+			<td width="25%">接口说明</td>
+			<td width="30%">接口参数</td>
+			<td width="4%">文件大小</td>
 			<td width="7%" class="endCol">操作</td>
 		</tr>
 		<?php
@@ -129,11 +128,9 @@ else
 			<span style="font-family: Verdana, Geneva, sans-serif;font-weight: bold; color:rgba(118,133,131,1)"><?php echo $i+1;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="isdir"><?php echo $r['filename']; ?></span>
 		  </td>
-			<td class="number" style="text-align: center;"><span><input type="text" name="updatetime<?php echo $r['id'];?>" id="updatetime<?php echo $r['id'];?>" class="inputd" style="width:95%;text-align:center;font-family: Verdana, Geneva, sans-serif;
-				font-weight: bold; border-radius:3px; color:#a5a5a5" value="<?php echo $r['updatetime']; ?>" /></span></td>
-			<td style="text-align:center;"><input type="text" name="explain<?php echo $r['id'];?>" id="explain<?php echo $r['id'];?>" class="inputd" style="width:95%;text-align:center;font-family: Verdana, Geneva, sans-serif;
+			<td style="text-align:center;"><input type="text" name="explain<?php echo $r['id'];?>" id="explain<?php echo $r['id'];?>" class="inputd" style="width:95%;font-family: Verdana, Geneva, sans-serif;
 				font-weight: bold; border-radius:3px; color:#a5a5a5" value="<?php echo $r['explain']; ?>" />	</td>
-			<td style="text-align:center;"><input type="text" name="parameter<?php echo $r['id'];?>" id="parameter<?php echo $r['id'];?>" class="inputd" style="width:100%;text-align:center;font-family: Verdana, Geneva, sans-serif;
+			<td style="text-align:center;"><input type="text" name="parameter<?php echo $r['id'];?>" id="parameter<?php echo $r['id'];?>" class="inputd" style="width:100%;font-family: Verdana, Geneva, sans-serif;
 font-weight: bold; border-radius:3px;color:#a5a5a5" value="<?php echo $r['parameter']; ?>" /></td>
 
 			<td style="text-align:center;"><?php echo $r['size']; ?></td>

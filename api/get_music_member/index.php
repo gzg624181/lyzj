@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_music_member  获取音频用户的openid
+	   * 链接地址：get_music_member  获取单个已经授权的用户信息
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *

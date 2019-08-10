@@ -36,6 +36,8 @@ if(isset($token) && $token==$cfg_auth_key){
   $sql = "INSERT INTO `#@__levea_message`(mid,type,openid,formid,content,posttime) VALUES ($mid,'$type','$openid','$formid',  '$content',$posttime)";
 
   if($dosql->ExecNoneQuery($sql)){
+    $add = new Comment();
+    $add->get_comment('fankui');
     $State = 1;
     $Descriptor = '用户留言成功!';
     $result = array (

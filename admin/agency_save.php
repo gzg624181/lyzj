@@ -267,6 +267,7 @@ else if($action=="checkfailed"){
 	}
 
   }elseif($type=="guide"){
+    
   $tbname="pmw_guide";
 
   //将用户的发送消息保存起来

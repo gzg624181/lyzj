@@ -17,7 +17,7 @@ define('ADMIN_TEMP', ADMIN_ROOT.'/templates');
 require_once(ADMIN_ROOT.'/../include/common.inc.php');
 require_once(ADMIN_INC.'/page.class.php');
 require_once(ADMIN_INC.'/common.php');
-
+require_once(ADMIN_INC.'/common.class.php');
 
 //Flash Session传递
 if(isset($sessionid)) session_id($sessionid);

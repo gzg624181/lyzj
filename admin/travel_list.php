@@ -52,6 +52,9 @@ $action  = isset($action)  ? $action  : 'travel_save.php';
 $keyword = isset($keyword) ? $keyword : '';
 $check = isset($check) ? $check : '';
 $adminlevel=$_SESSION['adminlevel'];  //用户级别
+//将新的注册记录清空掉
+$update = new Agency();
+$update->update_agency_travel('travel');
 ?>
 <div class="topToolbar"> <span class="title">发布行程列表管理</span>
 <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a>

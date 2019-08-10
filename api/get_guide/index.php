@@ -27,7 +27,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     $first= ($page - 1) * $pagenumber;
 
-    $dosql->Execute("SELECT id,name,sex,content,images FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
+    $dosql->Execute("SELECT id,name,sex,content,images,experience FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
 
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){

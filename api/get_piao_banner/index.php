@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @提供返回参数账号 导游id
+     * @提供返回参数账号 
      */
 require_once("../../include/config.inc.php");
 $Data = array();

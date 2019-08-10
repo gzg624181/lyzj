@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_recommand_scenic  搜索景点 关键字模糊搜索
+	   * 链接地址：get_recommand_scenic  获取所有已经上线的景点信息
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *

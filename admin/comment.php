@@ -83,6 +83,9 @@ function reply(id){
 <?php
 $adminlevel=$_SESSION['adminlevel'];
 $keyword = isset($keyword) ? $keyword : '';
+//将新的注册记录清空掉
+$update = new Comment();
+$update->update_comment_fankui('comment');
 ?>
 <div class="topToolbar"> <span class="title">所有评论</span> <a href="javascript:location.reload();" class="reload"><?php  echo $cfg_reload; ?></a></div>
 <div class="toolbarTab" style="margin-bottom:5px;">

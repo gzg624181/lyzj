@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_contract  获取旅行社的合同图片
+	   * 链接地址：	get_agency_agreement  获取旅行社的合同图片
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *

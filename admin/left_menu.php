@@ -41,17 +41,34 @@
 			$dosql->Execute("select * from `#@__infoclass_left` where parentid='$parentid' and checkinfo=true order by orderid asc",$idi);
 			while($row = $dosql->GetArray($idi)){
 			$gourl=$row['linkurl'];
+
+			$news =  $row['newmessage'];
+			if($news!=0){
+				$newsmess= '<i style="color:red;font-family: Verdana, Geneva, sans-serif;
+font-weight: bold;">'.$news.'</i>';
+			}else{
+				$newsmess ="";
+			}
 			?>
 				<li class="nav-item">
-					<a href="javascript:;"><i style="font-size:16px;" class="<?php echo $row['keywords'];?>"></i><span><?php echo $row['classname'];?></span><i class="my-icon nav-more"></i></a>
+					<a href="javascript:;"><i style="font-size:16px;" class="<?php echo $row['keywords'];?>"></i><span><?php echo $row['classname'];?>&nbsp;&nbsp;&nbsp;<?php  echo $newsmess; ?></span><i class="my-icon nav-more"></i></a>
 					<ul>
 						<?php
 					$pid=$row['id'];
-					$dosql->Execute("select * from `#@__infoclass_left` where parentid='$pid' and checkinfo=true order by orderid asc",$ids);
+					$dosql->Execute("SELECT * from `#@__infoclass_left` where parentid='$pid' and checkinfo=true order by orderid asc",$ids);
 					while($show = $dosql->GetArray($ids)){
 					$gourls=$show['linkurl'];
+
+					$newmessage =  $show['newmessage'];
+
+					if($newmessage!=0){
+			   	$mes = '<i style="color:red;font-family: Verdana, Geneva, sans-serif;
+		font-weight: bold;">'.$newmessage.'</i>';
+					}else{
+						$mes ="";
+					}
 					?>
-						<li><a href="<?php echo $gourls;?>" target="main"><span><?php echo $show['classname'];?></span></a></li>
+						<li><a href="<?php echo $gourls;?>" target="main"><span><?php echo $show['classname'];?></span>&nbsp;&nbsp;&nbsp;<?php  echo $mes; ?></a></li>
 					<?php }?>
 					</ul>
 				</li>

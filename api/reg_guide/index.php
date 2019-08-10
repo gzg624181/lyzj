@@ -173,6 +173,11 @@ if(is_array($r)){
   add_formid($openid,$formid);
 
 if($dosql->ExecNoneQuery($sql)){
+
+  //注册成功自动在数据里面加上1
+  $add = new Guide();
+  $add->get_guide_freetime('guide');
+
   $State = 1;
   $Descriptor = '导游注册信息已提交成功！';
   $result = array (
