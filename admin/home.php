@@ -102,7 +102,7 @@ a:hover {
 					if($money==null){
 						echo 0;
 					}else{
-					echo $money;
+					echo sprintf("%.2f",$money);
 				  }
 					?></a></td>
     <td class="ziti" style="text-align: center"><a style="color:white;" href="agency.php?check=today"><?php

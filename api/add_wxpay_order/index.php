@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：add_order  添加订单 ,线下支付
+	   * 链接地址：add_wxpay_order  添加订单 ,线上微信支付
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -48,29 +48,18 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $timestampuse= strtotime($usetime);
 
+
   //将用户的formid添加进去
   add_formid($openid,$formid);
 
   $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd,pay_state) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd',0)";
   if($dosql->ExecNoneQuery($sql)){
 
-   //更改票务的数量
-  if($paytype=="outline"){
-  $dosql->ExecNoneQuery("UPDATE pmw_ticket set solds = solds + $nums where id=$tid");
-  $dosql->ExecNoneQuery("UPDATE pmw_order SET pay_state=1 WHERE orderid='$orderid'");
-
-  }elseif($paytype=='wxpay'){
-    //拉取微信支付
-  include("../weixinpay/index.php");
-  }
-
 
   //支付成功则发送模板消息
-  $r = $dosql->GetOne("SELECT pay_state from `#@__order` where orderid='$orderid'");
-  $pay_state = $r['pay_state'];
-
-  if($pay_state==1 && $paytype=='outline'){
-
+  $r = $dosql->GetOne("SELECT paytype from `#@__order` where orderid='$orderid'");
+  $paytype = $r['paytype'];
+  if($paytype==1){
   $form_id=get_new_formid($openid);
   $id=get_orderid($did,$posttime);
   $page="pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem";
@@ -105,15 +94,26 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $form_id=get_new_formid($openid);
 
+  if($form_id==""){
+
+    $State = 2;
+    $Descriptor = '订单下注成功！向售票管理员发送模板消息失败!';
+    $result = array (
+                'State' => $State,
+                'Descriptor' => $Descriptor,
+                'Version' => $Version,
+                'Data' => $Data
+                 );
+    echo phpver($result);
+
+  }else{
+
   ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytype,$posttime,$cfg_appid,$cfg_appsecret);
 
   //删除已经用过的formid
   del_formid($form_id,$openid);
-  }
+  //将行程的记录添加进去
 
-  if($paytype=="wxpay"){
-    $Data =$return;
-  }
   $State = 1;
   $Descriptor = '订单下注成功！!';
   $result = array (
@@ -124,6 +124,18 @@ if(isset($token) && $token==$cfg_auth_key){
                );
   echo phpver($result);
 
+  }
+}else{
+  $State = 0;
+  $Descriptor = '订单支付失败';
+  $result = array (
+              'State' => $State,
+              'Descriptor' => $Descriptor,
+              'Version' => $Version,
+              'Data' => $Data
+               );
+  echo phpver($result);
+}
 
 }else{
   $State = 0;
@@ -132,11 +144,10 @@ if(isset($token) && $token==$cfg_auth_key){
               'State' => $State,
               'Descriptor' => $Descriptor,
               'Version' => $Version,
-              'Data' => $return
+              'Data' => $Data
                );
   echo phpver($result);
 }
-
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

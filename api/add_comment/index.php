@@ -17,7 +17,7 @@
      * @return string
      *
      * @旅行社发布旅游行程   提供返回参数账号，
-     * id              本次旅游行程id
+     * id             本次旅游行程id
      * gid            导游id
      * aid            旅行社id
      * star           评价几星
@@ -32,7 +32,7 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：添加行程的时候content 内容以json字符串的形式保存在数据库中去
 
   $addtime=time();  //添加时间
-  $sql = "INSERT INTO `#@__comment` (gid,aid,star,content,addtime) VALUES ($gid,$aid,'$star','$content',$addtime)";
+  $sql = "INSERT INTO `#@__comment` (gid,aid,star,content,addtime,tid) VALUES ($gid,$aid,'$star','$content',$addtime,$id)";
   $dosql->ExecNoneQuery($sql);
    #更新旅游行程的状态为1，已经评论
   $dosql->ExecNoneQuery("UPDATE `#@__travel` set comment_state=1 where id=$id");

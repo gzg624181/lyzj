@@ -8,7 +8,7 @@
 <link href="templates/style/menu1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/forms.func.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
 <style>
 .layui-layer-iframe .layui-layer-btn, .layui-layer-page .layui-layer-btn {
@@ -28,15 +28,28 @@ layer.open({
   });
   }
 
-function changenums(id){
-layer.open({
+function changenums(id,states){
+  if(states==0){
+  layer.confirm('您确定要处理订单状态吗？',{btn: ['确定', '取消']},function(){
+  layer.open({
   type: 2,
   title: '实际取票数量：',
   maxmin: true,
   shadeClose: true, //点击遮罩关闭	层
   area : ['600px' , '305px'],
-  content: 'changenums.php?id='+id,
+  content: 'changenums.php?id='+id+'&states='+states,
   });
+  });
+  }else{
+    layer.open({
+    type: 2,
+    title: '订单处理详情：',
+    maxmin: true,
+    shadeClose: true, //点击遮罩关闭	层
+    area : ['600px' , '305px'],
+    content: 'changenums.php?id='+id+'&states='+states,
+    });
+  }
   }
    //审核，未审，功能
 function checkinfo(key){
@@ -74,13 +87,13 @@ $update->update_order('order');
 	<ul>
  <li class="<?php if($check==""){echo "on";}?>"><a href="allorder.php">全部</a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="onrent"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('onrent')">已处理&nbsp;&nbsp;<i class='fa  fa-check' aria-hidden='true' style="color:#30B534"></i></a></li>
+ <li class="<?php if($check=="onrent"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('onrent')">已处理&nbsp;&nbsp;<i class='fa  fa-toggle-on' aria-hidden='true' style="color:#30B534"></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="unrent"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('unrent')">未处理&nbsp;&nbsp;<i class='fa fa-times' aria-hidden='true' style="color:red"></i></a></li>
+ <li class="<?php if($check=="unrent"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('unrent')">未处理&nbsp;&nbsp;<i class='fa fa-toggle-off' aria-hidden='true' style="color:red"></i></a></li>
  <li class="line">-</li>
  <li class="<?php if($check=="wxpay"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('wxpay')">微信支付&nbsp;&nbsp;<i class='fa fa-weixin' aria-hidden='true' style="color:#7bcb2b"></i></a></li>
  <li class="line">-</li>
- <li class="<?php if($check=="outline"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('outline')">线下支付&nbsp;&nbsp;<i class='fa fa-outdent' aria-hidden='true' style="color:#ccc"></i></a></li>
+ <li class="<?php if($check=="outline"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('outline')">线下支付&nbsp;&nbsp;<i class='fa fa-universal-access' aria-hidden='true' style="color:#4bb1cf"></i></a></li>
 <li class="line">-</li>
 <li class="<?php if($check=="Adult"){echo "on";}?>"><a href="javascript:;" onclick="checkinfo('Adult')">成人票&nbsp;&nbsp;<i class='fa fa-user' aria-hidden='true' style="color:#F1700E"></i></a></li>
   <li class="line">-</li>
@@ -105,19 +118,19 @@ $update->update_order('order');
 			<td width="6%" align="center">数量</td>
 			<td width="6%" align="center">支付总金额</td>
 			<td width="6%" align="center">实际取票数量</td>
-			<td width="8%" align="center">实际支付总金额</td>
-			<td width="7%" align="center">支付类型</td>
-      <td width="7%" align="center">支付状态</td>
+			<td width="5%" align="center">实际支付总金额</td>
+			<td width="5%" align="center">支付类型</td>
+      <td width="5%" align="center">支付状态</td>
 			<td width="5%" align="center">下票人</td>
-			<td width="8%" align="center">购买时间</td>
-			<td width="5%" align="center">状态</td>
-			<td colspan="2" align="center">操作</td>
+			<td width="7%" align="center">购买时间</td>
+			<td width="3%" align="center">状态</td>
+			<td colspan="5" align="center">操作</td>
 		</tr>
 		<?php
 
   if($check=="onrent"){ //已处理
    $dopage->GetPage("SELECT * FROM $tbname where states=1",10);
- }elseif($check=="confirm"){ //未处理
+ }elseif($check=="unrent"){ //未处理
    $dopage->GetPage("SELECT * FROM $tbname where states=0",10);
  }elseif($check=="wxpay"){ //微信支付
    $dopage->GetPage("SELECT * FROM $tbname where paytype='wxpay'",10);
@@ -158,10 +171,10 @@ $update->update_order('order');
 			{
 
 				  case 1:
-					$states = "<font color='#339933'><B>"."<i title='已处理' class='fa fa-check' aria-hidden='true'></i>"."</b></font>";
+					$states = "<font color='#339933'><B>"."<i title='已处理' class='fa fa-toggle-on' aria-hidden='true'></i>"."</b></font>";
 					break;
 				    case 0:
-					$states = "<font color='#FF0000'><B>"."<i title='未处理' class='fa fa-times' aria-hidden='true'></i>"."</b></font>";
+					$states = "<font color='#FF0000'><B>"."<i title='未处理' class='fa fa-toggle-off' aria-hidden='true'></i>"."</b></font>";
 					break;
 				}
 
@@ -179,15 +192,15 @@ $update->update_order('order');
 				switch($row['paytype'])
 			{
 
-				    case "wxpay":
-					$pay = "<font color='#339933'><B>"."微信支付"."</b></font>";
+				  case "wxpay":
+					$pay = "<font color='#339933'><B>"."<i title='微信支付' class='fa fa-weixin'></i>"."</b></font>";
 					break;
-				    case "outline":
-					$pay = "<font color='#4bb1cf'><B>"."线下支付"."</b></font>";
+				  case "outline":
+					$pay = "<font color='#4bb1cf'><B>"."<i title='线下支付' class='fa fa-universal-access'></i>"."</b></font>";
 					break;
 				}
 
-        $eye ="<font color='blue'><B>"."<i title='点击查看下票人信息' class='fa fa-eye' aria-hidden='true'></i>"."</b></font>"
+        $eye ="<font color='#666'><B>"."<i title='点击查看下票人信息' class='fa fa-eye' aria-hidden='true'></i>"."</b></font>"
 		?>
 		<tr align="center" class="dataTr">
 			<td height="40" class="firstCol"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $row['id']; ?>" /></td>
@@ -202,33 +215,40 @@ $update->update_order('order');
 			<td align="center" class="num" style="color:red">
             <?php
 			if($row['infactnums']==""){
-				echo $row['nums'];
+				echo "";
 			}else{
 				echo "<span style='color:#243ea8'>".$row['infactnums']."</span>";
 			}
 			?>
             </td>
-			<td align="center" class="num" style="color:red">
+			<td align="center" class="num" >
             <?php
 			if($row['infacttotalamount']==""){
-				echo sprintf("%.2f",$row['totalamount']);
+				echo "";
 			}else{
-				echo "<span style='color:#243ea8'>".sprintf("%.2f",$row['infacttotalamount'])."</span>";
+				echo "<span style='color:#20a9bd'>".sprintf("%.2f",$row['infacttotalamount'])."</span>";
 			}
 			?>
             </td>
-			<td align="center"><?php echo $pay;?></td>
+			<td align="center"><span style="cursor:pointer;"><?php echo $pay;?></span></td>
       <td align="center"><?php echo $pay_state; ?></td>
 			<td align="center"><a style="cursor:pointer" onclick="getticket('<?php echo $row['did']; ?>','<?php echo $row['type'];?>')" title="点击查看下票人信息"><?php echo $eye; ?></a></td>
-			<td align="center" class="num"><?php  echo date("Y-m-d",$row['posttime']);?></td>
+			<td align="center"><?php  echo date("Y-m-d",$row['posttime']);?></td>
 			<td align="center"><?php echo $states; ?></td>
 			<td width="2%">
-            <?php if($row['states']==0){?>
-      <a style="cursor:pointer" href="allorder_save.php?id=<?php echo $row['id']; ?>&action=changestates" onclick="return ConfDel(4);" title="点击更改当前的状态为已处理"><i class="fa fa-eye" aria-hidden="true"></i></a>
-            <?php }else{?>
-         <a style="cursor:pointer" onclick="changenums('<?php echo $row['id']; ?>')" title="状态已处理,更新实际取票数量和实际支付金额">
-         <i class="fa fa-check-square-o" aria-hidden="true"></i></a>
-            <?php }?>
+      <!-- states 操作是否已经处理   -->
+       <?php if($row['states']==0){   //还未处理
+             if($row['pay_state']==1){  //已经支付 ?>
+             <a style="cursor:pointer" onclick="changenums('<?php echo $row['id']; ?>','<?php echo $row['states'] ?>')" title="点击更改当前的状态,更新实际取票数量或退款金额">
+             <i class="fa fa-gavel" aria-hidden="true"></i></a>
+        <?php   }else{ ?>
+            <a style="cursor:pointer"><i title="待支付" class="fa fa-minus-circle" aria-hidden="true"></i></a>
+       <?php   }?>
+       <?php }else{  //状态已经处理?>
+         <a style="cursor:pointer" onclick="changenums('<?php echo $row['id']; ?>','<?php echo $row['states'] ?>')" title="实际取票数量已更新，点击请查看">
+         <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+       <?php  }?>
+
       </td>
 		  <td width="2%">
       <?php if($adminlevel==1){ ?>

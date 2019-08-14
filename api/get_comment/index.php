@@ -23,7 +23,10 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT a.star,a.content,a.addtime,b.company,b.images FROM `#@__comment` a LEFT  join `#@__agency` b on a.aid=b.id  WHERE a.gid=$id");
+
+
+      $dosql->Execute("SELECT b.star,b.content,b.addtime,a.company,a.images,c.title as travel_name from pmw_agency a left join pmw_comment b on a.id=b.aid left join pmw_travel c on b.tid=c.id WHERE b.gid=$id");
+
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

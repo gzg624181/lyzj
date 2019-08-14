@@ -8,7 +8,7 @@ $mch_id= $cfg_mchid; //微信支付商户支付号
 $key= $cfg_key; //Api 密钥
 
 $out_trade_no = $orderid;
-$total_fee = $price;  //小程序端传递过来的金额
+$total_fee = $price * $nums;  //小程序端传递过来的金额
 $body = "微信支付票务";
 $total_fee = floatval($total_fee * 100);
 

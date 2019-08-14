@@ -35,34 +35,69 @@
 </head>
 <script>
 function closes(){
-	
+
   var index=parent.layer.getFrameIndex(window.name);
 
-parent.layer.close(index);
+  parent.layer.close(index);
 }
 
 function gettalamount(){
-	
+
 	var infactnums=$("#infactnums").val();
-	
+
 	var nums=$("#nums").val();
-	
-	if(infactnums <= nums){
-	
-	var price = $("#price").val();
-	
-	var infacttotalamount =infactnums * price;
-	
-	$("#infacttotalamount").attr("value",infacttotalamount);
-	
-	}else{
-		
+
+  if(eval(infactnums) > (nums)){
+
 	layer.alert("实际取票数量不能大于购票数量",{icon:0});
-		
-		}
-	
+
+  }else{
+
+	var price = $("#price").val();
+
+	var infacttotalamount =infactnums * price;
+
+	$("#infacttotalamount").attr("value",infacttotalamount);
+
+	}
 	}
 
+
+  function msg(){
+
+    var infactnums=$("#infactnums").val();   //实际取票数量
+
+  	var nums=$("#nums").val();              //买的总的票数
+
+    var price = $("#price").val();          //单张票的金额
+
+    //当实际取票的数量大于买的总票数的数量的时候，则弹出提示
+
+    if(eval(infactnums) > eval(nums)){
+
+     layer.alert("实际取票数量不能大于购票数量",{icon:0});
+
+   }else if(eval(infactnums) < eval(nums)){
+
+     //如果取票的数量小于当前购买的票的数量的时候，则弹出退款的提示
+
+    var tui_nums = nums - infactnums;    //退票的数量
+
+    var tui_money =tui_nums * price;
+
+    alert("当前实际取票数"+infactnums+"张，可退"+tui_nums+"张票，退款金额："+tui_money+"元");
+
+    }
+
+  }
+
+  function closes(){
+    var index=parent.layer.getFrameIndex(window.name);
+
+    parent.layer.close(index);
+
+    window.parent.location.reload(); //刷新父页面
+  }
 </script>
 <body>
 <?php
@@ -73,8 +108,10 @@ $adminlevel=$_SESSION['adminlevel'];
 <div class="topToolbar"> <span class="title" style="text-align:center;">取票实际数量</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
 <?php
 $r=$dosql->GetOne("SELECT * FROM pmw_order where id=$id");
+if($states==0){
 ?>
-<form name="form" id="form" method="post" action="allorder_save.php">
+
+<form name="form" id="form" method="post" action="allorder_save.php" onsubmit="return msg();">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
 		<tr>
 		  <td width="22%" height="40" align="right">实际取票数量：</td>
@@ -96,9 +133,47 @@ $r=$dosql->GetOne("SELECT * FROM pmw_order where id=$id");
             <input type="hidden" name="id" id="id" value="<?php echo $id;?>" />
             <input type="hidden" name="nums" id="nums" value="<?php echo $r['nums'];?>" />
             <input type="hidden" name="action" id="action" value="changenums" />
+            <input type="hidden" name="paytype" id="paytype" value="<?php echo $r['paytype']; ?>" />
   </div></td>
     </tr>
   </table>
   </form>
+<?php }else{ ?>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
+
+    <tr>
+      <td width="22%" height="40" align="right">购票总的数量：</td>
+      <td width="78%"><input type="text" name="nums" id="nums" value="<?php echo $r['nums'];?>" class="input" required="required"/></td>
+    </tr>
+  		<tr>
+  		  <td width="22%" height="40" align="right">实际取票数量：</td>
+  		  <td width="78%"><input type="text" name="infactnums" id="infactnums" value="<?php echo $r['infactnums'];?>" class="input" required="required"/></td>
+      </tr>
+  		<tr>
+  		  <td height="40" align="right">票务价格：</td>
+  		  <td><input type="text" name="price" id="price" value="<?php echo $r['price'];?>" required="required"   class="input"/></td>
+      </tr>
+  		<tr>
+  		  <td height="40" align="right">实际支付总金额：</td>
+  		  <td><input type="text" name="infacttotalamount" id="infacttotalamount" class="input" required="required" value="<?php echo $r['infacttotalamount'];?>"/></td>
+      </tr>
+      <?php if($r['refund_state']==1){ ?>
+        <tr>
+    		  <td height="40" align="right">退票数量：</td>
+    		  <td><input type="text" name="refund_nums" id="refund_nums" class="input" required="required" value="<?php echo $r['refund_nums']; ?>"/></td>
+        </tr>
+        <tr>
+          <td height="40" align="right">退票总额：</td>
+          <td><input type="text" name="refund_money" id="refund_money" class="input" required="required" value="<?php echo $r['refund_money']; ?>"/></td>
+        </tr>
+      <?php } ?>
+        <tr>
+  		  <td height="40" align="right">&nbsp;</td>
+  		  <td><div class="formSubBtn" style="float:left; margin-left:1px;margin-top: 15px;">
+      		<input type="button" class="submit" value="关闭" onclick="closes();" /></div>
+        </td>
+      </tr>
+    </table>
+<?php } ?>
 </body>
 </html>

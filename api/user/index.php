@@ -39,7 +39,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $Data[0]['type']='agency';
       $Data[0]['cardpic']=$cfg_weburl."/".$r['cardpic'];
       if(check_str($r['images'],"https")){
-        $Data[0]['images']=$r['images'];
+      $Data[0]['images']=$r['images'];
       }else{
       $Data[0]['images']=$cfg_weburl."/".$r['images'];
       }
@@ -80,8 +80,11 @@ if(isset($token) && $token==$cfg_auth_key){
       $agreement=GetPic($agreement, $cfg_weburl);
 
       $pics=stripslashes($r['pics']);
+      if($pics==""){
+      $pics='';
+      }else{
       $pics=GetPics($pics, $cfg_weburl);
-
+      }
       $Data[0]['type']='guide';
       $Data[0]['card']=$cfg_weburl."/".$r['card'];
       if(check_str($r['images'],"https")){
@@ -90,6 +93,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $Data[0]['images']=$cfg_weburl."/".$r['images'];
       }
       $Data[0]['agreement']=$agreement;
+
       $Data[0]['pics']=$pics;
 
       $State = 1;
