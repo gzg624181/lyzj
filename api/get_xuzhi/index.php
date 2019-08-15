@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @提供返回参数账号
+     * @提供返回参数账号  景区id
      */
 require_once("../../include/config.inc.php");
 $Data = array();

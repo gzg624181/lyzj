@@ -86,7 +86,7 @@ $(function () {
 <form name="form" id="form" method="post" action="comment_save.php">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataTable">
 		<tr align="left" class="head">
-			<td width="3%" height="31" align="center">日期</td>
+			<td width="15%" height="31" align="center">日期</td>
 			<td align="center">微信支付</td>
 			<td align="center">线下支付</td>
 			<td width="17%" align="center">支付合计</td>
@@ -117,25 +117,25 @@ while($row1=$dosql->GetArray()){
 		$dopage->GetPage("SELECT *,sum(totalamount) as heji from `pmw_order` group by ymd asc",15);
 		while($row = $dosql->GetArray())
 		{
-		 $ymd=$row['ymd']; 	
+		 $ymd=$row['ymd'];
          $sumheji[]=$row['heji'];
-		
+
 			$r=$dosql->GetOne("SELECT sum(totalamount) as wxpay  FROM pmw_order where ymd='$ymd' and paytype='wxpay'");
-			
+
 			$wxpay=$r['wxpay'];
-			
+
 			if($wxpay==null){
 				$wxpay=0;
 			}
-			
+
 			$r=$dosql->GetOne("SELECT sum(totalamount) as outpay  FROM pmw_order where ymd='$ymd' and paytype='outline'");
-			
+
 			$outpay=$r['outpay'];
-			
+
 			if($outpay==null){
 				$outpay=0;
 			}
-		 
+
 
       ?>
 		<tr align="left" class="dataTr">

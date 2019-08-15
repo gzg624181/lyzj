@@ -172,8 +172,8 @@ $num=$dosql->GetTotalRow($one);
                 <td width="11%" align="center">旅行社名称</td>
                 <td width="8%" align="center">联系电话</td>
                 <td width="4%" align="center">剩余推广佣金</td>
-                <td width="9%" align="center">推荐人</td>
-                <td width="10%" align="center">注册时间</td>
+                <td width="4%" align="center">推荐人</td>
+                <td width="15%" align="center">注册时间</td>
                 <td width="4%" align="center">行程</td>
                 <td width="4%" align="center">已购票</td>
                 <td width="4%" align="center">推荐</td>

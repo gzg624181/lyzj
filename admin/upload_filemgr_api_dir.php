@@ -27,13 +27,16 @@ function dir_left(id){
 			$("#keyword").focus();
 			return false;
 		}
-	  window.location.href='api_list.php?keywords='+keyword;
+	  window.location.href='upload_filemgr_api_dir.php?keyword='+keyword+'&type=search';
 	}
+
+
 </script>
 </head>
 <body>
 <?php
 $keyword = isset($keyword) ? $keyword : '';
+$type = isset($type) ? $type : '';
 if(empty($dirname) or $dirname=='api/')
 {
 	$dirname = 'api/';
@@ -69,6 +72,7 @@ else
 	<div class="cl"></div>
 </div>
 
+<?php if($type==''){ ?>
 <form name="form" id="form" method="post" action="upload_filemgr_api_save.php">
 	<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" class="dataTable">
 		<tr align="left" class="head">
@@ -136,10 +140,11 @@ font-weight: bold; border-radius:3px;color:#a5a5a5" value="<?php echo $r['parame
 			<td style="text-align:center;"><?php echo $r['size']; ?></td>
 
 			<td class="action endCol">
-            <span><a style="cursor:pointer; text-decoration:none;" onclick="return dir_left('<?php echo $r['id'];?>');"><i title="更新" class="fa fa-refresh" aria-hidden="true"></i></a></span>
+     <span><a style="cursor:pointer; text-decoration:none;" onclick="return dir_left('<?php echo $r['id'];?>');"><i title="更新" class="fa fa-refresh" aria-hidden="true"></i></a></span>
 			<span><a href="upload_filemgr_api_dir.php?dirname=<?php echo urlencode($dirname.$gbfilename.'/'); ?>"><i  title="进入"  class="fa fa-sign-in" aria-hidden="true"></i></a></span>
 			<span class="nb">
-			<a href="editfile_update.php?filename=<?php echo $dirname.urlencode($filename); ?>/index.php"> <i  title="代码编辑" class="fa fa-location-arrow"></i></a></span>
+			<a href="editfile_update.php?filename=<?php echo $dirname.urlencode($filename); ?>/index.php">
+			<i  title="代码编辑" class="fa fa-location-arrow"></i></a></span>
 		</td>
 		</tr>
 		<?php
@@ -166,6 +171,7 @@ font-weight: bold; border-radius:3px;color:#a5a5a5" value="<?php echo $r['parame
 	</table>
 	<input type="hidden" name="dirname" id="dirname" value="<?php echo $dirname; ?>" />
 </form>
+
 <?php
 
 //无记录样式
@@ -177,6 +183,42 @@ if($i == 0)
 <div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAll('upload_filemgr_api_save.php','&mode=dir');" onclick="return ConfDelAll(0);">删除</a></span> </div>
 <div class="page"> <div class="pageText">共<span><?php echo $i; ?></span>条记录</div> </div>
 
+
+<!-- 如果是通过搜索关键字，则执行以下代码 -->
+<?php }elseif($type=="search"){?>
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" class="dataTable">
+	<tr align="left" class="head">
+		<td width="3%" height="36" class="firstCol"><input type="checkbox" name="checkid" id="checkid" onclick="CheckAll(this.checked);" /></td>
+		<td width="20%">接口文件名称</td>
+		<td width="42%">接口说明</td>
+		<td width="30%">接口参数</td>
+		<td width="5%">文件大小</td>
+	</tr>
+	<?php
+$dosql->Execute("SELECT * FROM `pmw_api` WHERE `explain` like '%$keyword%' or parameter like '%$keyword%' or filename like '%$keyword%' ");
+$num = $dosql->GetTotalRow();
+while($show = $dosql->GetArray()){
+	 ?>
+	<tr align="left" class="dataTr">
+		<td height="36" class="firstCol"><input type="checkbox" name="checkid[]" id="checkid[]" value="<?php echo $show['id']; ?>" /></td>
+		<td><?php echo $show['filename']; ?></td>
+		<td><?php echo $show['explain']; ?></td>
+		<td><?php echo $show['parameter']; ?></td>
+		<td><?php echo $show['size']; ?></td>
+	</tr>
+<?php } ?>
+</table>
+<?php
+
+//无记录样式
+if($num == 0)
+{
+	echo '<div class="dataEmpty">暂时没有文件</div>';
+}
+?>
+<div class="bottomToolbar"> <span class="selArea"><span>选择：</span> <a href="javascript:CheckAll(true);">全部</a> - <a href="javascript:CheckAll(false);">无</a> - <a href="javascript:DelAll('upload_filemgr_api_save.php','&mode=dir');" onclick="return ConfDelAll(0);">删除</a></span> </div>
+<div class="page"> <div class="pageText">共<span><?php echo $num; ?></span>条记录</div> </div>
+<?php } ?>
 <?php
 
 //判断是否启用快捷工具栏

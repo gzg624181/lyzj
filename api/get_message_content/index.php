@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_message  获取发送的消息
+	   * 链接地址：get_message_content  获取发送的消息详情
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号 消息表id
      */
 require_once("../../include/config.inc.php");
 $Data = array();

@@ -23,8 +23,6 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-
-
       $State = 1;
       $Descriptor = '数据获取成功！';
       $result = array (

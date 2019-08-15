@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_ticket_content  获取票务规格的价格 （两个月）
+	   * 链接地址：get_ticket_price  获取票务规格的价格 （两个月）
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号 ，景点规格id，景区tid
      */
 require_once("../../include/config.inc.php");
 $Data = array();

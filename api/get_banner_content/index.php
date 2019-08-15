@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_banner_content  获取导游详情
+	   * 链接地址：get_banner_content  获取banner详情
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *

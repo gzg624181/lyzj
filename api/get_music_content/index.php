@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_music_content
+	   * 链接地址：get_music_content  获取音频文件详情
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *

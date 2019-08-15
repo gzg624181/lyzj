@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号 景区id
      */
 require_once("../../include/config.inc.php");
 $Data = array();
