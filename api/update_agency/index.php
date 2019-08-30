@@ -21,9 +21,11 @@
      * images           旅行社头像
      * name             联系人姓名
      * tel              联系电话
+     * province        默认定位省份数字   （新增）  live_province
+     * city            默认定位城市数字   （新增）  live_city
      */
 require_once("../../include/config.inc.php");
-
+header("content-type:application/json;charset=utf-8");
 $body = file_get_contents('php://input');
 $_POST = json_decode($body,true);
 
@@ -44,13 +46,29 @@ if(isset($_POST['tel'])){
 $tel = $_POST['tel'];
 }
 
+if(isset($_POST['province'])){
+$province = $_POST['province'];
+}
+
+if(isset($_POST['city'])){
+$city = $_POST['city'];
+}
+
+if(isset($_POST['live_province'])){
+$live_province = $_POST['live_province'];
+}
+
+if(isset($_POST['live_city'])){
+$live_city = $_POST['live_city'];
+}
+
 if(isset($token) && $token==$cfg_auth_key){
 
   //这个是自定义函数，将Base64图片转换为本地图片并保存
   $savepath= "../../uploads/image/";
 
   if(isset($images)){
-  $images = base64_image_content($images,$savepath);
+  $images = Common::base64_image_content($images,$savepath);
   $images=str_replace("../..",'',$images);
   }
 
@@ -89,6 +107,37 @@ if(isset($token) && $token==$cfg_auth_key){
     }
   }
 
+  if(isset($province)){
+    if($lastkey=="province"){
+      $sql .= " province=$province";
+    }else{
+      $sql .= " province=$province,";
+    }
+  }
+
+  if(isset($city)){
+    if($lastkey=="city"){
+      $sql .= " city=$city";
+    }else{
+      $sql .= " city=$city,";
+    }
+  }
+
+  if(isset($live_province)){
+    if($lastkey=="live_province"){
+      $sql .= " live_province='$live_province'";
+    }else{
+      $sql .= " live_province='$live_province',";
+    }
+  }
+
+  if(isset($live_city)){
+    if($lastkey=="live_city"){
+      $sql .= " live_city='$live_city'";
+    }else{
+      $sql .= " live_city='$live_city',";
+    }
+  }
   $sql .= "WHERE id=$id";
   $dosql->ExecNoneQuery($sql);
   $r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");

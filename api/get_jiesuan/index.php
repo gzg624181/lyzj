@@ -19,12 +19,13 @@
      * @提供返回参数账号  会员id
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
       $y=date("Y");
-      $arr= get_months_success($id,$y);
+      $arr= Common::get_months_success($id,$y);
 
       $num=count($arr);
       if($num==0){
@@ -40,7 +41,7 @@ if(isset($token) && $token==$cfg_auth_key){
       }else{
       for($i=0;$i<$num;$i++){
         $m=$arr[$i]['time'];
-        $agency_arr=get_agency_state($id,$y,$m);
+        $agency_arr=Common::get_agency_state($id,$y,$m);
         $Data[$i]['time']=$m;
         $Data[$i]['teamnumber']=$agency_arr['teamnumber'];
         $Data[$i]['days']=$agency_arr['days'];

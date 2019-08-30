@@ -16,30 +16,36 @@
      *
      * @return string
      *
-     * @提供返回参数账号 page  默认为0 ,每页pagenumber条数据
+     * @提供返回参数账号 page  默认为1 ,每页pagenumber=5条数据
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+
     $page = isset($page) ? $page : 1;
     $pagenumber=5;
 
     $first= ($page - 1) * $pagenumber;
 
-    $dosql->Execute("SELECT id,name,sex,content,images,experience FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
+    $dosql->Execute("SELECT id,name,sex,content,images,experience,province,city FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
 
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){
     for($i=0;$i<$num;$i++){
     $row=$dosql->GetArray();
       $Data[]=$row;
+      //用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
       switch($row['sex']){
         case 1:
         $sex="男";
         break;
-        case 0:
+        case 2:
         $sex="女";
+        break;
+        case 0:
+        $sex ="未知";
         break;
       }
       $Data[$i]['sex']=$sex;

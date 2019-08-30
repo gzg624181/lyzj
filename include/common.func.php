@@ -5,9 +5,239 @@
 (C)2010-2015 phpMyWind.com
 update: 2014-5-31 21:57:40
 person: Feng
+project :前后台所有通用方法
 **************************
 */
 
+
+
+
+//将php数组转换为json
+function phpver($result){
+	if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+		$json = preg_replace_callback("#\\\u([0-9a-f]{4})#i", function ($matches) {
+				return iconv('UCS-2BE', 'UTF-8', pack('H4', $matches[1]));
+		}, json_encode($result));
+		 return $json;
+} else {
+		$json = json_encode($result, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+		return $json;
+}
+}
+
+
+//匹配测试
+function check_str($str, $substr)  //原字符  ，需要匹配的字符
+{
+ $nums=substr_count($str,$substr);
+
+ if ($nums>=1)
+ {
+	return true;
+ }
+ else
+ {
+	return false;
+ }
+}
+
+
+//curl请求函数，微信都是通过该函数请求,后台采用https_request方法
+function https_request($url, $data = null)
+{
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    if (!empty($data)) {
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    }
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($curl);
+    curl_close($curl);
+    return $output;
+}
+
+//获取微信小程序 access_token
+function get_access_token($appid,$appsecret){
+  $arr = file_get_contents("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$appsecret);  //去除对象里面的斜杠
+  $result = json_decode($arr, true); //接受一个 JSON 格式的字符串并且把它转换为 PHP 变量
+  //logs('log.txt',$result);
+  $access_token = $result['access_token'];
+  return $access_token;
+}
+
+//获取微信小程序openid
+function get_openid($code,$appid,$appsecret){
+  $url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.$appid.'&secret='.$appsecret.'&js_code=' . $code . '&grant_type=authorization_code';
+  $info = file_get_contents($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
+  $json = json_decode($info);//对json数据解码
+  $arr = get_object_vars($json);
+  $openid = $arr['openid'];
+  return $openid;
+}
+
+function logs($file,$data){
+  file_put_contents($file,print_r($data,true));
+}
+
+
+
+ function save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster) {
+       $post_url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=$access_token";
+       $width = '200';
+   	//前面是推荐码，商户端是1，客户端是0
+     	$scene=$id."&".$time."&".$poster;
+       $post_data='{"page":"'.$xiaochengxu_path.'","width":'.$width.',"scene":"'.$scene.'"}';
+       $opts = array('http' =>
+           array(
+               'method'  => 'POST',
+               'header'  => 'Content-type: application/json',
+               'content' => $post_data
+           )
+       );
+       $context = stream_context_create($opts);
+       $result = file_get_contents($post_url, false, $context);
+       $file_path = $save_path;
+       $bytes = file_put_contents($file_path, $result);
+       return $url;
+   }
+
+
+ function pngMerge($o_pic,$out_pic){
+   $begin_r = 255;
+   $begin_g = 250;
+   $begin_b = 250;
+   list($src_w, $src_h) = getimagesize($o_pic);// 获取原图像信息 宽高
+   $src_im = imagecreatefrompng($o_pic); //读取png图片
+   //print_r($src_im);
+   imagesavealpha($src_im,true);//这里很重要 意思是不要丢了$src_im图像的透明色
+   $src_white = imagecolorallocatealpha($src_im, 255, 255, 255,127); // 创建一副白色透明的画布
+   for ($x = 0; $x < $src_w; $x++) {
+    for ($y = 0; $y < $src_h; $y++) {
+   	 $rgb = imagecolorat($src_im, $x, $y);
+   	 $r = ($rgb >> 16) & 0xFF;
+   	 $g = ($rgb >> 8) & 0xFF;
+   	 $b = $rgb & 0xFF;
+   	 if($r==255 && $g==255 && $b == 255){
+   	 imagefill($src_im,$x, $y, $src_white); //填充某个点的颜色
+   	 imagecolortransparent($src_im, $src_white); //将原图颜色替换为透明色
+   	 }
+   	 if (!($r <= $begin_r && $g <= $begin_g && $b <= $begin_b)) {
+   		imagefill($src_im, $x, $y, $src_white);//替换成白色
+   		imagecolortransparent($src_im, $src_white); //将原图颜色替换为透明色
+   	 }
+    }
+   }
+   $target_im = imagecreatetruecolor($src_w, $src_h);//新图
+   imagealphablending($target_im,false);//这里很重要,意思是不合并颜色,直接用$target_im图像颜色替换,包括透明色;
+   imagesavealpha($target_im,true);//这里很重要,意思是不要丢了$target_im图像的透明色;
+   $tag_white = imagecolorallocatealpha($target_im, 255, 255, 255,127);//把生成新图的白色改为透明色 存为tag_white
+   imagefill($target_im, 0, 0, $tag_white);//在目标新图填充空白色
+   imagecolortransparent($target_im, $tag_white);//替换成透明色
+   imagecopymerge($target_im, $src_im, 0, 0, 0, 0, $src_w, $src_h, 100);//合并原图和新生成的透明图
+   imagepng($target_im,$out_pic);
+   // return $out_pic;
+   }
+
+ function img_water_mark($srcImg, $waterImg, $savepath=null, $savename=null, $position=5, $opacity=50){
+       $temp = pathinfo($srcImg);
+       $name = $temp['basename'];
+       $path = $temp['dirname'];
+     //  $exte = $temp['extension'];
+       $savename = $savename ? $savename : $name;
+       $savepath = $savepath ? $savepath : $path;
+       $savefile = $savepath.'/'.$savename;
+
+       $srcinfo = @getimagesize($srcImg);
+       if(!$srcinfo){
+           return -1;
+       }
+       $waterinfo = @getimagesize($waterImg);
+       if(!$waterinfo){
+           return -2;
+       }
+       $srcImgObj = img_create_from_ext($srcImg);
+       if(!$srcImgObj){
+           return -3;
+       }
+       $waterImgObj = img_create_from_ext($waterImg);
+       if(!$waterImgObj){
+           return -4;
+       }
+       switch ($position) {
+           case 1:
+               $x=$y=0;
+               break;
+           case 2:
+               $x=$srcinfo[0] /2.8;
+               $y=$waterinfo[1]/1.5;
+               break;
+           case 3:
+               $x=($srcinfo[0] - $waterinfo[0])/2;
+               $y=($srcinfo[1] - $waterinfo[1])/2;
+               break;
+           case 4:
+               $x=0;
+               $y=$srcinfo[1] - $waterinfo[1];
+               break;
+           case 5:
+               $x=$srcinfo[0] /2;
+               $y=$srcinfo[1] - $waterinfo[1]*1.5;
+               break;
+       }
+       // 合并图片+水印
+       imagecopymerge($srcImgObj, $waterImgObj, $x, $y, 0, 0, $waterinfo[0], $waterinfo[1], $opacity);
+
+       switch ($srcinfo[2]) {
+           case 1:
+               imagegif($srcImgObj, $savefile);
+               break;
+           case 2:
+               imagejpeg($srcImgObj, $savefile);
+               break;
+           case 3:
+               imagepng($srcImgObj, $savefile);
+               break;
+           default: return -5;
+       }
+       imagedestroy($srcImgObj);
+       imagedestroy($waterImgObj);
+       return $savefile;
+   }
+
+   /**
+    *图片加水印
+    *@param $srcImg 原图
+    *@param $waterImg 水印图片
+    *@param $savepath 保存路径
+    *@param $savename 保存名字
+    *@param $position 水印位置
+    *1：左上  2：右上 3:居中 4：左下 5：右下
+    *@param $opacity 透明度
+    *0:全透明 100：完全不透明
+    *@return  成功 -- 加水印后的新图片地址
+    *         失败 -- -1：源文件不存在，-2：水印不存在，-3源文件图片对象建立失败，-4：水印文件图像对象建立失败，-5：加水印后的新图片保存失败
+    * 获取源文件路径、宽高等信息，得出保存后文件保存路径、水印放置位置->建立源文件和水印图片对象->合并图片对象（imagecopymerge）->销毁图片对象
+    */
+
+  function  img_create_from_ext($imgfile){
+       $info = getimagesize($imgfile);
+       $im = null;
+       switch ($info[2]) {
+           case 1:
+               $im = imagecreatefromgif($imgfile);
+               break;
+           case 2:
+               $im = imagecreatefromjpeg($imgfile);
+               break;
+           case 3:
+               $im = imagecreatefrompng($imgfile);
+               break;
+       }
+       return $im;
+   }
 
 /*
  * 函数说明：截取指定长度的字符串

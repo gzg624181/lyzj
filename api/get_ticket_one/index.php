@@ -16,12 +16,15 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号     type = 7  类型为景区门票
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
+
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 $one=1;
+
 if(isset($token) && $token==$cfg_auth_key){
         $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
         $cfg_default = $r['imagesurl'];
@@ -34,12 +37,12 @@ if(isset($token) && $token==$cfg_auth_key){
        $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
        $picarr = json_encode($picarrTmp);
        }else{
-       $picarr=GetPic($picarr, $cfg_weburl);
+       $picarr=Common::GetPic($picarr, $cfg_weburl);
        }
        $content=stripslashes($row1['content']);
-       $content=rePic($content, $cfg_weburl);
+       $content=Common::rePic($content, $cfg_weburl);
        $xuzhi=stripslashes($row1['xuzhi']);
-       $xuzhi=rePic($xuzhi, $cfg_weburl);
+       $xuzhi=Common::rePic($xuzhi, $cfg_weburl);
         $Data[$i]['picarr']=$picarr;
         $Data[$i]['xuzhi']=$xuzhi;
         $Data[$i]['content']=$content;

@@ -96,8 +96,8 @@ function sendmessage(){
 			<td>
              <select id="linkurl" name="linkurl" style="border-radius:3px; height:35px; width:505px;" class="input">
 	        <option value="0">请选择跳转的页面</option>
-	        <option value="pages/index/index">首页</option>
-            <option value="pages/booking/index/index">票务</option>
+	          <option value="pages/index/index">首页</option>
+            <option value="pages/booking/index/index?system=true">票务</option>
 	         </select></td>
 		</tr>
 		<tr>

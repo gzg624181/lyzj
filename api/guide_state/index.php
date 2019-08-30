@@ -20,6 +20,7 @@
      *  （1，待确认，3，已取消  2，已完成   待出发 ：导游接到行程，还未有出发之前）
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

@@ -46,6 +46,7 @@ if(array_key_exists("return_code", $attr)
  $transaction_id = $attr['transaction_id'];
  $openid = $attr['openid']; //下单人的openid
  $paytype = "wxpay";  //支付方式为微信支付
+ $paytypes = "微信支付"; //发送给管理员的支付类型
 
  //更改用户的支付状态为已经支付，保存微信系统自带的订单号码
 
@@ -64,7 +65,7 @@ if(array_key_exists("return_code", $attr)
  $totalamount = $r['totalamount'];  //实际支付金额
  $contactname = $r['contactname'];    //联系人姓名
  $type = $r['type'];     //下单人的类别
- $usetime = $r['usertime']; //使用日期
+ $usetime = $r['usetime']; //使用日期
  $contacttel = $r['contacttel']; //联系人电话
 
  $dosql->ExecNoneQuery("UPDATE pmw_ticket set solds = solds + $nums where id=$tid");
@@ -74,17 +75,16 @@ if(array_key_exists("return_code", $attr)
 
  # ①.向购票人发送模板消息
 
-   $form_id=get_new_formid($openid);
-   $id=get_orderid($did,$posttime);
+   $form_id=Common::get_new_formid($openid);
+   $id=Common::get_orderid($did,$posttime);
    $page="pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem";
    $posttime=date("Y-m-d H:i:s"); //购票时间
    $tishi="亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情";
 
-   paysuccess($openid,$cfg_paysuccess,$page,$form_id,$jingquname,$typename,$nums,$totalamount,$posttime,$tishi,$cfg_appid,$cfg_appsecret);
+   Common::paysuccess($openid,$cfg_paysuccess,$page,$form_id,$jingquname,$typename,$nums,$totalamount,$posttime,$tishi,$cfg_appid,$cfg_appsecret);
 
    //删除已经用过的formid
-   del_formid($form_id,$openid);
-
+   Common::del_formid($form_id,$openid);
 
    # ②.向管理员发送模板消息
 
@@ -103,12 +103,12 @@ if(array_key_exists("return_code", $attr)
    }
 
    //获取管理员的信息
-   $array_admin=get_openid_formid();
+   $array_admin=Common::get_openid_formid();
    $openid=$array_admin['openid'];
-   $form_id=get_new_formid($openid);
-   ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytype,$posttime,$cfg_appid,$cfg_appsecret);
+   $form_id=Common::get_new_formid($openid);
+   Common::ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytypes,$posttime,$cfg_appid,$cfg_appsecret);
    //删除已经用过的formid
-   del_formid($form_id,$openid);
+   Common::del_formid($form_id,$openid);
 
 
   //特别备注：下面的代码是终止微信支付成功之后的回调，告诉微信端已经支付成功！！！

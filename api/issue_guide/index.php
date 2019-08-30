@@ -4,7 +4,6 @@
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
-     * 按json方式输出通信数据
      *
      * @param unknown $State 状态码
      *
@@ -20,16 +19,16 @@
      * id               导游id
      * time            空闲时间json数据
      * formid          更新导游的formid
-     * openid           发布空闲时间
-     * addtime         添加时间
+     * openid          发布空闲时间
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：添加空闲时间 content 内容以json字符串的形式保存在数据库中去
-  //  判断表里面是否有这个导游的空闲时间列表
+  //  判断表里面是否有这个导游的空闲时间列表，每个用户只保留或者更新一条数据
 
   $r=$dosql->GetOne("SELECT id from pmw_freetime where gid=$id");
 
@@ -42,15 +41,11 @@ if(isset($token) && $token==$cfg_auth_key){
     $sql = "UPDATE  `#@__freetime` SET content='$time',addtime=$addtime where gid=$id";
     $dosql->ExecNoneQuery($sql);
   }
-  # 更新导游的formid
-  $dosql->ExecNoneQuery("UPDATE `#@__guide` set formid='$formid' where id=$id");
 
   //将用户的formid添加进去
-  add_formid($openid,$formid);
+  Common::add_formid($openid,$formid);
   //注册成功自动在数据里面加上1
-  $add = new Guide();
-  $add->get_guide_freetime('freetime');
-
+  Common::update_message('freetime');
   $State = 1;
   $Descriptor = '导游空闲时间发布成功!';
   $result = array (

@@ -35,7 +35,7 @@ if(isset($token) && $token==$cfg_auth_key){
 	$erweima_name=date("Ymdhis");
 	$url="uploads/erweima/".$erweima_name.".png";
 	$save_path="../../".$url;         //生成成功之后的二维码地址
-	$access_token=token($cfg_music_appid,$cfg_music_appsecret);
+	$access_token=Common::get_access_token($cfg_music_appid,$cfg_music_appsecret);
   $erweima= save_erweima($access_token,$xiaochengxu_path,$save_path,$url,$id,$time,$poster);
 
   $img = imagecreatefromjpeg($save_path);

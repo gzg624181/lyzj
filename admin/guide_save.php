@@ -39,13 +39,21 @@ if($action == 'update')
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
 
+  //获取省份
+  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
+
+  $live_province=$row['dataname'];  //省份中文
+
+  //获取城市
+  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+  $live_citys=$row['dataname'];   //城市中文
 
 
   if($password==""){ //密码不修改
-    $sql = "UPDATE `$tbname` SET name='$name', agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name', agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
   }else{
     $password=md5(md5($password));
-    $sql = "UPDATE `$tbname` SET name='$name',agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', password='$password', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', password='$password', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
   }
 
 	if($dosql->ExecNoneQuery($sql))
@@ -86,6 +94,12 @@ $gourl="free_time.php";
 header("location:$gourl");
 exit();
 
+}elseif($action=="del22"){
+  //删除未通过的导游信息
+  $dosql->ExecNoneQuery("DELETE FROM pmw_un_guide WHERE id=$id");
+  $gourl="guide.php";
+  header("location:$gourl");
+  exit();
 }
 //更改用户的权限
 elseif($action=="changeforbiden"){

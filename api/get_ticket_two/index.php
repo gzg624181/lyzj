@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_ticket_two 夏日推荐
+	   * 链接地址：get_ticket_two 夏日推荐栏目
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -16,9 +16,10 @@
      *
      * @return string
      *
-     * @提供返回参数账号 
+     * @提供返回参数账号  景区分类  type =8
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -35,15 +36,15 @@ if(isset($token) && $token==$cfg_auth_key){
        $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
        $picarr = json_encode($picarrTmp);
        }else{
-       $picarr=GetPic($picarr, $cfg_weburl);
+       $picarr=Common::GetPic($picarr, $cfg_weburl);
        }
        $content=stripslashes($row2['content']);
-       $content=rePic($content, $cfg_weburl);
+       $content=Common::rePic($content, $cfg_weburl);
        $xuzhi=stripslashes($row2['xuzhi']);
-       $xuzhi=rePic($xuzhi, $cfg_weburl);
-        $Data[$i]['picarr']=$picarr;
-        $Data[$i]['xuzhi']=$xuzhi;
-        $Data[$i]['content']=$content;
+       $xuzhi=Common::rePic($xuzhi, $cfg_weburl);
+       $Data[$i]['picarr']=$picarr;
+       $Data[$i]['xuzhi']=$xuzhi;
+       $Data[$i]['content']=$content;
       }
 
       $State = 1;

@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：update_agency  更改旅行社资料
+	   * 链接地址：update_bank  更改银行卡资料
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -25,7 +25,7 @@
      *
      */
 require_once("../../include/config.inc.php");
-
+header("content-type:application/json;charset=utf-8");
 $body = file_get_contents('php://input');
 $_POST = json_decode($body,true);
 

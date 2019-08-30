@@ -16,10 +16,15 @@
      *
      * @return string
      *
-     * @提供返回参数账号  keyword=>   行程标题 title   行程起始时间 starttime_ymd   行程时间 days
-     *                   用户的openid
+     * @提供返回参数账号  keyword=>
+     *                           行程标题 title
+     *                           行程起始时间 starttime_ymd
+     *                           行程时间 days
+     *  用户的openid
+     * 当前用户的定位    province  city
      */
 require_once("../../include/config.inc.php");
+header("Content-type:applicaton/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -59,7 +64,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     //searchlist  搜索历史
     //list        搜索内容
-    //recommand   推荐
+    //recommand   推荐,加上定位（province，city  ） 根据用户注册的地理位置来定位
 
     if($num>0){
 
@@ -84,7 +89,7 @@ if(isset($token) && $token==$cfg_auth_key){
     }
       //默认推荐四条数据
       $four=4;
-      $dosql->Execute("SELECT * from pmw_travel where state=0 order by rand() limit 4",$four);
+      $dosql->Execute("SELECT * from pmw_travel where state=0 and province='$province' and city='$city' order by rand() limit 4",$four);
       while($sow=$dosql->GetArray($four)){
         $Data['recommand'][]=$sow;
       }
@@ -99,7 +104,7 @@ if(isset($token) && $token==$cfg_auth_key){
       echo phpver($result);
     }else{
       $six=6;
-      $dosql->Execute("SELECT * FROM pmw_travel where state=0 order by rand() limit 4",$six);
+      $dosql->Execute("SELECT * FROM pmw_travel where state=0 and province='$province' and city='$city' order by rand() limit 4",$six);
       while($row=$dosql->GetArray($six)){
       $Data['recommand'][]=$row;
       }
@@ -109,10 +114,8 @@ if(isset($token) && $token==$cfg_auth_key){
 
        while($go=$dosql->GetArray($five)){
        $Data['searchlist'][]=$go;
-                      }
        }
-
-
+       }
       $State = 0;
       $Descriptor = '搜索数据为空，推荐数据获取成功！';
       $result = array (

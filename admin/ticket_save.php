@@ -139,10 +139,12 @@ else if($action=="add_ticket"){
   }
 
   //文章属性
-	if(is_array($flag))
-	{
-		$flag = implode(',',$flag);
-	}
+  $nums = count($flag);
+  if($nums==1){
+    $flag = $flag[0];
+  }else{
+    $flag = implode(",",$flag);
+  }
 
   //多个分类
   $num = count($types);
@@ -151,7 +153,17 @@ else if($action=="add_ticket"){
   }else{
     $type = implode(",",$types);
   }
-  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney,orderid) VALUES ('$names','$type','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney',$orderid)";
+
+  //获取省份
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
+
+ $live_province=$row['dataname'];  //省份中文
+
+//获取城市
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+ $live_citys=$row['dataname'];   //城市中文
+
+  $sql="INSERT INTO pmw_ticket (names,types,flag,label,remarks,level,picarr,solds,posttime,content,xuzhi,lowmoney,orderid,live_province,province,live_city,city) VALUES ('$names','$type','$flag','$label','$remarks',$level,'$picarr',$solds,$posttime,'$content','$xuzhi','$lowmoney',$orderid,'live_province',$live_prov,'$live_citys',$live_city)";
   if($dosql->ExecNoneQuery($sql)){
   $gourl= "scenic.php";
   header("location:$gourl");
@@ -278,7 +290,16 @@ else if($action=="del100"){
     $types = implode(',',$types);
   }
 
-  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,orderid=$orderid,content='$content' WHERE id=$id");
+  //获取省份
+  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
+
+  $live_province=$row['dataname'];  //省份中文
+
+  //获取城市
+  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+  $live_citys=$row['dataname'];   //城市中文
+
+  $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,orderid=$orderid,content='$content',live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id");
   $gourl= "scenic.php";
   header("location:$gourl");
   exit();

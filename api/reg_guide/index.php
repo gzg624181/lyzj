@@ -29,13 +29,14 @@
      * pics         导游相册 (选填)(text)
      * regtime      注册时间 (选填)(int)
      * openid        用户关注小程序唯一的openid
-     * openid       前端发送formid
-     * cardidnumber 导游的身份证号码
+     * formid        前端发送formid
+     * cardidnumber   导游的身份证号码
      * cardid_picarr  身份证正面图片
-     * cardid_back  身份证反面图片
-     * recommender_openid  推荐人的openid
-     * uid         推荐人的id
+     * cardid_back    身份证反面图片
+     * uid            推荐人的id
      * recommender_type  推荐人的类别
+     * province      默认登录省份数字代码   live_province
+     * city          默认登录的城市数字代码 live_city
 
      *  备注：   1.手机号码唯一，同时一个手机号码只能注册导游账号和旅行社账号
      *          2.导游的证件号码唯一
@@ -45,15 +46,14 @@
      *                  1:导游注册信息已提交成功！
      *                  2:导游注册信息已提交失败！
      *                  3:此电话号码正在审核中，请等待管理员审核
-     *                  4:此电话号码已注册过旅行社账号！
+     *                  2:此电话号码已注册过旅行社账号！
      *                  5：此导游证号码已经被注册！
      *                  6：身份证号码填写错误！
      */
 require_once("../../include/config.inc.php");
-require_once("../../admin/sendmessage.php");
+header("content-type:application/json; charset=utf-8");
 $body = file_get_contents('php://input');
 $json = json_decode($body,true);
-header('Content-Type: application/json; charset=utf-8');
 //通过post格式传递过来
 
 $name=$json['name'];
@@ -61,7 +61,7 @@ $sex=$json['sex'];
 $card=$json['card'];
 $cardnumber=$json['cardnumber'];
 $tel=$json['tel'];
-$account=$json['account'];  // 注册的账号（保证注册的手机号码唯一性）
+$account=$json['account'];    // 注册的账号（保证注册的手机号码唯一性）
 $password=$json['password'];
 $content=$json['content'];
 $pics=$json['pics'];
@@ -72,9 +72,17 @@ $openid =$json['openid'];
 $cardidnumber = $json['cardidnumber'];
 $cardid_picarr = $json['cardid_picarr'];
 $experience = $json['experience'];
-$recommender_openid = $json['recommender_openid'];
-$uid   =  $json['uid'];
+
+// 推荐信息
+$uid = $json['uid'];
 $recommender_type = $json['recommender_type'];
+
+// 导游定位信息
+
+$live_province = $json['live_province'];
+$province = $json['province'];
+$live_city = $json['live_city'];
+$city = $json['city'];
 
 
 $Data = array();
@@ -92,7 +100,7 @@ $r=$dosql->GetOne("SELECT * FROM `#@__guide` WHERE account='$account'");
 //如果导游表里面已经有了账号，则判断此账号的状态（0：正在审核中 1：已经审核通过，此电话号码已经被注册过
 if(is_array($r)){
   if($r['checkinfo']==0){
-    $State = 3;
+    $State = 2;
     $Descriptor = '此电话号码正在审核中，请等待管理员审核！';
     $result = array (
                 'State' => $State,
@@ -113,29 +121,27 @@ if(is_array($r)){
   echo phpver($result);
   }
 }else{
-  //判断导游表里面 导游证号的唯一性
-  $k = $dosql->GetOne("SELECT id from `#@__guide` where cardnumber='$cardnumber'");
+  //判断导游表里面 导游证号的唯一性 ，且身份证号码唯一性
+  $k = $dosql->GetOne("SELECT id from `#@__guide` where cardnumber='$cardnumber' or cardidnumber='$cardidnumber'");
   //如果导游表里面没有这个导游的导游证号码
   if(!is_array($k)){
    //判断导游的身份证号码是否正确
-   $idc=is_idcard($cardidnumber);
-   if($idc){
-  $appid=$cfg_appid;
-  $appsecret=$cfg_appsecret;
+  $idc=Common::idcard($cardidnumber);
+  if($idc){
   $regtime=time();
   $regip=GetIP();
-  $getcity=get_city($regip);
+  $getcity=Common::get_city($regip);
   $ymdtime=date("Y-m-d");
   $password=md5(md5($password));
   //这个是自定义函数，将Base64图片转换为本地图片并保存
   $savepath= "../../uploads/image/";
-  $card = base64_image_content($card,$savepath);
+  $card = Common::base64_image_content($card,$savepath);
   $card=str_replace("../../",'',$card);
   //将相册里面的图片进行处理
   $pic="";
   $arr=explode("|",$pics);
   for($i=0;$i<count($arr);$i++){
-    $pics  = base64_image_content($arr[$i],$savepath);
+    $pics  = Common::base64_image_content($arr[$i],$savepath);
     if($i==count($arr)-1){
       $thispic = str_replace("../../",'',$pics);
     }else{
@@ -147,7 +153,7 @@ if(is_array($r)){
   $card_picarr="";
   $arr=explode("|",$cardid_picarr);
   for($i=0;$i<count($arr);$i++){
-    $pics  = base64_image_content($arr[$i],$savepath);
+    $pics  = Common::base64_image_content($arr[$i],$savepath);
     if($i==count($arr)-1){
       $thispic = str_replace("../../",'',$pics);
     }else{
@@ -158,25 +164,22 @@ if(is_array($r)){
 
   //判断是否有这个推荐人的信息
   if($uid!=""){
-    $arr = get_recommender_array($recommender_type,$uid);
+    // 添加推荐统计人数，如果是推荐人推荐注册过来的话，则记录推荐的人数
+    Common::add_recommender_nums();
+    $arr = Common::get_recommender_array($recommender_type,$uid);
     $recommender_type   = $arr['recommender_type'];
     $uid = $arr['uid'];
   }
 
-  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,formid,cardidnumber,cardid_picarr,experience,uid,recommender_type) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$formid','$cardidnumber','$card_picarr','$experience','$uid','$recommender_type')";
+  //将新生成的formid的信息保存到formid表里面去
+  Common::add_formid($openid,$formid);
 
-  // 添加推荐统计人数，如果是推荐人推荐注册过来的话，则记录推荐的人数
-  if($uid!=""){
-    add_recommender_nums();
-  }
-
-  add_formid($openid,$formid);
+  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,cardidnumber,cardid_picarr,experience,uid,recommender_type,live_province,live_city,province,city) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$cardidnumber','$card_picarr','$experience','$uid','$recommender_type','$live_province','$live_city',province,city)";
 
 if($dosql->ExecNoneQuery($sql)){
 
   //注册成功自动在数据里面加上1
-  $add = new Guide();
-  $add->get_guide_freetime('guide');
+  Common::update_message('guide');
 
   $State = 1;
   $Descriptor = '导游注册信息已提交成功！';
@@ -188,7 +191,7 @@ if($dosql->ExecNoneQuery($sql)){
                );
   echo phpver($result);
 }else{
-  $State = 2;
+  $State = 0;
   $Descriptor = '导游注册信息已提交失败！';
   $result = array (
               'State' => $State,
@@ -213,7 +216,7 @@ if($dosql->ExecNoneQuery($sql)){
 }else{
   // 导游证件号码已经被注册过
   $State = 2;
-  $Descriptor = '此导游证号码已经被注册！';
+  $Descriptor = '此导游证号码或身份证号码已经被注册！';
   $result = array (
                   'State' => $State,
                   'Descriptor' => $Descriptor,

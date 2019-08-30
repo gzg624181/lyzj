@@ -20,40 +20,6 @@ function get_city($ip){
     }
 }
 
-#转json格式数据
-function phpvers($result){
-	if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-    $json = preg_replace_callback("#\\\u([0-9a-f]{4})#i", function ($matches) {
-        return iconv('UCS-2BE', 'UTF-8', pack('H4', $matches[1]));
-    }, json_encode($result));
-	   return $json;
-} else {
-    $json = json_encode($result, JSON_UNESCAPED_UNICODE);
-    return $json;
-}
-}
-
-
-//POST请求函数
-function https_request($url,$data = null){
-    $curl = curl_init();
-
-    curl_setopt($curl,CURLOPT_URL,$url);
-    curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
-    curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,false);
-
-    if(!empty($data)){//如果有数据传入数据
-        curl_setopt($curl,CURLOPT_POST,1);//CURLOPT_POST 模拟post请求
-        curl_setopt($curl,CURLOPT_POSTFIELDS,$data);//传入数据
-    }
-
-    curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
-    $output = curl_exec($curl);
-    curl_close($curl);
-
-    return $output;
-}
-
  # 旅行社添加行程
 
   function add_travel($getarray){
@@ -368,24 +334,11 @@ function https_request($url,$data = null){
 			);
 		}
     //转为json格式的数据
-		$json=phpvers($content);
+		$json=phpver($content);
 		return $json;
 	}
 
 
-	//匹配测试
-	function check_str($str, $substr)    //原字符串  ，匹配的字符串
-	{
-	 $nums=substr_count($str,$substr);
-	 if ($nums>=1)
-	 {
-		return true;
-	 }
-	 else
-	 {
-		return false;
-	 }
-	}
 
 // 计算旅游社所有的成功的计算总额
 
@@ -969,11 +922,11 @@ function send_servant($recommender_id,$recommender_type,$type,$uid,$openid)
 
     //向用户的账号里面添加推荐佣金,
 
-		$dosql->ExecNoneQuery("UPDATE pmw_guide set money = money + $cfg_commisson,cashmoney=1 where id=$recommender_id");
+		$dosql->ExecNoneQuery("UPDATE pmw_guide set money = money + $cfg_money,cashmoney=1 where id=$recommender_id");
 
 		//将推广的会员的记录保存下来
     $addtime = time();
-		$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,addtime) values ($uid,'$openid','$type','$cfg_commisson',$recommender_id,'guide',$addtime)");
+		$dosql->ExecNoneQuery("INSERT INTO pmw_commisson (uid,openid,type,commisson,recommender_id,recommender_type,addtime) values ($uid,'$openid','$type','$cfg_money',$recommender_id,'guide',$addtime)");
 
 		}elseif($recommender_type=="agency"){
 

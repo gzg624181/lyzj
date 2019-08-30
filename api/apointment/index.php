@@ -11,12 +11,14 @@
      * @param string $Descriptor  提示信息
      *
 	   * @param string $Version  操作时间
-     *管沟  ceshi     
+     *管沟  ceshi
      * @param array $Data 数据
      *
      * @return string
      *
      * @提供返回参数账号 page  默认为0 ,每页pagenumber条数据
+     *
+     * 根据登录的定位城市省份和城市，province  city
      */
 require_once("../../include/config.inc.php");
 $Data = array();
@@ -25,9 +27,9 @@ if(isset($token) && $token==$cfg_auth_key){
    if(isset($page)){
     $pagenumber=4;
     $first=$page * $pagenumber;
-    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 order by id desc limit $first,$pagenumber");
+    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 and province ='$province' and city='$city' order by id desc limit $first,$pagenumber");
    }else{
-    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 order by id desc limit 0,$pagenumber");
+    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 and province ='$province' and city='$city' order by id desc limit 0,$pagenumber");
   }
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){

@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址： 会员关注小程序之后，获取用户的个人信息和openid
+	   * 链接地址：  add_members 会员关注小程序之后，获取用户的个人信息和openid
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -23,17 +23,16 @@
      * code             通过code获取用户的唯一openid
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-
-  //备注 ：添加行程的时候content 内容以json字符串的形式保存在数据库中去
 
   $addtime=time();  //添加时间
 
    // 获取用户的openid
 
-  $openid = Openid($code,$cfg_appid,$cfg_appsecret);
+  $openid = Common::Openid($code,$cfg_appid,$cfg_appsecret);
 
   $r=$dosql->GetOne("SELECT id FROM pmw_members where openid='$openid'");
 
@@ -42,6 +41,7 @@ if(isset($token) && $token==$cfg_auth_key){
   }else{
     $sql = "UPDATE `#@__members` SET nickname='$nickname',images='$images',sex=$sex,addtime=$addtime where openid='$openid'";
   }
+
   $dosql->ExecNoneQuery($sql);
   $k = $dosql->GetOne("SELECT openid FROM `#@__members` WHERE openid='$openid'");
   if(is_array($k)){

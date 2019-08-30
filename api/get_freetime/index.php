@@ -19,13 +19,13 @@
      * @提供返回参数账号 导游id
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
       $now=time();
       $r=$dosql->GetOne("SELECT * from pmw_freetime where gid=$id");
-      $num=$dosql->GetTotalRow();
-      if($num==0){
+      if(!is_array($r)){
         $State = 0;
         $Descriptor = '暂无此导游发布的空闲时间信息';
         $result = array (

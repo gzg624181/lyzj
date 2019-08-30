@@ -12,8 +12,10 @@ person: Feng
 require_once(dirname(__FILE__).'/common.inc.php');
 require_once(PHPMYWIND_INC.'/func.class.php');
 require_once(PHPMYWIND_INC.'/page.class.php');
-require_once(PHPMYWIND_INC.'/common.php');
-require_once(PHPMYWIND_INC.'/common.class.php');
+//require_once(PHPMYWIND_INC.'/common.php');       //后期这方法可以取消
+require_once(PHPMYWIND_INC.'/common.class.php');   //公用方法
+require_once(PHPMYWIND_INC.'/common.agency.php');  //旅行社类
+require_once(PHPMYWIND_INC.'/common.guide.php');   //导游类
 if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 
 

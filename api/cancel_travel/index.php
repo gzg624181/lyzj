@@ -17,16 +17,16 @@
      * @return string
      *
      * @旅行社发布旅游行程   提供返回参数账号，
-     * id        此条行程的id
-     * formid    旅行社的formid
-     * openid    旅行社的openid
-     * reason     旅行社取消的原因
-     * aid        旅行社id
-     * gid       导游id
-     * reason    取消原因
+     * id          此条行程的id
+     * formid      旅行社的formid
+     * openid      旅行社的openid
+     * reason      旅行社取消的原因
+     * aid         旅行社id
+     * gid         导游id
+     * reason      取消原因
      */
 require_once("../../include/config.inc.php");
-require_once("../../admin/sendmessage.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -60,111 +60,54 @@ if(isset($token) && $token==$cfg_auth_key){
     echo phpver($result);
   }
   }elseif($r['state']==1){
-    $faxtime=time();
-    $sql = "UPDATE `#@__travel` set state=3 WHERE id=$id";
-    $dosql->ExecNoneQuery($sql);
-    //发送双向模板消息
 
-    // 给旅行社发布模板消息 （旅行社的formid通过参数获取）
+    $arr =explode(".",$reason);
 
+    //将行程的状态改为已取消
+    $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=3 WHERE id=$id");
+
+    //必备参数数组
     $g=$dosql->GetOne("SELECT * FROM pmw_guide where id=$gid");
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
 
-    //将用户的formid添加进去
-    add_formid($openid,$formid);
+    $info = [
 
-    $openid_agency=$openid;            //旅行社联系人openid
-    $formid= get_new_formid($openid);  //旅行社formid
+         "openid_guide"=>$x['openid_guide'],   //预约此条行程的导游的openid
+         "title" => $x['title'],               //旅行社发布的行程标题
+         "time" =>date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']),  //行程时间段
+         "reason" =>$arr[1],                   //取消原因
+         "tishi" =>"您发布的此条行程已取消，可进入小程序再次发布行程，欢迎您再次使用。",  //取消提示
+         "page" => "pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem",
+         "faxtime" => time(),
+         "name" =>  $a['company'],
+         "tel" => $a['tel'],
+         "tishi_guide"=>"您预约的此条行程已取消，可进入小程序再次预约行程，欢迎您再次使用。",
+         "page_guide"=>"pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem",
 
 
-    $openid_guide=$x['openid_guide'];               //导游openid
-    $form_id =get_new_formid($openid_guide);       //导游formid
+    ];
 
+    //发送双向模板消息
 
-    $title=$x['title'];           //旅行社发布的行程标题
+   # ①.给旅行社发布模板消息
 
-    $time=date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']); //旅行社发布的行程时间
+    $agency =new Agency($openid,$formid);
 
-    //$reason="世界这么大，我想自己单独出去走走";
-    $arr = array();
+    $agency->Send_Concel_Agency($info);
 
-    $arr =explode(".",$reason);
+   //将旅行社撤销行程的模板消息保存到历史消息记录里面去
+    $agency->concel_Agency_Message($info,$aid);
 
-    $reason =$arr[1];
+   #②. 给导游发送模板消息
 
-    $tishi="您发布的此条行程已取消，可进入小程序再次发布行程，欢迎您再次使用。";
-/*
-    $page="pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem";
+    $guide = new Guide($x['openid_guid'],Common::get_new_formid($x['openid_guide']));
 
-    $data_agency=CancelAgency($title,$time,$reason,$tishi,$openid_agency,$cfg_concel_agency,$page,$formid);
+    $guide->Send_Concel_Guide($info);
 
-    $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+    //将导游撤销行程的模板消息保存到历史消息记录里面去
+    $guide->concel_Guide_Message($info,$gid);
 
-    //模板消息请求URL
-    $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
-
-    $json_data_agency = json_encode($data_agency);//转化成json数组让微信可以接收
-    $res_agency = https_request($url, urldecode($json_data_agency));//请求开始
-    $res_agency = json_decode($res_agency, true);
-  //  $errcode_agency=$res_agency['errcode'];
-  //删除已经用过的formid
-     del_formid($formid,$openid_agency);
-     */
-//==================================================================================================
-    //将旅行社注撤销行程的模板消息保存起来
-    $type = 'agency';
-    $messagetype='template';
-    $templatetype='cancel';  //取消行程的模板消息类型
-    $tent = "行程已取消成功：|";
-    $tent .= "出发行程：".$title."|";
-    $tent .= "行程时间：".$time."|";
-    $tent .= "取消原因：".$reason."|";
-    $tent .= "温馨提示：".$tishi;
-    $stitle="行程取消通知";
-    $biaoti="你好，你发布的".$time."行程已取消";
-
-    $tbnames = 'pmw_message';
-    $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $aid, $faxtime)";
-    $dosql->ExecNoneQuery($sql);
-//===========================================================================================
-
-    //向导游发送取消行程的模板消息
-    $nickname =$a['company'];    //旅行社的名称
-    $tel = $a['tel'];            //旅行社联系人电话号码
-    $tishi="您预约的此条行程已取消，可进入小程序再次预约行程，欢迎您再次使用。";
-    $page="pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem";
-
-    $data_guide=CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid_guide,$cfg_cancel_guide,$page,$form_id);
-
-    $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
-
-    //模板消息请求URL
-    $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
-
-    $json_data_guide = json_encode($data_guide);//转化成json数组让微信可以接收
-    $res_guide = https_request($url, urldecode($json_data_guide));//请求开始
-    $res_guide = json_decode($res_guide, true);
-  //  $errcode_guide=$res_guide['errcode'];
-     del_formid($form_id,$openid_guide);
-    //==================================================================================================
-        //将导游接收到的撤销行程的模板消息保存起来
-        $type = 'guide';
-        $messagetype='template';
-        $templatetype='cancel';  //取消行程的模板消息类型
-        $tent = "行程已被取消：|";
-        $tent .= "出发行程：".$title."|";
-        $tent .= "行程时间：".$time."|";
-        $tent .= "昵称：".$nickname."|";
-        $tent .= "取消原因：".$reason."|";
-        $tent .= "温馨提示：".$tishi;
-        $stitle="行程取消通知";
-        $biaoti="你好，你预约的".$time."行程已被取消";
-
-        $banames = 'pmw_message';
-        $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
-        $dosql->ExecNoneQuery($sql);
-    //===========================================================================================
     $s=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
 
     $states =$s['state'];

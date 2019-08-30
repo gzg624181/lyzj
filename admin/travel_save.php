@@ -33,11 +33,26 @@ if($action == 'add')
 	$days=($endtime-$starttimes) / (60 * 60 * 24) +1;  //行程的天数
 	$jiesuanmoney = $cfg_jiesuan * $days;
 
+	//获取省份
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
+
+ $live_province=$row['dataname'];  //省份中文
+
+//获取城市
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+ $live_citys=$row['dataname'];   //城市中文
+
 
   $contents= add_travel($_POST);
-	$r=$dosql->GetOne("SELECT company from pmw_agency where id=$aid");
+	$r=$dosql->GetOne("SELECT company,openid from pmw_agency where id=$aid");
 	$company=$r['company'];
-	$sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym, aid,jiesuanmoney,company,days) VALUES ('$title',$starttimes,'$starttime_ymd',$endtime,$num,'$origin','$contents',$money,'$other',$posttime,'$fabu_y', '$fabu_ym',$aid,'$jiesuanmoney','$company',$days)";
+	$openid = $r['openid'];
+	if($content==""){
+		$content = "[]";
+	}
+
+	$sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym, aid,jiesuanmoney,company,days,live_province,province,live_city,city,openid) VALUES ('$title',$starttimes,'$starttime_ymd',$endtime,$num,'$origin','$contents',$money,'$other',$posttime,'$fabu_y', '$fabu_ym',$aid,'$jiesuanmoney','$company',$days,'$live_province',$live_prov,'$live_citys',$live_city,'$openid')";
+
 		if($dosql->ExecNoneQuery($sql))
 		{
 			header("location:$gourl");
@@ -54,10 +69,20 @@ elseif($action=="update"){
 	$day=($endtime-$starttimes) / (60 * 60 * 24) +1;  //行程的天数
 	$jiesuanmoney = $cfg_jiesuan * $day;
 
-	$content=add_travel($_POST);
-	$sql = "UPDATE `$tbname` SET title='$title', starttime=$starttimes,endtime=$endtime,num=$num,origin='$origin',money='$money',jiesuanmoney='$jiesuanmoney',other='$other',posttime=$posttime,content='$content' WHERE `id`=$id";
+	//获取省份
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
 
-	if($dosql->ExecNoneQuery($sql))
+ $live_province=$row['dataname'];  //省份中文
+
+//获取城市
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+ $live_citys=$row['dataname'];   //城市中文
+
+
+	$content=add_travel($_POST);
+	$sql = "UPDATE `$tbname` SET title='$title', starttime=$starttimes,endtime=$endtime,num=$num,origin='$origin',money='$money',jiesuanmoney='$jiesuanmoney',other='$other',posttime=$posttime,content='$content',live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE `id`=$id";
+
+	if($dosql->ExecNoneQuery($sql)) 
 	{
 		header("location:$gourl");
 	  exit();

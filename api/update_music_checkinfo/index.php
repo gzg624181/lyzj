@@ -19,6 +19,7 @@
      * @发送用户的openid和 checkinfo
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json;charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

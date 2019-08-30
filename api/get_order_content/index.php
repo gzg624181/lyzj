@@ -19,6 +19,7 @@
      * @提供返回参数账号 id
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -42,7 +43,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
       $picarr = json_encode($picarrTmp);
       }else{
-      $picarr=GetPic($picarr, $cfg_weburl);
+      $picarr=Common::GetPic($picarr, $cfg_weburl);
       }
       $r['picarr']=$picarr;
       $State = 1;

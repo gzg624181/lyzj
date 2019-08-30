@@ -16,9 +16,10 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号 type = 9  类型为周边景区分类
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -37,12 +38,12 @@ if(isset($token) && $token==$cfg_auth_key){
        $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
        $picarr = json_encode($picarrTmp);
        }else{
-       $picarr=GetPic($picarr, $cfg_weburl);
+       $picarr=Common::GetPic($picarr, $cfg_weburl);
        }
        $content=stripslashes($row3['content']);
-       $content=rePic($content, $cfg_weburl);
+       $content=Common::rePic($content, $cfg_weburl);
        $xuzhi=stripslashes($row3['xuzhi']);
-       $xuzhi=rePic($xuzhi, $cfg_weburl);
+       $xuzhi=Common::rePic($xuzhi, $cfg_weburl);
        $Data[$i]['picarr']=$picarr;
        $Data[$i]['xuzhi']=$xuzhi;
        $Data[$i]['content']=$content;

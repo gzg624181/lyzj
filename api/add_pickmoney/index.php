@@ -18,10 +18,10 @@
      *
      * @旅行社发布旅游行程   提供返回参数账号，
      * uid             此用户的id
-     * type           用户的类别
-     * applytime      申请时间
+     * type            用户的类别
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

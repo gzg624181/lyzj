@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：success_travel 获取旅行社已经完成的形成列表
+	   * 链接地址：success_travel_num 获取旅行社已经完成的行程列表
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -19,6 +19,7 @@
      * @提供返回参数账号 id    旅行社的id 返回旅行社的导游形成  （0，待预约，2.已完成,1,待确认 3.已经取消）
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

@@ -7,16 +7,16 @@
 */
 
 //数据库服务器
-$db_host = 'localhost';
+$db_host = '127.0.0.1';
 
 //数据库用户名
 $db_user = 'root';
 
 //数据库密码
-$db_pwd = 'root';
+$db_pwd = '';
 
 //数据库名
-$db_name = 'lyzj';
+$db_name = 'new_lyzj';
 
 //数据表前缀
 $db_tablepre = 'pmw_';

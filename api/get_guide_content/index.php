@@ -16,9 +16,10 @@
      *
      * @return string
      *
-     * @提供返回参数账号 type 会员类型  会员id
+     * @提供返回参数账号  会员id
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -36,7 +37,7 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
         $agreement=stripslashes($r['agreement']);
-        $agreement=GetPic($agreement, $cfg_weburl);
+        $agreement=Common::GetPic($agreement, $cfg_weburl);
         $r['agreement']=$agreement;
         $r['card']=$cfg_weburl."/".$r['card'];
       if($r['images']==""){
@@ -49,7 +50,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $r['images']=$images;
 
       $pics=stripslashes($r['pics']);
-      $pics=GetPics($pics, $cfg_weburl);
+      $pics=Common::GetPics($pics, $cfg_weburl);
       $r['pics']=$pics;
       $State = 1;
       $Descriptor = '内容获取成功！';
@@ -61,7 +62,6 @@ if(isset($token) && $token==$cfg_auth_key){
                    );
       echo phpver($result);
       }
-
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

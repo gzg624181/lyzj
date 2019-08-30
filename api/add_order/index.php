@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：add_order  添加订单 ,线下支付，线上支付
+	   * 链接地址：add_order  添加订单 ,线下支付
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -28,12 +28,14 @@
      * typename          票务类型（成人票，儿童票，优惠票）
      * nums              票务数量
      * totalamount       支付总金额
-     * paytype           支付类型（线下支付，微信支付）
+     * paytype           支付类型（线下支付outline，微信支付 wxpay）
      * orderid           支付订单号
      * states            后台票务处理状态（默认未处理0，已处理1）
-     * posttime           添加时间
+     * openid
+     * formid
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -49,18 +51,20 @@ if(isset($token) && $token==$cfg_auth_key){
   $timestampuse= strtotime($usetime);
 
   //将用户的formid添加进去
-  add_formid($openid,$formid);
+  Common::add_formid($openid,$formid);
 
   $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd,pay_state) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd',0)";
   if($dosql->ExecNoneQuery($sql)){
 
    //更改票务的数量
   if($paytype=="outline"){
+  $paytypes ="线下支付";
   $dosql->ExecNoneQuery("UPDATE pmw_ticket set solds = solds + $nums where id=$tid");
   $dosql->ExecNoneQuery("UPDATE pmw_order SET pay_state=1 WHERE orderid='$orderid'");
 
   }elseif($paytype=='wxpay'){
     //拉取微信支付
+  $paytypes ="微信支付";
   include("../weixinpay/index.php");
   }
 
@@ -71,45 +75,54 @@ if(isset($token) && $token==$cfg_auth_key){
 
   if($pay_state==1 && $paytype=='outline'){
 
-  $form_id=get_new_formid($openid);
-  $id=get_orderid($did,$posttime);
-  $page="pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem";
-  $posttime=date("Y-m-d H:i:s"); //购票时间
-  $tishi="亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情";
+  # ①. 支付成功之后，向购票人发送购票成功的模板消息
 
-  paysuccess($openid,$cfg_paysuccess,$page,$form_id,$jingquname,$typename,$nums,$totalamount,$posttime,$tishi,$cfg_appid,$cfg_appsecret);
-
-  //删除已经用过的formid
-  del_formid($form_id,$openid);
-
-
-//=============================================================================
-  #向下票人发送购票成功订单的模板消息
-  $page="pages/index/index?tem=tem";
+  $formid=Common::get_new_formid($openid);
+  $id=Common::get_orderid($did,$posttime);
+  //获取管理员的信息
+  $array_admin=Common::get_openid_formid();
+  $openid_leader=$array_admin['openid'];
+  $formid_leader=Common::get_new_formid($openid_leader);
+  $page_leader="pages/index/index?tem=tem";
   switch($type){
-
     case "agency":
     $type="旅行社";
     break;
-
     case "guide":
     $type="导游";
     break;
   }
 
+  $info = [
 
-  //获取管理员的信息
-  $array_admin=get_openid_formid();
-  $openid=$array_admin['openid'];
- //获取管理员的openid
+       "openid"=>$openid,
+       "formid"=>$formid,
+       "id" =>$id,
+       "page"=>"pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem",
+       "pay_time"=>date("Y-m-d H:i:s"),
+       "tishi"=>"亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情",
+       "jingquname"=>$jingquname,
+       "typename"=>$typename,
+       "nums"=>$nums,
+       "totalamount"=>$totalamount,
+       "pay_time"=>date("Y-m-d H:i:s"), //购票时间
+       "page_leader"=>$page_leader,
+       "usetime"=>$usetime,
+       "contactname"=>$contactname,
+       "contacttel"=>$contacttel,
+       "paytypes"=>$paytypes,
+       "type"=>$type,
+       "openid_leader"=>$openid_leader,
+       "formid_leader"=>$formid_leader,
+       "page_leader"  =>$page_leader,
 
-  $form_id=get_new_formid($openid);
+  ];
 
-  ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytype,$posttime,$cfg_appid,$cfg_appsecret);
+   //向购票者发送模板消息
+  Common::send_payer_message($info);
 
-  //删除已经用过的formid
-  del_formid($form_id,$openid);
-  }
+  #向管理员发送购票成功订单的模板消息
+  Common::send_leader_message($info);
 
   if($paytype=="wxpay"){
     $Data =$return;
@@ -136,7 +149,7 @@ if(isset($token) && $token==$cfg_auth_key){
                );
   echo phpver($result);
 }
-
+}
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

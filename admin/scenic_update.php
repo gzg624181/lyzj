@@ -14,6 +14,9 @@
 <script type="text/javascript" src="plugin/calendar/calendar.js"></script>
 <script type="text/javascript" src="editor/kindeditor-min.js"></script>
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="templates/js/ajax.js"></script>
+<script type="text/javascript" src="templates/js/getarea.js"></script>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -21,7 +24,7 @@
 //初始化参数
 $action  = isset($action)  ? $action  : 'ticket_save.php';
 $tbname='pmw_ticket';
-$r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
+$r=$dosql->GetOne("SELECT * FROM $tbname where id=$id");
 ?>
 <div class="formHeader"> <span class="title" style="margin-left: 13px;">修改景区</span> <a href="javascript:location.reload();" class="reload"><i class="fa fa-refresh fa-spin fa-fw"></i></a> </div>
 <form name="form" id="form" method="post" action="<?php echo $action;?>">
@@ -95,6 +98,41 @@ $r=$dosql->GetOne("SELECT * FROM pmw_ticket where id=$id")
 			<input type="text" class="input" id="remarks" name="remarks" required="required" value="<?php echo $r['remarks']; ?>">
 			</td>
 			</tr>
+			<tr>
+	     <td height="45" align="right">景区位置：</td>
+	     <td><select name="live_prov" id="live_prov" style="width:100px;" class="input" onchange="SelProv(this.value,'live');">
+						<option value="-1">请选择</option>
+						<?php
+						$sow=$dosql->GetOne("SELECT * FROM $tbname where id=$id");
+						$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+						while($row2 = $dosql->GetArray())
+						{
+							if($sow['live_province'] === $row2['dataname'])
+								$selected = 'selected="selected"';
+							else
+								$selected = '';
+
+							echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+						}
+						?>
+					</select> &nbsp;&nbsp;
+	        <select style="width:100px;" class="input" name="live_city" id="live_city"  onchange="SelCity(this.value,'live');">
+	        		 <option value="-1">--</option>
+	        					<?php
+	        					$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue>".$row['province']." AND datavalue<".($row['province'] + 500)." ORDER BY orderid ASC, datavalue ASC");
+	        					while($row2 = $dosql->GetArray())
+	        					{
+	        						if($sow['live_city'] === $row2['dataname'])
+	        							$selected = 'selected="selected"';
+	        						else
+	        							$selected = '';
+
+	        						echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+	        					}
+	        					?>
+	        	      </select>
+	      </td>
+	   </tr>
       <tr>
       			<td height="124" align="right">景区图片：</td>
       			<td colspan="11"><fieldset class="picarr" style="width:78%">

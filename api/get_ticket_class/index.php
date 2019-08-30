@@ -16,9 +16,10 @@
      *
      * @return string
      *
-     * @提供返回参数账号 
+     * @提供返回参数账号
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

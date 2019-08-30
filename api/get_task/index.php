@@ -19,6 +19,7 @@
      * @提供返回参数账号  开关变量名称  cfg_task  :  Y 开启   N 关闭
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

@@ -42,12 +42,21 @@ if($action == 'update')
   $ymdtime=substr($regtime,0,10);
   $regtime=strtotime($regtime);
 
+  //获取省份
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
+
+ $live_province=$row['dataname'];  //省份中文
+
+//获取城市
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+ $live_citys=$row['dataname'];   //城市中文
+
 
   if($password==""){ //密码不修改
-    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber',cashmoney=$cashmoney,forbiden=$forbiden WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
   }else{
     $password=md5(md5($password));
-    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',password='$password',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber',cashmoney=$cashmoney,forbiden=$forbiden  WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',company='$company', address='$address',cardpic = '$cardpic',agreement='$picarr', images='$images', regtime=$regtime,ymdtime='$ymdtime',password='$password',cardpicnumber='$cardpicnumber',cardidnumber='$cardidnumber',cashmoney=$cashmoney,forbiden=$forbiden, live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
   }
 
   if($dosql->ExecNoneQuery($sql))
@@ -120,7 +129,7 @@ else if($action == 'checkagency')
          $dosql->ExecNoneQuery($sql);
      //===========================================================================================
 
-     $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
+     $r=$dosql->GetOne("SELECT openid FROM $tbname where id=$id");
      //发送模板消息
      $openid=$r['openid'];
      $form_id=getformid($openid);  //微信小程序提交表单的formid
@@ -134,7 +143,7 @@ else if($action == 'checkagency')
     //删除已经使用过的formid
     del_formid($form_id,$openid);
     $json_data = json_encode($data);//转化成json数组让微信可以接收
-    $res = https_requests($url, urldecode($json_data));//请求开始
+    $res = https_request($url, urldecode($json_data));//请求开始
     $res = json_decode($res, true);
     if ($res['errcode'] == 0 && $res['errcode'] == "ok") {
       ShowMsg("恭喜，审核通过！",'-1');
@@ -189,7 +198,7 @@ else if($action == 'checkagency')
     $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content, stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $id, $faxtime)";
     $dosql->ExecNoneQuery($sql);
 //===========================================================================================
-    $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
+    $r=$dosql->GetOne("SELECT openid FROM $tbname where id=$id");
     //发送模板消息
     $openid=$r['openid'];
     $form_id=getformid($openid);  //微信小程序提交表单的formid
@@ -201,7 +210,7 @@ else if($action == 'checkagency')
    $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
    $data=getDataArray($openid,$tp,$name,$tel,$state,$content,$applytime,$sendtime,$cfg_regsuccess,$page,$form_id);
    $json_data = json_encode($data);//转化成json数组让微信可以接收
-   $res = https_requests($url, urldecode($json_data));//请求开始
+   $res = https_request($url, urldecode($json_data));//请求开始
    $res = json_decode($res, true);
    //删除已经使用过的formid
    del_formid($form_id,$openid);
@@ -231,7 +240,7 @@ else if($action=="checkfailed"){
     $r=$dosql->GetOne("SELECT openid FROM $tbname where id=$id");
     //发送模板消息
     $openid=$r['openid'];
-    $form_id=getformid($openid);  //获取最新的openid
+    $form_id=getformid($openid);  //获取最新的formid
     $page="pages/register/register?tem=tem";
   	if($type=="agency"){
   		$typename="旅行社";
@@ -264,10 +273,10 @@ else if($action=="checkfailed"){
 		$gourls="check_content.php?mid=".$mid."&state=failed";
         header("location:$gourls");
 	      exit();
-	}
+	 }
 
   }elseif($type=="guide"){
-    
+
   $tbname="pmw_guide";
 
   //将用户的发送消息保存起来
@@ -282,7 +291,7 @@ else if($action=="checkfailed"){
   //模板消息请求URL
   $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
 
-  $r=$dosql->GetOne("SELECT openid,formid FROM $tbname where id=$id");
+  $r=$dosql->GetOne("SELECT openid FROM $tbname where id=$id");
   //发送模板消息
   $openid=$r['openid'];
   $form_id=getformid($openid);  //微信小程序提交表单的formid
@@ -294,7 +303,7 @@ else if($action=="checkfailed"){
     }
   $data=getDataArray($openid,$typename,$name,$tel,$state,$content,$applytime,$sendtime,$cfg_regfailed,$page,$form_id);
   $json_data = json_encode($data);//转化成json数组让微信可以接收
-  $res = https_requests($url, urldecode($json_data));//请求开始
+  $res = https_request($url, urldecode($json_data));//请求开始
   $res = json_decode($res, true);
   //删除已经使用过的formid
   del_formid($form_id,$openid);

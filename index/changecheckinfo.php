@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__).'/include/config.inc.php');
+require_once('../include/config.inc.php');
 
 // 更改所有用户的状态 checkinfo 为0
 

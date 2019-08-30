@@ -19,6 +19,7 @@
      * @提供返回参数账号
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -41,7 +42,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $row=$dosql->GetArray();
         $Data[]=$row;
         $content=stripslashes($row['content']);
-        $content=rePic($content, $cfg_weburl);
+        $content=Common::rePic($content, $cfg_weburl);
         $Data[$i]['pic']=$cfg_weburl."/".$row['pic'];
         $Data[$i]['content']=$content;
         }

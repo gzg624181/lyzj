@@ -16,20 +16,23 @@
      *
      * @return string
      *
-     * @提供返回参数账号        用户的uid  用户的类别classes
-     *                    选择的类别type:
-     *                                       审核中：shenhe
-     *                                       成功：  success
-     *                                       审核失败：failed
+     * @提供返回参数账号
+     * 用户的uid
+     * 用户的类别classes
+     * 选择的类别type:
+     * 审核中：shenhe
+     * 成功：  success
+     * 审核失败：failed
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
      //计算用户的佣金余额
      if($classes =="agency"){
-       $tbname = "pmw_agency";
+       $tbname =   "pmw_agency";
      }else{
         $tbname =  "pmw_guide";
      }

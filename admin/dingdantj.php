@@ -16,7 +16,8 @@
 <?php
 date_default_timezone_set('PRC');
 $dates2="";
-
+$pv = array();
+$tz = array();
 $dosql->Execute("SELECT *,sum(totalamount) as money,sum(nums) as nums from `pmw_order` group by ymd asc limit 15");
 while($row=$dosql->GetArray()){
       $pv[] = floatval($row['money']);//购买金额  //注意这里必须要用intval强制转换，不然图表不能显示
@@ -114,6 +115,7 @@ while($row1=$dosql->GetArray()){
 
 		$wxpay=0;
 		$outpay=0;
+    $sumheji=array();
 		$dopage->GetPage("SELECT *,sum(totalamount) as heji from `pmw_order` group by ymd asc",15);
 		while($row = $dosql->GetArray())
 		{
@@ -140,8 +142,8 @@ while($row1=$dosql->GetArray()){
       ?>
 		<tr align="left" class="dataTr">
 			<td height="42" align="center"><?php  echo $row['ymd'];?></td>
-			<td align="center"><?php echo $wxpay;?></td>
-			<td align="center"><?php  echo $outpay;?></td>
+			<td align="center"><?php echo sprintf("%.2f",$wxpay);?></td>
+			<td align="center"><?php  echo sprintf("%.2f",$outpay);?></td>
 			<td align="center" class="num"><?php echo $row['heji'];?></td>
 		</tr>
 		<?php

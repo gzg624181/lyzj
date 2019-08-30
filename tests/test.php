@@ -1,5 +1,7 @@
 <?php
-require_once(dirname(__FILE__).'/include/config.inc.php');
+
+require_once("../include/config.inc.php");
+
 // include("sendmessage.php");
 // $appid=$cfg_appid;
 // $appsecret=$cfg_appsecret;
@@ -566,11 +568,11 @@ unlink($o_pic);
 // }
 //
 // echo $title;
-$type ="guide";
-
-$uid='52';
-
-$openid = 'oz7S15GN_EPrXdVlGqeoXYl1EEhg';
+// $type ="guide";
+//
+// $uid='52';
+//
+// $openid = 'oz7S15GN_EPrXdVlGqeoXYl1EEhg';
 
 //html_entity_decode() 函数的作用是把 HTML 实体转换为字符。
 //stripslashes() 函数的作用是删除反斜杠。
@@ -580,18 +582,89 @@ $openid = 'oz7S15GN_EPrXdVlGqeoXYl1EEhg';
 
 
 
-  class Myclass {
+  // class Myclass {
+  //
+  //   public static $weburl;
+  //
+  //   public static function  say(){
+  //
+  //   echo "网站域名是：".self::$weburl;
+  //
+  //   }
+  //
+  // }
+  //
+  //   Myclass::say($cfg_weburl);
 
-    public static $weburl;
+  //'61.136.199.206',8904
+  error_reporting(E_ERROR);
+  header("Content-type: text/html; charset=utf-8");
 
-    public static function  say(){
 
-    echo "网站域名是：".self::$weburl;
+    //创建一个socket套接流
+    function CLIENT(){
+    $socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
+    /****************设置socket连接选项，这两个步骤你可以省略*************/
+     //接收套接流的最大超时时间1秒，后面是微秒单位超时时间，设置为零，表示不管它
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array("sec" => 1, "usec" => 0));
+     //发送套接流的最大超时时间为6秒
+    socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, array("sec" => 6, "usec" => 0));
+    /****************设置socket连接选项，这两个步骤你可以省略*************/
+
+    //连接服务端的套接流，这一步就是使客户端与服务器端的套接流建立联系
+    if(socket_connect($socket,'120.79.36.36',8888) == false){
+      echo 'connect fail massege:'.socket_strerror(socket_last_error());
+    }else{
+     $param = array(
+      'head'=>array(
+             "msgTime"=> time(),
+             "name"=>"gzg"
+  	          ),
+      'body'=>array(
+             "extend"=>date("Y-m-d H:i:s"),
+             "age" =>13
+  	        )
+      );
+       $str =json_encode($param);
+       echo "待发送的数据：".$str;
+      //转为utf-8编码，处理乱码问题，这要看你的编码情况而定，每个人的编码都不同
+       $message = mb_convert_encoding($str, "GBK", "UTF-8");                //将字符串转为UTF-8
+
+      //向服务端写入字符串信息
+
+      if(socket_write($socket,$message,strlen($message)) == false){
+        echo 'fail to write'.socket_strerror(socket_last_error());
+
+      }else{
+        //读取服务端返回来的套接流信息
+
+        $ret1 = socket_read($socket,2048, PHP_BINARY_READ);
+        $ret2 = socket_read($socket,2048, PHP_BINARY_READ);
+        $ret3 = socket_read($socket,2048, PHP_BINARY_READ);
+        $ret4 = socket_read($socket,2048, PHP_BINARY_READ);
+        $callback = $ret1.$ret2.$ret3.$ret4;
+
+         echo "<br>";
+         echo 'client write success:'."<Br>".$callback;
+
+  	   $encode = mb_detect_encoding($callback, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));       //查看编码
+     //   echo $encode;
+       $str_encode = mb_convert_encoding($callback, 'UTF-8', $encode);
+       $str_code=str_replace('/**/','"',$str_encode);
+
+  	  $json = json_decode($str_code,true);
+  		//echo $errorinfo = json_last_error();  //报错显示4 说明是字符编码有问题  0正常
+  		echo "<p>数据发送成功<p>";
+      return   $json;
+         // echo $json['head']['msgId'];
+      }
 
     }
+    socket_close($socket);//工作完毕，关闭套接流
+   }
 
-  }
+     $res=CLIENT('gzg');
 
-    Myclass::say($cfg_weburl);
+     print_r($res);
 
 ?>

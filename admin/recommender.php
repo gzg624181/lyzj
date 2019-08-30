@@ -13,6 +13,7 @@ $username=$_SESSION['admin'];
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
+
 function message(Id){
   // alert(Id);
    layer.ready(function(){ //为了layer.ext.js加载完毕再执行

@@ -19,6 +19,7 @@
      * @提供返回参数账号 导游id
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -26,7 +27,7 @@ if(isset($token) && $token==$cfg_auth_key){
        //判断营销活动的开关是否开启
        $r = $dosql->GetOne("SELECT varvalue from pmw_webconfig where varname='cfg_task'");
        $cfg_task = $r['varvalue'];
-       
+
       $dosql->Execute("SELECT * from pmw_banner where typename='index' and checkinfo=1");
       $num=$dosql->GetTotalRow();
       if($num==0){
@@ -61,7 +62,7 @@ if(isset($token) && $token==$cfg_auth_key){
         }else{
           $pic=$cfg_weburl."/".$row['pic'];
           $content=stripslashes($row['content']);
-          $content=rePic($content, $cfg_weburl);
+          $content=Common::rePic($content, $cfg_weburl);
           $Data[$i]['content']=$content;
           $Data[$i]['pic']=$pic;
         }

@@ -19,6 +19,7 @@
      * @提供返回参数账号 id  导游或者旅行社信息  类型 type    agency   guide
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -77,13 +78,13 @@ if(isset($token) && $token==$cfg_auth_key){
       }
       $Data[0]['sex']=$sex;
       $agreement=stripslashes($r['agreement']);
-      $agreement=GetPic($agreement, $cfg_weburl);
+      $agreement=Common::GetPic($agreement, $cfg_weburl);
 
       $pics=stripslashes($r['pics']);
       if($pics==""){
       $pics='';
       }else{
-      $pics=GetPics($pics, $cfg_weburl);
+      $pics=Common::GetPics($pics, $cfg_weburl);
       }
       $Data[0]['type']='guide';
       $Data[0]['card']=$cfg_weburl."/".$r['card'];

@@ -16,11 +16,10 @@
      *
      * @return string
      *
-     * @导游预约旅行社发布的行程   提供返回参数账号，同时双向发送模板消息提醒
      * id              发布的行程id
      */
 require_once("../../include/config.inc.php");
-require_once("../../admin/sendmessage.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

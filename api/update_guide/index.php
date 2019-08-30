@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：update_guide  更改导游个人资料
+	   * 链接地址：update_guide  修改导游个人资料
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -14,18 +14,20 @@
      *
      * @param array $Data 数据
      *
-     * @return string
+     * @return string  以json来传输数据
      *
      * @旅行社发布旅游行程   提供返回参数账号，
      * id              导游id
      * images          导游头像
      * pics            相册
      * tel             电话号码
-     * content
+     * content         导游简介
      * experience      带团经验
+     * province        默认定位省份    （新增）
+     * city            默认定位城市    （新增）
      */
 require_once("../../include/config.inc.php");
-
+header("content-type:application/json;charset=utf-8");
 $body = file_get_contents('php://input');
 $_POST = json_decode($body,true);
 
@@ -54,15 +56,24 @@ if(isset($_POST['experience'])){
 $experience = $_POST['experience'];
 }
 
+if(isset($_POST['province'])){
+$province = $_POST['province'];
+}
+
+if(isset($_POST['city'])){
+$city = $_POST['city'];
+}
+
 if(isset($token) && $token==$cfg_auth_key){
 
   //这个是自定义函数，将Base64图片转换为本地图片并保存
   $savepath= "../../uploads/image/";
 
   if(isset($images)){
-  $images = base64_image_content($images,$savepath);
+  $images = Common::base64_image_content($images,$savepath);
   $images=str_replace("../../",'',$images);
   }
+
   //将相册里面的图片进行处理
 
  if(isset($pics)){
@@ -70,7 +81,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $pic ="";
   $arr=explode("|",$pics);
   for($i=0;$i<count($arr);$i++){
-    $pics  = base64_image_content($arr[$i],$savepath);
+    $pics  = Common::base64_image_content($arr[$i],$savepath);
     if($i==count($arr)-1){
       $thispic = str_replace("../../",'',$pics);
     }else{
@@ -79,7 +90,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $pic .= $thispic;
     }
 }
-
+// 指定修改传过来的值，不需要全部都修改
 // 将GET传过来的参数进行判断最后一个参数，如果是最后一个参数，则最后一个逗号去除掉、
 
   $arr=$_POST;
@@ -131,15 +142,46 @@ if(isset($token) && $token==$cfg_auth_key){
     }
   }
 
+  if(isset($province)){
+    if($lastkey=="province"){
+      $sql .= " province=$province";
+    }else{
+      $sql .= " province=$province,";
+    }
+  }
+
+  if(isset($city)){
+    if($lastkey=="city"){
+      $sql .= " city=$city";
+    }else{
+      $sql .= " city=$city,";
+    }
+  }
+
+  if(isset($live_province)){
+    if($lastkey=="live_province"){
+      $sql .= " live_province='$live_province'";
+    }else{
+      $sql .= " live_province='$live_province',";
+    }
+  }
+
+  if(isset($live_city)){
+    if($lastkey=="live_city"){
+      $sql .= " live_city='$live_city'";
+    }else{
+      $sql .= " live_city='$live_city',";
+    }
+  }
   $sql .= "WHERE id=$id";
   $dosql->ExecNoneQuery($sql);
   $r=$dosql->GetOne("SELECT * FROM pmw_guide where id=$id");
   if(is_array($r)){
   $Data[]=$r;
   $agreement=stripslashes($r['agreement']);
-  $agreement=GetPic($agreement, $cfg_weburl);
+  $agreement=Common::GetPic($agreement, $cfg_weburl);
   $pics=stripslashes($r['pics']);
-  $pics=GetPics($pics, $cfg_weburl);
+  $pics=Common::GetPics($pics, $cfg_weburl);
   $Data[0]['type']='guide';
   $Data[0]['card']=$cfg_weburl."/".$r['card'];
   $Data[0]['images']=$cfg_weburl."/".$r['images'];

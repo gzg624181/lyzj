@@ -1,1 +1,1 @@
-{\"status\":\"Fail\",\"doname\":\"ceshi.yishekj.xyz\"}
+{\"status\":\"Fail\",\"doname\":\"localhost:8888\"}

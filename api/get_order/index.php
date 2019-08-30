@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_order   获取已支付  ，已完成的状态
+	   * 链接地址：get_order 获取单个用户的购票列表
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -22,6 +22,7 @@
      *
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -57,7 +58,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
         $picarr = json_encode($picarrTmp);
         }else{
-        $picarr=GetPic($picarr, $cfg_weburl);
+        $picarr=Common::GetPic($picarr, $cfg_weburl);
         }
         $Data['pay'][$i]['picarr']=$picarr;
       }
@@ -72,7 +73,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
         $picarr = json_encode($picarrTmp);
         }else{
-        $picarr=GetPic($picarr, $cfg_weburl);
+        $picarr=Common::GetPic($picarr, $cfg_weburl);
         }
         $Data['finish'][$i]['picarr']=$picarr;
       }

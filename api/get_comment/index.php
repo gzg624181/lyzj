@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_comment  获取所有导游的评价
+	   * 链接地址：get_comment  获取导游的所有评价
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -19,10 +19,10 @@
      * @提供返回参数账号 导游id
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-
 
 
       $dosql->Execute("SELECT b.star,b.content,b.addtime,a.company,a.images,c.title as travel_name from pmw_agency a left join pmw_comment b on a.id=b.aid left join pmw_travel c on b.tid=c.id WHERE b.gid=$id");

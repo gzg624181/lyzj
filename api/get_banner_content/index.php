@@ -19,6 +19,7 @@
      * @提供返回参数账号
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -36,7 +37,7 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
       if($r['content']!=""){
-      $content=rePic($r['content'], $cfg_weburl);
+      $content=Common::rePic($r['content'], $cfg_weburl);
       $r['content']=$content;
       }
       $State = 1;

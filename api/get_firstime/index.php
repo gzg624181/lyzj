@@ -19,11 +19,12 @@
      * @提供返回参数账号 导游id
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT distinct starttime_ymd as time FROM pmw_travel where state=0 order by starttime asc");
+      $dosql->Execute("SELECT distinct starttime_ymd as time FROM pmw_travel where state=0 and province='$province' and city= '$city' order by starttime asc");
       $num =$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

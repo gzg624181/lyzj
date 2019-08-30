@@ -1,6 +1,5 @@
 <?php
-require_once(dirname(__FILE__).'/include/config.inc.php');
-
+require_once('../include/config.inc.php');
 
 //将所有导游已经接单，但是还未确认的系统自动确认
 // 更改行程为确认

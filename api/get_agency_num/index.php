@@ -19,11 +19,12 @@
      * @提供返回参数账号 旅行社id
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $arr=get_agency_num($id);
+      $arr=Common::get_agency_num($id);
       $State = 1;
       $Descriptor = '数据获取成功！';
       $result = array (

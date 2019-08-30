@@ -15,6 +15,7 @@
 <script type="text/javascript" src="editor/kindeditor-min.js"></script>
 <script type="text/javascript" src="editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript" src="templates/js/getarea.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -86,6 +87,23 @@ $tbname='pmw_ticket';
 			<input type="text" class="input" id="remarks" name="remarks" required="required">
 			</td>
 			</tr>
+			<tr>
+	     <td height="45" align="right">行程客源地起始位置：</td>
+	     <td><select name="live_prov" style="width:100px;" class="input" id="live_prov" onchange="SelProv(this.value,'live');">
+	       <option value="-1">请选择</option>
+	       <?php
+	         $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+	         while($row = $dosql->GetArray())
+	         {
+	           echo '<option value="'.$row['datavalue'].'">'.$row['dataname'].'</option>';
+	         }
+	         ?>
+	       </select> &nbsp;&nbsp;
+	       <select style="width:100px;" class="input" name="live_city" id="live_city" onchange="SelCity(this.value,'live');">
+	         <option value="-1">--</option>
+	         </select>
+	      </td>
+	   </tr>
       <tr>
       			<td height="124" align="right">景区图片：</td>
       			<td colspan="11"><fieldset class="picarr" style="width:78%">

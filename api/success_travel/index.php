@@ -16,9 +16,12 @@
      *
      * @return string
      *
-     * @提供返回参数账号 id    旅行社的id 返回旅行社的导游形成  （0，待预约，2.已完成,1,待确认 3.已经取消）
+     * @提供返回参数账号
+     * id    旅行社的 id
+     * 返回旅行社的导游行程  （0，待预约，2.已完成,1,待确认 3.已经取消）
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){

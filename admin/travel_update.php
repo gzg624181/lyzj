@@ -10,10 +10,12 @@
 <script type="text/javascript" src="templates/js/getuploadify.js"></script>
 <script type="text/javascript" src="layui/layui.js"></script>
 <link href="layui/css/layui.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templates/js/ajax.js"></script>
+<script type="text/javascript" src="templates/js/getarea.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 </head>
 <script>
- 
+
      var add = function(){
        var num = 0;
        return  function addNum(){
@@ -21,7 +23,7 @@
        }
    }
      var number = add()
-	
+
     function  addTable(){
        var num = number();
 		// alert(num);
@@ -40,7 +42,7 @@
 			"class=\"input\" required=\"required\" />"+
 				"<span class=\"maroon\">*</span><span class=\"cnote\">带<span class=\"maroon\">*</span>号表示为必填项</span></td>"+
 		"</tr>";
-		
+
 		tr += "<tr>"+
 			"<td  style=\"border-bottom: 1px dashed #817b7b;\" height=\"40\" align=\"right\">行程时长期"+num+"：</td>"+
 			"<td  style=\"border-bottom: 1px dashed #817b7b;\">"+
@@ -57,7 +59,7 @@
 　  　$("#table1 #addcontent").after(tr);　　
 
 	}
-    
+
 </script>
 <body>
 <?php
@@ -68,7 +70,7 @@ $row = $dosql->GetOne("SELECT * FROM $tbname WHERE id=$id");
 $starttime=date("Y-m-d",$row['starttime']);
 $endtime=date("Y-m-d",$row['endtime']);
 ?>
-<div class="formHeader"> <span class="title" style="margin-left: 13px;">修改发布行程</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
+<div class="formHeader"> <span class="title" style="margin-left: 13px;">修改发布行程</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload; ?></a> </div>
 <form name="form" id="form" method="post" action="<?php echo $action;?>" onsubmit="return cfm_travel()">
 	<table id="table1"  width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable" >
 
@@ -100,17 +102,51 @@ $endtime=date("Y-m-d",$row['endtime']);
 			<td><input type="text" name="origin" id="origin" class="input" required="required" value="<?php echo $row['origin']?>"/>
 				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span></td>
 		</tr>
+    <tr>
+     <td height="45" align="right">行程起始位置：</td>
+     <td><select name="live_prov" id="live_prov" style="width:100px;" class="input" onchange="SelProv(this.value,'live');">
+					<option value="-1">请选择</option>
+					<?php
+					$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+					while($row2 = $dosql->GetArray())
+					{
+						if($row['live_province'] === $row2['dataname'])
+							$selected = 'selected="selected"';
+						else
+							$selected = '';
+
+						echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+					}
+					?>
+				</select> &nbsp;&nbsp;
+        <select style="width:100px;" class="input" name="live_city" id="live_city"  onchange="SelCity(this.value,'live');">
+        		 <option value="-1">--</option>
+        					<?php
+        					$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue>".$row['province']." AND datavalue<".($row['province'] + 500)." ORDER BY orderid ASC, datavalue ASC");
+        					while($row2 = $dosql->GetArray())
+        					{
+        						if($row['live_city'] === $row2['dataname'])
+        							$selected = 'selected="selected"';
+        						else
+        							$selected = '';
+
+        						echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+        					}
+        					?>
+        	      </select>
+      </td>
+   </tr>
         <!--
         <tr id='addcontent'>
 			<td height="40" align="right">添加行程：</td>
 			<td><i onclick="addTable()" style="color:#6d6b6b; font-weight:bold;font-size: 28px; cursor:pointer" class="fa fa-plus-square"></i></td>
 		</tr>-->
-        <?php 
+        <?php
 		//获取数据库里面的行程安排
 		$content=array();
 		$content=json_decode($row['content'],true);
 		for($i=0;$i<count($content);$i++){
-		?> 
+		?>
         <tr>
 			<td height="40" align="right">行程安排<?php echo $i+1;?>：</td>
 			<td><input type="text" name="jinName<?php echo $i+1;?>" id="jinName<?php echo $i+1;?>" class="input" required="required"  value="<?php echo $content[$i]['jinName']?>"/>
@@ -130,11 +166,11 @@ $endtime=date("Y-m-d",$row['endtime']);
             <option <?php if($content[$i]['days']=="全天"){echo "selected = 'selected'"; } ?> value="全天">全天</option>
             </select>
 				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span>
-                
+
                 </td>
 		</tr>
         <?php }?>
-        
+
 		<tr>
 			<td height="40" align="right">导游费用：</td>
 			<td><input type="text" name="money" id="money" class="input" required="required"  value="<?php echo $row['money']?>"/>
@@ -165,7 +201,7 @@ $endtime=date("Y-m-d",$row['endtime']);
         <input type="hidden" name="id" id="id" value="<?php echo $id;?>" />
 		<input type="button" class="back" value="返回" onclick="history.go(-1);" />
 		<input type="hidden" name="action" id="action" value="update" />
-  
+
   </div>
 </form>
 <script>
@@ -178,7 +214,7 @@ laydate.render({
   ,range: "--" //或 range: '~' 来自定义分割字符
 });
 
-  
+
 /*    laydate.render({
     elem: '#test19'
     ,value: '1989-10-14'
@@ -188,8 +224,8 @@ laydate.render({
 });
 
 function selecttime(num){
-   
-  
+
+
   layui.use('laydate', function(){
   var laydate = layui.laydate;
   var times=$("#time").val();
@@ -207,9 +243,9 @@ function selecttime(num){
     }
   });
 
- 
+
 });
-	
+
 }
 
 

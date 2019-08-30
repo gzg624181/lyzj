@@ -16,16 +16,17 @@
      *
      * @return string
      *
-     * @提供返回参数账号
+     * @提供返回参数账号  通过当前经纬度，判断当前的具体定位地址，省份
      */
 require_once("../../include/config.inc.php");
+header("Content-type:applicaton/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
     $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
     $cfg_default = $r['imagesurl'];
 
-    $dosql->Execute("SELECT id,names,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where checkinfo=1 order by id desc ");
+    $dosql->Execute("SELECT id,names,province,city,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where checkinfo=1 and province ='$province' and city='$city' order by id desc ");
 
     $num=$dosql->GetTotalRow();//获取数据条数
 
@@ -38,7 +39,7 @@ if(isset($token) && $token==$cfg_auth_key){
          $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
          $picarr = json_encode($picarrTmp);
          }else{
-         $picarr=GetPic($picarr, $cfg_weburl);
+         $picarr=Common::GetPic($picarr, $cfg_weburl);
          }
 
          $Data[$i]['picarr']=$picarr;

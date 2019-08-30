@@ -19,6 +19,7 @@
      * @提供返回参数账号  keyword=>    title
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json;charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -27,7 +28,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     if(isset($keyword)){
 
-    $dosql->Execute("SELECT id,names,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where names like '%$keyword%' and  checkinfo=1 order by id desc ");
+    $dosql->Execute("SELECT id,names,label,solds,types,flag,lowmoney,remarks,level,picarr,province,city FROM pmw_ticket where names like '%$keyword%' and  checkinfo=1 order by id desc ");
 
     $num=$dosql->GetTotalRow();//获取数据条数
 
@@ -48,7 +49,7 @@ if(isset($token) && $token==$cfg_auth_key){
          $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
          $picarr = json_encode($picarrTmp);
          }else{
-         $picarr=GetPic($picarr, $cfg_weburl);
+         $picarr=Common::GetPic($picarr, $cfg_weburl);
          }
          $Data['list'][$i]['picarr']=$picarr;
         }
@@ -77,7 +78,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
          //默认推荐四条景点的数据
          $four=4;
-         $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1 order by rand() limit 4",$four);
+         $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1 and province='$province' and city='$city' order by rand() limit 4",$four);
          for($i=0;$i<$dosql->GetTotalRow($four);$i++){
           $row = $dosql->GetArray($four);
           $Data['recommand'][$i]=$row;
@@ -87,7 +88,7 @@ if(isset($token) && $token==$cfg_auth_key){
           $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
           $picarr = json_encode($picarrTmp);
           }else{
-          $picarr=GetPic($picarr, $cfg_weburl);
+          $picarr=Common::GetPic($picarr, $cfg_weburl);
           }
           $Data['recommand'][$i]['picarr']=$picarr;
 
@@ -106,7 +107,7 @@ if(isset($token) && $token==$cfg_auth_key){
     //  当搜索数据内容为空的时候，随机选出4个
 
     $six=6;
-    $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1 order by rand() limit 4",$six);
+    $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1  and province='$province' and city='$city' order by rand() limit 4",$six);
     for($i=0;$i<$dosql->GetTotalRow($six);$i++){
      $row = $dosql->GetArray($six);
      $Data['recommand'][$i]=$row;
@@ -116,7 +117,7 @@ if(isset($token) && $token==$cfg_auth_key){
      $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
      $picarr = json_encode($picarrTmp);
      }else{
-     $picarr=GetPic($picarr, $cfg_weburl);
+     $picarr=Common::GetPic($picarr, $cfg_weburl);
      }
      $Data['recommand'][$i]['picarr']=$picarr;
 

@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：音频小程序  添加会员接口
+	   * 链接地址：music_user 音频小程序  添加会员接口
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -23,12 +23,13 @@
      * code            用户关注的code
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：添加行程的时候content 内容以json字符串的形式保存在数据库中去
-  $openid = openid($code,$cfg_music_appid,$cfg_music_appsecret);
+  $openid = Common::openid($code,$cfg_music_appid,$cfg_music_appsecret);
 
   if($openid==""){
     $State = 1;

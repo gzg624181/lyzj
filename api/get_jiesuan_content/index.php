@@ -19,10 +19,11 @@
      * @提供返回参数账号 aid  ym
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-
+      $ym = date("Y-m");
       $dosql->Execute("SELECT id,title,starttime,endtime,money,other,jiesuanmoney FROM `#@__travel` WHERE aid=$id and complete_ym='$ym'");
       $num=$dosql->GetTotalRow();
       if($num==0){

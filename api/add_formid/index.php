@@ -21,5 +21,5 @@
      * openid
      */
 require_once("../../include/config.inc.php");
-add_formid($openid,$formid);
+Common::add_formid($openid,$formid);
 ?>

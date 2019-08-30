@@ -26,6 +26,7 @@
      * cardnumber     提现银行卡号
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -57,7 +58,17 @@ if(isset($token) && $token==$cfg_auth_key){
                  );
     echo phpver($result);
   }
- }
+}else{
+  $State = 2;
+  $Descriptor = '用户银行卡信息已存在，不需要重复添加!';
+  $result = array (
+              'State' => $State,
+              'Descriptor' => $Descriptor,
+              'Version' => $Version,
+              'Data' => $Data
+               );
+  echo phpver($result);
+}
 
 }else{
   $State = 520;

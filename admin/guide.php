@@ -220,12 +220,11 @@ $num=$dosql->GetTotalRow($one);
 			switch($row['sex'])
 			{
 				case 1:
-					$sex = "<i title='男' style='font-size:16px;color: #3339;' class='fa fa-venus' aria-hidden='true'></i>";
+					$sex = "<i title='男' style='font-size:16px;color: #509ee1;' class='fa fa-venus' aria-hidden='true'></i>";
 					break;
 				case 0:
-					$sex = "<i title='女' style='font-size:16px;color: #3339;' class='fa fa-mercury' aria-hidden='true'></i>";
+					$sex = "<i title='女' style='font-size:16px;color: red;' class='fa fa-mercury' aria-hidden='true'></i>";
 					break;
-
 			}
       $recommender_id = $row['uid'];  //推荐人的id
       $recommender_type = $row['recommender_type']; //推荐人的类型
@@ -319,7 +318,11 @@ $num=$dosql->GetTotalRow($one);
 			<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></span> &nbsp;
     <?php }?>
       <?php  if($adminlevel==1){ ?>
-			<span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php  if($check=="failed"){ ?>
+			<span class="nb"><a title="删除未通过的导游信息" href="<?php echo $action;?>?action=del22&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php }else{ ?>
+	    <span class="nb"><a title="删除导游信息" href="<?php echo $action;?>?action=del2&id=<?php echo $row['id']; ?>" onclick="return ConfDel(0);"><i class="fa fa-trash-o" aria-hidden="true"></i></a></span>
+      <?php } ?>
       <?php }else{?>
       <span class="nb"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
     <?php  }?>

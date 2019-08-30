@@ -19,6 +19,7 @@
      * @提供返回参数账号 景区id
      */
 require_once("../../include/config.inc.php");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -43,14 +44,14 @@ if(isset($token) && $token==$cfg_auth_key){
       $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
       $picarr = json_encode($picarrTmp);
       }else{
-      $picarr=GetPic($picarr, $cfg_weburl);
+      $picarr=Common::GetPic($picarr, $cfg_weburl);
       }
 
       $content=stripslashes($r['content']);
-      $content=rePic($content, $cfg_weburl);
+      $content=Common::rePic($content, $cfg_weburl);
 
       $xuzhi=stripslashes($r['xuzhi']);
-      $xuzhi=rePic($xuzhi, $cfg_weburl);
+      $xuzhi=Common::rePic($xuzhi, $cfg_weburl);
 
       $r['picarr']=$picarr;
       $r['xuzhi']=$xuzhi;

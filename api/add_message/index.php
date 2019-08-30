@@ -24,6 +24,7 @@
      * content        留言内容
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -31,13 +32,11 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：添加行程的时候content 内容以json字符串的形式保存在数据库中去
 
   $posttime=time();  //添加时间
-
-
+  Common::add_formid($openid,$formid);
   $sql = "INSERT INTO `#@__levea_message`(mid,type,openid,formid,content,posttime) VALUES ($mid,'$type','$openid','$formid',  '$content',$posttime)";
 
   if($dosql->ExecNoneQuery($sql)){
-    $add = new Comment();
-    $add->get_comment('fankui');
+    Common::update_message('fankui');
     $State = 1;
     $Descriptor = '用户留言成功!';
     $result = array (

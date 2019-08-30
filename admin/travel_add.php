@@ -8,6 +8,8 @@
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/checkf.func.js"></script>
 <script type="text/javascript" src="templates/js/getuploadify.js"></script>
+<script type="text/javascript" src="templates/js/ajax.js"></script>
+<script type="text/javascript" src="templates/js/getarea.js"></script>
 <script type="text/javascript" src="layui/layui.js"></script>
 <link href="layui/css/layui.css" rel="stylesheet" type="text/css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -65,7 +67,7 @@
 $action  = isset($action)  ? $action  : 'travel_save.php';
 $tbname='pmw_agency';
 ?>
-<div class="formHeader"> <span class="title" style="margin-left: 13px;">添加发布行程</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
+<div class="formHeader"> <span class="title" style="margin-left: 13px;">添加发布行程</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload; ?></a> </div>
 <form name="form" id="form" method="post" action="<?php echo $action;?>" onsubmit="return cfm_travel()">
 	<table id="table1"  width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable" >
 
@@ -108,6 +110,23 @@ $tbname='pmw_agency';
 			<td><input type="text" name="origin" id="origin" class="input" required="required" />
 				<span class="maroon">*</span><span class="cnote">带<span class="maroon">*</span>号表示为必填项</span></td>
 		</tr>
+    <tr>
+     <td height="45" align="right">行程客源地起始位置：</td>
+     <td><select name="live_prov" style="width:100px;" class="input" id="live_prov" onchange="SelProv(this.value,'live');">
+       <option value="-1">请选择</option>
+       <?php
+         $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+         while($row = $dosql->GetArray())
+         {
+           echo '<option value="'.$row['datavalue'].'">'.$row['dataname'].'</option>';
+         }
+         ?>
+       </select> &nbsp;&nbsp;
+       <select style="width:100px;" class="input" name="live_city" id="live_city" onchange="SelCity(this.value,'live');">
+         <option value="-1">--</option>
+         </select>
+      </td>
+   </tr>
         <tr id='addcontent'>
 			<td height="40" align="right">添加行程：</td>
 			<td><i onclick="addTable()" style="color:#6d6b6b; font-weight:bold;font-size: 28px; cursor:pointer" class="fa fa-plus-square"></i></td>

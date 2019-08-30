@@ -19,10 +19,11 @@
      * @提供返回参数账号  用户的uid  用户的类别 agency   guide
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-      $r = $dosql->GetOne("SELECT id FROM pmw_bank where uid=$uid and type='$type'");
+      $r = $dosql->GetOne("SELECT * FROM pmw_bank where uid=$uid and type='$type'");
       if(is_array($r)){
       $State = 1;
       $Descriptor = '用户提现账号获取成功！';
@@ -30,7 +31,7 @@ if(isset($token) && $token==$cfg_auth_key){
                   'State' => $State,
                   'Descriptor' => $Descriptor,
                   'Version' => $Version,
-                  'Data' => $Data
+                  'Data' => $r
                    );
       echo phpver($result);
     }else{

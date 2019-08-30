@@ -19,6 +19,7 @@
      * @提供返回参数账号  景区id
      */
 require_once("../../include/config.inc.php");
+header("Content-type:applicaton/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -36,7 +37,7 @@ if(isset($token) && $token==$cfg_auth_key){
         echo phpver($result);
       }else{
         if($r['xuzhi']!=""){
-        $xuzhi=rePic($r['xuzhi'], $cfg_weburl);
+        $xuzhi=Common::rePic($r['xuzhi'], $cfg_weburl);
         $r['xuzhi']=$xuzhi;
         }
       $State = 1;
