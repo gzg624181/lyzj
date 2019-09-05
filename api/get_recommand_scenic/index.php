@@ -26,7 +26,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
     $cfg_default = $r['imagesurl'];
 
-    $dosql->Execute("SELECT id,names,province,city,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where checkinfo=1 and province ='$province' and city='$city' order by id desc ");
+    $dosql->Execute("SELECT id,names,province,city,label,solds,types,flag,lowmoney,remarks,level,picarr FROM pmw_ticket where checkinfo=1 and live_province ='$live_province' and live_city='$live_city' order by id desc ");
 
     $num=$dosql->GetTotalRow();//获取数据条数
 

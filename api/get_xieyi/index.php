@@ -23,20 +23,16 @@ header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+      //获取json数组
 
-      $r=$dosql->GetOne("SELECT * FROM `#@__xieyi` WHERE id=1");
-      if(!is_array($r)){
-        $State = 0;
-        $Descriptor = '暂无数据！';
-        $result = array (
-                    'State' => $State,
-                    'Descriptor' => $Descriptor,
-                    'Version' => $Version,
-                    'Data' => $Data
-                     );
-        echo phpver($result);
+      if($redis->exists('get_xieyi')){
+
+      $Data = json_decode($redis->get('get_xieyi'),true);
+
       }else{
-      $Data=$r;
+      $Data=$dosql->GetOne("SELECT * FROM `#@__xieyi` WHERE id=1");
+      }
+
       $State = 1;
       $Descriptor = '数据获取成功！';
       $result = array (
@@ -46,7 +42,7 @@ if(isset($token) && $token==$cfg_auth_key){
                   'Data' => $Data
                    );
       echo phpver($result);
-      }
+
 
 }else{
   $State = 520;

@@ -26,13 +26,12 @@
      * content         修改行程
      * money           导游费用
      * other           其他备注
-     * province
-     * city
-     * live_province
      * live_city
+     * live_province
+     * city
+     * province
      */
 require_once("../../include/config.inc.php");
-header("content-type:application/json;charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -40,19 +39,20 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：修改行程的时候content 内容以json字符串的形式保存在数据库中去
 
   $posttime=time();  //添加时间
+  $starttime = strtotime($starttime_ymd);
+  $endtime = strtotime($endtime_ymd);
   $days=($endtime-$starttime) / (60 * 60 * 24) +1;  //行程的天数
   $jiesuanmoney = $cfg_jiesuan * $days;
-  $sql = "UPDATE `#@__travel` set title='$title',starttime=$starttime,endtime=$endtime,num=$num,origin='$origin',content='$content',money=$money,other='$other',posttime=$posttime,jiesuanmoney='$jiesuanmoney',days=$days,province=$province,city=$city,live_province='$live_province',live_city='$live_city' WHERE id=$id";
-  $dosql->ExecNoneQuery($sql);
-  $r = $dosql->GetOne("SELECT * FROM  pmw_travel where id=$id");
-  if(is_array($r)){
+
+  $sql = "UPDATE `#@__travel` set title='$title',starttime=$starttime,starttime_ymd='$starttime_ymd',endtime=$endtime,num=$num,content='$content',money=$money,other='$other',posttime=$posttime,jiesuanmoney='$jiesuanmoney',days=$days,city=$city,province=$province,live_province='$live_province',live_city='$live_city' WHERE id=$id";
+  if($dosql->ExecNoneQuery($sql)){
   $State = 1;
   $Descriptor = '行程修改成功!';
   $result = array (
               'State' => $State,
               'Descriptor' => $Descriptor,
               'Version' => $Version,
-              'Data' => $r
+              'Data' => $Data
                );
   echo phpver($result);
 }else{

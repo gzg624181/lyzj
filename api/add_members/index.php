@@ -34,6 +34,8 @@ if(isset($token) && $token==$cfg_auth_key){
 
   $openid = Common::Openid($code,$cfg_appid,$cfg_appsecret);
 
+  if($openid!=""){
+
   $r=$dosql->GetOne("SELECT id FROM pmw_members where openid='$openid'");
 
   if(!is_array($r)){
@@ -65,6 +67,18 @@ if(isset($token) && $token==$cfg_auth_key){
                  );
     echo phpver($result);
   }
+  }else{
+    $State = 0;
+    $Descriptor = 'openid获取失败!';
+    $result = array (
+                'State' => $State,
+                'Descriptor' => $Descriptor,
+                'Version' => $Version,
+                'Data' => $Data
+                 );
+    echo phpver($result);
+  }
+
 
 
 }else{

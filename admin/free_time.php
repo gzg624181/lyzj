@@ -108,7 +108,7 @@ $num=$dosql->GetTotalRow($one);
                 <td width="6%" align="center">头像</td>
                 <td width="7%" align="center">导游姓名</td>
                 <td width="4%" align="center">性别</td>
-                <td width="60%" align="center">空闲时间</td>
+                <td width="40%" align="center">空闲时间</td>
                 <td width="11%" align="center">发布时间</td>
                 <td width="4%" align="center">操作</td>
                 </tr>
@@ -143,7 +143,7 @@ $num=$dosql->GetTotalRow($one);
 			$content=json_decode($row['content'],true);
 			foreach($content as $val){
 
-				$freetime .=date("Y-m-d",$val)."&nbsp;&nbsp;&nbsp;&nbsp;";
+				$freetime .=date("Y-m-d",$val)."&nbsp;&nbsp;&nbsp;";
 
 				}
 		?>
@@ -153,7 +153,7 @@ $num=$dosql->GetTotalRow($one);
                 <td align="center"><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $row['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /></div></td>
                 <td align="center" class="num"><a href="guide.php?check=user&id=<?php echo $row['gid'];?>"><?php echo $row['name']; ?></a></td>
                 <td align="center"><?php echo $sex; ?></td>
-                <td align="center" class="num"  style="line-height:1cm;font-size:12px;padding:5px"><?php echo $freetime;?></td>
+                <td style="line-height:1cm;font-size:12px;padding:5px;text-align: LEFT"><?php echo $freetime;?></td>
                 <td align="center"><?php echo date("Y-m-d H:i:s",$row['addtime']);?></td>
                 <td align="center">
       <?php if($adminlevel==1){ ?>

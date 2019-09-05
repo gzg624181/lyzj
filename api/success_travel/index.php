@@ -66,7 +66,7 @@ if(isset($token) && $token==$cfg_auth_key){
         $Data['confirm'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
       }
       #已取消
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=3  or state =5 order by id desc",$two);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and (state=3  or state =5) order by id desc",$two);
       for($j=0;$j<$dosql->GetTotalRow($two);$j++){
         $show1 = $dosql->GetArray($two);
         $Data['concel'][$j]=$show1;

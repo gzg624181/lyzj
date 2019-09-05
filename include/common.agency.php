@@ -1,5 +1,5 @@
-<?php	if(!defined('IN_PHPMYWIND')) exit('Request Error!');
-
+<?php
+if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 /*
 **************************
 (C)2018-2019 phpMyWind.com
@@ -16,7 +16,7 @@ class  Agency {
 
     private $formid;
 
-   function __construnction($openid,$formid){
+   function __construct($openid,$formid){
 
      $this->openid = $openid;
 
@@ -41,10 +41,10 @@ class  Agency {
    //模板消息请求URL
    $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
 
-   $data=$this->send_agency_message($user_info['openid_agency'],$user_info['title'],$user_info['guide_tel'],$user_info['guide_name'],$user_info['time'],$user_info['datetime'],$cfg_agency_remind,$user_info['page_agency'],$user_info['formid_agency']);
+   $data=$this->send_agency_message($this->openid,$user_info['title'],$user_info['guide_tel'],$user_info['guide_name'],$user_info['time'],$user_info['datetime'],$cfg_agency_remind,$user_info['page_agency'],$this->formid);
 
    $json = json_encode($data);//转化成json数组让微信可以接收
-   $res = https_request($url, urldecode($json));//请求开始
+   $res = Common::https_request($url, urldecode($json));//请求开始
    $res_agency = json_decode($res, true);
    $errcode_agency=$res_agency['errcode'];
 
@@ -94,6 +94,7 @@ class  Agency {
 
 public function insert_Agency_Message($user_info,$aid)
 {
+  global $dosql;
   //行程被导游预约，将向旅行社发布的消息表里面去
   $type = 'agency';
   $messagetype='template';
@@ -108,7 +109,7 @@ public function insert_Agency_Message($user_info,$aid)
   $faxtime = time();
   $biaoti="你发布的".$user_info['time'].$user_info['title']."行程已被导游成功预约，请尽快与导游联系";
 
-  $banames = 'pmw_message';
+  $tbnames = 'pmw_message';
   $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $aid, $faxtime)";
   $dosql->ExecNoneQuery($sql);
 

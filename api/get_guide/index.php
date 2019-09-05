@@ -29,7 +29,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
     $first= ($page - 1) * $pagenumber;
 
-    $dosql->Execute("SELECT id,name,sex,content,images,experience,province,city FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
+    $dosql->Execute("SELECT id,name,sex,content,images,experience,province,city,live_province,live_city FROM pmw_guide where checkinfo=1 order by id desc limit $first,$pagenumber");
 
     $num=$dosql->GetTotalRow();//获取数据条数
     if($num>0){
@@ -41,12 +41,10 @@ if(isset($token) && $token==$cfg_auth_key){
         case 1:
         $sex="男";
         break;
-        case 2:
+        case 0:
         $sex="女";
         break;
-        case 0:
-        $sex ="未知";
-        break;
+
       }
       $Data[$i]['sex']=$sex;
       if(check_str($row['images'],"https")){

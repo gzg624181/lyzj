@@ -57,7 +57,6 @@ if(isset($token) && $token==$cfg_auth_key){
         //如果有搜索的内容的时候，则将数据保存到搜索历史表里面
          if(isset($openid)){
            //判断搜索历史表里面是否有相同的搜索关键字
-
            $r=$dosql->GetOne("SELECT keyword FROM pmw_searchlist where openid='$openid' and type=1");
 
            if(!is_array($r)){
@@ -76,9 +75,28 @@ if(isset($token) && $token==$cfg_auth_key){
            }
          }
 
+          if($live_city=="undefined" && $live_province=="undefined"){
+            //默认推荐四条景点的数据
+            $four=4;
+            $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1  order by rand() limit 4",$four);
+            for($i=0;$i<$dosql->GetTotalRow($four);$i++){
+             $row = $dosql->GetArray($four);
+             $Data['recommand'][$i]=$row;
+
+             $picarr=stripslashes($row['picarr']);
+             if($picarr==""){
+             $picarrTmp=array("0"=>$cfg_weburl."/".$cfg_default);
+             $picarr = json_encode($picarrTmp);
+             }else{
+             $picarr=Common::GetPic($picarr, $cfg_weburl);
+             }
+             $Data['recommand'][$i]['picarr']=$picarr;
+            }
+
+          }else{
          //默认推荐四条景点的数据
          $four=4;
-         $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1 and province='$province' and city='$city' order by rand() limit 4",$four);
+         $dosql->Execute("SELECT * FROM pmw_ticket where checkinfo=1 and live_province='$live_province' and live_city='$live_city' order by rand() limit 4",$four);
          for($i=0;$i<$dosql->GetTotalRow($four);$i++){
           $row = $dosql->GetArray($four);
           $Data['recommand'][$i]=$row;
@@ -91,8 +109,10 @@ if(isset($token) && $token==$cfg_auth_key){
           $picarr=Common::GetPic($picarr, $cfg_weburl);
           }
           $Data['recommand'][$i]['picarr']=$picarr;
-
          }
+         }
+
+
       $State = 1;
       $Descriptor = '搜索数据查询成功！';
       $result = array (

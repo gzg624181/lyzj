@@ -18,13 +18,14 @@
      *
      * @旅行社发布旅游行程   提供返回参数账号，
      * id              导游id
+     * name             联系人姓名
      * images          导游头像
      * pics            相册
      * tel             电话号码
      * content         导游简介
      * experience      带团经验
-     * province        默认定位省份    （新增）
-     * city            默认定位城市    （新增）
+     * live_province        默认定位省份    （新增）
+     * live_city            默认定位城市    （新增）
      */
 require_once("../../include/config.inc.php");
 header("content-type:application/json;charset=utf-8");
@@ -33,11 +34,15 @@ $_POST = json_decode($body,true);
 
 $Data = array();
 $Version=date("Y-m-d H:i:s");
-$token = $_POST['token'];
+$token = $_POST['atoken'];
 $id = $_POST['id'];
 
 if(isset($_POST['images'])){
 $images = $_POST['images'];
+}
+
+if(isset($_POST['name'])){
+$name = $_POST['name'];
 }
 
 if(isset($_POST['pics'])){
@@ -64,13 +69,22 @@ if(isset($_POST['city'])){
 $city = $_POST['city'];
 }
 
+if(isset($_POST['live_province'])){
+$live_province = $_POST['live_province'];
+}
+
+if(isset($_POST['live_city'])){
+$live_city = $_POST['live_city'];
+}
+
+
 if(isset($token) && $token==$cfg_auth_key){
 
   //这个是自定义函数，将Base64图片转换为本地图片并保存
   $savepath= "../../uploads/image/";
 
   if(isset($images)){
-  $images = Common::base64_image_content($images,$savepath);
+  $images = Common::base64($images,$savepath);
   $images=str_replace("../../",'',$images);
   }
 
@@ -81,7 +95,7 @@ if(isset($token) && $token==$cfg_auth_key){
   $pic ="";
   $arr=explode("|",$pics);
   for($i=0;$i<count($arr);$i++){
-    $pics  = Common::base64_image_content($arr[$i],$savepath);
+    $pics  = Common::base64($arr[$i],$savepath);
     if($i==count($arr)-1){
       $thispic = str_replace("../../",'',$pics);
     }else{
@@ -90,90 +104,50 @@ if(isset($token) && $token==$cfg_auth_key){
     $pic .= $thispic;
     }
 }
-// 指定修改传过来的值，不需要全部都修改
-// 将GET传过来的参数进行判断最后一个参数，如果是最后一个参数，则最后一个逗号去除掉、
-
-  $arr=$_POST;
-  $nums= count($arr)-1;
-  $newarr=array_keys($arr);
-
-  $lastkey = $newarr[$nums];  //最后一个参数的键
 
   $sql = "UPDATE `#@__guide` set ";
 
-
   if(isset($tel)){
-    if($lastkey == "tel"){
-    $sql .= "tel='$tel' ";
-    }else{
     $sql .= "tel='$tel',";
-    }
   }
 
   if(isset($content)){
-    if($lastkey == "content"){
-    $sql .= " content='$content' ";
-    }else{
     $sql .= " content='$content',";
-    }
   }
 
   if(isset($pics)){
-      if($lastkey == "pics"){
-      $sql .= " pics='$pic' ";
-      }else{
       $sql .= " pics='$pic',";
-      }
   }
 
   if(isset($images)){
-    if($lastkey=="images"){
-      $sql .= " images='$images'";
-    }else{
       $sql .= " images='$images',";
-    }
   }
 
   if(isset($experience)){
-    if($lastkey=="experience"){
-      $sql .= " experience='$experience'";
-    }else{
       $sql .= " experience='$experience',";
-    }
   }
 
   if(isset($province)){
-    if($lastkey=="province"){
-      $sql .= " province=$province";
-    }else{
       $sql .= " province=$province,";
-    }
   }
 
   if(isset($city)){
-    if($lastkey=="city"){
-      $sql .= " city=$city";
-    }else{
       $sql .= " city=$city,";
-    }
   }
 
   if(isset($live_province)){
-    if($lastkey=="live_province"){
-      $sql .= " live_province='$live_province'";
-    }else{
       $sql .= " live_province='$live_province',";
-    }
   }
 
   if(isset($live_city)){
-    if($lastkey=="live_city"){
-      $sql .= " live_city='$live_city'";
-    }else{
       $sql .= " live_city='$live_city',";
-    }
   }
-  $sql .= "WHERE id=$id";
+
+  if(isset($name)){
+      $sql .= " name='$name',";
+  }
+
+  $sql .= " id=$id WHERE id=$id";
   $dosql->ExecNoneQuery($sql);
   $r=$dosql->GetOne("SELECT * FROM pmw_guide where id=$id");
   if(is_array($r)){

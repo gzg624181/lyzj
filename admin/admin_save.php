@@ -170,7 +170,11 @@ else if($action=='share_update'){
 else if($action=="xieyi_update"){
 	$dosql->ExecNoneQuery("UPDATE pmw_xieyi SET content='$content' where id=1");
 	$gourl="xieyi.php";
+	$r = $dosql->GetOne("SELECT * FROM pmw_xieyi where id=1");
 
+	$data=phpver($r);          //保存的value值
+	$redis_key = "get_xieyi";  //保存的key
+	update_redis($redis_key,$data);
 	header("LOCATION:$gourl");
 }else if($action=="default_update"){
 	$dosql->ExecNoneQuery("UPDATE pmw_share SET imagesurl='$pic' where id=3");

@@ -23,16 +23,16 @@
      * address          公司地址(varchar)
      * name             联系人姓名(varchar)
      * tel              联系电话(varchar)
-     * images          旅行社头像(varchar)默认第一次拉取微信头像
-     * account         账号(varchar)
-     * password        密码(varchar)
-     * openid          关注小程序的openid
-     * formid          关注小程序的formid
-     * cardpicnumber   营业执照号码
-     * cardidnumber    身份证号码
-     * cardid_picarr   身份证正反面图片
-     * uid              推荐人的id   （可以为空）
-     * recommender_type 推荐人的类别 （可以为空）
+     * images            旅行社头像(varchar)默认第一次拉取微信头像
+     * account           账号(varchar)
+     * password          密码(varchar)
+     * openid            关注小程序的openid
+     * formid            关注小程序的formid
+     * cardpicnumber     营业执照号码
+     * cardidnumber      身份证号码
+     * cardid_picarr     身份证正反面图片
+     * uid               推荐人的id   （可以为空）
+     * recommender_type  推荐人的类别 （可以为空）
      * province          定位省份代码   中文 live_province
      * city              定位城市代码   中文 live_city
 
@@ -62,8 +62,6 @@ header("content-type:application/json; charset=utf-8");
 $body = file_get_contents('php://input');
 $json = json_decode($body,true);
 
-print_r($json);
-
 
 // 旅行社注册基本信息
 $cardpic=$json['cardpic'];
@@ -86,11 +84,8 @@ $uid = $json['uid'];
 $recommender_type = $json['recommender_type'];
 
 // 旅行社定位信息
-
 $live_province = $json['live_province'];
-$province = $json['province'];
 $live_city = $json['live_city'];
-$city = $json['city'];
 
 
 $Data = array();
@@ -151,7 +146,7 @@ if(is_array($r)){
 
             //这个是自定义函数，将Base64图片转换为本地图片并保存
             $savepath= "../../uploads/image/";
-            $cardpic = Common::base64_image_content($cardpic,$savepath);
+            $cardpic = Common::base64($cardpic,$savepath);
             $cardpic = str_replace("../../",'',$cardpic);
 
 
@@ -179,7 +174,17 @@ if(is_array($r)){
           //将新生成的formid的信息保存到formid表里面去
           Common::add_formid($openid,$formid);
 
-          $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,company,cardpicnumber,cardidnumber,cardid_picarr,uid,recommender_type,live_province,live_city,province,city) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$company','$cardpicnumber','$cardidnumber','$card_picarr','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
+          //获取省份数字代码
+         $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `dataname` like  '%$live_province%'");
+         $province=$row['datavalue'];  //省份数字代码
+         $live_province = $row['dataname']; //省份中文
+
+        //获取城市数字代码
+         $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `dataname` like '%$live_city%'");
+         $city=$row['datavalue'];   //城市数字代码
+         $live_city = $row['dataname'];
+
+      $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,company,cardpicnumber,cardidnumber,cardid_picarr,uid,recommender_type,live_province,live_city,province,city) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$company','$cardpicnumber','$cardidnumber','$card_picarr','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
 
 
               if($dosql->ExecNoneQuery($sql)){

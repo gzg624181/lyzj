@@ -78,11 +78,8 @@ $uid = $json['uid'];
 $recommender_type = $json['recommender_type'];
 
 // 导游定位信息
-
 $live_province = $json['live_province'];
-$province = $json['province'];
 $live_city = $json['live_city'];
-$city = $json['city'];
 
 
 $Data = array();
@@ -174,7 +171,18 @@ if(is_array($r)){
   //将新生成的formid的信息保存到formid表里面去
   Common::add_formid($openid,$formid);
 
-  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,cardidnumber,cardid_picarr,experience,uid,recommender_type,live_province,live_city,province,city) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$cardidnumber','$card_picarr','$experience','$uid','$recommender_type','$live_province','$live_city',province,city)";
+  //获取省份数字代码
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `dataname` like  '%$live_province%'");
+ $province=$row['datavalue'];  //省份数字代码
+ $live_province = $row['dataname']; //省份中文
+
+//获取城市数字代码
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `dataname` like '%$live_city%'");
+ $city=$row['datavalue'];   //城市数字代码
+ $live_city = $row['dataname'];
+
+
+  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,cardidnumber,cardid_picarr,experience,uid,recommender_type,live_province,live_city,province,city) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$cardidnumber','$card_picarr','$experience','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
 
 if($dosql->ExecNoneQuery($sql)){
 

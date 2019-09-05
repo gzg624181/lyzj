@@ -18,18 +18,16 @@
      *
      * @旅行社发布旅游行程   提供返回参数账号，
      * title           行程标题
-     * starttime       开始时间，时间戳
-     * endtime         结束时间，时间戳
+     * aid             旅行社id
+     * starttime8       开始时间，年月日
+     * endtime8         结束时间，年月日
      * num             团队人数
-     * origin          客源地
      * content         添加行程
      * money           导游费用
      * other           其他备注
      * openid          用户的formid  发布此条行程的旅行社openid
      * formid          当前的formid
 
-     * province        行程起始地理位置省份数字代码
-     * city            行程起始地址位置城市数字代码
      * live_province    省份  中文
      * live_city        城市  中文
      */
@@ -45,6 +43,8 @@ if(isset($token) && $token==$cfg_auth_key){
   $fabu_y=date("Y");
   $fabu_ym=date("Y-m");
 
+  $starttime = strtotime($starttime8);
+  $endtime = strtotime($endtime8);
 
   $days=($endtime-$starttime) / (60 * 60 * 24) +1;  //行程的天数
   $jiesuanmoney = $cfg_jiesuan * $days;
@@ -53,21 +53,29 @@ if(isset($token) && $token==$cfg_auth_key){
   $company=$r['company'];
 
   $starttime_ymd=date("Y-m-d",$starttime);
-  $starttime=strtotime($starttime_ymd);
 
-  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,origin,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days,openid,province,city,live_province,live_city) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$origin','$content',$money,'$other',$posttime,'$fabu_y','$fabu_ym',$aid,'$jiesuanmoney','$company',$days,'$openid',$province,$city,'$live_province','$live_city')";
-  $dosql->ExecNoneQuery($sql);
+  //获取省份数字代码
+  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata` WHERE `dataname` = '$live_province'");
+  $province=$row['datavalue'];  //省份数字代码
 
-  //将旅行社的formid添加进去
-   Common::add_formid($openid,$formid);
+  //获取城市数字代码
+  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata` WHERE `dataname` = '$live_city'");
+  $city=$row['datavalue'];   //城市数字代码
 
- if($cfg_free_time_message=="Y"){
+  $sql = "INSERT INTO `#@__travel` (title,starttime,starttime_ymd,endtime,num,content,money,other,posttime,fabu_y, fabu_ym,aid,jiesuanmoney,company,days,openid,province,city,live_province,live_city) VALUES ('$title',$starttime,'$starttime_ymd',$endtime,$num,'$content',$money,'$other',$posttime,'$fabu_y','$fabu_ym',$aid,'$jiesuanmoney','$company',$days,'$openid',$province,$city,'$live_province','$live_city')";
+  if($dosql->ExecNoneQuery($sql)){
+
+    if($cfg_free_time_message=="Y"){
   //匹配用户的空闲时间，旅行社发布的空闲时间如果匹配的话 ，则向导游发送空闲时间的模板消息，每个导游一天最多发送一条消息
-   Guide::Send_Remind($starttime,$title);
- }
 
-  //将行程的记录添加进去
-   Common::update_message('travel');
+    Guide::Send_Remind($starttime,$title,$province,$city);
+    }
+
+    //将旅行社的formid添加进去
+      Common::add_formid($openid,$formid);
+
+    //将行程的记录添加进去
+     Common::update_message('travel');
 
   $State = 1;
   $Descriptor = '行程发布成功！!';
@@ -78,6 +86,18 @@ if(isset($token) && $token==$cfg_auth_key){
               'Data' => $Data
                );
   echo phpver($result);
+
+}else{
+  $State = 0;
+  $Descriptor = '行程发布失败!';
+  $result = array (
+              'State' => $State,
+              'Descriptor' => $Descriptor,
+              'Version' => $Version,
+              'Data' => $Data
+               );
+  echo phpver($result);
+}
 
 }else{
   $State = 520;

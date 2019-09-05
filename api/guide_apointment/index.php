@@ -91,7 +91,6 @@ if(isset($token) && $token==$cfg_auth_key){
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");  //旅行社信息
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");   //具体的行程信息
 
-
     $user_info = array(
 
        "company" => $a['company'],   //旅行社名称
@@ -124,6 +123,7 @@ if(isset($token) && $token==$cfg_auth_key){
      $errcode_agency = $send_agency_message->SendAgency($user_info);
      //将旅行社发布的此条行程被预约的消息保存到消息表里面去
      $send_agency_message->insert_Agency_Message($user_info,$aid);
+
 
 
   if($errcode_guide==0 && $errcode_agency==0){

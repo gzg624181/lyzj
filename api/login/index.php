@@ -29,7 +29,9 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
   $m=$dosql->GetOne("SELECT id FROM `#@__agency` WHERE account='$account'");
+
   $n=$dosql->GetOne("SELECT id FROM `#@__guide` WHERE account='$account'");
+
   if(is_array($m) || is_array($n)){
 
     if($type=="agency"){
@@ -49,7 +51,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $r=$dosql->GetOne("SELECT * FROM `pmw_agency` where account='$account' and password='$password'");
         if(!is_array($r)){
           $State = 1;
-          $Descriptor = '账号或者密码错误，请重新填写！';
+          $Descriptor = '密码错误，请重新填写！';
           $result = array (
                       'State' => $State,
                       'Descriptor' => $Descriptor,
@@ -120,7 +122,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $r=$dosql->GetOne("SELECT * FROM `pmw_guide` where account='$account' and password='$password'");
         if(!is_array($r)){
           $State = 1;
-          $Descriptor = '账号或者密码错误，请重新填写！';
+          $Descriptor = '密码错误，请重新填写！';
           $result = array (
                       'State' => $State,
                       'Descriptor' => $Descriptor,

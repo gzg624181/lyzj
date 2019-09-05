@@ -1,4 +1,5 @@
-<?php	if(!defined('IN_PHPMYWIND')) exit('Request Error!');
+<?php
+if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 
 /*
 **************************
@@ -16,7 +17,7 @@ class  Guide {
 
     private $formid;
 
-   function __construnction($openid,$formid){
+   function __construct($openid,$formid){
 
      $this->openid = $openid;
 
@@ -130,7 +131,6 @@ class  Guide {
      $biaoti="你预约的".$user_info['time'].$user_info['title']."行程已预约成功，请尽快与旅行社联系";
      $faxtime=time();
 
-     $banames = 'pmw_message';
      $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
      $dosql->ExecNoneQuery($sql);
    }
@@ -167,14 +167,14 @@ public static  function get_guide_num($id){
 
    // 空闲时间与行程匹配的话则发送模板消息提醒
 
-  public static function Send_Remind($starttime,$title)
+    public static  function Send_Remind($starttime,$title,$province,$city)
    {
    	// code...  计算所有导游发布的空闲时间,每天只能发送一次
-     global $dosql,$cfg_free_time,$cfg_appid,$cfg_appsecret;
+    global $dosql,$cfg_free_time,$cfg_appid,$cfg_appsecret;
 
     $todaytime=strtotime(date("Y-m-d"));
 
-   	$dosql->Execute("SELECT * FROM pmw_freetime where usetime <> $todaytime");
+   	$dosql->Execute("SELECT a.* FROM pmw_freetime a inner join pmw_guide b on a.gid=b.id where a.usetime <> $todaytime and b.province=$province and b.city=$city");
 
    	while($row=$dosql->GetArray()){
 
@@ -182,11 +182,11 @@ public static  function get_guide_num($id){
 
    		if(check_str($content1,$starttime)){  //进行匹配操作
 
-       $gid= $row['gid'];  //导游的id
+      $gid= $row['gid'];  //导游的id
 
-   		 $id= $row['id'];  //当前用户发布的空闲时间id
+   		$id= $row['id'];  //当前用户发布的空闲时间id
 
-   		 $array=self::Get_Guide_Infromation($gid);
+   		$array= self::Get_Guide_Infromation($gid);
 
       $openids=$array['openid']; //导游的openid
 
@@ -215,9 +215,8 @@ public static  function get_guide_num($id){
 
    }
 
-
    //获取导游的信息
- public static function Get_Guide_Infromation($id)
+  public static  function Get_Guide_Infromation($id)
    {
    	// code...
    	global $dosql;
@@ -253,7 +252,7 @@ public static  function get_guide_num($id){
    		 ),
     );
 
-    $ACCESS_TOKEN = token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+    $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
     //模板消息请求URL
     $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
@@ -265,11 +264,11 @@ public static  function get_guide_num($id){
     // return $errcode;
    }
 
-  public function  Send_Concel_Agency($info){
+  public function  Send_Concel_Guide($info){
 
-  global $dosql,$cfg_cancel_guide,$cfg_appid,$cfg_appid;
+  global $dosql,$cfg_cancel_guide,$cfg_appid,$cfg_appsecret;
 
-   $data=self::CancelGuide($info['title'],$info['time'],$info['name'],$info['tel'],$info['reason'],$info['tishi_guide'],$this->openid,$cfg_cancel_guide,$info['page_guide'],$this->fromid);
+   $data=self::CancelGuide($info['title'],$info['time'],$info['name'],$info['tel'],$info['reason'],$info['tishi_guide'],$this->openid,$cfg_cancel_guide,$info['page_guide'],$this->formid);
 
    $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
@@ -339,7 +338,7 @@ public static  function get_guide_num($id){
   $biaoti="你好，你预约的".$info['time']."行程已被取消";
   $faxtime = $info['faxtime'];
 
-  $banames = 'pmw_message';
+  $tbnames = 'pmw_message';
   $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
   $dosql->ExecNoneQuery($sql);
  }

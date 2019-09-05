@@ -18,20 +18,22 @@
      *
      * @提供返回参数账号 page  默认为0 ,每页pagenumber条数据
      *
-     * 根据登录的定位城市省份和城市，province  city
+     * 根据登录的定位城市省份和城市，live_province  live_city
      */
 require_once("../../include/config.inc.php");
+header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+   $pagenumber=4;
    if(isset($page)){
-    $pagenumber=4;
     $first=$page * $pagenumber;
-    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 and province ='$province' and city='$city' order by id desc limit $first,$pagenumber");
-   }else{
-    $dosql->Execute("SELECT id,title,starttime,endtime,money,other,company FROM pmw_travel where state=0 and province ='$province' and city='$city' order by id desc limit 0,$pagenumber");
-  }
+     $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 and live_province ='$live_province' and live_city='$live_city' order by id desc limit $first,$pagenumber");
+     }else{
+      $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 and live_province ='$live_province' and live_city='$live_city' order by id desc limit 0,$pagenumber");
+     }
     $num=$dosql->GetTotalRow();//获取数据条数
+
     if($num>0){
     while($row=$dosql->GetArray()){
       $Data[]=$row;

@@ -31,8 +31,9 @@ $_POST = json_decode($body,true);
 
 $Data = array();
 $Version=date("Y-m-d H:i:s");
-$token = $_POST['token'];
+$token = $_POST['atoken'];
 $id = $_POST['id'];
+
 
 if(isset($_POST['images'])){
 $images = $_POST['images'];
@@ -64,81 +65,39 @@ $live_city = $_POST['live_city'];
 
 if(isset($token) && $token==$cfg_auth_key){
 
-  //这个是自定义函数，将Base64图片转换为本地图片并保存
-  $savepath= "../../uploads/image/";
-
-  if(isset($images)){
-  $images = Common::base64_image_content($images,$savepath);
-  $images=str_replace("../..",'',$images);
-  }
-
-// 将GET传过来的参数进行判断最后一个参数，如果是最后一个参数，则最后一个逗号去除掉、
-
-  $arr=$_POST;
-  $nums= count($arr)-1;
-  $newarr=array_keys($arr);
-
-  $lastkey = $newarr[$nums];  //最后一个参数的键
-
   $sql = "UPDATE `#@__agency` set ";
 
-
-  if(isset($tel)){
-    if($lastkey == "tel"){
-    $sql .= "tel='$tel' ";
-    }else{
-    $sql .= "tel='$tel',";
-    }
-  }
-
-  if(isset($name)){
-    if($lastkey == "name"){
-    $sql .= " name='$name' ";
-    }else{
-    $sql .= " name='$name',";
-    }
+  if(isset($city)){
+  $sql .= " city=$city,";
   }
 
   if(isset($images)){
-    if($lastkey=="images"){
-      $sql .= " images='$images' ";
-    }else{
-      $sql .= " images='$images',";
-    }
-  }
-
-  if(isset($province)){
-    if($lastkey=="province"){
-      $sql .= " province=$province";
-    }else{
-      $sql .= " province=$province,";
-    }
-  }
-
-  if(isset($city)){
-    if($lastkey=="city"){
-      $sql .= " city=$city";
-    }else{
-      $sql .= " city=$city,";
-    }
+    $savepath= "../../uploads/image/";
+    $images = Common::base64_image_content($images,$savepath);
+    $images=str_replace("../../",'',$images);
+    $sql .= " images='$images',";
   }
 
   if(isset($live_province)){
-    if($lastkey=="live_province"){
-      $sql .= " live_province='$live_province'";
-    }else{
-      $sql .= " live_province='$live_province',";
-    }
+  $sql .= " live_province='$live_province',";
   }
 
   if(isset($live_city)){
-    if($lastkey=="live_city"){
-      $sql .= " live_city='$live_city'";
-    }else{
       $sql .= " live_city='$live_city',";
-    }
   }
-  $sql .= "WHERE id=$id";
+
+  if(isset($province)){
+      $sql .= " province=$province,";
+  }
+
+  if(isset($tel)){
+      $sql .= "tel='$tel',";
+  }
+
+  if(isset($name)){
+    $sql .= " name='$name',";
+  }
+  $sql .= " id=$id WHERE id=$id";
   $dosql->ExecNoneQuery($sql);
   $r=$dosql->GetOne("SELECT * FROM pmw_agency where id=$id");
   if(is_array($r)){

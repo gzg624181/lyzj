@@ -24,6 +24,7 @@
      * aid         旅行社id
      * gid         导游id
      * reason      取消原因
+     *
      */
 require_once("../../include/config.inc.php");
 header("Content-type:application/json; charset:utf-8");
@@ -85,23 +86,22 @@ if(isset($token) && $token==$cfg_auth_key){
          "tishi_guide"=>"您预约的此条行程已取消，可进入小程序再次预约行程，欢迎您再次使用。",
          "page_guide"=>"pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem",
 
-
     ];
 
     //发送双向模板消息
 
    # ①.给旅行社发布模板消息
 
-    $agency =new Agency($openid,$formid);
-
-    $agency->Send_Concel_Agency($info);
-
-   //将旅行社撤销行程的模板消息保存到历史消息记录里面去
-    $agency->concel_Agency_Message($info,$aid);
+   //  $agency =new Agency($openid,$formid);
+   //
+   //  $agency->Send_Concel_Agency($info);
+   //
+   // //将旅行社撤销行程的模板消息保存到历史消息记录里面去
+   //  $agency->concel_Agency_Message($info,$aid);
 
    #②. 给导游发送模板消息
 
-    $guide = new Guide($x['openid_guid'],Common::get_new_formid($x['openid_guide']));
+    $guide = new Guide($x['openid_guide'],Common::get_new_formid($x['openid_guide']));
 
     $guide->Send_Concel_Guide($info);
 

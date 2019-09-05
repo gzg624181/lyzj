@@ -74,9 +74,11 @@ if(isset($token) && $token==$cfg_auth_key){
 
        $Data= array(
 
-            "appointment"=>$appointment,
-            "confirm"=>$confirm,
-            "comment"=>$comment
+            "appointment"=>$appointment,   //待预约
+            "confirm"=>$confirm,           //待确认
+            "comment"=>$comment,           //待评价
+            "success"=>$success,          //已完成
+            "concel"=>$concel             //已取消
 
        );
 

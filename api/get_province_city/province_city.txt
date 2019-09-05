@@ -1,0 +1,2321 @@
+{
+  "objectMultiArray": [
+    {
+      "dataname": "北京市",
+      "datavalue": "1000"
+    },
+    {
+      "dataname": "天津市",
+      "datavalue": "1500"
+    },
+    {
+      "dataname": "河北省",
+      "datavalue": "2000"
+    },
+    {
+      "dataname": "山西省",
+      "datavalue": "2500"
+    },
+    {
+      "dataname": "内蒙古自治区",
+      "datavalue": "3000"
+    },
+    {
+      "dataname": "辽宁省",
+      "datavalue": "3500"
+    },
+    {
+      "dataname": "吉林省",
+      "datavalue": "4000"
+    },
+    {
+      "dataname": "黑龙江省",
+      "datavalue": "4500"
+    },
+    {
+      "dataname": "上海市",
+      "datavalue": "5000"
+    },
+    {
+      "dataname": "江苏省",
+      "datavalue": "5500"
+    },
+    {
+      "dataname": "浙江省",
+      "datavalue": "6000"
+    },
+    {
+      "dataname": "安徽省",
+      "datavalue": "6500"
+    },
+    {
+      "dataname": "福建省",
+      "datavalue": "7000"
+    },
+    {
+      "dataname": "江西省",
+      "datavalue": "7500"
+    },
+    {
+      "dataname": "山东省",
+      "datavalue": "8000"
+    },
+    {
+      "dataname": "河南省",
+      "datavalue": "8500"
+    },
+    {
+      "dataname": "湖北省",
+      "datavalue": "9000"
+    },
+    {
+      "dataname": "湖南省",
+      "datavalue": "9500"
+    },
+    {
+      "dataname": "广东省",
+      "datavalue": "10000"
+    },
+    {
+      "dataname": "广西壮族自治区",
+      "datavalue": "10500"
+    },
+    {
+      "dataname": "海南省",
+      "datavalue": "11000"
+    },
+    {
+      "dataname": "重庆市",
+      "datavalue": "11500"
+    },
+    {
+      "dataname": "四川省",
+      "datavalue": "12000"
+    },
+    {
+      "dataname": "贵州省",
+      "datavalue": "12500"
+    },
+    {
+      "dataname": "云南省",
+      "datavalue": "13000"
+    },
+    {
+      "dataname": "西藏自治区",
+      "datavalue": "13500"
+    },
+    {
+      "dataname": "陕西省",
+      "datavalue": "14000"
+    },
+    {
+      "dataname": "甘肃省",
+      "datavalue": "14500"
+    },
+    {
+      "dataname": "青海省",
+      "datavalue": "15000"
+    },
+    {
+      "dataname": "宁夏回族自治区",
+      "datavalue": "15500"
+    },
+    {
+      "dataname": "新疆维吾尔自治区",
+      "datavalue": "16000"
+    },
+    {
+      "dataname": "台湾省",
+      "datavalue": "16500"
+    },
+    {
+      "dataname": "香港特别行政区",
+      "datavalue": "17000"
+    },
+    {
+      "dataname": "澳门特别行政区",
+      "datavalue": "17500"
+    },
+    {
+      "dataname": "东城区",
+      "datavalue": "1001",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "西城区",
+      "datavalue": "1002",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "崇文区",
+      "datavalue": "1003",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "宣武区",
+      "datavalue": "1004",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "朝阳区",
+      "datavalue": "1005",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "丰台区",
+      "datavalue": "1006",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "石景山区",
+      "datavalue": "1007",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "海淀区",
+      "datavalue": "1008",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "门头沟区",
+      "datavalue": "1009",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "房山区",
+      "datavalue": "1010",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "通州区",
+      "datavalue": "1011",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "顺义区",
+      "datavalue": "1012",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "昌平区",
+      "datavalue": "1013",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "大兴区",
+      "datavalue": "1014",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "怀柔区",
+      "datavalue": "1015",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "平谷区",
+      "datavalue": "1016",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "密云县",
+      "datavalue": "1017",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "延庆县",
+      "datavalue": "1018",
+      "datavalues": "1000"
+    },
+    {
+      "dataname": "和平区",
+      "datavalue": "1501",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "河东区",
+      "datavalue": "1502",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "南开区",
+      "datavalue": "1504",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "河北区",
+      "datavalue": "1505",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "红桥区",
+      "datavalue": "1506",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "塘沽区",
+      "datavalue": "1507",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "汉沽区",
+      "datavalue": "1508",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "大港区",
+      "datavalue": "1509",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "东丽区",
+      "datavalue": "1510",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "西青区",
+      "datavalue": "1511",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "津南区",
+      "datavalue": "1512",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "北辰区",
+      "datavalue": "1513",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "武清区",
+      "datavalue": "1514",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "宝坻区",
+      "datavalue": "1515",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "宁河县",
+      "datavalue": "1516",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "静海县",
+      "datavalue": "1517",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "蓟　县",
+      "datavalue": "1518",
+      "datavalues": "1500"
+    },
+    {
+      "dataname": "石家庄市",
+      "datavalue": "2001",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "唐山市",
+      "datavalue": "2002",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "秦皇岛市",
+      "datavalue": "2003",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "邯郸市",
+      "datavalue": "2004",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "邢台市",
+      "datavalue": "2005",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "保定市",
+      "datavalue": "2006",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "张家口市",
+      "datavalue": "2007",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "承德市",
+      "datavalue": "2008",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "廊坊市",
+      "datavalue": "2009",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "衡水市",
+      "datavalue": "2010",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "沧州市",
+      "datavalue": "2011",
+      "datavalues": "2000"
+    },
+    {
+      "dataname": "太原市",
+      "datavalue": "2501",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "大同市",
+      "datavalue": "2502",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "阳泉市",
+      "datavalue": "2503",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "长治市",
+      "datavalue": "2504",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "晋城市",
+      "datavalue": "2505",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "朔州市",
+      "datavalue": "2506",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "晋中市",
+      "datavalue": "2507",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "运城市",
+      "datavalue": "2508",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "忻州市",
+      "datavalue": "2509",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "临汾市",
+      "datavalue": "2510",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "吕梁市",
+      "datavalue": "2511",
+      "datavalues": "2500"
+    },
+    {
+      "dataname": "呼和浩特市",
+      "datavalue": "3001",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "包头市",
+      "datavalue": "3002",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "乌海市",
+      "datavalue": "3003",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "赤峰市",
+      "datavalue": "3004",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "通辽市",
+      "datavalue": "3005",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "鄂尔多斯市",
+      "datavalue": "3006",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "呼伦贝尔市",
+      "datavalue": "3007",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "巴彦淖尔市",
+      "datavalue": "3008",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "乌兰察布市",
+      "datavalue": "3009",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "兴安盟",
+      "datavalue": "3010",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "锡林郭勒盟",
+      "datavalue": "3011",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "阿拉善盟",
+      "datavalue": "3012",
+      "datavalues": "3000"
+    },
+    {
+      "dataname": "沈阳市",
+      "datavalue": "3501",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "大连市",
+      "datavalue": "3502",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "鞍山市",
+      "datavalue": "3503",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "抚顺市",
+      "datavalue": "3504",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "本溪市",
+      "datavalue": "3505",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "丹东市",
+      "datavalue": "3506",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "锦州市",
+      "datavalue": "3507",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "营口市",
+      "datavalue": "3508",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "阜新市",
+      "datavalue": "3509",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "辽阳市",
+      "datavalue": "3510",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "盘锦市",
+      "datavalue": "3511",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "铁岭市",
+      "datavalue": "3512",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "朝阳市",
+      "datavalue": "3513",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "葫芦岛市",
+      "datavalue": "3514",
+      "datavalues": "3500"
+    },
+    {
+      "dataname": "长春市",
+      "datavalue": "4001",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "吉林市",
+      "datavalue": "4002",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "四平市",
+      "datavalue": "4003",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "辽源市",
+      "datavalue": "4004",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "通化市",
+      "datavalue": "4005",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "白山市",
+      "datavalue": "4006",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "松原市",
+      "datavalue": "4007",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "白城市",
+      "datavalue": "4008",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "延边朝鲜族自治州",
+      "datavalue": "4009",
+      "datavalues": "4000"
+    },
+    {
+      "dataname": "哈尔滨市",
+      "datavalue": "4501",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "齐齐哈尔市",
+      "datavalue": "4502",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "鸡西市",
+      "datavalue": "4503",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "鹤岗市",
+      "datavalue": "4504",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "双鸭山市",
+      "datavalue": "4505",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "大庆市",
+      "datavalue": "4506",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "伊春市",
+      "datavalue": "4507",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "佳木斯市",
+      "datavalue": "4508",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "七台河市",
+      "datavalue": "4509",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "牡丹江市",
+      "datavalue": "4510",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "黑河市",
+      "datavalue": "4511",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "绥化市",
+      "datavalue": "4512",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "大兴安岭地区",
+      "datavalue": "4513",
+      "datavalues": "4500"
+    },
+    {
+      "dataname": "黄浦区",
+      "datavalue": "5001",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "卢湾区",
+      "datavalue": "5002",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "徐汇区",
+      "datavalue": "5003",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "长宁区",
+      "datavalue": "5004",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "静安区",
+      "datavalue": "5005",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "普陀区",
+      "datavalue": "5006",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "闸北区",
+      "datavalue": "5007",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "虹口区",
+      "datavalue": "5008",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "杨浦区",
+      "datavalue": "5009",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "闵行区",
+      "datavalue": "5010",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "宝山区",
+      "datavalue": "5011",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "嘉定区",
+      "datavalue": "5012",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "浦东新区",
+      "datavalue": "5013",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "金山区",
+      "datavalue": "5014",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "松江区",
+      "datavalue": "5015",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "青浦区",
+      "datavalue": "5016",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "南汇区",
+      "datavalue": "5017",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "奉贤区",
+      "datavalue": "5018",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "崇明县",
+      "datavalue": "5019",
+      "datavalues": "5000"
+    },
+    {
+      "dataname": "南京市",
+      "datavalue": "5501",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "无锡市",
+      "datavalue": "5502",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "徐州市",
+      "datavalue": "5503",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "常州市",
+      "datavalue": "5504",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "苏州市",
+      "datavalue": "5505",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "南通市",
+      "datavalue": "5506",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "连云港市",
+      "datavalue": "5507",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "淮安市",
+      "datavalue": "5508",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "盐城市",
+      "datavalue": "5509",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "扬州市",
+      "datavalue": "5510",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "镇江市",
+      "datavalue": "5511",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "泰州市",
+      "datavalue": "5512",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "宿迁市",
+      "datavalue": "5513",
+      "datavalues": "5500"
+    },
+    {
+      "dataname": "杭州市",
+      "datavalue": "6001",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "宁波市",
+      "datavalue": "6002",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "温州市",
+      "datavalue": "6003",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "嘉兴市",
+      "datavalue": "6004",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "湖州市",
+      "datavalue": "6005",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "绍兴市",
+      "datavalue": "6006",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "金华市",
+      "datavalue": "6007",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "衢州市",
+      "datavalue": "6008",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "舟山市",
+      "datavalue": "6009",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "台州市",
+      "datavalue": "6010",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "丽水市",
+      "datavalue": "6011",
+      "datavalues": "6000"
+    },
+    {
+      "dataname": "合肥市",
+      "datavalue": "6501",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "芜湖市",
+      "datavalue": "6502",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "蚌埠市",
+      "datavalue": "6503",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "淮南市",
+      "datavalue": "6504",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "马鞍山市",
+      "datavalue": "6505",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "淮北市",
+      "datavalue": "6506",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "铜陵市",
+      "datavalue": "6507",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "安庆市",
+      "datavalue": "6508",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "黄山市",
+      "datavalue": "6509",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "滁州市",
+      "datavalue": "6510",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "阜阳市",
+      "datavalue": "6511",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "宿州市",
+      "datavalue": "6512",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "巢湖市",
+      "datavalue": "6513",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "六安市",
+      "datavalue": "6514",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "亳州市",
+      "datavalue": "6515",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "池州市",
+      "datavalue": "6516",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "宣城市",
+      "datavalue": "6517",
+      "datavalues": "6500"
+    },
+    {
+      "dataname": "福州市",
+      "datavalue": "7001",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "厦门市",
+      "datavalue": "7002",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "莆田市",
+      "datavalue": "7003",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "三明市",
+      "datavalue": "7004",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "泉州市",
+      "datavalue": "7005",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "漳州市",
+      "datavalue": "7006",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "南平市",
+      "datavalue": "7007",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "龙岩市",
+      "datavalue": "7008",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "宁德市",
+      "datavalue": "7009",
+      "datavalues": "7000"
+    },
+    {
+      "dataname": "南昌市",
+      "datavalue": "7501",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "景德镇市",
+      "datavalue": "7502",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "萍乡市",
+      "datavalue": "7503",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "九江市",
+      "datavalue": "7504",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "新余市",
+      "datavalue": "7505",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "鹰潭市",
+      "datavalue": "7506",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "赣州市",
+      "datavalue": "7507",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "吉安市",
+      "datavalue": "7508",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "宜春市",
+      "datavalue": "7509",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "抚州市",
+      "datavalue": "7510",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "上饶市",
+      "datavalue": "7511",
+      "datavalues": "7500"
+    },
+    {
+      "dataname": "济南市",
+      "datavalue": "8001",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "青岛市",
+      "datavalue": "8002",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "淄博市",
+      "datavalue": "8003",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "枣庄市",
+      "datavalue": "8004",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "烟台市",
+      "datavalue": "8005",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "潍坊市",
+      "datavalue": "8006",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "济宁市",
+      "datavalue": "8007",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "泰安市",
+      "datavalue": "8008",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "威海市",
+      "datavalue": "8009",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "日照市",
+      "datavalue": "8010",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "莱芜市",
+      "datavalue": "8011",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "德州市",
+      "datavalue": "8013",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "聊城市",
+      "datavalue": "8014",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "滨州市",
+      "datavalue": "8015",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "荷泽市",
+      "datavalue": "8016",
+      "datavalues": "8000"
+    },
+    {
+      "dataname": "郑州市",
+      "datavalue": "8501",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "开封市",
+      "datavalue": "8502",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "洛阳市",
+      "datavalue": "8503",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "平顶山市",
+      "datavalue": "8504",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "安阳市",
+      "datavalue": "8505",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "鹤壁市",
+      "datavalue": "8506",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "新乡市",
+      "datavalue": "8507",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "焦作市",
+      "datavalue": "8508",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "濮阳市",
+      "datavalue": "8509",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "许昌市",
+      "datavalue": "8510",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "漯河市",
+      "datavalue": "8511",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "三门峡市",
+      "datavalue": "8512",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "南阳市",
+      "datavalue": "8513",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "商丘市",
+      "datavalue": "8514",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "信阳市",
+      "datavalue": "8515",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "周口市",
+      "datavalue": "8516",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "驻马店市",
+      "datavalue": "8517",
+      "datavalues": "8500"
+    },
+    {
+      "dataname": "武汉市",
+      "datavalue": "9001",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "黄石市",
+      "datavalue": "9002",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "十堰市",
+      "datavalue": "9003",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "宜昌市",
+      "datavalue": "9004",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "襄樊市",
+      "datavalue": "9005",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "鄂州市",
+      "datavalue": "9006",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "荆门市",
+      "datavalue": "9007",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "孝感市",
+      "datavalue": "9008",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "荆州市",
+      "datavalue": "9009",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "黄冈市",
+      "datavalue": "9010",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "咸宁市",
+      "datavalue": "9011",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "随州市",
+      "datavalue": "9012",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "恩施土家族苗族自治州",
+      "datavalue": "9013",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "省直辖行政单位",
+      "datavalue": "9014",
+      "datavalues": "9000"
+    },
+    {
+      "dataname": "长沙市",
+      "datavalue": "9501",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "株洲市",
+      "datavalue": "9502",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "湘潭市",
+      "datavalue": "9503",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "衡阳市",
+      "datavalue": "9504",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "邵阳市",
+      "datavalue": "9505",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "岳阳市",
+      "datavalue": "9506",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "常德市",
+      "datavalue": "9507",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "张家界市",
+      "datavalue": "9508",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "益阳市",
+      "datavalue": "9509",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "郴州市",
+      "datavalue": "9510",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "永州市",
+      "datavalue": "9511",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "怀化市",
+      "datavalue": "9512",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "娄底市",
+      "datavalue": "9513",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "湘西土家族苗族自治州",
+      "datavalue": "9514",
+      "datavalues": "9500"
+    },
+    {
+      "dataname": "广州市",
+      "datavalue": "10001",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "韶关市",
+      "datavalue": "10002",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "深圳市",
+      "datavalue": "10003",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "珠海市",
+      "datavalue": "10004",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "汕头市",
+      "datavalue": "10005",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "佛山市",
+      "datavalue": "10006",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "江门市",
+      "datavalue": "10007",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "湛江市",
+      "datavalue": "10008",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "茂名市",
+      "datavalue": "10009",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "肇庆市",
+      "datavalue": "10010",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "惠州市",
+      "datavalue": "10011",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "梅州市",
+      "datavalue": "10012",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "汕尾市",
+      "datavalue": "10013",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "河源市",
+      "datavalue": "10014",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "阳江市",
+      "datavalue": "10015",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "清远市",
+      "datavalue": "10016",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "东莞市",
+      "datavalue": "10017",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "中山市",
+      "datavalue": "10018",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "潮州市",
+      "datavalue": "10019",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "揭阳市",
+      "datavalue": "10020",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "云浮市",
+      "datavalue": "10021",
+      "datavalues": "10000"
+    },
+    {
+      "dataname": "南宁市",
+      "datavalue": "10501",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "柳州市",
+      "datavalue": "10502",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "桂林市",
+      "datavalue": "10503",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "梧州市",
+      "datavalue": "10504",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "北海市",
+      "datavalue": "10505",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "防城港市",
+      "datavalue": "10506",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "钦州市",
+      "datavalue": "10507",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "贵港市",
+      "datavalue": "10508",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "玉林市",
+      "datavalue": "10509",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "百色市",
+      "datavalue": "10510",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "贺州市",
+      "datavalue": "10511",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "河池市",
+      "datavalue": "10512",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "来宾市",
+      "datavalue": "10513",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "崇左市",
+      "datavalue": "10514",
+      "datavalues": "10500"
+    },
+    {
+      "dataname": "海口市",
+      "datavalue": "11001",
+      "datavalues": "11000"
+    },
+    {
+      "dataname": "三亚市",
+      "datavalue": "11002",
+      "datavalues": "11000"
+    },
+    {
+      "dataname": "省直辖县级行政单位",
+      "datavalue": "11003",
+      "datavalues": "11000"
+    },
+    {
+      "dataname": "万州区",
+      "datavalue": "11501",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "涪陵区",
+      "datavalue": "11502",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "渝中区",
+      "datavalue": "11503",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "大渡口区",
+      "datavalue": "11504",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "江北区",
+      "datavalue": "11505",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "沙坪坝区",
+      "datavalue": "11506",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "九龙坡区",
+      "datavalue": "11507",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "南岸区",
+      "datavalue": "11508",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "北碚区",
+      "datavalue": "11509",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "万盛区",
+      "datavalue": "11510",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "双桥区",
+      "datavalue": "11511",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "渝北区",
+      "datavalue": "11512",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "巴南区",
+      "datavalue": "11513",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "黔江区",
+      "datavalue": "11514",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "长寿区",
+      "datavalue": "11515",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "綦江县",
+      "datavalue": "11516",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "潼南县",
+      "datavalue": "11517",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "铜梁县",
+      "datavalue": "11518",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "大足县",
+      "datavalue": "11519",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "荣昌县",
+      "datavalue": "11520",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "璧山县",
+      "datavalue": "11521",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "梁平县",
+      "datavalue": "11522",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "城口县",
+      "datavalue": "11523",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "丰都县",
+      "datavalue": "11524",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "垫江县",
+      "datavalue": "11525",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "武隆县",
+      "datavalue": "11526",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "忠　县",
+      "datavalue": "11527",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "开　县",
+      "datavalue": "11528",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "云阳县",
+      "datavalue": "11529",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "奉节县",
+      "datavalue": "11530",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "巫山县",
+      "datavalue": "11531",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "巫溪县",
+      "datavalue": "11532",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "石柱土家族自治县",
+      "datavalue": "11533",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "秀山土家族苗族自治县",
+      "datavalue": "11534",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "酉阳土家族苗族自治县",
+      "datavalue": "11535",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "彭水苗族土家族自治县",
+      "datavalue": "11536",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "江津市",
+      "datavalue": "11537",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "合川市",
+      "datavalue": "11538",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "永川市",
+      "datavalue": "11539",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "南川市",
+      "datavalue": "11540",
+      "datavalues": "11500"
+    },
+    {
+      "dataname": "成都市",
+      "datavalue": "12001",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "自贡市",
+      "datavalue": "12002",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "攀枝花市",
+      "datavalue": "12003",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "泸州市",
+      "datavalue": "12004",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "德阳市",
+      "datavalue": "12005",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "绵阳市",
+      "datavalue": "12006",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "广元市",
+      "datavalue": "12007",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "遂宁市",
+      "datavalue": "12008",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "内江市",
+      "datavalue": "12009",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "乐山市",
+      "datavalue": "12010",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "南充市",
+      "datavalue": "12011",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "眉山市",
+      "datavalue": "12012",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "宜宾市",
+      "datavalue": "12013",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "广安市",
+      "datavalue": "12014",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "达州市",
+      "datavalue": "12015",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "雅安市",
+      "datavalue": "12016",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "巴中市",
+      "datavalue": "12017",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "资阳市",
+      "datavalue": "12018",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "阿坝藏族羌族自治州",
+      "datavalue": "12019",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "甘孜藏族自治州",
+      "datavalue": "12020",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "凉山彝族自治州",
+      "datavalue": "12021",
+      "datavalues": "12000"
+    },
+    {
+      "dataname": "贵阳市",
+      "datavalue": "12501",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "六盘水市",
+      "datavalue": "12502",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "遵义市",
+      "datavalue": "12503",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "安顺市",
+      "datavalue": "12504",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "铜仁地区",
+      "datavalue": "12505",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "黔西南布依族苗族自治州",
+      "datavalue": "12506",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "毕节地区",
+      "datavalue": "12507",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "黔东南苗族侗族自治州",
+      "datavalue": "12508",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "黔南布依族苗族自治州",
+      "datavalue": "12509",
+      "datavalues": "12500"
+    },
+    {
+      "dataname": "昆明市",
+      "datavalue": "13001",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "曲靖市",
+      "datavalue": "13002",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "玉溪市",
+      "datavalue": "13003",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "保山市",
+      "datavalue": "13004",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "昭通市",
+      "datavalue": "13005",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "丽江市",
+      "datavalue": "13006",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "思茅市",
+      "datavalue": "13007",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "临沧市",
+      "datavalue": "13008",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "楚雄彝族自治州",
+      "datavalue": "13009",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "红河哈尼族彝族自治州",
+      "datavalue": "13010",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "文山壮族苗族自治州",
+      "datavalue": "13011",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "西双版纳傣族自治州",
+      "datavalue": "13012",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "大理白族自治州",
+      "datavalue": "13013",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "德宏傣族景颇族自治州",
+      "datavalue": "13014",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "怒江傈僳族自治州",
+      "datavalue": "13015",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "迪庆藏族自治州",
+      "datavalue": "13016",
+      "datavalues": "13000"
+    },
+    {
+      "dataname": "拉萨市",
+      "datavalue": "13501",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "昌都地区",
+      "datavalue": "13502",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "山南地区",
+      "datavalue": "13503",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "日喀则地区",
+      "datavalue": "13504",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "那曲地区",
+      "datavalue": "13505",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "阿里地区",
+      "datavalue": "13506",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "林芝地区",
+      "datavalue": "13507",
+      "datavalues": "13500"
+    },
+    {
+      "dataname": "西安市",
+      "datavalue": "14001",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "铜川市",
+      "datavalue": "14002",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "宝鸡市",
+      "datavalue": "14003",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "咸阳市",
+      "datavalue": "14004",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "渭南市",
+      "datavalue": "14005",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "延安市",
+      "datavalue": "14006",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "汉中市",
+      "datavalue": "14007",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "榆林市",
+      "datavalue": "14008",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "安康市",
+      "datavalue": "14009",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "商洛市",
+      "datavalue": "14010",
+      "datavalues": "14000"
+    },
+    {
+      "dataname": "兰州市",
+      "datavalue": "14501",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "嘉峪关市",
+      "datavalue": "14502",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "金昌市",
+      "datavalue": "14503",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "白银市",
+      "datavalue": "14504",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "天水市",
+      "datavalue": "14505",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "武威市",
+      "datavalue": "14506",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "张掖市",
+      "datavalue": "14507",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "平凉市",
+      "datavalue": "14508",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "酒泉市",
+      "datavalue": "14509",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "庆阳市",
+      "datavalue": "14510",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "定西市",
+      "datavalue": "14511",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "陇南市",
+      "datavalue": "14512",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "临夏回族自治州",
+      "datavalue": "14513",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "甘南藏族自治州",
+      "datavalue": "14514",
+      "datavalues": "14500"
+    },
+    {
+      "dataname": "西宁市",
+      "datavalue": "15001",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "海东地区",
+      "datavalue": "15002",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "海北藏族自治州",
+      "datavalue": "15003",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "黄南藏族自治州",
+      "datavalue": "15004",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "海南藏族自治州",
+      "datavalue": "15005",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "果洛藏族自治州",
+      "datavalue": "15006",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "玉树藏族自治州",
+      "datavalue": "15007",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "海西蒙古族藏族自治州",
+      "datavalue": "15008",
+      "datavalues": "15000"
+    },
+    {
+      "dataname": "银川市",
+      "datavalue": "15501",
+      "datavalues": "15500"
+    },
+    {
+      "dataname": "石嘴山市",
+      "datavalue": "15502",
+      "datavalues": "15500"
+    },
+    {
+      "dataname": "吴忠市",
+      "datavalue": "15503",
+      "datavalues": "15500"
+    },
+    {
+      "dataname": "固原市",
+      "datavalue": "15504",
+      "datavalues": "15500"
+    },
+    {
+      "dataname": "中卫市",
+      "datavalue": "15505",
+      "datavalues": "15500"
+    },
+    {
+      "dataname": "乌鲁木齐市",
+      "datavalue": "16001",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "克拉玛依市",
+      "datavalue": "16002",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "吐鲁番地区",
+      "datavalue": "16003",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "哈密地区",
+      "datavalue": "16004",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "昌吉回族自治州",
+      "datavalue": "16005",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "博尔塔拉蒙古自治州",
+      "datavalue": "16006",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "巴音郭楞蒙古自治州",
+      "datavalue": "16007",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "阿克苏地区",
+      "datavalue": "16008",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "克孜勒苏柯尔克孜自治州",
+      "datavalue": "16009",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "喀什地区",
+      "datavalue": "16010",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "和田地区",
+      "datavalue": "16011",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "伊犁哈萨克自治州",
+      "datavalue": "16012",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "塔城地区",
+      "datavalue": "16013",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "阿勒泰地区",
+      "datavalue": "16014",
+      "datavalues": "16000"
+    },
+    {
+      "dataname": "省直辖行政单位",
+      "datavalue": "16015",
+      "datavalues": "16000"
+    }
+  ],
+  "multiArray": [
+    [
+      "北京市",
+      "天津市",
+      "河北省",
+      "山西省",
+      "内蒙古自治区",
+      "辽宁省",
+      "吉林省",
+      "黑龙江省",
+      "上海市",
+      "江苏省",
+      "浙江省",
+      "安徽省",
+      "福建省",
+      "江西省",
+      "山东省",
+      "河南省",
+      "湖北省",
+      "湖南省",
+      "广东省",
+      "广西壮族自治区",
+      "海南省",
+      "重庆市",
+      "四川省",
+      "贵州省",
+      "云南省",
+      "西藏自治区",
+      "陕西省",
+      "甘肃省",
+      "青海省",
+      "宁夏回族自治区",
+      "新疆维吾尔自治区",
+      "台湾省",
+      "香港特别行政区",
+      "澳门特别行政区"
+    ],
+    [
+      "东城区"
+    ]
+  ]
+}

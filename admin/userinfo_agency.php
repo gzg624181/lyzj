@@ -68,7 +68,7 @@ parent.layer.close(index);
 $row = $dosql->GetOne("SELECT * FROM `#@__agency` WHERE id=$id");
 $adminlevel=$_SESSION['adminlevel'];
 ?>
-<div class="formHeader"> <span class="title">旅行注册会员社信息</span> <a href="javascript:location.reload();" class="reload">刷新</a> </div>
+<div class="formHeader"> <span class="title">旅行注册会员社信息</span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload; ?></a> </div>
 
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
 		<tr>
@@ -78,7 +78,7 @@ $adminlevel=$_SESSION['adminlevel'];
     <tr>
 			<td height="120" align="right">头　像：</td>
 			<td colspan="11" valign="middle">
-    <img  width="100px;" src="
+    <img style="border-radius:4px;"  width="100px;" src="
     <?php
     if(check_str($row['images'], "https")){
       echo $row['images'];
@@ -156,7 +156,40 @@ $adminlevel=$_SESSION['adminlevel'];
  	      </p>
      </td>
    </tr>
+   <tr>
+    <td height="45" align="right">注册默认位置：</td>
+    <td><select name="live_prov" id="live_prov" style="width:100px;" class="input" onchange="SelProv(this.value,'live');">
+         <option value="-1">请选择</option>
+         <?php
+         $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+         while($row2 = $dosql->GetArray())
+         {
+           if($row['live_province'] === $row2['dataname'])
+             $selected = 'selected="selected"';
+           else
+             $selected = '';
 
+           echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+         }
+         ?>
+       </select> &nbsp;&nbsp;
+       <select style="width:100px;" class="input" name="live_city" id="live_city"  onchange="SelCity(this.value,'live');">
+            <option value="-1">--</option>
+                 <?php
+                 $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue>".$row['province']." AND datavalue<".($row['province'] + 500)." ORDER BY orderid ASC, datavalue ASC");
+                 while($row2 = $dosql->GetArray())
+                 {
+                   if($row['live_city'] === $row2['dataname'])
+                     $selected = 'selected="selected"';
+                   else
+                     $selected = '';
+
+                   echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+                 }
+                 ?>
+               </select>
+     </td>
+   </tr>
 
 		<tr>
 		  <td height="155" align="right">营业执照：</td>
@@ -185,8 +218,17 @@ $adminlevel=$_SESSION['adminlevel'];
         <div id="layer-photos-demos_<?php  echo $row['id'].$i;?>" class="layer-photos-demo">
         <img  width="192px;" height="123px" layer-src="<?php echo $cfg_weburl."/".$arr[$i];?>" style="cursor:pointer; float: left;padding:8px;" onclick="messages('<?php echo $row['id'].$i; ?>');"
         src="<?php echo $cfg_weburl."/".$arr[$i];?>" alt="<?php echo $row['name']; ?>" />
+        </div>
+    <?php }}else{ ?>
+      <div id="layer-photos-demos_zhengmian" class="layer-photos-demo">
+      <img style="border-radius:8px;float: left;"  width="254px;" height="159px" layer-src="templates/images/zhengmian.jpg" style="cursor:pointer; float: left;padding:8px;" onclick="messages('zhengmian');"
+      src="templates/images/zhengmian.jpg" alt="<?php echo $row['name']; ?>" />
       </div>
-      <?php }} ?>
+      <div id="layer-photos-demos_fanmian" class="layer-photos-demo" >
+      <img style="border-radius:8px;float: left; margin-left:12px;"  width="254px;" height="159px" layer-src="templates/images/fanmian.jpg" style="cursor:pointer; float: left;padding:8px;" onclick="messages('fanmian');"
+      src="templates/images/fanmian.jpg" alt="<?php echo $row['name']; ?>" />
+      </div>
+    <?php } ?>
       </td>
 	  </tr>
         <tr>

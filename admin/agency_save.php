@@ -241,7 +241,7 @@ else if($action=="checkfailed"){
     //发送模板消息
     $openid=$r['openid'];
     $form_id=getformid($openid);  //获取最新的formid
-    $page="pages/register/register?tem=tem";
+    $page="pages/about/login/login?tem=tem";
   	if($type=="agency"){
   		$typename="旅行社";
   	}else{
@@ -249,7 +249,7 @@ else if($action=="checkfailed"){
   		}
     $data=getDataArray($openid,$typename,$name,$tel,$state,$content,$applytime,$sendtime,$cfg_regfailed,$page,$form_id);
 	  $json_data = json_encode($data);//转化成json数组让微信可以接收
-    $res = https_requests($url, urldecode($json_data));//请求开始
+    $res = https_request($url, urldecode($json_data));//请求开始
 	  $res = json_decode($res, true);
     //删除已经使用过的formid
     del_formid($form_id,$openid);
@@ -295,7 +295,7 @@ else if($action=="checkfailed"){
   //发送模板消息
   $openid=$r['openid'];
   $form_id=getformid($openid);  //微信小程序提交表单的formid
-  $page="pages/register/register?tem=tem";
+  $page="pages/about/login/login?tem=tem";
   if($type=="agency"){
     $typename="旅行社";
   }else{

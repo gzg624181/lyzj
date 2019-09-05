@@ -9,8 +9,24 @@ project :前后台所有通用方法
 **************************
 */
 
+//如果数据库更新了数据 ，则先删除redis缓存，然后更新数据 ，再更新redis缓存  ,data  json字符串
 
 
+function update_redis($redis_key,$data){
+
+	//连接本地的 Redis 服务
+	$redis = new Redis();
+	$redis->connect('127.0.0.1', 6379);
+	//判断是否存在这个redis的  key
+  if($redis->exists($redis_key)){
+  //删除这个redis
+	$redis->del($redis_key);
+  $redis->set($redis_key,$data);
+	}else{
+	$redis->set($redis_key,$data);
+	}
+
+}
 
 //将php数组转换为json
 function phpver($result){

@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：get_province  获取所有的省份
+	   * 链接地址：get_province_city  获取所有的省份和城市
      *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -24,28 +24,18 @@
      $Version=date("Y-m-d H:i:s");
      if(isset($token) && $token==$cfg_auth_key){
 
-           if($redis->exists('get_province')){
+           if($redis->exists('get_province_city')){
 
-           $Data = json_decode(stripslashes($redis->get('get_province')),true);
+           $Data = $redis->get('get_province_city');
 
            }else{
-           $one=1;
-           $two=2;
-           $dosql->Execute("SELECT dataname,datavalue FROM `#@__cascadedata` where  datagroup='area' AND level=0 order by orderid asc",$one);
-           $num=$dosql->GetTotalRow($one);
-           for($i=0;$i<$num;$i++){
-           $row=$dosql->GetArray($one);
-           $Data[$i]['provice']= $row;
-           $province = $row['datavalue'];
 
-           $dosql->Execute("SELECT dataname,datavalue FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue > $province AND datavalue< $province + 500  ORDER BY orderid ASC, datavalue ASC",$two);
-           for($j=0;$j<$dosql->GetTotalRow($two);$j++){
-             $show=$dosql->GetArray($two);
-             $Data[$i]['city'][$j]=$show;
-             }
-            }
+           $file = "province_city.txt";
+
+           $Data = file_get_contents($file);
             //将数组保存到redis中去
-            update_redis('get_province',phpver($Data));
+           update_redis('get_province_city',$Data);
+
           }
 
           $State = 1;

@@ -86,7 +86,7 @@ $adminlevel=$_SESSION['adminlevel'];
 		<tr>
 		  <td height="155" align="right">导游证件：</td>
 		  	<td colspan="11" valign="middle">
-             <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $cfg_weburl."/".$row['card'];?>" style="cursor:pointer; padding:8px;" onclick="message('<?php echo $row['id']; ?>');"
+             <div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;border-radius:12px;" layer-src="<?php echo $cfg_weburl."/".$row['card'];?>" style="cursor:pointer; padding:8px;" onclick="message('<?php echo $row['id']; ?>');"
               src="<?php echo $cfg_weburl."/".$row['card'];?>" alt="<?php echo $row['name']; ?>" /></div><br />
             <input style="margin-top:5px;" type="text" name="card" id="card" class="input" value="<?php echo $row['card'];?>"  required="required"/>
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'card')">上 传</span> </span></td>
@@ -253,7 +253,7 @@ $adminlevel=$_SESSION['adminlevel'];
 		<tr>
 			<td height="163" align="right">头　像：</td>
 			<td colspan="11" valign="middle">
-            <img  width="100px;" src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /><br />
+            <img  style="border-raidus:3px;"  width="100px;" src="<?php echo $images;?>" alt="<?php echo $row['name']; ?>" /><br />
    <input style="margin-top:5px;" type="text" name="images" id="images" class="input" value="<?php echo $row['images'];?>"  required="required"/>
 				<span class="cnote"><span class="grayBtn" onclick="GetUploadify('uploadify','缩略图上传','image','image',1,20971520,'images')">上 传</span> </span></td>
 
