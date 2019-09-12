@@ -46,12 +46,28 @@ class  Guide {
    $name = $user_info['guide_name'];
    $posttime = $user_info['posttime'];
 
-   # 更改此条行程为待确认
-   # 发布状态（0，待预约，1:待确认 2:已确认（已完成），如果导游没有确认,则系统默认在出发的前一天进行确认处理
+
+   # 如果有三个导游预约的时候，则更改此条行程为待确认
+   # 发布状态（0，待预约，1:待确认 2:已确认（已完成）
    # 3:已取消，在已完成里面不能取消）4已失效  5，未预约的时候取消行程
-   $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=1,gid=$gid,name='$name',openid_guide='$this->openid' where id=$id");
 
+   #  一个行程发布之后，可以设置三个导游来预约，如果有三个导游预约了，则将行程的状态改为待确认，如果不足三人，则
+   #  此条行程的状态还是显示为待预约
 
+   # 将已经预约此条行程的导游保存到待确认的导游表里面去
+   $dosql->ExecNoneQuery("INSERT INTO `#@__guide_confirm` (tid, gid, openid, checkinfo,posttime) VALUES ($id,$gid,'$this->openid',1,$posttime)");
+
+   # 将此条行程预约的导游的人数加上1
+
+   $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=1 where id=$id");
+
+   $get_travel_arr = self::get_travel($id);
+   $yuyue_num = $get_travel_arr['yuyue_num'];
+   if($yuyue_num < 3){ // 当预约此行程的人数小于三个人的时候，则自动将人数加上一个
+   $dosql->ExecNoneQuery("UPDATE `#@__travel` set yuyue_num = yuyue_num +1 where id=$id");
+   }
+
+  # 发送模板消息
    $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
    //模板消息请求URL
@@ -65,16 +81,50 @@ class  Guide {
    $errcode_guide=$res_guide['errcode'];
 
    //删除已经用过的formid
-   Common::del_formid($new_formid,$this->openid);
+   Common::del_formid($this->formid,$this->openid);
 
    //返回模板消息的状态码
     return $errcode_guide;
 
   }
 
+  // 导游确认其中一个导游，则给这个选中的导游发送确认行程的模板消息
+      public static function Confirm_Gide($aid,$gid,$id,$user_info){
 
+      global $dosql,$cfg_appid,$cfg_appsecret,$cfg_guide_appointment;
+
+      $arr_guide = Guide::Get_Guide_Infromation($gid);
+
+      $name = $arr_guide['name'];   //导游的姓名
+
+    //选中了这个导游之后，则将行程表里面接单的导游的id，姓名，和导游的openid放到行程表里面去,行程改为已确认（state=2）
+      $dosql->ExecNoneQuery("UPDATE `#@__travel` set name = '$name', openid_guide='$this->openid',gid=$gid,state=2 where id=$id");
+
+      //将已经确认的导游的状态改为已确认 （checkinfo=2）
+      $dosql->ExecNoneQuery("UPDATE `#@__guide_confirm` set checkinfo=2 where tid=$id and gid=$gid");
+
+      $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
+
+      //模板消息请求URL
+      $url = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='.$ACCESS_TOKEN;
+
+     $data=$this->send_guide_message($this->openid,$user_info['company'],$user_info['names'],$user_info['tel'],$user_info['title'],$user_info['time'],$user_info['tishi'],$cfg_guide_appointment,$user_info['page'],$this->formid);
+
+      $json = json_encode($data);//转化成json数组让微信可以接收
+      $res = https_request($url, urldecode($json));//请求开始
+      $res_guide = json_decode($res, true);
+      $errcode_guide=$res_guide['errcode'];
+
+      //删除已经用过的formid
+      Common::del_formid($this->formid,$this->openid);
+
+      //返回模板消息的状态码
+      return $errcode_guide;
+
+      }
 
    //获取发布的行程的信息
+
    public static function get_travel($id){
 
     global $dosql;
@@ -147,13 +197,35 @@ class  Guide {
      $tent .= "温馨提示：".$user_info['tishi'];
      $stitle="预约成功通知";
      $biaoti="你预约的".$user_info['time'].$user_info['title']."行程已预约成功，请尽快与旅行社联系";
-     $faxtime=time();
+     $faxtime=$user_info['faxtime'];
 
      $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
      $dosql->ExecNoneQuery($sql);
    }
 
+    //将旅行社确认的导游的信息保存到消息表里面去
+    public function Insert_Confirm_Guide_Message($user_info,$gid)
+    {
+        global $dosql;
 
+        $tbnames = 'pmw_message';
+        $type = 'guide';
+        $messagetype='template';
+        $templatetype='appointment';  //预约行程的模板消息类型
+        $tent = "恭喜你，你的行程确认成功：|";
+        $tent .= "旅行社名称：".$user_info['company']."|";
+        $tent .= "旅行社联系人：".$user_info['names']."|";
+        $tent .= "联系人电话：".$user_info['tel']."|";
+        $tent .= "预约行程：".$user_info['title']."|";
+        $tent .= "预约时间：".$user_info['time']."|";
+        $tent .= "温馨提示：".$user_info['tishi'];
+        $stitle="预约确认通知";
+        $biaoti="你预约的".$user_info['time'].$user_info['title']."已被旅行社确认成功，请提前做好行程准备！";
+        $faxtime=$user_info['faxtime'];
+
+        $sql = "INSERT INTO `$tbnames` (type, messagetype, templatetype, content,stitle, title, mid, faxtime) VALUES ('$type', '$messagetype', '$templatetype', '$tent', '$stitle', '$biaoti', $gid, $faxtime)";
+        $dosql->ExecNoneQuery($sql);
+    }
 
    //获取导游已经带团成功的次数和带团人数
 
@@ -287,7 +359,7 @@ public static  function get_guide_num($id){
 
   global $dosql,$cfg_cancel_guide,$cfg_appid,$cfg_appsecret;
 
-   $data=self::CancelGuide($info['title'],$info['time'],$info['name'],$info['tel'],$info['reason'],$info['tishi_guide'],$this->openid,$cfg_cancel_guide,$info['page_guide'],$this->formid);
+   $data=self::CancelGuide($info['title'],$info['time'],$info['names'],$info['tel'],$info['reason'],$info['tishi_guide'],$this->openid,$cfg_cancel_guide,$info['page_guide'],$this->formid);
 
    $ACCESS_TOKEN = get_access_token($cfg_appid,$cfg_appsecret);//ACCESS_TOKEN
 
@@ -307,10 +379,10 @@ public static  function get_guide_num($id){
   public static function CancelGuide($title,$time,$nickname,$tel,$reason,$tishi,$openid,$cfg_cancel_guide,$page,$form_id){
 
   	$data = array(
-  			'touser' => $openid,                   //要发送给旅行社的openid
-  	'template_id' => $cfg_cancel_guide,       //改成自己的模板id，在微信后台模板消息里查看
-  				'page' => $page,                     //点击模板消息详情之后跳转连接
-  		 'form_id' => $form_id,                   //form_id
+  			'touser' => $openid,                   //要发送给导游的openid
+  	'template_id' => $cfg_cancel_guide,            //改成自己的模板id，在微信后台模板消息里查看
+  				'page' => $page,                   //点击模板消息详情之后跳转连接
+  		 'form_id' => $form_id,                    //form_id
   				'data' => array(
   					'keyword1' => array(
   							'value' => $title,             //出发行程
@@ -321,7 +393,7 @@ public static  function get_guide_num($id){
   							'color' => "#3d3d3d"
   					),
   					'keyword3' => array(
-  							'value' => $nickname,             //昵称（旅行社联系人的姓名）
+  							'value' => $nickname,           //昵称（旅行社联系人的姓名）
   							'color' => "#3d3d3d"
   					),
   					'keyword4' => array(

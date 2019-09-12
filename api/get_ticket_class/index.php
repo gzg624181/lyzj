@@ -24,7 +24,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT * FROM `#@__ticketclass`");
+      $dosql->Execute("SELECT id,title,posttime FROM `#@__ticketclass`");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;
@@ -40,14 +40,14 @@ if(isset($token) && $token==$cfg_auth_key){
         for($i=0;$i<$dosql->GetTotalRow();$i++){
           $row=$dosql->GetArray();
           $Data[]=$row;
-          if($row['icon']==""){
-          $images=$cfg_weburl."/templates/default/images/noimage.jpg";
-          }elseif(check_str($row['icon'],"https")){
-          $images=$row['icon'];   //用户头像
-          }else{
-          $images=$cfg_weburl."/".$row['icon'];
-          }
-          $Data[$i]['icon']=$images;
+          // if($row['icon']==""){
+          // $images=$cfg_weburl."/templates/default/images/noimage.jpg";
+          // }elseif(check_str($row['icon'],"https")){
+          // $images=$row['icon'];   //用户头像
+          // }else{
+          // $images=$cfg_weburl."/".$row['icon'];
+          // }
+          // $Data[$i]['icon']=$images;
 
       }
       $State = 1;

@@ -17,6 +17,7 @@ require_once(PHPMYWIND_INC.'/common.class.php');   //公用方法
 require_once(PHPMYWIND_INC.'/common.agency.php');  //旅行社类
 require_once(PHPMYWIND_INC.'/common.guide.php');   //导游类
 if(!defined('IN_PHPMYWIND')) exit('Request Error!');
+
 //连接本地的 Redis 服务
 $redis = new Redis();
 $redis->connect('127.0.0.1', 6379);

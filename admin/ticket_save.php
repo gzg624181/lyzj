@@ -291,13 +291,13 @@ else if($action=="del100"){
   }
 
   //获取省份
-  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_prov'");
 
-  $live_province=$row['dataname'];  //省份中文
+ $live_province=$row['dataname'];  //省份中文
 
-  //获取城市
-  $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
-  $live_citys=$row['dataname'];   //城市中文
+//获取城市
+ $row = $dosql->GetOne("SELECT * FROM `pmw_cascadedata`WHERE `datavalue` = '$live_city'");
+ $live_citys=$row['dataname'];   //城市中文
 
   $dosql->ExecNoneQuery("UPDATE pmw_ticket SET names='$names',types='$types',flag='$flag',lowmoney='$lowmoney',label='$label',remarks='$remarks',level=$level,picarr='$picarr',specs='$specs',content='$content1',xuzhi='$xuzhi',solds=$solds,orderid=$orderid,content='$content',live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id");
   $gourl= "scenic.php";

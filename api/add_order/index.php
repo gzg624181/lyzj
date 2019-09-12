@@ -31,6 +31,7 @@
      * paytype           支付类型（线下支付outline，微信支付 wxpay）
      * orderid           支付订单号
      * states            后台票务处理状态（默认未处理0，已处理1）
+     * cardidnumber      身份证号码
      * openid
      * formid
      */
@@ -53,7 +54,7 @@ if(isset($token) && $token==$cfg_auth_key){
   //将用户的formid添加进去
   Common::add_formid($openid,$formid);
 
-  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd,pay_state) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd',0)";
+  $sql = "INSERT INTO `#@__order` (tid,jingquname,type,did,contactname,contacttel,usetime,price,typename,nums, totalamount,paytype,orderid,posttime,timestampuse,ymd,pay_state,cardidnumber) VALUES ($tid,'$jingquname','$type',$did,'$contactname','$contacttel','$usetime','$price','$typename',$nums,'$totalamount','$paytype','$orderid',$posttime,$timestampuse,'$ymd',0,'$cardidnumber')";
   if($dosql->ExecNoneQuery($sql)){
 
    //更改票务的数量

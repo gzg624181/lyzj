@@ -47,7 +47,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
         if(isset($title)){
 
-        $dosql->Execute("SELECT * FROM pmw_travel where title like '%$title%' and  state=0  order by id desc ");
+        $dosql->Execute("SELECT * FROM pmw_travel where title like '%$title%'  and  state=0  order by id desc ");
 
         }elseif(isset($starttime_ymd)){
 

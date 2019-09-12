@@ -41,7 +41,7 @@ if(isset($token) && $token==$cfg_auth_key){
   if(!is_array($r)){
   $sql = "INSERT INTO `#@__members`(nickname,images,sex,addtime,openid) VALUES ('$nickname','$images',$sex,$addtime,'$openid')";
   }else{
-    $sql = "UPDATE `#@__members` SET nickname='$nickname',images='$images',sex=$sex,addtime=$addtime where openid='$openid'";
+  $sql = "UPDATE `#@__members` SET nickname='$nickname',images='$images',sex=$sex,addtime=$addtime where openid='$openid'";
   }
 
   $dosql->ExecNoneQuery($sql);

@@ -215,7 +215,7 @@ public static  function base64_image_content($base64_image_content,$path){
       //返回这个图片的路径
       return $new_file;
      }else{
-    return false;
+       return false;
     }}else{ return false; }
    }
 
@@ -420,15 +420,15 @@ public static  function base64_image_content($base64_image_content,$path){
     //获取微信小程序openid
   public static  function openid($code,$appid,$appsecret){
       $url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.$appid.'&secret='.$appsecret.'&js_code=' . $code . '&grant_type=authorization_code';
-      $info = file_get_contents($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
-      $json = json_decode($info);//对json数据解码
-      $arr = get_object_vars($json);
+      $info = curl_get_https($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
+      $arr = json_decode($info,true);//对json数据解码
 
     	if(isset($arr['openid'])){
       $openid = $arr['openid'];
     	}else{
     	$openid ="";
     	}
+
       return $openid;
     }
 
@@ -757,7 +757,28 @@ public static function  send_payer_message($info){
 
    }
 
+   //计算景点当月的购票销量（退票的也算）
+   public static function get_ticket_num($id){
 
+    global $dosql;
 
+    $ym = date("Y-m"); //当月的销量
+
+    $dosql->Execute("SELECT nums from  pmw_order where tid=$id and pay_state=1 and ymd like '%$ym%'");
+
+    $num = $dosql->GetTotalRow();
+
+  if($num > 0){
+    while($row = $dosql->GetArray()){
+      $nums_arr[]= $row['nums'];
+      }
+    $nums = array_sum($nums_arr);
+    }else{
+        $nums =0;
+    }
+
+    return $nums;
+
+   }
 
   }

@@ -58,19 +58,19 @@ $json = json_decode($body,true);
 
 $name=$json['name'];
 $sex=$json['sex'];
-$card=$json['card'];
+$card=$json['card'];    //导游证件图片
 $cardnumber=$json['cardnumber'];
 $tel=$json['tel'];
 $account=$json['account'];    // 注册的账号（保证注册的手机号码唯一性）
 $password=$json['password'];
 $content=$json['content'];
-$pics=$json['pics'];
+$pics=$json['pics'];     //导游相册
 $token=$json['token'];
 $images=$json['images'];
 $formid=$json['formid'];
 $openid =$json['openid'];
 $cardidnumber = $json['cardidnumber'];
-$cardid_picarr = $json['cardid_picarr'];
+$cardid_picarr = $json['cardid_picarr'];  //身份证正反面 （暂时接收数据为空）
 $experience = $json['experience'];
 
 // 推荐信息
@@ -127,37 +127,37 @@ if(is_array($r)){
   if($idc){
   $regtime=time();
   $regip=GetIP();
-  $getcity=Common::get_city($regip);
+  //$getcity=Common::get_city($regip);  // 取消掉 ，后台来处理
   $ymdtime=date("Y-m-d");
   $password=md5(md5($password));
   //这个是自定义函数，将Base64图片转换为本地图片并保存
   $savepath= "../../uploads/image/";
-  $card = Common::base64_image_content($card,$savepath);
-  $card=str_replace("../../",'',$card);
+ //  $card = Common::base64_image_content($card,$savepath);
+ //  $card=str_replace("../../",'',$card);
   //将相册里面的图片进行处理
-  $pic="";
-  $arr=explode("|",$pics);
-  for($i=0;$i<count($arr);$i++){
-    $pics  = Common::base64_image_content($arr[$i],$savepath);
-    if($i==count($arr)-1){
-      $thispic = str_replace("../../",'',$pics);
-    }else{
-      $thispic = str_replace("../../",'',$pics)."|";
-    }
-    $pic .= $thispic;
-  }
+  // $pic="";
+  // $arr=explode("|",$pics);
+  // for($i=0;$i<count($arr);$i++){
+  //   $pics  = Common::base64_image_content($arr[$i],$savepath);
+  //   if($i==count($arr)-1){
+  //     $thispic = str_replace("../../",'',$pics);
+  //   }else{
+  //     $thispic = str_replace("../../",'',$pics)."|";
+  //   }
+  //   $pic .= $thispic;
+  // }
 
-  $card_picarr="";
-  $arr=explode("|",$cardid_picarr);
-  for($i=0;$i<count($arr);$i++){
-    $pics  = Common::base64_image_content($arr[$i],$savepath);
-    if($i==count($arr)-1){
-      $thispic = str_replace("../../",'',$pics);
-    }else{
-      $thispic = str_replace("../../",'',$pics)."|";
-    }
-    $card_picarr .= $thispic;
-  }
+  // $card_picarr="";
+  // $arr=explode("|",$cardid_picarr);
+  // for($i=0;$i<count($arr);$i++){
+  //   $pics  = Common::base64_image_content($arr[$i],$savepath);
+  //   if($i==count($arr)-1){
+  //     $thispic = str_replace("../../",'',$pics);
+  //   }else{
+  //     $thispic = str_replace("../../",'',$pics)."|";
+  //   }
+  //   $card_picarr .= $thispic;
+  // }
 
   //判断是否有这个推荐人的信息
   if($uid!=""){
@@ -182,7 +182,7 @@ if(is_array($r)){
  $live_city = $row['dataname'];
 
 
-  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,getcity,openid,cardidnumber,cardid_picarr,experience,uid,recommender_type,live_province,live_city,province,city) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pic',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$cardidnumber','$card_picarr','$experience','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
+  $sql = "INSERT INTO `#@__guide` (name,sex,card,cardnumber,tel,account,password,content,pics,regtime,regip,ymdtime,images,openid,cardidnumber,cardid_picarr,experience,uid,recommender_type,live_province,live_city,province,city) VALUES ('$name',$sex,'$card','$cardnumber','$tel','$account','$password','$content','$pics',$regtime,'$regip','$ymdtime','$images','$openid','$cardidnumber','$cardid_picarr','$experience','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
 
 if($dosql->ExecNoneQuery($sql)){
 

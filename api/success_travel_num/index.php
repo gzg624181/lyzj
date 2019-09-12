@@ -59,7 +59,7 @@ if(isset($token) && $token==$cfg_auth_key){
       $confirm = $dosql->GetTotalRow($one);
       #已取消
 
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and state=3",$two);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and (state=3  or state =5)",$two);
 
       $concel = $dosql->GetTotalRow($two);
       #已失效

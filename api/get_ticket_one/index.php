@@ -26,9 +26,11 @@ $Version=date("Y-m-d H:i:s");
 $one=1;
 
 if(isset($token) && $token==$cfg_auth_key){
-        $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
-        $cfg_default = $r['imagesurl'];
-      $dosql->Execute("SELECT * FROM `#@__ticket` where types like '%7%' and checkinfo=1 order by orderid desc",$one);
+
+      $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
+      $cfg_default = $r['imagesurl'];
+
+      $dosql->Execute("SELECT * FROM `#@__ticket` where types like '%7%' and checkinfo=1  and live_province ='$live_province' and live_city='$live_city'  order by orderid desc",$one);
       for($i=0;$i<$dosql->GetTotalRow($one);$i++){
        $row1 = $dosql->GetArray($one);
        $Data[$i]=$row1;
@@ -38,6 +40,10 @@ if(isset($token) && $token==$cfg_auth_key){
        $picarr = json_encode($picarrTmp);
        }else{
        $picarr=Common::GetPic($picarr, $cfg_weburl);
+       }
+
+       if($row1['label']==""){
+       $Data[$i]['label']=$cfg_label;
        }
        $content=stripslashes($row1['content']);
        $content=Common::rePic($content, $cfg_weburl);

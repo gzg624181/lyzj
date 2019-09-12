@@ -100,37 +100,38 @@ $r=$dosql->GetOne("SELECT * FROM $tbname where id=$id");
 			</tr>
 			<tr>
 	     <td height="45" align="right">景区位置：</td>
-	     <td><select name="live_prov" id="live_prov" style="width:100px;" class="input" onchange="SelProv(this.value,'live');">
-						<option value="-1">请选择</option>
-						<?php
-						$sow=$dosql->GetOne("SELECT * FROM $tbname where id=$id");
-						$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
-						while($row2 = $dosql->GetArray())
-						{
-							if($sow['live_province'] === $row2['dataname'])
-								$selected = 'selected="selected"';
-							else
-								$selected = '';
+	     <td>
 
-							echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
-						}
-						?>
-					</select> &nbsp;&nbsp;
-	        <select style="width:100px;" class="input" name="live_city" id="live_city"  onchange="SelCity(this.value,'live');">
-	        		 <option value="-1">--</option>
-	        					<?php
-	        					$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue>".$row['province']." AND datavalue<".($row['province'] + 500)." ORDER BY orderid ASC, datavalue ASC");
-	        					while($row2 = $dosql->GetArray())
-	        					{
-	        						if($sow['live_city'] === $row2['dataname'])
-	        							$selected = 'selected="selected"';
-	        						else
-	        							$selected = '';
+				 <select name="live_prov" id="live_prov" style="width:100px;" class="input" onchange="SelProv(this.value,'live');">
+ 	 					<option value="-1">请选择</option>
+ 	 					<?php
+ 	 					$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+ 	 					while($row1 = $dosql->GetArray())
+ 	 					{
+ 	 						if($r['province'] === $row1['datavalue'])
+ 	 							$selected = 'selected="selected"';
+ 	 						else
+ 	 							$selected = '';
 
-	        						echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
-	        					}
-	        					?>
-	        	      </select>
+ 	 						echo '<option value="'.$row1['datavalue'].'" '.$selected.'>'.$row1['dataname'].'</option>';
+ 	 					}
+ 	 					?>
+ 	 				</select> &nbsp;&nbsp;
+ 	         <select style="width:100px;" class="input" name="live_city" id="live_city"  onchange="SelCity(this.value,'live');">
+ 	         		 <option value="-1">--</option>
+ 	         					<?php
+ 	         					$dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue>".$r['province']." AND datavalue<".($r['province'] + 500)." ORDER BY orderid ASC, datavalue ASC");
+ 	         					while($row2 = $dosql->GetArray())
+ 	         					{
+ 	         						if($r['city'] === $row2['datavalue'])
+ 	         							$selected = 'selected="selected"';
+ 	         						else
+ 	         							$selected = '';
+
+ 	         						echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+ 	         					}
+ 	         					?>
+ 	         	      </select>
 	      </td>
 	   </tr>
       <tr>

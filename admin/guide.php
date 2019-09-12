@@ -10,6 +10,8 @@ $username=$_SESSION['admin'];
 <link href="templates/style/menu1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templates/js/jquery.min.js"></script>
 <script type="text/javascript" src="templates/js/forms.func.js"></script>
+<script type="text/javascript" src="templates/js/ajax.js"></script>
+<script type="text/javascript" src="templates/js/getarea.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
@@ -49,14 +51,14 @@ function checkguide(id,type){
         layer.open({
         type: 1
         ,title: false //不显示标题栏
-        ,closeBtn: false
-        ,area: '800px;'
-        ,shade: 0.8
+        ,closeBtn: 1  //关闭按钮是否显示 1显示0不显
+        ,area: '50%;'
+        ,shade: 0.5
         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
         ,btn: ['点击关闭']
         ,btnAlign: 'c'
-        ,moveType: 1 //拖拽模式，0或者1
-        ,content: "<div style='widht:750px;padding:25px; height:400px;line-height: 22px;text-align:center'>"+ data+"</div>"
+        ,moveType: 0 //拖拽模式，0或者1
+        ,content: "<div style='widht:50%; height:90%;padding:25px; line-height: 22px;text-align:center'>"+ data+"</div>"
         ,
       });
     } ,
@@ -106,6 +108,20 @@ if($("#keyword").val() == "")
 }
 window.location.href='guide.php?keyword='+keyword;
 }
+
+function GetPostion(){
+
+if($("#live_prov").val() == -1)
+{
+ layer.alert("请输入搜索省份！",{icon:0});
+ $("#live_prov").focus();
+ return false;
+}else{
+ var live_prov = $("#live_prov").val();
+ var live_city = $("#live_city").val();
+ window.location.href='guide.php?keyword=postion&province='+live_prov+'&city='+live_city;
+}
+ }
 function member_update(Id){
  var adminlevel=document.getElementById("adminlevel").value;
   if(adminlevel==1){
@@ -147,7 +163,60 @@ $num=$dosql->GetTotalRow($one);
 ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar">
-<span class="title">导游合计：<span class="num" style="color:red;"><?php echo $num;?></span>
+<span class="title">导游合计：
+<span class="num" style="color:red;"><?php echo $num;?></span>
+&nbsp;&nbsp;&nbsp;
+请选择地理位置进行搜索：
+<?php
+if(isset($province) && isset($city)){
+ ?>
+ <select name="live_prov" id="live_prov" style="width:100px; height:28px;" class="input" onchange="SelProv(this.value,'live');">
+    <option value="-1">请选择</option>
+    <?php
+    $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+    while($row2 = $dosql->GetArray())
+    {
+      if($province === $row2['datavalue'])
+        $selected = 'selected="selected"';
+      else
+        $selected = '';
+
+      echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+    }
+    ?>
+  </select> &nbsp;&nbsp;
+  <select style="width:100px; height:28px;" class="input" name="live_city" id="live_city"  onchange="SelCity(this.value,'live');">
+       <option value="-1">--</option>
+            <?php
+            $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=1 AND datavalue>".$province." AND datavalue<".($province + 500)." ORDER BY orderid ASC, datavalue ASC");
+            while($row2 = $dosql->GetArray())
+            {
+              if($city === $row2['datavalue'])
+                $selected = 'selected="selected"';
+              else
+                $selected = '';
+
+              echo '<option value="'.$row2['datavalue'].'" '.$selected.'>'.$row2['dataname'].'</option>';
+            }
+            ?>
+          </select>
+<?php }else{ ?>
+<select name="live_prov" style="width:100px; height:28px;" class="input" id="live_prov" onchange="SelProv(this.value,'live');">
+<option value="-1">请选择省份</option>
+<?php
+  $dosql->Execute("SELECT * FROM `#@__cascadedata` WHERE `datagroup`='area' AND level=0 ORDER BY orderid ASC, datavalue ASC");
+  while($row = $dosql->GetArray())
+  {
+    echo '<option value="'.$row['datavalue'].'">'.$row['dataname'].'</option>';
+  }
+  ?>
+</select> &nbsp;&nbsp;
+<select style="width:100px; height:28px;" class="input" name="live_city" id="live_city" onchange="SelCity(this.value,'live');">
+  <option value="-1">--</option>
+</select>
+<?php } ?>
+   &nbsp;&nbsp;
+  <a href="javascript:;" onclick="GetPostion();"><i class="fa fa-search-minus" aria-hidden="true"></i></a>
 </span> <a href="javascript:location.reload();" class="reload"><?php echo $cfg_reload;?></a>
 </div>
 <div class="toolbarTab" style="margin-bottom:5px;">
@@ -208,7 +277,15 @@ $num=$dosql->GetTotalRow($one);
 		$dopage->GetPage("select * from $tbname where id = $id",15);
 	    }
 		elseif($keyword!=""){ //关键字搜索
+      if($keyword =="postion"){
+         if($city == -1){ //只搜索省份
+           $dopage->GetPage("SELECT * FROM $tbname where province=$province ",15);
+         }else{
+           $dopage->GetPage("SELECT * FROM $tbname where province=$province and  city=$city",15);
+         }
+      }else{
 	    $dopage->GetPage("SELECT * FROM $tbname where account like '%$keyword%' or name  like '%$keyword%' ",15);
+     }
 		}else{
 		$dopage->GetPage("SELECT * FROM $tbname",15);
 		}

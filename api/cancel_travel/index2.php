@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：cancel_travel  旅行社取消行程
+	   * 链接地址：cancel_travel   旅行社取消行程
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -24,6 +24,8 @@
      * aid         旅行社id
      * gid         导游id
      * reason      取消原因
+
+     * 如果有导游预约的话，则单个点击，取消行程，给导游发送取消行程的模板消息
      *
      */
 require_once("../../include/config.inc.php");
@@ -34,9 +36,13 @@ if(isset($token) && $token==$cfg_auth_key){
 
   //备注 ：取消行程的时候分为两种状态
   // 1.待预约状态的时候，直接取消（也就是没有人去预约的情况下）
-  // 2.待确认状态下的时候，发送双向模板消息
-  $r=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
-  if($r['state']==0){
+  // 2.待确认状态下的时候，给已经预约过的导游发送模板消息
+
+  $get_travel_arr = Guide::get_travel($id);
+  $yuyue_num = $get_travel_arr['yuyue_num'];  //此条行程已经预约的人数
+  $state = $get_travel_arr['state'];          //行程的状态
+
+  if($yuyue_num==0  && $state==0){  //行程状态为待预约，且预约的导游人数为0，没人预约的时候
     $sql = "UPDATE `#@__travel` set state=5 WHERE id=$id";
     if($dosql->ExecNoneQuery($sql)){
     $s=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
@@ -60,21 +66,22 @@ if(isset($token) && $token==$cfg_auth_key){
                  );
     echo phpver($result);
   }
-  }elseif($r['state']==1){
+}elseif($state==1){  // 待确认的状态，已经有人去预约了
 
     $arr =explode(".",$reason);
 
     //将行程的状态改为已取消
     $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=3 WHERE id=$id");
 
+    //预约的导游的发送取消行程的模板消息
+    $g=$dosql->GetOne("SELECT * FROM pmw_guide_confirm where gid=$gid and tid=$id");
     //必备参数数组
-    $g=$dosql->GetOne("SELECT * FROM pmw_guide where id=$gid");
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
 
     $info = [
 
-         "openid_guide"=>$x['openid_guide'],   //预约此条行程的导游的openid
+         "openid_guide"=>$g['openid'],         //预约此条行程的导游的openid
          "title" => $x['title'],               //旅行社发布的行程标题
          "time" =>date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']),  //行程时间段
          "reason" =>$arr[1],                   //取消原因
@@ -101,7 +108,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
    #②. 给导游发送模板消息
 
-    $guide = new Guide($x['openid_guide'],Common::get_new_formid($x['openid_guide']));
+    $guide = new Guide($g['openid'],Common::get_new_formid($g['openid']));
 
     $guide->Send_Concel_Guide($info);
 
@@ -111,6 +118,7 @@ if(isset($token) && $token==$cfg_auth_key){
     $s=$dosql->GetOne("SELECT state FROM pmw_travel where id=$id");
 
     $states =$s['state'];
+
     if($states==3){
     $State = 1;
     $Descriptor = '行程取消成功!';

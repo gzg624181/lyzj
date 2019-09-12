@@ -18,11 +18,11 @@
      *
      * @旅行社注册接口 提供返回参数账号，
      *
-     * @旅行社注册接口    提供返回参数账号，
-     * cardpic          营业执照(varchar)
-     * address          公司地址(varchar)
-     * name             联系人姓名(varchar)
-     * tel              联系电话(varchar)
+     * @旅行社注册接口     提供返回参数账号，
+     * cardpic           营业执照(varchar)
+     * address           公司地址(varchar)
+     * name              联系人姓名(varchar)
+     * tel               联系电话(varchar)
      * images            旅行社头像(varchar)默认第一次拉取微信头像
      * account           账号(varchar)
      * password          密码(varchar)
@@ -140,27 +140,27 @@ if(is_array($r)){
             if($idc){
             $regtime=time();
             $regip=GetIP();
-            $getcity=Common::get_city($regip);
+          //  $getcity=Common::get_city($regip);  取消掉
             $ymdtime=date("Y-m-d");
             $password=md5(md5($password));
 
             //这个是自定义函数，将Base64图片转换为本地图片并保存
-            $savepath= "../../uploads/image/";
-            $cardpic = Common::base64($cardpic,$savepath);
-            $cardpic = str_replace("../../",'',$cardpic);
+            // $savepath= "../../uploads/image/";
+            // $cardpic = Common::base64($cardpic,$savepath);
+            // $cardpic = str_replace("../../",'',$cardpic);
 
 
-            $card_picarr="";
-            $arr=explode("|",$cardid_picarr);
-            for($i=0;$i<count($arr);$i++){
-              $pics  = Common::base64_image_content($arr[$i],$savepath);
-              if($i==count($arr)-1){
-                $thispic = str_replace("../../",'',$pics);
-              }else{
-                $thispic = str_replace("../../",'',$pics)."|";
-              }
-              $card_picarr .= $thispic;
-            }
+            // $card_picarr="";
+            // $arr=explode("|",$cardid_picarr);
+            // for($i=0;$i<count($arr);$i++){
+            //   $pics  = Common::base64_image_content($arr[$i],$savepath);
+            //   if($i==count($arr)-1){
+            //     $thispic = str_replace("../../",'',$pics);
+            //   }else{
+            //     $thispic = str_replace("../../",'',$pics)."|";
+            //   }
+            //   $card_picarr .= $thispic;
+            // }
 
           //判断是否有这个推荐人的信息，如果推荐人被删除的情况下，则不需要添加推荐人信息
           if($uid!=""){
@@ -184,7 +184,7 @@ if(is_array($r)){
          $city=$row['datavalue'];   //城市数字代码
          $live_city = $row['dataname'];
 
-      $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,getcity,openid,company,cardpicnumber,cardidnumber,cardid_picarr,uid,recommender_type,live_province,live_city,province,city) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$getcity','$openid','$company','$cardpicnumber','$cardidnumber','$card_picarr','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
+      $sql = "INSERT INTO `#@__agency` (cardpic,address,name,tel,account,password,regtime,regip,ymdtime,images,openid,company,cardpicnumber,cardidnumber,cardid_picarr,uid,recommender_type,live_province,live_city,province,city) VALUES ('$cardpic','$address','$name','$tel','$account','$password',$regtime,'$regip','$ymdtime','$images','$openid','$company','$cardpicnumber','$cardidnumber','$cardid_picarr','$uid','$recommender_type','$live_province','$live_city',$province,$city)";
 
 
               if($dosql->ExecNoneQuery($sql)){

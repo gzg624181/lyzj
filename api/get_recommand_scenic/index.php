@@ -23,6 +23,7 @@ header("Content-type:applicaton/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
+
     $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
     $cfg_default = $r['imagesurl'];
 
@@ -40,6 +41,10 @@ if(isset($token) && $token==$cfg_auth_key){
          $picarr = json_encode($picarrTmp);
          }else{
          $picarr=Common::GetPic($picarr, $cfg_weburl);
+         }
+
+         if($row['label']==""){
+         $Data[$i]['label']=$cfg_label;
          }
 
          $Data[$i]['picarr']=$picarr;

@@ -53,9 +53,14 @@ if(isset($token) && $token==$cfg_auth_key){
       $xuzhi=stripslashes($r['xuzhi']);
       $xuzhi=Common::rePic($xuzhi, $cfg_weburl);
 
+      if($r['label']==""){
+      $r['label']=$cfg_label;
+      }
+
       $r['picarr']=$picarr;
       $r['xuzhi']=$xuzhi;
       $r['content']=$content;
+      $r['month_solds'] = Common::get_ticket_num($id);
 
       $specs =array();
       $dosql->Execute("SELECT * FROM `#@__specs` where tid=$id",$one);
@@ -67,7 +72,13 @@ if(isset($token) && $token==$cfg_auth_key){
 
       foreach($specs as &$shoplist){
 
-        $shoplist['label']=$r['label'];
+       if($r['label']==""){
+         $lable = $cfg_label;
+       }else{
+         $label = $r['label'];
+       }
+
+        $shoplist['label']=$label;
         $shoplist['remarks']=$r['remarks'];
 
       }
