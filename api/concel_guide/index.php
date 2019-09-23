@@ -21,6 +21,8 @@
      * aid         旅行社id
      * gid         导游id
      * reason      取消原因
+     * openid      旅行社的openid
+     * formid      旅行社的formid
 
      * 如果有导游预约的话，对单个导游进行修改更换，则对导游发送 模板消息
      * 减去此条行程已经被预约的人数，此条行程的状态为待确认
@@ -35,14 +37,13 @@ if(isset($token) && $token==$cfg_auth_key){
   //备注 ：旅行社更改导游
   // 1.取消选中的导游，更改导游，取消导游之后，给导游发送模板消息
 
+  Common::add_formid($openid,$formid);  //保存一条最新的旅行社的formid
 
   $get_travel_arr = Guide::get_travel($id);
   $yuyue_num = $get_travel_arr['yuyue_num'];  //此条行程已经预约的人数
   $state = $get_travel_arr['state'];          //行程的状态
 
   if($state==1 && $yuyue_num >0){  // 待确认的状态，已经有人去预约了
-
-    $arr =explode(".",$reason);
 
     //将选中的导游的信息改为预约失败 ，同时更改已经预约的人数减去1
     $dosql->ExecNoneQuery("UPDATE `#@__guide_confirm` set checkinfo=0 WHERE tid=$id and gid=$gid");
@@ -52,13 +53,20 @@ if(isset($token) && $token==$cfg_auth_key){
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");
 
+    //当行程预约的人数变为0的时候，则将此条行程重新推送到首页
+    $yuyue_num = $x['yuyue_num'];
+    if($yuyue_num==0){
+    $dosql->ExecNoneQuery("UPDATE `#@__travel` set state=0 WHERE id=$id");
+    }
+
     //必备参数数组
     $info = [
 
          "openid_guide"=>$g['openid'],         //预约此条行程的导游的openid
+         "names"       =>$a['name'],
          "title" => $x['title'],               //旅行社发布的行程标题
          "time" =>date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']),  //行程时间段
-         "reason" =>$arr[1],                   //取消原因
+         "reason" =>$reason,                   //取消原因
          "faxtime" => time(),
          "name" =>  $a['company'],
          "tel" => $a['tel'],
@@ -67,11 +75,12 @@ if(isset($token) && $token==$cfg_auth_key){
 
     ];
 
+
    #给导游发送模板消息
 
     $guide = new Guide($g['openid'],Common::get_new_formid($g['openid']));
 
-    $guide->Send_Concel_Guide($info);
+    $guide->Send_Concel_Guide($info,$gid,$id);
 
     //将旅行社更改导游的信息保存下来
     $guide->concel_Guide_Message($info,$gid);
@@ -97,7 +106,7 @@ if(isset($token) && $token==$cfg_auth_key){
     echo phpver($result);
   }
 
-  }
+
 
 }else{
   $State = 520;

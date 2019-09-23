@@ -64,6 +64,23 @@ if(isset($token) && $token==$cfg_auth_key){
         $row1 = $dosql->GetArray($one);
         $Data['confirm'][$i]=$row1;
         $Data['confirm'][$i]['posttime']=date("Y-m-d",$row1['posttime']);
+
+        $tid = $row1['id'];  //行程id
+        $four=4;
+        $dosql->Execute("SELECT b.name,b.images FROM pmw_guide_confirm a inner join pmw_guide b  on a.gid=b.id where a.tid= $tid and a.checkinfo=1",$four);
+        $nums=$dosql->GetTotalRow($four);//获取数据条数
+        if($nums>0){
+        for($j=0;$j<$nums;$j++){
+        $show=$dosql->GetArray($four);
+        $Data['confirm'][$i]['guide'][$j]=$show;
+        $images = $show['images'];
+        if(!check_str($images,"https")){
+        $Data['confirm'][$i]['guide'][$j]['images']=$cfg_weburl."/".$images;
+        }
+        }
+        }else{
+          $Data['confirm'][$i]['guide']= array();
+        }
       }
       #已取消
       $dosql->Execute("SELECT * FROM `#@__travel` WHERE aid=$id and (state=3  or state =5) order by id desc",$two);

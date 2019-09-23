@@ -1,6 +1,6 @@
 <?php
     /**
-	   * 链接地址：appointment  获取所有待预约的行程安排
+	   * 链接地址：travel_guide_list       旅行社发布的一条行程对应的多个导游的详情
 	   *
      * 下面直接来连接操作数据库进而得到json串
      *
@@ -11,33 +11,37 @@
      * @param string $Descriptor  提示信息
      *
 	   * @param string $Version  操作时间
-     *管沟  ceshi
+     *
      * @param array $Data 数据
      *
-     * @return string
+     * @return string  行程id
      *
-     * @提供返回参数账号 page  默认为0 ,每页pagenumber条数据
-     *
-     * 根据登录的定位城市省份和城市，live_province  live_city
+     * @提供返回参数账号
      */
 require_once("../../include/config.inc.php");
-header("content-type:application/json; charset=utf-8");
+header("Content-type:application/json; charset:utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
-   $pagenumber=4;
-   if(isset($page)){
-    $first=$page * $pagenumber;
-     $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 or (state=1 and yuyue_num<3)  and live_province ='$live_province' and live_city='$live_city' order by id desc limit $first,$pagenumber");
-     }else{
-      $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 or (state=1 and yuyue_num<3)   and live_province ='$live_province' and live_city='$live_city' order by id desc limit 0,$pagenumber");
-     }
-    $num=$dosql->GetTotalRow();//获取数据条数
-
-    if($num>0){
-    while($row=$dosql->GetArray()){
-      $Data[]=$row;
+      $r=$dosql->GetOne("SELECT * FROM `#@__travel` where id=$id");
+      if(is_array($r)){
+      $Data=$r;
+      $two=2;
+      $dosql->Execute("SELECT b.name,b.sex,b.images,b.tel,b.cardnumber,b.id FROM pmw_guide_confirm a inner join pmw_guide b  on a.gid=b.id where a.tid= $id and a.checkinfo=1",$two);
+      $nums=$dosql->GetTotalRow($two);//获取数据条数
+      if($nums>0){
+      for($j=0;$j<$nums;$j++){
+      $show=$dosql->GetArray($two);
+      $Data['guide'][$j]=$show;
+      $images = $show['images'];
+      if(!check_str($images,"https")){
+        $Data['guide'][$j]['images']=$cfg_weburl."/".$images;
+      }
+      }
+    }else{
+      $Data['guide']= array();
     }
+
       $State = 1;
       $Descriptor = '数据获取成功！';
       $result = array (
@@ -47,9 +51,11 @@ if(isset($token) && $token==$cfg_auth_key){
                   'Data' => $Data
                    );
       echo phpver($result);
+
     }else{
+      $Data[]=$r;
       $State = 0;
-      $Descriptor = '已经没有数据了';
+      $Descriptor = '没有此条行程！';
       $result = array (
                   'State' => $State,
                   'Descriptor' => $Descriptor,

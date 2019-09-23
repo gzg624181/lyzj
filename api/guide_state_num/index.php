@@ -25,18 +25,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $r=$dosql->GetOne("SELECT id FROM `#@__travel` WHERE gid=$id");
-      if(!is_array($r)){  //如果传递过来的账号不存在，则没有这一列
-        $State = 0;
-        $Descriptor = '暂无行程列表！';
-        $result = array (
-                    'State' => $State,
-                    'Descriptor' => $Descriptor,
-                    'Version' => $Version,
-                    'Data' => $Data
-                     );
-        echo phpver($result);
-      }else{
+
       #计算已经发布的形成
       $we='we';
       $me='me';
@@ -47,24 +36,24 @@ if(isset($token) && $token==$cfg_auth_key){
       $five=5;
       #待出发
       $now=time();
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and (state=2 or state=1) and starttime > $now",$we);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=2 and starttime  >= $now order by id desc",$we);
       $daichufa=$dosql->GetTotalRow($we);
 
       #待确认
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=1",$me);
+      $dosql->Execute("SELECT a.* FROM `#@__travel` a inner join pmw_guide_confirm b on a.id=b.tid WHERE b.gid=$id and a.state=1 and b.checkinfo=1 order by b.id desc",$me);
       $daiqueren =$dosql->GetTotalRow($me);
 
       #已取消
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=3",$one);
+      $dosql->Execute("SELECT a.* FROM `#@__travel` a inner join pmw_guide_confirm b on a.id=b.tid WHERE b.gid=$id and b.checkinfo=0 order by b.id desc",$one);
       $quxiao =$dosql->GetTotalRow($one);
 
       #已完成
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=2",$five);
+      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id and state=2 and starttime  < $now order by id desc",$five);
       $wancheng =$dosql->GetTotalRow($five);
 
 
       #全部行程
-      $dosql->Execute("SELECT * FROM `#@__travel` WHERE gid=$id",$two);
+      $dosql->Execute("SELECT a.* FROM `#@__travel` a inner join pmw_guide_confirm b on a.id=b.tid WHERE b.gid=$id order by b.id desc",$two);
       $all =$dosql->GetTotalRow($two);
 
       $Data= array(
@@ -86,7 +75,7 @@ if(isset($token) && $token==$cfg_auth_key){
                   'Data' => $Data
                    );
       echo phpver($result);
-      }
+
 
 }else{
   $State = 520;

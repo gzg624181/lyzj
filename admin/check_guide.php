@@ -45,8 +45,9 @@ parent.layer.close(index);//关闭当前页
 //初始化参数
 $adminlevel=$_SESSION['adminlevel'];
 ?>
+<?php if($gid!=""){ ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
-<div class="topToolbar"> <span class="title" style="text-align:center;">查看接单的导游信息</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
+<div class="topToolbar"> <span class="title" style="text-align:center;">查看已确认接单的导游信息</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
 <?php
 $action="travel_save.php";
 $r=$dosql->GetOne("SELECT * from pmw_guide where id=$id");
@@ -110,6 +111,75 @@ switch($r['sex']){
   </div></td>
     </tr>
 </table>
-	
+<?php }else{?>
+
+  <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
+  <div class="topToolbar"> <span class="title" style="text-align:center;">查看已预约的导游信息</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
+  <?php
+  $action="travel_save.php";
+  $r=$dosql->GetOne("SELECT * from pmw_guide where id=$id");
+  switch($r['sex']){
+  	case 0:
+  	$sex="女";
+  	break;
+  	case 1:
+  	$sex="男";
+  	break;
+  	}
+              if($r['images']==""){
+  			$images="../templates/default/images/noimage.jpg";
+  		    }else{
+              $images=$r['images'];
+              }
+  ?>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
+  		<tr>
+  		  <td height="111" align="right">导游头像：</td>
+  		  <td><div id="layer-photos-demo_<?php  echo $row['id'];?>" class="layer-photos-demo"> <img  width="100px;" layer-src="<?php echo $images;?>" style="cursor:pointer" onclick="message('<?php echo $r['id']; ?>');"  src="<?php echo $images;?>" alt="<?php echo $r['name']; ?>" /></div></td>
+    </tr>
+  		<tr>
+  		  <td width="22%" height="40" align="right">导游账号：</td>
+  		  <td><?php echo $r['account'];?></td>
+      </tr>
+
+  		<tr>
+  		  <td height="40" align="right">导游姓名：</td>
+  		  <td><?php echo $r['name'];?></td>
+      </tr>
+      <tr>
+  		  <td height="40" align="right">性别：</td>
+  		  <td width="78%"><?php echo $sex;?></td>
+      </tr>
+  		<tr>
+  		  <td height="40" align="right">导游证号：</td>
+  		  <td><?php echo $r['cardnumber'];?></td>
+          </tr>
+  		<tr>
+  		  <td height="40" align="right">导游证件：</td>
+  		  <td><img src="<?php echo $r['card'];?>" width="300"  /></td>
+          </tr>
+          <tr>
+  		  <td height="40" align="right">导游电话：</td>
+  		  <td><?php echo $r['tel'];?></td>
+          </tr>
+
+  		<tr>
+  		  <td height="40" align="right">导游简介：</td>
+  		  <td><?php echo $r['content'];?></td>
+      </tr>
+  		<tr>
+  		  <td height="40" align="right">注册时间：</td>
+  		  <td><?php echo date("Y-m-d H:i:s",$r['regtime']);?></td>
+      </tr>
+        <tr>
+  		  <td height="40" align="right">&nbsp;</td>
+  		  <td><div class="formSubBtn" style="float:left; margin-left:1px;margin-top: 15px;">
+              <input type="button" class="submit" value="关闭" onclick="close_guide()" />
+    </div></td>
+      </tr>
+  </table>
+
+<?php } ?>
+
 </body>
 </html>

@@ -64,6 +64,8 @@ if(isset($token) && $token==$cfg_auth_key){
       }
       #已完成
       $dosql->Execute("SELECT a.*,b.picarr FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id  WHERE a.did=$id and a.type='$type'  and  a.pay_state =1 and a.states=1 order by a.posttime desc",$me);
+      $finish_num = $dosql->GetTotalRow();
+      if($finish_num > 0){
       for($i=0;$i<$dosql->GetTotalRow($me);$i++){
         $row = $dosql->GetArray($me);
         $Data['finish'][$i]=$row;
@@ -76,6 +78,9 @@ if(isset($token) && $token==$cfg_auth_key){
         $picarr=Common::GetPic($picarr, $cfg_weburl);
         }
         $Data['finish'][$i]['picarr']=$picarr;
+      }
+      }else{
+          $Data['finish']= array();
       }
 
 

@@ -23,6 +23,7 @@ class WeixinPay {
         $this->total_fee = $total_fee;
         $this->weburl = $weburl;
     }
+
     public function pay() {
         //统一下单接口
         $return = $this->weixinapp();

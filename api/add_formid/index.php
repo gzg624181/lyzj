@@ -21,5 +21,16 @@
      * openid
      */
 require_once("../../include/config.inc.php");
+$Data = array();
+$Version=date("Y-m-d H:i:s");
 Common::add_formid($openid,$formid);
+$State = 1;
+$Descriptor = '数据获取成功！';
+$result = array (
+            'State' => $State,
+            'Descriptor' => $Descriptor,
+            'Version' => $Version,
+            'Data' => $Data
+             );
+echo phpver($result);
 ?>

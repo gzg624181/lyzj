@@ -16,7 +16,7 @@
      *
      * @return string
      *
-     * @导游预约旅行社发布的行程   提供返回参数账号，同时双向发送模板消息提醒
+     * @导游预约旅行社发布的行程   提供返回参数账号，一个行程可以同时最多有三个导游同时预约
      * gid             导游id
      * name            导游姓名
      * id              发布的行程id
@@ -30,19 +30,23 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
+  //当同时多个人预约此行程的时候，则判断当前行程是否已经有三个导游已经预约了
+
+
   # 备注 ： 更改行程为待确认
   #        双向发送模板消息
   #        判断当前的行程是否已经被预约
   #        判断当前预约的行程是否和前面已经预约的行程相冲突
 
-  $k=$dosql->GetOne("SELECT state,starttime,endtime from pmw_travel where id=$id");
-  $state=$k['state'];
-  if($state==0){
+  $get_travel_arr = Guide::get_travel($id);
+  $yuyue_num = $get_travel_arr['yuyue_num'];
+  //此条行程最多只能被三个导游预约
+  if($yuyue_num < 3){
 
     //判断当前的行程的起始时间
-    $starttime = $k['starttime'];  //本次行程的开始时间
+    $starttime = $get_travel_arr['starttime'];  //本次行程的开始时间
 
-    $endtime = $k['endtime'];     //本次行程的截至时间
+    $endtime = $get_travel_arr['endtime'];     //本次行程的截至时间
 
     //计算出当前导游已经预约过的行程的所有的开始时间
 
@@ -85,17 +89,24 @@ if(isset($token) && $token==$cfg_auth_key){
     }
 
     if($num==0){
-    //构造模板消息的字段
+    //判断预约的这个导游(实际是根据这个openid来判断)是否已经预约过此行程了
+
+     $r = $dosql->GetOne("SELECT id from pmw_guide_confirm where tid=$id and openid='$openid' and checkinfo=1");
+
+     if(!is_array($r)){
 
     $g=$dosql->GetOne("SELECT * FROM pmw_guide where id=$gid");   //导游信息
     $a=$dosql->GetOne("SELECT * FROM pmw_agency where id=$aid");  //旅行社信息
     $x=$dosql->GetOne("SELECT * FROM pmw_travel where id=$id");   //具体的行程信息
 
-    $user_info = array(
+    $openid_agency = $x['openid'];
+    $formid_agency = Common::get_new_formid($openid_agency);
 
+    $user_info = array(
+        //构造模板消息的字段
        "company" => $a['company'],   //旅行社名称
        "names"   => $a['name'],      //旅行社联系人姓名
-       "guide_name" => $name,        //预约的导游的姓名
+       "guide_name" => $g['name'],   //预约的导游的姓名
        "tel"     => $a['tel'],       //旅行社的联系电话
        "title"   => $x['title'],     //旅行社发布的行程标题
        "time"    =>date("Y-m-d",$x['starttime'])."--".date("Y-m-d",$x['endtime']),  //行程时间
@@ -103,16 +114,15 @@ if(isset($token) && $token==$cfg_auth_key){
        "page"    => "pages/about/guideConfirm/index?id=".$id."&gid=".$gid."&aid=".$aid."&tem=tem",
        "guide_tel"=>$g['tel'],    //预约的导游的联系人电话
        "datetime" =>date("Y-m-d H:i:s"),  //预约时间
-       "page_agency"=> "pages/about/confirm/confirm?id=".$id."&gid=".$gid."&tem=tem",
-       "openid_agency" =>$x['openid'],    //发布此条行程的旅行社openid
-       "formid_agency" => Common::get_new_formid($x['openid']),   //获取还未使用过的旅行社formid
+       "page_agency" => "pages/about/agencyConfirm/index?id=".$id."&gid=".$gid."&tem=tem",
        "posttime" => time(),
+       "faxtime"  => $x['posttime']
 
     );
 
 
      //实例化导游类
-     $send_guide_message = new Guide($openid,$formid);
+     $send_guide_message = new Guide($openid,$formid); //最新获取的formid
      //执行给导游发送模板消息方法，返回模板消息状态码，更改行程状态为1(待确认)
      $errcode_guide = $send_guide_message->SendGuide($aid,$gid,$id,$user_info);
      //将导游预约的行程保存到消息表里面去
@@ -120,7 +130,7 @@ if(isset($token) && $token==$cfg_auth_key){
 
 
      //实例化旅行社类
-     $send_agency_message = new Agency($user_info['openid_agency'],$user_info['formid_agency']);
+     $send_agency_message = new Agency($openid_agency,$formid_agency);
      //执行给旅行社发送模板消息方法，返回模板消息状态码
      $errcode_agency = $send_agency_message->SendAgency($user_info);
      //将旅行社发布的此条行程被预约的消息保存到消息表里面去
@@ -151,6 +161,17 @@ if(isset($token) && $token==$cfg_auth_key){
       echo phpver($result);
     }
   }else{
+    $State = 4;
+    $Descriptor = '您已经预约过此行程，请及时和旅行社联系！';
+    $result = array (
+                'State' => $State,
+                'Descriptor' => $Descriptor,
+                'Version' => $Version,
+                'Data' => $Data
+                 );
+    echo phpver($result);
+  }
+  }else{
     $State = 3;
     $Descriptor = '您已有此时间段内行程，请合理安排出行时间!';
     $result = array (
@@ -161,8 +182,9 @@ if(isset($token) && $token==$cfg_auth_key){
                  );
     echo phpver($result);
   }
+
 }else{
-  $State = 2;
+  $State = 5;
   $Descriptor = '行程已经被预约，请重新预约新的行程!';
   $result = array (
               'State' => $State,
@@ -172,7 +194,6 @@ if(isset($token) && $token==$cfg_auth_key){
                );
   echo phpver($result);
 }
-
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

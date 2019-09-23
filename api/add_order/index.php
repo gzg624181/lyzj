@@ -28,15 +28,13 @@
      * typename          票务类型（成人票，儿童票，优惠票）
      * nums              票务数量
      * totalamount       支付总金额
-     * paytype           支付类型（线下支付outline，微信支付 wxpay）
+     * paytype           支付类型（线下支付，微信支付）
      * orderid           支付订单号
      * states            后台票务处理状态（默认未处理0，已处理1）
+     * posttime           添加时间
      * cardidnumber      身份证号码
-     * openid
-     * formid
      */
 require_once("../../include/config.inc.php");
-header("content-type:application/json; charset=utf-8");
 $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
@@ -76,54 +74,45 @@ if(isset($token) && $token==$cfg_auth_key){
 
   if($pay_state==1 && $paytype=='outline'){
 
-  # ①. 支付成功之后，向购票人发送购票成功的模板消息
-
-  $formid=Common::get_new_formid($openid);
+  $form_id=Common::get_new_formid($openid);
   $id=Common::get_orderid($did,$posttime);
-  //获取管理员的信息
-  $array_admin=Common::get_openid_formid();
-  $openid_leader=$array_admin['openid'];
-  $formid_leader=Common::get_new_formid($openid_leader);
-  $page_leader="pages/index/index?tem=tem";
+  $page="pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem";
+  $posttime=date("Y-m-d H:i:s"); //购票时间
+  $tishi="亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情";
+
+  Common::paysuccess($openid,$cfg_paysuccess,$page,$form_id,$jingquname,$typename,$nums,$totalamount,$posttime,$tishi,$cfg_appid,$cfg_appsecret);
+
+  //删除已经用过的formid
+  Common::del_formid($form_id,$openid);
+
+
+//=============================================================================
+  #向下票人发送购票成功订单的模板消息
+  $page="pages/index/index?tem=tem";
   switch($type){
+
     case "agency":
     $type="旅行社";
     break;
+
     case "guide":
     $type="导游";
     break;
   }
 
-  $info = [
 
-       "openid"=>$openid,
-       "formid"=>$formid,
-       "id" =>$id,
-       "page"=>"pages/booking/bookingDetail/bookingDetail?id=".$id."&tem=tem",
-       "pay_time"=>date("Y-m-d H:i:s"),
-       "tishi"=>"亲爱的".$contactname."您好，您的购票订单已提交成功，可点击进入小程序查看购票详情",
-       "jingquname"=>$jingquname,
-       "typename"=>$typename,
-       "nums"=>$nums,
-       "totalamount"=>$totalamount,
-       "pay_time"=>date("Y-m-d H:i:s"), //购票时间
-       "page_leader"=>$page_leader,
-       "usetime"=>$usetime,
-       "contactname"=>$contactname,
-       "contacttel"=>$contacttel,
-       "paytypes"=>$paytypes,
-       "type"=>$type,
-       "openid_leader"=>$openid_leader,
-       "formid_leader"=>$formid_leader,
-       "page_leader"  =>$page_leader,
+  //获取管理员的信息
+  $array_admin=Common::get_openid_formid();
+  $openid=$array_admin['openid'];
+ //获取管理员的openid
 
-  ];
+  $form_id=Common::get_new_formid($openid);
 
-   //向购票者发送模板消息
-  Common::send_payer_message($info);
+  Common::ticketsuccess($openid,$cfg_ticketsuccess,$page,$form_id,$jingquname,$typename,$usetime,$nums,$type,$totalamount,$contactname,$contacttel,$paytypes,$posttime,$cfg_appid,$cfg_appsecret);
 
-  #向管理员发送购票成功订单的模板消息
-  Common::send_leader_message($info);
+  //删除已经用过的formid
+  Common::del_formid($form_id,$openid);
+  }
 
   if($paytype=="wxpay"){
     $Data =$return;
@@ -150,7 +139,7 @@ if(isset($token) && $token==$cfg_auth_key){
                );
   echo phpver($result);
 }
-}
+
 }else{
   $State = 520;
   $Descriptor = 'token验证失败！';

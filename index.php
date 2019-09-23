@@ -28,9 +28,9 @@ if(isset($token) && $token==$cfg_auth_key){
    $pagenumber=4;
    if(isset($page)){
     $first=$page * $pagenumber;
-     $dosql->Execute("SELECT id,title,starttime,endtime,money,other,yuyue_num FROM pmw_travel where (state=0 or state=1) and yuyue_num<3  and live_province ='$live_province' and live_city='$live_city' order by id desc limit $first,$pagenumber");
+     $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 or (state=1 and yuyue_num<3)  and live_province ='$live_province' and live_city='$live_city' order by id desc limit $first,$pagenumber");
      }else{
-      $dosql->Execute("SELECT id,title,starttime,endtime,money,other,yuyue_num FROM pmw_travel where (state=0 or state=1) and yuyue_num<3  and live_province ='$live_province' and live_city='$live_city' order by id desc limit 0,$pagenumber");
+      $dosql->Execute("SELECT id,title,starttime,endtime,money,other FROM pmw_travel where state=0 or (state=1 and yuyue_num<3)   and live_province ='$live_province' and live_city='$live_city' order by id desc limit 0,$pagenumber");
      }
     $num=$dosql->GetTotalRow();//获取数据条数
 
@@ -38,18 +38,14 @@ if(isset($token) && $token==$cfg_auth_key){
       for($i=0;$i<$num;$i++){
       $row=$dosql->GetArray();
       $Data[$i]=$row;
-       $tid = $row['id'];  //行程id
-       $two=2;
+      $tid = $row['id'];  //行程id
+      $two=2;
        $dosql->Execute("SELECT b.name,b.images FROM pmw_guide_confirm a inner join pmw_guide b  on a.gid=b.id where a.tid= $tid and a.checkinfo=1",$two);
        $nums=$dosql->GetTotalRow($two);//获取数据条数
        if($nums>0){
        for($j=0;$j<$nums;$j++){
        $show=$dosql->GetArray($two);
        $Data[$i]['guide'][$j]=$show;
-       $images = $show['images'];
-       if(!check_str($images,"https")){
-         $Data[$i]['guide'][$j]['images']=$cfg_weburl."/".$images;
-       }
        }
      }else{
        $Data[$i]['guide']= array();

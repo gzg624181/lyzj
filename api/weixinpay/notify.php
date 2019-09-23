@@ -2,7 +2,8 @@
 
  header("Content-Type: text/html; charset=utf-8");
  require_once("../../include/config.inc.php");
- $postXml = $GLOBALS["HTTP_RAW_POST_DATA"]; //接收微信参数
+ //$postXml = $GLOBALS["HTTP_RAW_POST_DATA"]; //接收微信参数
+ $postXml =  file_get_contents('php://input');  
 // 接受不到参数可以使用 file_get_contents("php://input"); PHP 高版本中$GLOBALS 好像已经被废弃了
 if (empty($postXml)) {
     return false;
@@ -33,6 +34,7 @@ function write_log($data)
   $results = print_r($data, true);
   file_put_contents($url, $results);
 }
+
 $attr = xmlToArray($postXml);
 write_log($attr);
 

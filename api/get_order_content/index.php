@@ -25,7 +25,7 @@ $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
       $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
       $cfg_default = $r['imagesurl'];
-      $r=$dosql->GetOne("SELECT a.*,b.label, b.picarr,b.solds,b.level,b.lowmoney FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id WHERE a.id=$id");
+      $r=$dosql->GetOne("SELECT a.*,b.label, b.picarr,b.solds,b.level,b.lowmoney,b.live_province,b.live_city FROM `#@__order` a inner join `#@__ticket` b  on a.tid=b.id WHERE a.id=$id");
       $num=$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

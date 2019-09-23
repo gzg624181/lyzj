@@ -49,14 +49,14 @@ if($("#live_prov").val() == -1)
 	window.location.href='travel_list.php?check='+v;
 	}
 
-function checkguide(gid){
+function checkguide(gid,tid){
   layer.open({
   type: 2,
   title: '查看导游个人信息：',
   maxmin: true,
   shadeClose: true, //点击遮罩关闭	层
-  area : ['750px' , '645px'],
-  content: 'check_guide.php?id='+gid,
+  area : ['80%' , '80%'],
+  content: 'check_guide.php?id='+gid+'&tid='+tid,
   });
 	}
 </script>
@@ -243,12 +243,13 @@ $update->update_agency_travel('travel');
 
 				}
 			$gid=$row['gid'];
+      $tid=$row['id'];
 			 if($gid==""){
-				 $gname = "<i class='fa fa-minus-circle' aria-hidden='true'></i>";
+				 $gname = "<a title='点击查看已经预约的导游信息' href='javascript:void(0);' onclick=\"checkguide('','$tid')\"><i class='fa fa-minus-circle' aria-hidden='true'></a></i>";
 			 }else{
 			  $r=$dosql->GetOne("SELECT name FROM pmw_guide where id=$gid");
         if(is_array($r)){
-				 $gname ="<a title='点击查看导游信息' href='javascript:void(0);' onclick=\"checkguide('$gid')\">
+				 $gname ="<a title='点击查看已确认的导游信息' href='javascript:void(0);' onclick=\"checkguide('$gid','$tid')\">
 				 {$r['name']}</a>";
        }else{
          $gname = "导游已删除";

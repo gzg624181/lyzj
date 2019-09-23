@@ -106,7 +106,7 @@ public function insert_Agency_Message($user_info,$aid)
   $tent .= "行程时间：".$user_info['time']."|";
   $tent .= "预约时间：".$user_info['datetime'];
   $stitle="预约成功通知";
-  $faxtime = time();
+  $faxtime = $user_info['faxtime'];
   $biaoti="你发布的".$user_info['time'].$user_info['title']."行程已被导游成功预约，请尽快与导游联系";
 
   $tbnames = 'pmw_message';

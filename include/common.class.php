@@ -764,21 +764,45 @@ public static function  send_payer_message($info){
 
     $ym = date("Y-m"); //当月的销量
 
-    $dosql->Execute("SELECT nums from  pmw_order where tid=$id and pay_state=1 and ymd like '%$ym%'");
+    if(isset($id) && $id!=""){
+
+    $dosql->Execute("SELECT * from  pmw_order where tid=$id and pay_state=1 and ymd like '%$ym%'");
 
     $num = $dosql->GetTotalRow();
 
-  if($num > 0){
-    while($row = $dosql->GetArray()){
-      $nums_arr[]= $row['nums'];
-      }
-    $nums = array_sum($nums_arr);
-    }else{
-        $nums =0;
-    }
+    if($num>0){
+      while($row = $dosql->GetArray()){
+        $nums_arr[]= $row['nums'];
+        }
+      $nums = array_sum($nums_arr);
+     }else{
+      $nums =0;
+     }
 
     return $nums;
 
+    }else{
+
+    $nums = 0;
+
+    return $nums;
+
+    }
+
    }
+
+   //默认的景点的图片(如果景点没有设置背景图片，则将这张图片顶替上去)
+
+   public static function default_images(){
+
+     global $dosql;
+
+     $r=$dosql->GetOne("SELECT imagesurl FROM pmw_share  where id=3");
+
+     $default_images = $r['imagesurl'];
+
+     return  $default_images;
+   }
+
 
   }
