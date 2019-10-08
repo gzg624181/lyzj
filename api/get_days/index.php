@@ -24,7 +24,7 @@ $Data = array();
 $Version=date("Y-m-d H:i:s");
 if(isset($token) && $token==$cfg_auth_key){
 
-      $dosql->Execute("SELECT distinct days FROM pmw_travel where state=0 and live_city='$live_city' and live_province='$live_province' ORDER BY days asc");
+      $dosql->Execute("SELECT distinct days FROM pmw_travel where (state=0 or state=1) and yuyue_num<3 and live_city='$live_city' and live_province='$live_province' ORDER BY days asc");
       $num =$dosql->GetTotalRow();
       if($num==0){
         $State = 0;

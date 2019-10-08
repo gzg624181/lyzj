@@ -50,10 +50,10 @@ if($action == 'update')
 
 
   if($password==""){ //密码不修改
-    $sql = "UPDATE `$tbname` SET name='$name', agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name', agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardidnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
   }else{
     $password=md5(md5($password));
-    $sql = "UPDATE `$tbname` SET name='$name',agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', password='$password', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
+    $sql = "UPDATE `$tbname` SET name='$name',agreement='$picarr', sex=$sex,card = '$card', cardnumber='$cardnumber', images='$images', password='$password', content='$content',regtime=$regtime,ymdtime='$ymdtime',cardidnumber='$cardidnumber',experience='$experience',cashmoney=$cashmoney,forbiden=$forbiden,live_province='$live_province',province=$live_prov,live_city='$live_citys',city=$live_city WHERE id=$id";
   }
 
 	if($dosql->ExecNoneQuery($sql))

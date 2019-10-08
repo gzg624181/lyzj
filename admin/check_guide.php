@@ -45,7 +45,7 @@ parent.layer.close(index);//关闭当前页
 //初始化参数
 $adminlevel=$_SESSION['adminlevel'];
 ?>
-<?php if($gid!=""){ ?>
+<?php if($id!=""){ ?>
 <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
 <div class="topToolbar"> <span class="title" style="text-align:center;">查看已确认接单的导游信息</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
 <?php
@@ -89,7 +89,7 @@ switch($r['sex']){
         </tr>
 		<tr>
 		  <td height="40" align="right">导游证件：</td>
-		  <td><img src="<?php echo $r['card'];?>" width="300"  /></td>
+		  <td><img src="<?php echo $cfg_weburl."/".$r['card'];?>" width="150"  /></td>
         </tr>
         <tr>
 		  <td height="40" align="right">导游电话：</td>
@@ -112,10 +112,12 @@ switch($r['sex']){
     </tr>
 </table>
 <?php }else{?>
-
   <input type="hidden" name="adminlevel" id="adminlevel" value="<?php echo $adminlevel;?>" />
   <div class="topToolbar"> <span class="title" style="text-align:center;">查看已预约的导游信息</span> <a title="刷新" href="javascript:location.reload();" class="reload" style="float:right; margin-right:35px;"><i class="fa fa-refresh" aria-hidden="true"></i></a></div>
   <?php
+  $dosql->Execute("SELECT * FROM pmw_guide_confirm where tid=$tid and checkinfo=1");
+  while($row=$dosql->GetArray()){
+  $id = $row['gid'];
   $action="travel_save.php";
   $r=$dosql->GetOne("SELECT * from pmw_guide where id=$id");
   switch($r['sex']){
@@ -126,11 +128,11 @@ switch($r['sex']){
   	$sex="男";
   	break;
   	}
-              if($r['images']==""){
-  			$images="../templates/default/images/noimage.jpg";
-  		    }else{
-              $images=$r['images'];
-              }
+  if($r['images']==""){
+   $images="../templates/default/images/noimage.jpg";
+  }else{
+   $images=$r['images'];
+  }
   ?>
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="formTable">
   		<tr>
@@ -156,7 +158,7 @@ switch($r['sex']){
           </tr>
   		<tr>
   		  <td height="40" align="right">导游证件：</td>
-  		  <td><img src="<?php echo $r['card'];?>" width="300"  /></td>
+  		  <td><img src="<?php echo $cfg_weburl."/".$r['card'];?>" width="150"  /></td>
           </tr>
           <tr>
   		  <td height="40" align="right">导游电话：</td>
@@ -171,15 +173,15 @@ switch($r['sex']){
   		  <td height="40" align="right">注册时间：</td>
   		  <td><?php echo date("Y-m-d H:i:s",$r['regtime']);?></td>
       </tr>
+      <?php } ?>
         <tr>
   		  <td height="40" align="right">&nbsp;</td>
   		  <td><div class="formSubBtn" style="float:left; margin-left:1px;margin-top: 15px;">
               <input type="button" class="submit" value="关闭" onclick="close_guide()" />
     </div></td>
       </tr>
+  <?php } ?>
   </table>
-
-<?php } ?>
 
 </body>
 </html>

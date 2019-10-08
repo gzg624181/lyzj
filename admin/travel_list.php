@@ -55,7 +55,7 @@ function checkguide(gid,tid){
   title: '查看导游个人信息：',
   maxmin: true,
   shadeClose: true, //点击遮罩关闭	层
-  area : ['80%' , '80%'],
+  area : ['60%' , '80%'],
   content: 'check_guide.php?id='+gid+'&tid='+tid,
   });
 	}

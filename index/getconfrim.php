@@ -18,7 +18,7 @@ $dosql->ExecNoneQuery($sql);
 
 //将所有旅行社已经发布行程，但是还未有导游接单的行程，弄成已失效
 
-$sql="UPDATE pmw_travel SET state=4 where state=0 and yuyue_num=0 and starttime_ymd='$starttime_ymd'";
+$sql="UPDATE pmw_travel SET state=4 where state=0 and yuyue_num=0 and starttime <= '$complete_time'";
 
 $dosql->ExecNoneQuery($sql);
 

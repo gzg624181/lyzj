@@ -18,10 +18,10 @@
      *
      * @提供返回参数账号  live_city  live_province
      */
-require_once("../../include/config.inc.php");
-header("Content-type:application:application/json; charset:utf-8");
-$Data = array();
-$Version=date("Y-m-d H:i:s");
+		require_once("../../include/config.inc.php");
+		header("Content-type:application:application/json; charset:utf-8");
+		$Data = array();
+		$Version=date("Y-m-d H:i:s");
 
 
   $uplad_tmp_name=$_FILES['imgfile']['tmp_name']; //保存的是文件上传到服务器临时文件夹之后的文件名

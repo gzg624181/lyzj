@@ -1,4 +1,4 @@
-﻿<?php	if(!defined('IN_PHPMYWIND')) exit('Request Error!');
+<?php	if(!defined('IN_PHPMYWIND')) exit('Request Error!');
 
 /*
 **************************
@@ -10,16 +10,16 @@
 $db_host = '127.0.0.1';
 
 //数据库用户名
-$db_user = 'root';
-//$db_user = 'lyzj';
+//$db_user = 'root';
+$db_user = 'lyzj';
 
 //数据库密码
-$db_pwd = '';
-//$db_pwd = 'cs5SZatdbGXYb6Yt';
+//$db_pwd = '';
+$db_pwd = 'cs5SZatdbGXYb6Yt';
 
 //数据库名
-$db_name =  'new_lyzj';
-//$db_name =  'lyzj';
+//$db_name =  'new_lyzj';
+$db_name =  'lyzj';
 
 //数据表前缀
 $db_tablepre = 'pmw_';
